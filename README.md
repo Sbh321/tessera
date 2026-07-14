@@ -43,7 +43,7 @@ guaranteed by construction.
 ## Install
 
 ```sh
-git clone <this-repo>
+git clone https://github.com/Sbh321/tessera.git
 cd tessera
 ./scripts/install.sh
 ```
@@ -51,7 +51,7 @@ cd tessera
 Then enable it:
 
 ```sh
-gnome-extensions enable tessera@shubham.dev
+gnome-extensions enable tessera@sbh321.github.io
 ```
 
 **Wayland note:** GNOME Shell only notices a *brand-new* extension after a
@@ -87,7 +87,7 @@ exact and reversible.
 Open via the Extensions app, or:
 
 ```sh
-gnome-extensions prefs tessera@shubham.dev
+gnome-extensions prefs tessera@sbh321.github.io
 ```
 
 Covers panel position, whether to hide GNOME's built-in Activities-button

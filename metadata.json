@@ -1,9 +1,9 @@
 {
-    "uuid": "tessera@shubham.dev",
+    "uuid": "tessera@sbh321.github.io",
     "name": "Tessera",
     "description": "Replaces the workspace indicator dots with numbered square indicators, inspired by Hyprland. Adds Super+1-9 and Super+Left/Right workspace switching.",
     "shell-version": ["46"],
-    "url": "https://github.com/shubham/tessera",
+    "url": "https://github.com/Sbh321/tessera",
     "settings-schema": "org.gnome.shell.extensions.tessera",
     "gettext-domain": "tessera",
     "version-name": "0.1.0"
