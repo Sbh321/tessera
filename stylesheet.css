@@ -1,0 +1,75 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+
+.tessera-box {
+    margin: 0 4px;
+}
+
+/*
+ * Structural properties below (size, radius, padding, font) mirror the
+ * GSettings defaults and only act as a fallback -- lib/workspaceIndicator.js
+ * applies the live user-configured values as inline style on every square,
+ * which always takes precedence over these rules.
+ */
+.tessera-square {
+    min-width: 22px;
+    min-height: 22px;
+    margin: 0 2px;
+    padding: 4px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+    background-color: rgba(127, 127, 127, 0.25);
+    /* Short enough that rapid Super+Number presses and fast 3-finger
+     * gesture previews feel instant rather than smeared. */
+    transition-duration: 100ms;
+}
+
+.tessera-square:hover {
+    background-color: rgba(127, 127, 127, 0.4);
+}
+
+.tessera-square:active {
+    background-color: rgba(127, 127, 127, 0.55);
+}
+
+/*
+ * Deliberately NO background/border/text colors on the .active rules:
+ * Tessera always resolves the active square's colors to concrete
+ * inline values (accent color / #ffffff / FALLBACK_ACTIVE_HEX as a last
+ * resort -- see lib/workspaceIndicator.js), and applies them in the
+ * constructor before first paint, so class-level colors here would be
+ * unreachable at best. At worst they're actively harmful: St transitions
+ * interpolate through intermediate style states, and a hardcoded color
+ * here (this rule used to carry GNOME's default #3584e4 blue) leaked
+ * through as a visible blue flash during fast Super+Number switches and
+ * gesture previews on any non-blue accent color.
+ */
+
+.tessera-square.outline {
+    background-color: transparent;
+    border: 2px solid rgba(127, 127, 127, 0.5);
+}
+
+.tessera-square.outline:hover {
+    border-color: rgba(127, 127, 127, 0.8);
+}
+
+.tessera-square.outline.active {
+    background-color: transparent;
+}
+
+/*
+ * Collapses GNOME's own built-in Activities-button workspace dots (see
+ * lib/nativeIndicatorHider.js for why this exists and how it's scoped).
+ * Zero size rather than display:none -- St's CSS engine doesn't support
+ * display:none, only real layout properties.
+ */
+.tessera-hide-native-dots .workspace-dot {
+    width: 0;
+    height: 0;
+    min-width: 0;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+}

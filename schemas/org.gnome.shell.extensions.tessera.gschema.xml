@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="tessera">
+
+  <schema id="org.gnome.shell.extensions.tessera"
+          path="/org/gnome/shell/extensions/tessera/">
+
+    <!-- Placement -->
+
+    <key name="panel-position" type="s">
+      <default>'left'</default>
+      <summary>Panel position</summary>
+      <description>Which panel box the indicator is placed in. One of: left, center, right.</description>
+    </key>
+
+    <key name="hide-native-activities-dots" type="b">
+      <default>true</default>
+      <summary>Hide GNOME's built-in Activities-button workspace dots</summary>
+      <description>GNOME Shell 46 renders small workspace dots inside the Activities button itself (style class "workspace-dot"). When true, this extension hides them via a scoped CSS override so only its own square indicator is visible. This targets an internal, undocumented style class that could change in a future GNOME version -- turn this off if it stops working correctly, or if you want both indicators visible.</description>
+    </key>
+
+    <!-- Appearance -->
+
+    <key name="square-size" type="i">
+      <default>22</default>
+      <range min="12" max="64"/>
+      <summary>Square size</summary>
+      <description>Width and height, in pixels, of each workspace square.</description>
+    </key>
+
+    <key name="square-spacing" type="i">
+      <default>4</default>
+      <range min="0" max="24"/>
+      <summary>Spacing between squares</summary>
+      <description>Horizontal gap, in pixels, between adjacent workspace squares.</description>
+    </key>
+
+    <key name="square-border-radius" type="i">
+      <default>6</default>
+      <range min="0" max="32"/>
+      <summary>Square border radius</summary>
+      <description>Corner radius, in pixels, of each workspace square.</description>
+    </key>
+
+    <key name="square-padding" type="i">
+      <default>4</default>
+      <range min="0" max="20"/>
+      <summary>Square padding</summary>
+      <description>Internal padding, in pixels, between a square's border and its label.</description>
+    </key>
+
+    <key name="font-size" type="i">
+      <default>11</default>
+      <range min="6" max="32"/>
+      <summary>Font size</summary>
+      <description>Font size, in points, of the workspace number label.</description>
+    </key>
+
+    <key name="font-weight" type="s">
+      <default>'bold'</default>
+      <summary>Font weight</summary>
+      <description>CSS font-weight of the workspace number label. One of: normal, bold, 600.</description>
+    </key>
+
+    <key name="indicator-style" type="s">
+      <default>'filled'</default>
+      <summary>Indicator style</summary>
+      <description>Visual style of the squares. One of: filled, outline.</description>
+    </key>
+
+    <key name="active-background-color" type="s">
+      <default>''</default>
+      <summary>Active workspace background color</summary>
+      <description>Hex color (e.g. #3584e4) for the active workspace square. Empty string uses the current GNOME theme accent color.</description>
+    </key>
+
+    <key name="inactive-background-color" type="s">
+      <default>''</default>
+      <summary>Inactive workspace background color</summary>
+      <description>Hex color for inactive workspace squares. Empty string uses the current GNOME theme default.</description>
+    </key>
+
+    <key name="active-text-color" type="s">
+      <default>''</default>
+      <summary>Active workspace text color</summary>
+      <description>Hex color for the label text of the active workspace square. Empty string uses the current GNOME theme default.</description>
+    </key>
+
+    <key name="inactive-text-color" type="s">
+      <default>''</default>
+      <summary>Inactive workspace text color</summary>
+      <description>Hex color for the label text of inactive workspace squares. Empty string uses the current GNOME theme default.</description>
+    </key>
+
+    <key name="show-empty-workspaces" type="b">
+      <default>true</default>
+      <summary>Show trailing empty workspace</summary>
+      <description>When dynamic workspaces are enabled, GNOME always keeps one empty trailing workspace. If disabled, that trailing workspace is not rendered in the indicator.</description>
+    </key>
+
+    <!-- Keybindings -->
+
+    <key name="enable-custom-keybindings" type="b">
+      <default>true</default>
+      <summary>Enable Super+Number and Super+Arrow keybindings</summary>
+      <description>Master switch for the extension's workspace-switching keybindings. When disabled, no default GNOME keybindings are modified.</description>
+    </key>
+
+    <key name="workspace-jump-1" type="as">
+      <default>['&lt;Super&gt;1']</default>
+      <summary>Jump to workspace 1</summary>
+    </key>
+    <key name="workspace-jump-2" type="as">
+      <default>['&lt;Super&gt;2']</default>
+      <summary>Jump to workspace 2</summary>
+    </key>
+    <key name="workspace-jump-3" type="as">
+      <default>['&lt;Super&gt;3']</default>
+      <summary>Jump to workspace 3</summary>
+    </key>
+    <key name="workspace-jump-4" type="as">
+      <default>['&lt;Super&gt;4']</default>
+      <summary>Jump to workspace 4</summary>
+    </key>
+    <key name="workspace-jump-5" type="as">
+      <default>['&lt;Super&gt;5']</default>
+      <summary>Jump to workspace 5</summary>
+    </key>
+    <key name="workspace-jump-6" type="as">
+      <default>['&lt;Super&gt;6']</default>
+      <summary>Jump to workspace 6</summary>
+    </key>
+    <key name="workspace-jump-7" type="as">
+      <default>['&lt;Super&gt;7']</default>
+      <summary>Jump to workspace 7</summary>
+    </key>
+    <key name="workspace-jump-8" type="as">
+      <default>['&lt;Super&gt;8']</default>
+      <summary>Jump to workspace 8</summary>
+    </key>
+    <key name="workspace-jump-9" type="as">
+      <default>['&lt;Super&gt;9']</default>
+      <summary>Jump to workspace 9</summary>
+    </key>
+
+    <key name="workspace-previous" type="as">
+      <default>['&lt;Super&gt;Left']</default>
+      <summary>Switch to previous workspace</summary>
+    </key>
+    <key name="workspace-next" type="as">
+      <default>['&lt;Super&gt;Right']</default>
+      <summary>Switch to next workspace</summary>
+    </key>
+
+  </schema>
+</schemalist>
