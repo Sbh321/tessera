@@ -2,29 +2,52 @@
 
 > *tessera* (Latin) — a single small square tile in a mosaic.
 
-A GNOME Shell extension that replaces the default workspace dots with
-numbered square indicators, inspired by Hyprland's workspace bar:
+A Hyprland-inspired **tiling workspace manager** for GNOME Shell:
+automatic dwindle tiling, a stacked (tabbed) layout mode, numbered
+workspace squares in the panel, and full Super-based keyboard control of
+workspaces and windows — while staying a well-behaved GNOME extension
+built on public APIs.
 
 ```
-Default GNOME:  ● ○ ○ ○ ○
-Tessera:        [1] [2] [3] [4] [5]
+Panel:      [1] [2] [3] [4] [5]        (numbered workspace squares)
+
+Windows:    +---------+---------+
+            |         | Term    |      (automatic dwindle tiling:
+            | Firefox +----+----+       1 window = 100%, 2 = 50/50,
+            |         |File|Code|       each next window subdivides)
+            +---------+----+----+
 ```
 
-Built for GNOME Shell 46 / Ubuntu 24.04 LTS. Only the *appearance* of the
-workspace indicator changes — clicking, active-workspace tracking, dynamic
-workspace count, and switch animations all remain exactly as GNOME defines
-them; see [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for how that's
-guaranteed by construction.
+Tessera started as a numbered replacement for GNOME's workspace dots and
+grew into a full tiling workspace manager. It brings the Hyprland
+workflow to GNOME rather than replacing GNOME: every window and
+workspace operation routes through the same public Mutter/Shell APIs
+GNOME itself uses, everything is reversible on disable, and windows
+GNOME says should float (dialogs, utilities, minimized/maximized
+windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
+[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the design.
 
 ## Features
 
-- Numbered square panel indicator, always visible (no collapsing into a
-  dropdown menu at high workspace counts).
-- Placeable on the left, center, or right of the panel (default: left).
-- Hides GNOME's own built-in workspace dots (rendered inside the Activities
-  button) by default, so only this indicator is shown — toggle off in
-  Preferences if you want both.
-- Click a square to switch to that workspace.
+### Tiling
+
+- **Automatic dwindle tiling**, Hyprland's default layout: one window
+  fills the work area, two split 50/50, each further window keeps
+  subdividing — per workspace and per monitor, fully automatic as
+  windows open, close, move, minimize, or change workspace.
+- **Stacked (tabbed) layout mode** per workspace (`Shift+Super+S`): all
+  tiled windows share the full content area under a row of browser-style
+  tabs with live titles and icons — Hyprland's stacked layout.
+- Windows GNOME wants floating stay floating: dialogs, utility and
+  splash windows, minimized and user-maximized windows. Fullscreen
+  suspends tiling until it ends. Apps that *open* maximized (browsers,
+  editors) are tiled anyway.
+- Configurable inner/outer gaps; panel and dock are never overlapped
+  (work-area aware). The whole tiling system can be switched off in
+  Preferences, leaving just the workspace manager.
+
+### Workspaces & windows
+
 - `Super+1` .. `Super+9` to jump directly to a workspace — reliably, even
   on Ubuntu where both GNOME and Ubuntu Dock normally own those shortcuts
   (see Keybindings below).
@@ -34,6 +57,15 @@ guaranteed by construction.
 - `Shift+Super+Left` / `Shift+Super+Right` to move the focused window
   into a brand-new workspace inserted beside the current one,
   Hyprland-style.
+- Full dynamic-workspaces support — everything integrates with GNOME's
+  own workspace model instead of replacing it.
+
+### Panel indicator
+
+- Numbered square indicator, always visible (no collapsing into a
+  dropdown at high workspace counts); click a square to switch.
+  Placeable left/center/right; GNOME's own Activities-button dots are
+  hidden by default (toggleable).
 - Live preview during a 3-finger touchpad swipe: the active square tracks
   your fingers in real time across every workspace you pass through, and
   snaps to the final one the instant you let go (best-effort — see
@@ -42,15 +74,7 @@ guaranteed by construction.
   padding, font size/weight, filled vs. outline style, and per-state
   colors. The active square's default color follows your Ubuntu
   Settings → Appearance accent color automatically; set a custom color in
-  Preferences to override it.
-- Respects GNOME light/dark theming by default.
-- **Automatic tiling** (Hyprland dwindle-style): normal windows arrange
-  themselves per workspace — one window fills the screen, two split
-  50/50, further windows keep subdividing. Dialogs, minimized, and
-  maximized windows float. Gaps are configurable; the whole feature can
-  be switched off in Preferences.
-- `Shift+Super+S` toggles a **stacked layout** per workspace: all tiled
-  windows share the full content area under a row of browser-style tabs.
+  Preferences to override it. Respects GNOME light/dark theming.
 
 ## Install
 
@@ -108,20 +132,23 @@ Open via the Extensions app, or:
 gnome-extensions prefs tessera@sbh321.github.io
 ```
 
-Covers panel position, whether to hide GNOME's built-in Activities-button
-dots, square size/spacing/radius/padding, font size/weight, filled vs.
-outline style, active/inactive colors, whether to show GNOME's trailing
-empty workspace, the keybindings master switch, and every individual
-accelerator.
+Covers tiling on/off and gaps, panel position, whether to hide GNOME's
+built-in Activities-button dots, square size/spacing/radius/padding, font
+size/weight, filled vs. outline style, active/inactive colors, whether to
+show GNOME's trailing empty workspace, the keybindings master switch, and
+every individual accelerator.
 
 ## Project layout
 
 ```
 extension.js          Entry point — wires modules together, no logic itself
 lib/                  workspaceIndicator.js, keybindingManager.js,
-                      nativeIndicatorHider.js, accentColor.js,
-                      gestureProgressTracker.js, settingsManager.js,
-                      utils.js
+                      windowMover.js, nativeIndicatorHider.js,
+                      accentColor.js, gestureProgressTracker.js,
+                      settingsManager.js, utils.js
+lib/tiling/           The tiling subsystem: windowFilter.js,
+                      layoutEngine.js (pure layout strategies),
+                      stackTabBar.js, tilingManager.js
 prefs.js              Adwaita preferences window
 stylesheet.css        Default appearance
 schemas/              GSettings schema (source of truth for settings)

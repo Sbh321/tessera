@@ -1,5 +1,32 @@
 # Roadmap
 
+Tessera started as a numbered workspace indicator and has grown into a
+Hyprland-inspired tiling workspace manager. The sections below track that
+evolution: what each stage shipped, what's next, and what's deliberately
+not planned.
+
+## Shipped since 0.1.0
+
+- **Renamed to Tessera** (from "Workspace Squares"), uuid
+  `tessera@sbh321.github.io`.
+- **Window movement**: `Shift+Super+1..9` moves the focused window to a
+  workspace and follows it; `Shift+Super+Left/Right` inserts a brand-new
+  workspace beside the current one and moves the window into it
+  (`lib/windowMover.js`, composed from GNOME's own
+  `Main.wm.actionMoveWindow()` / `insertWorkspace()`).
+- **Automatic dwindle tiling** (`lib/tiling/`): Hyprland's default
+  layout, recomputed statelessly per (workspace × monitor) bucket as
+  windows open/close/move/minimize/maximize/fullscreen; dialogs and
+  other GNOME-floating windows float; configurable inner/outer gaps;
+  master enable switch.
+- **Stacked (tabbed) layout mode** per workspace (`Shift+Super+S`):
+  Hyprland's stacked layout, with a per-monitor tab bar (live titles,
+  icons, click-to-raise), implemented as a pluggable layout strategy.
+- Gesture-preview reliability fixes (absolute progress mapping verified
+  against extracted shell source; event-driven self-verification) and
+  keybinding-conflict hardening (Ubuntu Dock hot-keys, move-to-monitor
+  defaults).
+
 ## Shipped in 0.1.0
 
 - Numbered square panel indicator, replacing the dot-style workspace
@@ -29,6 +56,18 @@
 
 ## Near-term
 
+- **Tiling follow-ups** (each anticipated by the current architecture,
+  none requiring restructuring — see the tiling section of
+  [`ARCHITECTURE.md`](ARCHITECTURE.md)):
+  - Directional focus keybindings (`Super+H/J/K/L`-style).
+  - Drag-to-swap tiled windows (currently a drag snaps back on
+    `grab-op-end`; swapping needs target-slot hit testing).
+  - Adjustable split ratios and remembered tree shape — requires moving
+    from the stateless recompute to a real mutable tiling tree; the
+    engine's strategy interface is the seam where that would slot in.
+  - More layouts (master, grid, spiral variants) — one pure function
+    each in `lib/tiling/layoutEngine.js`.
+  - Per-workspace layout choice and smart gaps as settings.
 - **Press-to-record keybinding capture widget.** Preferences currently
   accept accelerators as typed text (e.g. `<Super>3`) via `Adw.EntryRow`.
   A `Gtk.EventControllerKey`-based "click here and press a key" widget
@@ -70,11 +109,12 @@
 
 ## Explicitly out of scope
 
-- Changing workspace-switch *behavior* (animation timing, wrap logic,
-  multi-monitor assignment) — the brief is about appearance only, and this
-  project deliberately routes every action through the same public
-  `Meta.Workspace` APIs GNOME's own code uses so behavior is untouched by
-  construction.
+- Reimplementing behavior GNOME already owns — switch/move animations,
+  focus rules, dynamic workspace lifetime, what floats. Tessera layers
+  the Hyprland workflow *on top of* GNOME's model through its public
+  APIs; it is not a compositor replacement, and anything that would
+  require monkey-patching shell internals to override that model stays
+  out.
 - A dropdown/menu fallback for large workspace counts, matching GNOME's
   bundled `workspace-indicator` extension — deliberately dropped; see
   [`ARCHITECTURE.md`](ARCHITECTURE.md) for why.

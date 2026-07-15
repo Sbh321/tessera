@@ -1,12 +1,22 @@
 # Architecture
 
+Tessera began as a numbered workspace *indicator* and grew, feature by
+feature, into a Hyprland-inspired tiling workspace manager. The goals
+below predate that growth and survived it unchanged — each new capability
+(window movement, automatic tiling, stacked layouts) was added as its own
+isolated module or subsystem under the same rules, which is why the
+indicator sections and the tiling sections of this document describe the
+same architecture at different scales.
+
 ## Goals that shaped the design
 
-- Change only the *appearance* of the workspace indicator; never touch how
-  workspace switching itself works. Every workspace change in this
-  extension goes through `Meta.Workspace.activate()` or
-  `Meta.Workspace.get_neighbor()` — the same public APIs GNOME's own code
-  uses.
+- Work *with* GNOME's window and workspace model, never against or around
+  it. Every workspace switch, window move, and window resize in this
+  extension goes through the same public Mutter/Shell APIs GNOME's own
+  code uses (`Meta.Workspace.activate()`, `Main.wm.actionMoveWindow()`,
+  `Meta.Window.move_resize_frame()`, ...). Behavior GNOME owns — focus
+  rules, animations, dynamic workspace lifetime, what floats — stays
+  GNOME's.
 - No monkey-patching of shell internals (no prototype/method overrides
   anywhere in this codebase). The four places this extension reaches
   outside its own GSettings schema are documented and isolated (see
@@ -278,7 +288,7 @@ follow-focus behaviors (manager policy), animation (application step).
 GNOME's own bundled `workspace-indicator` extension (see
 [`GNOME_NOTES.md`](GNOME_NOTES.md)) collapses into a dropdown menu once past
 6 workspaces, or when workspaces are arranged in a vertical grid. This
-project deliberately skips that: the brief asks for squares that are always
+project deliberately skips that: the design goal is squares that are always
 visible, Hyprland-style, so `WorkspaceIndicator` is constructed with
 `dontCreateMenu = true` and there is no equivalent fallback. In practice
 this is fine — dynamic workspaces rarely grow past single digits, and this
