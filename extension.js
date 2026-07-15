@@ -8,6 +8,7 @@ import {WorkspaceIndicator} from './lib/workspaceIndicator.js';
 import {KeybindingManager} from './lib/keybindingManager.js';
 import {NativeIndicatorHider} from './lib/nativeIndicatorHider.js';
 import {AccentColorTracker} from './lib/accentColor.js';
+import {WindowMover} from './lib/windowMover.js';
 
 export default class TesseraExtension extends Extension {
     enable() {
@@ -18,7 +19,8 @@ export default class TesseraExtension extends Extension {
         this._panelPositionChangedId = this._settingsManager.gsettings.connect(
             'changed::panel-position', () => this._createIndicator());
 
-        this._keybindingManager = new KeybindingManager(this._settingsManager);
+        this._windowMover = new WindowMover();
+        this._keybindingManager = new KeybindingManager(this._settingsManager, this._windowMover);
         this._keybindingManager.enable();
 
         this._nativeIndicatorHider = new NativeIndicatorHider(this._settingsManager);
@@ -34,6 +36,10 @@ export default class TesseraExtension extends Extension {
 
         this._keybindingManager.disable();
         this._keybindingManager = null;
+
+        // Stateless (no signals/timers/keybindings of its own) -- nothing
+        // to tear down beyond dropping the reference.
+        this._windowMover = null;
 
         this._indicator.destroy();
         this._indicator = null;

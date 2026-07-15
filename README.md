@@ -29,6 +29,11 @@ guaranteed by construction.
   on Ubuntu where both GNOME and Ubuntu Dock normally own those shortcuts
   (see Keybindings below).
 - `Super+Left` / `Super+Right` to switch to the previous/next workspace.
+- `Shift+Super+1` .. `Shift+Super+9` to move the focused window to that
+  workspace and follow it.
+- `Shift+Super+Left` / `Shift+Super+Right` to move the focused window
+  into a brand-new workspace inserted beside the current one,
+  Hyprland-style.
 - Live preview during a 3-finger touchpad swipe: the active square tracks
   your fingers in real time across every workspace you pass through, and
   snaps to the final one the instant you let go (best-effort — see
@@ -68,13 +73,18 @@ For local development instead of a one-shot install, see
 | `Super+1` .. `Super+9` | Jump to workspace 1-9 |
 | `Super+Left` | Previous workspace |
 | `Super+Right` | Next workspace |
+| `Shift+Super+1` .. `Shift+Super+9` | Move focused window to workspace 1-9 (and follow) |
+| `Shift+Super+Left` | Move focused window to a new workspace inserted on the left |
+| `Shift+Super+Right` | Move focused window to a new workspace inserted on the right |
 
-These accelerators collide with three sets of pre-existing defaults on a
+These accelerators collide with four sets of pre-existing defaults on a
 stock Ubuntu install: GNOME's `Super+1..9` (switch to a pinned dash app),
-GNOME's `Super+Left/Right` (snap a window to half-screen), and Ubuntu
-Dock's own `Super+1..0` app hot-keys. Enabling Tessera's keybindings (on
-by default, toggle in Preferences) temporarily neutralizes all three and
-restores your exact prior values when disabled. Pressing `Super+N` for a
+GNOME's `Super+Left/Right` (snap a window to half-screen), GNOME's
+`Shift+Super+Left/Right` (move window to the adjacent monitor), and
+Ubuntu Dock's own `Super+1..0` app hot-keys including their Shift
+variants. Enabling Tessera's keybindings (on by default, toggle in
+Preferences) temporarily neutralizes all four and restores your exact
+prior values when disabled. Pressing `Super+N` or `Shift+Super+N` for a
 workspace that doesn't exist is a clean no-op — it never falls through to
 launching a dock app. Every accelerator is also individually rebindable in
 Preferences. See [`docs/GNOME_NOTES.md`](docs/GNOME_NOTES.md) for how each

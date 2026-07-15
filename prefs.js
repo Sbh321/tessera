@@ -143,14 +143,15 @@ export default class TesseraPreferences extends ExtensionPreferences {
 
         const masterGroup = new Adw.PreferencesGroup({
             description: _(
-                'Super+1–9 and Super+Left/Right already control other GNOME ' +
-                'shortcuts by default (switching to favorite apps, snapping windows). ' +
+                'Super+1–9, Super+Left/Right and their Shift variants already ' +
+                'control other GNOME shortcuts by default (switching to favorite ' +
+                'apps, snapping windows, moving windows between monitors). ' +
                 'Enabling this temporarily clears those defaults and restores them ' +
                 'exactly when disabled.'),
         });
         page.add(masterGroup);
         addSwitchRow(masterGroup, settings, 'enable-custom-keybindings',
-            _('Enable Super+Number and Super+Arrow keybindings'), '');
+            _('Enable workspace and window-move keybindings'), '');
 
         const jumpGroup = new Adw.PreferencesGroup({
             title: _('Jump to Workspace'),
@@ -166,6 +167,24 @@ export default class TesseraPreferences extends ExtensionPreferences {
         page.add(navigateGroup);
         addAcceleratorEntryRow(navigateGroup, settings, 'workspace-previous', _('Previous workspace'));
         addAcceleratorEntryRow(navigateGroup, settings, 'workspace-next', _('Next workspace'));
+
+        const moveGroup = new Adw.PreferencesGroup({
+            title: _('Move Window to Workspace'),
+            description: _('Moves the focused window and follows it'),
+        });
+        page.add(moveGroup);
+        for (let i = 1; i <= 9; i++) {
+            addAcceleratorEntryRow(moveGroup, settings, `window-move-${i}`,
+                `${_('Workspace')} ${i}`);
+        }
+
+        const moveNewGroup = new Adw.PreferencesGroup({
+            title: _('Move Window to New Workspace'),
+            description: _('Inserts a new workspace beside the current one (dynamic workspaces only) and moves the focused window into it'),
+        });
+        page.add(moveNewGroup);
+        addAcceleratorEntryRow(moveNewGroup, settings, 'window-move-new-left', _('Insert left'));
+        addAcceleratorEntryRow(moveNewGroup, settings, 'window-move-new-right', _('Insert right'));
 
         return page;
     }

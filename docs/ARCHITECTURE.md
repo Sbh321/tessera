@@ -43,6 +43,12 @@ lib/gestureProgressTracker.js  Best-effort live preview of the active
                            workspace mapping (round of an absolute strip
                            index), verifies itself against every gesture's
                            real outcome, and no-ops safely if unsupported.
+lib/windowMover.js         Moves the focused window between workspaces
+                           (Shift+Super bindings), including inserting a
+                           brand-new workspace beside the current one.
+                           Stateless composition of GNOME's own
+                           Main.wm.actionMoveWindow / insertWorkspace;
+                           nothing to clean up by construction.
 lib/utils.js               Pure helper functions (CSS string building, hex
                            color validation). No GNOME API usage.
 prefs.js                   Adwaita preferences window. Separate process
@@ -76,11 +82,72 @@ org.gnome.desktop.interface --(changed::gtk-theme)--> WorkspaceIndicator --> Tes
   (read-only; Ubuntu's accent-color picker switches gtk-theme, see lib/accentColor.js)
 
 Super+1..9 / Super+Left/Right --(Main.wm keybinding dispatch)--> KeybindingManager handler --> workspace.activate() / get_neighbor().activate()
+
+Shift+Super+1..9 / Shift+Super+Left/Right --(Main.wm keybinding dispatch)--> KeybindingManager handler --> WindowMover --> Main.wm.actionMoveWindow() / Main.wm.insertWorkspace()
 ```
 
 The indicator never reads keybinding state, and the keybinding manager never
 touches the panel widget — the two are independent consumers of the same
-`SettingsManager`, composed only in `extension.js`.
+`SettingsManager`, composed only in `extension.js`. Window movement follows
+the same separation: `KeybindingManager` only registers accelerators and
+dispatches; all movement logic lives in `lib/windowMover.js`; the indicator
+learns about the results purely through the same `global.workspace_manager`
+signals it already watches (plus `workspaces-reordered`, added because a
+workspace reorder changes the active workspace's *index* without firing
+either of the other two signals).
+
+## Window movement (`lib/windowMover.js`)
+
+Both Shift+Super actions are deliberately thin compositions of GNOME
+Shell's own `WindowManager` methods rather than re-implementations — see
+[`GNOME_NOTES.md`](GNOME_NOTES.md) for how each was verified against this
+install's extracted source:
+
+- **Move to workspace N** = `Main.wm.actionMoveWindow(window, workspace)`,
+  the same method GNOME's built-in move-window keybindings call. It
+  already handles destination-is-current (no-op), carries the window
+  through the switch animation, and follows the window with focus —
+  matching both GNOME's and Hyprland's follow-the-window behavior, which
+  is why "follow" is the default rather than an option (a Hyprland-style
+  "silent move" could be added later as a setting without restructuring).
+- **Move to new inserted workspace** = `Main.wm.insertWorkspace(pos)`
+  followed by the same `actionMoveWindow`. GNOME already ships real
+  workspace insertion (it uses it itself to prepend a workspace); an
+  alternative design using `WorkspaceManager.reorder_workspace` was
+  evaluated and rejected — it exists and would avoid shifting windows,
+  but GNOME's own insertion path has every window-class edge case
+  (transients, override-redirect, sticky) already handled and proven.
+
+Decisions on the edge cases, all of which resolve to "do what GNOME's
+own model does":
+
+- **No focused window / focused sticky window:** clean no-op. Sticky
+  covers desktop and dock windows and, under
+  `workspaces-only-on-primary`, every window on non-primary monitors —
+  moving those is meaningless and `change_workspace` would silently
+  un-stick a user-pinned window.
+- **Focused dialog:** resolved through `find_root_ancestor()`, so the
+  parent window moves and Mutter carries the whole transient family —
+  a dialog is never separated from its window.
+- **Out-of-range workspace number:** no-op, consistent with the Super+N
+  jump bindings (no implicit workspace creation — pressing Shift+Super+9
+  with 4 workspaces does nothing rather than surprising the user with 5
+  new workspaces).
+- **Static workspaces:** `insertWorkspace` is dynamic-only by GNOME's own
+  rule, so the insert bindings degrade to moving into the existing
+  neighbor workspace (edge of strip: no-op).
+- **Emptied origin workspaces** are culled by GNOME's `WorkspaceTracker`
+  (never the active or trailing one) — deliberately not fought with
+  keep-alives; it's the platform's dynamic-workspace model. Consequence:
+  inserting a new workspace for a window that was *alone* nets out to no
+  visible change.
+- **Race-freedom:** the insert-then-move sequence is synchronous within
+  one dispatch, and the tracker's empty-workspace cleanup only runs in a
+  `BEFORE_REDRAW` later, so it can never observe the half-done state.
+
+`WindowMover` holds no state, connects no signals, and starts no timers —
+there is nothing to clean up, by construction; `disable()` is just
+dropping the reference.
 
 ## Why `PanelMenu.Button` with no menu
 
@@ -95,11 +162,17 @@ extension only advertises `Super+1`..`Super+9` for direct jumps anyway.
 
 ## The four places this extension reaches outside its own schema
 
-**1. `lib/keybindingManager.js`** reads and temporarily overwrites three
-schemas it doesn't own:
+**1. `lib/keybindingManager.js`** reads and temporarily overwrites four
+schemas it doesn't own (managed uniformly through one internal list, so a
+newly discovered conflict is one entry, not another copy of the
+save/clear/watch/restore lifecycle):
 
 - `org.gnome.shell.keybindings` (`switch-to-application-1..9`)
 - `org.gnome.mutter.keybindings` (`toggle-tiled-left`, `toggle-tiled-right`)
+- `org.gnome.desktop.wm.keybindings` (`move-to-monitor-left/right` —
+  GNOME's move-window-to-adjacent-monitor shortcut, bound to
+  `<Super><Shift>Left/Right` by default, colliding with the
+  move-window-to-new-workspace bindings)
 - `org.gnome.shell.extensions.dash-to-dock` (`hot-keys`) — Ubuntu Dock's
   master switch for its *own, independent* `Super+1..0` "activate Nth
   pinned app" grabs. Only touched when the schema actually exists (looked

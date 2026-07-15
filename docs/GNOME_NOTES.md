@@ -266,7 +266,16 @@ symptoms looked identical:
 |---|---|---|
 | `Super+1` .. `Super+9` | `switch-to-application-1..9` (switch to Nth pinned dash app) | `org.gnome.shell.keybindings` |
 | `Super+Left` / `Super+Right` | `toggle-tiled-left` / `toggle-tiled-right` (half-screen window snap) | `org.gnome.mutter.keybindings` |
+| `Shift+Super+Left` / `Shift+Super+Right` | `move-to-monitor-left` / `move-to-monitor-right` (move window to adjacent monitor) | `org.gnome.desktop.wm.keybindings` |
 | `Super+1` .. `Super+0` (+ Shift/Ctrl variants) | Ubuntu Dock's own "activate Nth pinned app" hot-keys, gated by the `hot-keys` boolean (default `true`) | `org.gnome.shell.extensions.dash-to-dock` |
+
+`Shift+Super+1..9` (the move-window-to-workspace bindings) has no GNOME
+default of its own -- `move-to-workspace-N` keys are unbound except
+`move-to-workspace-1` = `<Super><Shift>Home`, which doesn't collide --
+but Ubuntu Dock's `app-shift-hotkey-1..10` grabs exactly those combos
+("launch new instance of Nth pinned app"). Those die with the same
+`hot-keys = false` master switch already described below, so the shift
+variants needed no additional handling.
 
 The Ubuntu Dock row is the important lesson: Ubuntu's always-on dock is
 the preinstalled `ubuntu-dock@ubuntu.com` extension, a fork of Dash to
@@ -304,12 +313,97 @@ version, the commands are:
 ```sh
 gsettings get org.gnome.shell.keybindings switch-to-application-1
 gsettings get org.gnome.mutter.keybindings toggle-tiled-left
+gsettings get org.gnome.desktop.wm.keybindings move-to-monitor-left
 gsettings get org.gnome.shell.extensions.dash-to-dock hot-keys
+gsettings get org.gnome.shell.extensions.dash-to-dock app-shift-hotkey-1
 ```
 
 `switch-to-workspace-1..9` (`org.gnome.desktop.wm.keybindings`) is a
 *different, unbound-by-default* set of keys and is not touched by this
 extension.
+
+## Moving windows between workspaces (verified against extracted source)
+
+The Shift+Super window-movement features are built on two methods of
+GNOME Shell's own `WindowManager` instance (`Main.wm`), both verified by
+reading this install's real `js/ui/windowManager.js` (extracted from the
+gresource -- see the section below for the command):
+
+**`Main.wm.actionMoveWindow(window, workspace)`** -- the exact method
+GNOME's own built-in move-window keybindings dispatch to. Verified
+behavior from the source:
+
+- No-ops if the destination workspace is already active (our
+  "destination equals current" edge case is handled by GNOME itself).
+- Sets `_workspaceAnimation.movingWindow` before the move, so the
+  workspace-switch animation visually carries the window along instead of
+  leaving it behind and popping it in.
+- Ends with `workspace.activate_with_focus(window, timestamp)` -- i.e.
+  **GNOME follows the moved window**, keeping it focused. Hyprland's
+  `movetoworkspace` follows too, so "follow" is the only defensible
+  default; a non-following variant (Hyprland's `movetoworkspacesilent`)
+  would be a future setting, not a replacement.
+- Window state (fullscreen, maximized) is workspace-independent in
+  Mutter; a workspace change never touches it.
+
+**`Main.wm.insertWorkspace(pos)`** -- GNOME Shell already has real
+workspace insertion; no window-shifting logic needed to be written for
+this project. GNOME itself uses it to prepend a workspace when moving a
+window left from workspace 1 (`_showWorkspaceSwitcher`). Verified
+mechanics:
+
+- Only operates when dynamic workspaces are on (`return` otherwise) --
+  so with static workspaces this extension's "insert new workspace"
+  degrades to moving into the existing neighbor workspace, matching how
+  GNOME's own bindings behave in static mode.
+- It appends one workspace at the end, then shifts every window at
+  `index >= pos` one workspace right via `change_workspace_by_index`,
+  explicitly skipping windows that must not move: transients (Mutter
+  moves them with their ancestor), override-redirect windows, and sticky
+  windows (moving would un-stick them).
+- If the insertion point is at or left of the active workspace it
+  re-activates the shifted workspace with animations blocked, so the
+  user sees no spurious switch.
+
+**Workspace lifetime rules** (from `WorkspaceTracker._checkWorkspaces` in
+the same file) that the design leans on:
+
+- Empty-workspace cleanup runs in a `Meta.LaterType.BEFORE_REDRAW`
+  later, never synchronously -- so an "insert workspace, then move the
+  focused window into it" sequence that completes within one dispatch is
+  race-free: the tracker only ever sees the already-populated workspace.
+- The tracker never removes the *active* workspace or the trailing empty
+  one; other empty workspaces are culled. Two user-visible consequences,
+  intentional rather than fought (both are plain GNOME dynamic-workspace
+  behavior): the origin workspace disappears after its last window is
+  moved away, and consequently Shift+Super+Left/Right on a window that
+  is *alone* on its workspace nets out to no visible change (the new
+  workspace appears, the emptied origin is culled).
+
+**Focused-window resolution** (`lib/windowMover.js`): the focused window
+is resolved through `Meta.Window.find_root_ancestor()` so a focused
+modal/attached dialog moves *with its parent window* rather than alone,
+and `on_all_workspaces` windows are never touched (that covers sticky
+windows, desktop/dock windows, and -- under `workspaces-only-on-primary`,
+which is on for this install -- every window on non-primary monitors,
+which Mutter marks on-all-workspaces; moving those is meaningless and
+`change_workspace` would corrupt user-pinned stickiness).
+
+API presence was additionally confirmed against the installed Mutter
+introspection data (`grep -a <symbol>
+/usr/lib/x86_64-linux-gnu/mutter-14/Meta-14.typelib`):
+`reorder_workspace`, `append_new_workspace`, `change_workspace_by_index`,
+`find_root_ancestor`, `activate_with_focus`, and the
+`workspaces-reordered` signal all exist. `reorder_workspace` (moving a
+workspace *object* to a new index) was considered as an alternative
+insertion primitive but rejected in favor of `Main.wm.insertWorkspace`:
+GNOME's own method is the battle-tested path with all window-class edge
+cases already handled, whereas a reorder-based insertion would
+re-implement that logic with no proven consumer in this codebase's
+target version. The `workspaces-reordered` signal *is* now consumed by
+`lib/workspaceIndicator.js`, since a reorder (overview thumbnail drag,
+or `insertWorkspace` itself) changes the active workspace's index
+without firing `workspace-switched` or `notify::n-workspaces`.
 
 ## Things that were deliberately NOT assumed
 

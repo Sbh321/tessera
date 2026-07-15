@@ -141,6 +141,45 @@ extension.
       `tessera: failed to grab keybinding` warnings after
       enabling — there should be none in normal operation.
 
+## Window movement (Shift+Super)
+
+- [ ] `Shift+Super+N` moves the focused window to workspace N and follows
+      it there with the window still focused; all other windows on both
+      workspaces stay put. Test from every workspace to every workspace,
+      with single and multiple windows.
+- [ ] `Shift+Super+N` with N pointing at the current workspace, or at a
+      workspace number that doesn't exist, is a clean no-op — and never
+      launches a dock app ("launch new instance of pinned app" is Ubuntu
+      Dock's default for exactly these combos).
+- [ ] With focus on the desktop (no window focused), every Shift+Super
+      binding is a clean no-op — no errors in the journal.
+- [ ] Focus a modal/attached dialog (e.g. a file chooser) and press
+      `Shift+Super+N`: the parent window moves together with its dialog —
+      the dialog is never separated from its window.
+- [ ] A fullscreen window stays fullscreen after moving; a maximized
+      window stays maximized.
+- [ ] `Shift+Super+Right` on workspace 3 of 6 inserts a new workspace
+      between 3 and 4 with only the focused window on it, and follows it;
+      the original workspaces 4-6 are now 5-7 with their windows intact.
+      `Shift+Super+Left` inserts between 2 and 3 likewise.
+- [ ] After the insert, if the origin workspace still has windows it
+      survives; if it was left empty it is culled by GNOME's dynamic
+      workspace tracking (expected — consequence: inserting for a window
+      that was *alone* on its workspace nets out to no visible change).
+- [ ] The indicator's square count and active square stay correct through
+      every move and insert, including during/after a 3-finger swipe done
+      immediately afterwards (no stale preview square).
+- [ ] Drag-reorder a workspace thumbnail in the Activities overview: the
+      indicator's active square updates (workspaces-reordered signal).
+- [ ] With `Super+Shift+Left/Right` before enabling the extension moving
+      the window to the adjacent *monitor* (GNOME default), disabling the
+      extension restores exactly that behavior (`move-to-monitor-left/right`
+      values restored).
+- [ ] Multi-monitor, `workspaces-only-on-primary=true` (this install's
+      default): a focused window on a secondary monitor is a clean no-op
+      for every move binding (those windows are effectively sticky);
+      windows on the primary move normally.
+
 ## Preferences window
 
 - [ ] Every spin row, switch, and combo row reflects the live GSettings

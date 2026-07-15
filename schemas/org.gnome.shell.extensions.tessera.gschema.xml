@@ -151,5 +151,51 @@
       <summary>Switch to next workspace</summary>
     </key>
 
+    <key name="window-move-1" type="as">
+      <default>['&lt;Shift&gt;&lt;Super&gt;1']</default>
+      <summary>Move focused window to workspace 1</summary>
+    </key>
+    <key name="window-move-2" type="as">
+      <default>['&lt;Shift&gt;&lt;Super&gt;2']</default>
+      <summary>Move focused window to workspace 2</summary>
+    </key>
+    <key name="window-move-3" type="as">
+      <default>['&lt;Shift&gt;&lt;Super&gt;3']</default>
+      <summary>Move focused window to workspace 3</summary>
+    </key>
+    <key name="window-move-4" type="as">
+      <default>['&lt;Shift&gt;&lt;Super&gt;4']</default>
+      <summary>Move focused window to workspace 4</summary>
+    </key>
+    <key name="window-move-5" type="as">
+      <default>['&lt;Shift&gt;&lt;Super&gt;5']</default>
+      <summary>Move focused window to workspace 5</summary>
+    </key>
+    <key name="window-move-6" type="as">
+      <default>['&lt;Shift&gt;&lt;Super&gt;6']</default>
+      <summary>Move focused window to workspace 6</summary>
+    </key>
+    <key name="window-move-7" type="as">
+      <default>['&lt;Shift&gt;&lt;Super&gt;7']</default>
+      <summary>Move focused window to workspace 7</summary>
+    </key>
+    <key name="window-move-8" type="as">
+      <default>['&lt;Shift&gt;&lt;Super&gt;8']</default>
+      <summary>Move focused window to workspace 8</summary>
+    </key>
+    <key name="window-move-9" type="as">
+      <default>['&lt;Shift&gt;&lt;Super&gt;9']</default>
+      <summary>Move focused window to workspace 9</summary>
+    </key>
+
+    <key name="window-move-new-left" type="as">
+      <default>['&lt;Shift&gt;&lt;Super&gt;Left']</default>
+      <summary>Move focused window to a new workspace inserted to the left</summary>
+    </key>
+    <key name="window-move-new-right" type="as">
+      <default>['&lt;Shift&gt;&lt;Super&gt;Right']</default>
+      <summary>Move focused window to a new workspace inserted to the right</summary>
+    </key>
+
   </schema>
 </schemalist>
