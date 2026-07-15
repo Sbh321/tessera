@@ -83,7 +83,35 @@ export default class TesseraPreferences extends ExtensionPreferences {
         const settings = this.getSettings();
 
         window.add(this._buildAppearancePage(settings));
+        window.add(this._buildTilingPage(settings));
         window.add(this._buildKeybindingsPage(settings));
+    }
+
+    _buildTilingPage(settings) {
+        const page = new Adw.PreferencesPage({
+            title: _('Tiling'),
+            icon_name: 'view-grid-symbolic',
+        });
+
+        const tilingGroup = new Adw.PreferencesGroup({
+            description: _(
+                'Hyprland-style automatic tiling: normal windows are arranged ' +
+                'in a dwindle layout per workspace. Dialogs, minimized and ' +
+                'maximized windows float. Shift+Super+S toggles a stacked ' +
+                '(tabbed) layout per workspace.'),
+        });
+        page.add(tilingGroup);
+        addSwitchRow(tilingGroup, settings, 'enable-tiling',
+            _('Enable automatic tiling'), '');
+
+        const gapsGroup = new Adw.PreferencesGroup({title: _('Gaps')});
+        page.add(gapsGroup);
+        addSpinRow(gapsGroup, settings, 'tiling-gap-inner', _('Inner gap'),
+            _('Space between adjacent tiled windows, in pixels'), {lower: 0, upper: 64});
+        addSpinRow(gapsGroup, settings, 'tiling-gap-outer', _('Outer gap'),
+            _('Space between tiled windows and the screen edge, in pixels'), {lower: 0, upper: 64});
+
+        return page;
     }
 
     _buildAppearancePage(settings) {
@@ -185,6 +213,11 @@ export default class TesseraPreferences extends ExtensionPreferences {
         page.add(moveNewGroup);
         addAcceleratorEntryRow(moveNewGroup, settings, 'window-move-new-left', _('Insert left'));
         addAcceleratorEntryRow(moveNewGroup, settings, 'window-move-new-right', _('Insert right'));
+
+        const layoutGroup = new Adw.PreferencesGroup({title: _('Layout')});
+        page.add(layoutGroup);
+        addAcceleratorEntryRow(layoutGroup, settings, 'layout-toggle-stacked',
+            _('Toggle stacked layout'));
 
         return page;
     }

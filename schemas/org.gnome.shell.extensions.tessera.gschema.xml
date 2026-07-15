@@ -97,6 +97,28 @@
       <description>When dynamic workspaces are enabled, GNOME always keeps one empty trailing workspace. If disabled, that trailing workspace is not rendered in the indicator.</description>
     </key>
 
+    <!-- Tiling -->
+
+    <key name="enable-tiling" type="b">
+      <default>true</default>
+      <summary>Enable automatic tiling</summary>
+      <description>Hyprland-style dynamic tiling: normal application windows are automatically arranged in a dwindle (binary split) layout per workspace and monitor. Dialogs, utility windows, minimized and user-maximized windows float. When disabled, windows keep whatever geometry they last had and are never repositioned.</description>
+    </key>
+
+    <key name="tiling-gap-inner" type="i">
+      <default>6</default>
+      <range min="0" max="64"/>
+      <summary>Inner gap</summary>
+      <description>Gap, in pixels, between adjacent tiled windows.</description>
+    </key>
+
+    <key name="tiling-gap-outer" type="i">
+      <default>8</default>
+      <range min="0" max="64"/>
+      <summary>Outer gap</summary>
+      <description>Gap, in pixels, between tiled windows and the edge of the monitor work area.</description>
+    </key>
+
     <!-- Keybindings -->
 
     <key name="enable-custom-keybindings" type="b">
@@ -195,6 +217,11 @@
     <key name="window-move-new-right" type="as">
       <default>['&lt;Shift&gt;&lt;Super&gt;Right']</default>
       <summary>Move focused window to a new workspace inserted to the right</summary>
+    </key>
+
+    <key name="layout-toggle-stacked" type="as">
+      <default>['&lt;Shift&gt;&lt;Super&gt;s']</default>
+      <summary>Toggle stacked layout on the current workspace</summary>
     </key>
 
   </schema>

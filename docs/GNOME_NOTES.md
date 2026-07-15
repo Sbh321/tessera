@@ -405,6 +405,78 @@ target version. The `workspaces-reordered` signal *is* now consumed by
 or `insertWorkspace` itself) changes the active workspace's index
 without firing `workspace-switched` or `notify::n-workspaces`.
 
+## Tiling: APIs, semantics, and limitations (verified on this install)
+
+Everything the tiling subsystem (`lib/tiling/`) touches was verified
+against the installed Mutter introspection data
+(`grep -a <symbol> /usr/lib/x86_64-linux-gnu/mutter-14/Meta-14.typelib`)
+before use. All of it is public API — the tiling subsystem contains
+**zero** private-API reaches:
+
+- Geometry: `Meta.Window.move_resize_frame(user_op, x, y, w, h)` (frame
+  coordinates, the correct space for layout), `get_frame_rect()`,
+  `Meta.Workspace.get_work_area_for_monitor()` (excludes panel/dock
+  struts — never raw monitor geometry).
+- Ordering: `Meta.Window.get_stable_sequence()` — monotonically
+  increasing creation id, the stateless substitute for a tiling tree.
+- Signals: `Meta.Display` `window-created`, `grab-op-end`,
+  `workareas-changed`, `window-entered-monitor`, `notify::focus-window`;
+  `Meta.Window` `unmanaged`, `shown`, `workspace-changed`,
+  `notify::minimized`, `notify::fullscreen`,
+  `notify::maximized-horizontally/-vertically`;
+  `Meta.WorkspaceManager` `workspace-switched`, `workspace-removed`;
+  `Main.layoutManager` `monitors-changed`.
+- Chrome: `Main.layoutManager.addChrome(actor, {trackFullscreen: true})`
+  for the stacked tab bar (auto-hides in fullscreen; hidden manually
+  during the overview via `Main.overview` `showing`/`hidden`).
+
+**Hyprland semantics reproduced** (researched, not guessed): Hyprland's
+default layout is *dwindle* — a binary-split layout where each new window
+splits the previously last area, split axis chosen by that area's aspect
+ratio (wider → side-by-side, taller → top/bottom). 1 window = 100%,
+2 = 50/50, the 3rd splits the second's half, spiraling inward. Its
+*stacked* (tabbed) layout puts all windows in one content area under a
+row of title tabs that compress on overflow. Both are implemented as pure
+strategies in `lib/tiling/layoutEngine.js`.
+
+**Deliberate deviations from Hyprland**, each forced by the GNOME
+platform or by this project's stateless-layout design decision (see
+ARCHITECTURE.md):
+
+- Window order is creation order, not focus-time tree insertion; closing
+  a middle window re-flows later windows. (No mutable tree = no
+  corruption, no stale state; interactive split ratios/node swaps are
+  future work requiring a real tree.)
+- Minimize floats the window out of the layout (Hyprland has no
+  minimize; GNOME users expect the space back).
+- A user-maximized window floats instead of being force-unmaximized —
+  maximized windows ignore `move_resize_frame()` and un-doing an explicit
+  user action would fight GNOME. Windows that *open* maximized (browsers,
+  Electron apps, Files, Settings — anything restoring remembered state)
+  are un-maximized so they tile, via a short grace period after tracking
+  rather than a creation-time check: **on Wayland the app applies its
+  maximized state only after `window-created`** (first surface commit;
+  Electron later still), so a creation-time check sees an unmaximized
+  window and misses it — found in practice as "only terminal tiles,
+  every other app opens maximized and floats". A maximize arriving
+  within `MAP_MAXIMIZE_GRACE_US` of tracking is treated as map-state
+  restoration and undone; anything later is a user action and floats.
+- Under `workspaces-only-on-primary`, secondary monitors tile as one
+  workspace-agnostic bucket and can't be stacked (their windows are
+  marked on-all-workspaces by Mutter and belong to no workspace).
+
+**Known platform constraints:**
+
+- Windows with size constraints (terminals' character-cell increments,
+  apps with min sizes) may not fill their computed rect exactly —
+  Mutter honors constraints over the requested size. Small residual gaps
+  around such windows are expected, same as in any GNOME tiler.
+- `move_resize_frame` is not animated by GNOME; layout changes are
+  instantaneous. Animating would require per-window actor tweens
+  (future work, listed in the settings outlook).
+- User drag-moves of tiled windows snap back on `grab-op-end` (v1
+  behavior; drag-to-swap needs a mutable tree).
+
 ## Things that were deliberately NOT assumed
 
 - The compiled `js/ui/*.js` source tree is not present as loose files on

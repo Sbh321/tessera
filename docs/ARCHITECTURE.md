@@ -49,6 +49,18 @@ lib/windowMover.js         Moves the focused window between workspaces
                            Stateless composition of GNOME's own
                            Main.wm.actionMoveWindow / insertWorkspace;
                            nothing to clean up by construction.
+lib/tiling/                The automatic-tiling subsystem (see its own
+                           section below). Nothing outside this directory
+                           knows tiling exists except KeybindingManager
+                           (dispatches the stacked toggle) and
+                           extension.js (composition).
+lib/tiling/windowFilter.js Pure tileable-vs-floating classification.
+lib/tiling/layoutEngine.js Pure layout strategies (dwindle, stacked):
+                           rects in, rects out, no GNOME imports.
+lib/tiling/stackTabBar.js  St tab-bar actor for stacked workspaces.
+                           Presentational only.
+lib/tiling/tilingManager.js Orchestrator: signals, per-workspace mode,
+                           debounced relayout, geometry application.
 lib/utils.js               Pure helper functions (CSS string building, hex
                            color validation). No GNOME API usage.
 prefs.js                   Adwaita preferences window. Separate process
@@ -84,6 +96,11 @@ org.gnome.desktop.interface --(changed::gtk-theme)--> WorkspaceIndicator --> Tes
 Super+1..9 / Super+Left/Right --(Main.wm keybinding dispatch)--> KeybindingManager handler --> workspace.activate() / get_neighbor().activate()
 
 Shift+Super+1..9 / Shift+Super+Left/Right --(Main.wm keybinding dispatch)--> KeybindingManager handler --> WindowMover --> Main.wm.actionMoveWindow() / Main.wm.insertWorkspace()
+
+Shift+Super+S --(Main.wm keybinding dispatch)--> KeybindingManager handler --> TilingManager.toggleStacked()
+
+window/workspace/monitor events --> TilingManager (debounced) --> layoutEngine (pure) --> Meta.Window.move_resize_frame()
+                                                              --> StackTabBar (stacked workspaces only)
 ```
 
 The indicator never reads keybinding state, and the keybinding manager never
@@ -148,6 +165,113 @@ own model does":
 `WindowMover` holds no state, connects no signals, and starts no timers —
 there is nothing to clean up, by construction; `disable()` is just
 dropping the reference.
+
+## Tiling subsystem (`lib/tiling/`)
+
+Hyprland-style automatic tiling, built as an independent subsystem with
+strict internal separation:
+
+```
+windowFilter.js   isTileable(window) — pure classification, no state
+layoutEngine.js   strategies: window count + work area + gaps → rects.
+                  Pure functions, zero GNOME imports, integer arithmetic.
+stackTabBar.js    presentational St actor; told what to display, never
+                  computes or tracks anything itself
+tilingManager.js  the only stateful piece: signal lifecycles, per-
+                  workspace layout mode, debounced relayout, and the one
+                  place rectangles meet Meta.Window
+```
+
+**The central design decision: stateless layout.** There is no persistent
+tiling tree. Every layout pass re-derives its inputs from ground truth —
+`workspace.list_windows()`, filtered by `windowFilter.js`, ordered by
+`Meta.Window.get_stable_sequence()` (creation order, stable for a
+window's whole life). The only mutable layout state in the entire
+subsystem is *which workspaces are in stacked mode* (one `Set`). This is
+the same philosophy as the gesture tracker's self-correction: state that
+is recomputed from scratch on every pass cannot go stale, cannot corrupt,
+and recovers from any missed event on the next event. The trade-off,
+accepted deliberately: closing a middle window re-flows the windows after
+it (true Hyprland preserves the surviving tree shape), and there are no
+interactive per-node operations (manual split ratios, node swaps) — those
+would require a real mutable tree and are future work, not this design.
+
+**Layouts are pure strategies.** `layoutEngine.js` maps a `LayoutMode` to
+a function `(area, count, innerGap) → rects`; the manager picks the mode,
+the engine computes, the manager applies. Adding master/grid/spiral means
+adding one pure function. The dwindle strategy reproduces Hyprland's
+default: first window 100%, second 50/50, each further window recursively
+splits the last area, axis chosen by aspect ratio. All arithmetic is
+integer — the first child of a split is rounded, the second is defined as
+exactly the remainder — so there is no drift, overlap, or rounding gap at
+any depth or fractional scale, deterministically.
+
+**Buckets.** The layout unit is (workspace × monitor). Under
+`workspaces-only-on-primary` (this machine's default), Mutter marks every
+window on secondary monitors on-all-workspaces, so each secondary monitor
+is one workspace-agnostic bucket instead — tiled, but never stacked
+(documented limitation; stacked mode is a per-*workspace* property and
+those windows belong to no workspace).
+
+**Event → relayout pipeline.** All events funnel into one debounced
+queue: dirty workspaces accumulate in a `Set` and a single
+`GLib.idle_add` flush lays out only those (plus the cheap secondary
+buckets). Rapid bursts — an app spawning several windows, an
+`insertWorkspace` shifting every window's workspace — coalesce into one
+pass. Application is loop-proof: a window is only moved when its frame
+rect differs from the target, so applying a layout converges rather than
+re-triggering itself, and the manager deliberately does *not* listen to
+size/position changes (only `grab-op-end`, which snaps a user-dragged
+tiled window back into its slot).
+
+**What floats** (see `windowFilter.js` for the full reasoning): non-NORMAL
+window types (dialogs, utility, splash, menus, docks…), transients,
+skip-taskbar windows, unresizable/unmovable windows, minimized windows
+(GNOME users expect minimize to reclaim space; Hyprland has no minimize),
+user-maximized windows (fighting an explicit maximize would be hostile,
+and maximized windows ignore `move_resize_frame` anyway — but windows
+that *open* maximized are un-maximized within a short post-tracking grace
+period so they join the layout; on Wayland that state arrives after
+`window-created`, so a creation-time check alone misses nearly every
+real app — see GNOME_NOTES.md), and user-stickied windows. Fullscreen suspends the entire
+bucket: nothing is resized or reflowed until fullscreen ends.
+
+**Stacked mode** is Hyprland's stacked layout as a strategy plus one
+piece of chrome: every tiled window gets the same content rectangle below
+a tab bar (`stackTabBar.js`, one per monitor, `Main.layoutManager.addChrome`
+with `trackFullscreen` so it vanishes in fullscreen, and explicitly
+hidden during the overview). The bar is told its window list and the
+focused window; clicking a tab just calls `window.activate()` and the
+manager observes the resulting `notify::focus-window` like any other
+focus change — there is deliberately no local selected-tab state to
+drift. Tab order is creation order (same ordering as the dwindle
+strategy, matching Hyprland's tree-order tabs for sequentially opened
+windows); titles update per-tab via `connectObject` bound to the tab
+button so destruction disconnects automatically; overflow compresses tabs
+equally with ellipsized labels, as Hyprland's own tab bar does. Toggling
+stacked off recomputes a fresh dwindle layout rather than restoring the
+prior arrangement — a stated requirement that the stateless engine
+satisfies for free. A stacked workspace with one window stays stacked
+(mode is a workspace property, not a window-count consequence); the
+workspace-movement shortcuts compose naturally because a moved window
+fires `workspace-changed`, which retiles both source and destination
+buckets whatever their modes.
+
+**Focus** is never stolen: the manager never calls `focus()`; it only
+`raise()`s the already-focused window in stacked buckets so the focused
+window is the visible one.
+
+**Cleanup:** every signal id (display, workspace-manager, layout-manager,
+overview, settings, and per-window) is stored and disconnected in
+`disable()`; the idle source is removed; tab bars are destroyed. Windows
+keep their last geometry — they are ordinary movable windows and there is
+no meaningful "pre-tiling" geometry to restore for windows that were
+tiled from the moment they mapped (the same posture as every tiling WM).
+
+**Anticipated future settings** the architecture already accommodates
+without restructuring: layout type per workspace (strategy key), master
+ratio / split ratio (strategy parameter), smart gaps (engine input),
+follow-focus behaviors (manager policy), animation (application step).
 
 ## Why `PanelMenu.Button` with no menu
 

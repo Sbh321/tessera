@@ -44,6 +44,13 @@ guaranteed by construction.
   Settings → Appearance accent color automatically; set a custom color in
   Preferences to override it.
 - Respects GNOME light/dark theming by default.
+- **Automatic tiling** (Hyprland dwindle-style): normal windows arrange
+  themselves per workspace — one window fills the screen, two split
+  50/50, further windows keep subdividing. Dialogs, minimized, and
+  maximized windows float. Gaps are configurable; the whole feature can
+  be switched off in Preferences.
+- `Shift+Super+S` toggles a **stacked layout** per workspace: all tiled
+  windows share the full content area under a row of browser-style tabs.
 
 ## Install
 
@@ -76,6 +83,7 @@ For local development instead of a one-shot install, see
 | `Shift+Super+1` .. `Shift+Super+9` | Move focused window to workspace 1-9 (and follow) |
 | `Shift+Super+Left` | Move focused window to a new workspace inserted on the left |
 | `Shift+Super+Right` | Move focused window to a new workspace inserted on the right |
+| `Shift+Super+S` | Toggle stacked (tabbed) layout on the current workspace |
 
 These accelerators collide with four sets of pre-existing defaults on a
 stock Ubuntu install: GNOME's `Super+1..9` (switch to a pinned dash app),

@@ -59,6 +59,40 @@
 }
 
 /*
+ * Stacked-layout tab bar (lib/tiling/stackTabBar.js). Neutral,
+ * theme-agnostic grays like the workspace squares; the active tab is
+ * simply brighter. Sized by code (layoutEngine.STACK_TAB_BAR_HEIGHT),
+ * so no height here.
+ */
+.tessera-stack-bar {
+    background-color: rgba(30, 30, 30, 0.85);
+    border-radius: 8px;
+    padding: 3px;
+    spacing: 3px;
+}
+
+.tessera-stack-tab {
+    background-color: rgba(127, 127, 127, 0.15);
+    border-radius: 6px;
+    padding: 2px 10px;
+    color: rgba(255, 255, 255, 0.7);
+    transition-duration: 100ms;
+}
+
+.tessera-stack-tab:hover {
+    background-color: rgba(127, 127, 127, 0.35);
+}
+
+.tessera-stack-tab.active {
+    background-color: rgba(127, 127, 127, 0.5);
+    color: #ffffff;
+}
+
+.tessera-stack-tab-content {
+    spacing: 6px;
+}
+
+/*
  * Collapses GNOME's own built-in Activities-button workspace dots (see
  * lib/nativeIndicatorHider.js for why this exists and how it's scoped).
  * Zero size rather than display:none -- St's CSS engine doesn't support

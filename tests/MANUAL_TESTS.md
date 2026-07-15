@@ -180,6 +180,61 @@ extension.
       for every move binding (those windows are effectively sticky);
       windows on the primary move normally.
 
+## Tiling
+
+- [ ] Open 1 window: it fills the work area minus outer gaps. Open a
+      2nd: 50/50 side-by-side. A 3rd: splits the second half vertically
+      (dwindle spiral). Continue to ~10 windows: every split stays
+      gap-consistent with no overlaps or holes.
+- [ ] Close windows in various orders (first, middle, last): remaining
+      windows re-flow immediately, never leaving stale geometry.
+- [ ] Rapidly open several windows at once (e.g. shell-loop launching 5
+      terminals): exactly one final layout, no flicker storm, no
+      overlaps.
+- [ ] Dialogs (file choosers), splash screens, and utility windows float
+      above the tiling and are never resized into the layout.
+- [ ] Minimize a tiled window: remaining windows reclaim the space.
+      Restore: it rejoins the layout.
+- [ ] Maximize a tiled window: it floats at full work area (not fought);
+      unmaximize: it rejoins the layout. An app that *starts* maximized
+      joins the layout tiled.
+- [ ] Fullscreen a window: nothing on that workspace/monitor is
+      resized while it's fullscreen; leaving fullscreen restores the
+      layout.
+- [ ] Drag-move a tiled window and release: it snaps back into its slot
+      (grab-op-end).
+- [ ] Panel/dock avoidance: tiles never underlap the top panel or Ubuntu
+      Dock (work area, not raw monitor geometry).
+- [ ] Gap settings in Preferences apply live; 0/0 gaps produce perfectly
+      abutting windows with no 1px holes (also check with fractional
+      scaling enabled).
+- [ ] Disable tiling in Preferences: windows stay where they are and are
+      never repositioned again; re-enable: layout reasserts.
+
+## Stacked layout (Shift+Super+S)
+
+- [ ] Shift+Super+S on a tiled workspace: all tiled windows move to one
+      shared content area below a tab bar (one tab per window, icons +
+      titles); the focused window is visible. Pressing again returns to
+      a fresh dwindle layout.
+- [ ] Clicking a tab raises and focuses that window and highlights its
+      tab; Alt+Tab to a stacked window also raises it and updates the
+      highlight.
+- [ ] Window titles in tabs update live (e.g. switch browser tabs).
+- [ ] Opening a window on a stacked workspace adds a tab immediately;
+      closing one (active or inactive, or the last one) removes its tab
+      and leaves a valid state. A stacked workspace with one window
+      stays stacked.
+- [ ] Stacked state is per workspace: switch between a stacked and a
+      tiled workspace repeatedly — mode and tab bar follow correctly.
+- [ ] Shift+Super+N moving a window off a stacked workspace removes its
+      tab; moving one onto a stacked workspace adds a tab. Same for
+      Shift+Super+Left/Right into new workspaces.
+- [ ] The tab bar disappears in the Activities overview and during
+      fullscreen, and reappears after.
+- [ ] Many windows (15+) on a stacked workspace: tabs compress with
+      ellipsized titles, no clipping or overflow off-screen.
+
 ## Preferences window
 
 - [ ] Every spin row, switch, and combo row reflects the live GSettings

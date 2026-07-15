@@ -9,6 +9,7 @@ import {KeybindingManager} from './lib/keybindingManager.js';
 import {NativeIndicatorHider} from './lib/nativeIndicatorHider.js';
 import {AccentColorTracker} from './lib/accentColor.js';
 import {WindowMover} from './lib/windowMover.js';
+import {TilingManager} from './lib/tiling/tilingManager.js';
 
 export default class TesseraExtension extends Extension {
     enable() {
@@ -20,7 +21,12 @@ export default class TesseraExtension extends Extension {
             'changed::panel-position', () => this._createIndicator());
 
         this._windowMover = new WindowMover();
-        this._keybindingManager = new KeybindingManager(this._settingsManager, this._windowMover);
+
+        this._tilingManager = new TilingManager(this._settingsManager);
+        this._tilingManager.enable();
+
+        this._keybindingManager = new KeybindingManager(
+            this._settingsManager, this._windowMover, this._tilingManager);
         this._keybindingManager.enable();
 
         this._nativeIndicatorHider = new NativeIndicatorHider(this._settingsManager);
@@ -36,6 +42,9 @@ export default class TesseraExtension extends Extension {
 
         this._keybindingManager.disable();
         this._keybindingManager = null;
+
+        this._tilingManager.disable();
+        this._tilingManager = null;
 
         // Stateless (no signals/timers/keybindings of its own) -- nothing
         // to tear down beyond dropping the reference.
