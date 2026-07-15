@@ -152,10 +152,10 @@ export default class TesseraPreferences extends ExtensionPreferences {
         page.add(sizeGroup);
         addPresetRow(sizeGroup, settings, _('Preset'),
             _('Sets size, spacing and padding together'), [
-                [_('Small'), {'square-size': 16, 'square-spacing': 2, 'square-padding': 2}],
-                [_('Medium'), {'square-size': 19, 'square-spacing': 3, 'square-padding': 3}],
-                [_('Large'), {'square-size': 22, 'square-spacing': 4, 'square-padding': 4}],
-                [_('XL'), {'square-size': 30, 'square-spacing': 6, 'square-padding': 6}],
+                [_('Small'), {'square-size': 16, 'square-spacing': 1, 'square-padding': 2}],
+                [_('Medium'), {'square-size': 19, 'square-spacing': 2, 'square-padding': 3}],
+                [_('Large'), {'square-size': 22, 'square-spacing': 3, 'square-padding': 4}],
+                [_('XL'), {'square-size': 30, 'square-spacing': 4, 'square-padding': 5}],
             ]);
         addSpinRow(sizeGroup, settings, 'square-size', _('Square size'),
             _('Width and height of each square, in pixels'), {lower: 12, upper: 64});
