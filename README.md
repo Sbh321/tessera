@@ -70,6 +70,9 @@ windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
   your fingers in real time across every workspace you pass through, and
   snaps to the final one the instant you let go (best-effort — see
   [`docs/GNOME_NOTES.md`](docs/GNOME_NOTES.md)).
+- Label styles: numbers `1 2 3` (default), Roman `I II III`, Devanagari
+  digits `१ २ ३`, letters `A B C` / `a b c`, Devanagari letters
+  `क ख ग`, or plain dots `●` — switchable in Preferences.
 - Fully configurable appearance: square size, spacing, border radius,
   padding, font size/weight, filled vs. outline style, and per-state
   colors. The active square's default color follows your Ubuntu
@@ -133,10 +136,11 @@ gnome-extensions prefs tessera@sbh321.github.io
 ```
 
 Covers tiling on/off and gaps, panel position, whether to hide GNOME's
-built-in Activities-button dots, square size/spacing/radius/padding, font
-size/weight, filled vs. outline style, active/inactive colors, whether to
-show GNOME's trailing empty workspace, the keybindings master switch, and
-every individual accelerator.
+built-in Activities-button dots, square size/spacing/radius/padding (with
+Small/Medium/Large/XL one-click presets), label style, font size/weight,
+filled vs. outline style, active/inactive colors, whether to show GNOME's
+trailing empty workspace, the keybindings master switch, and every
+individual accelerator.
 
 ## Project layout
 

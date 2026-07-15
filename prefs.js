@@ -47,6 +47,26 @@ function addComboRow(group, settings, key, title, subtitle, choices) {
     return row;
 }
 
+// A row of linked preset buttons. Presets are deliberately NOT a stored
+// setting -- clicking one just writes the underlying keys (the spin rows
+// update live through their bindings), so there is no "preset" state to
+// drift out of sync when the user then fine-tunes a value by hand.
+function addPresetRow(group, settings, title, subtitle, presets) {
+    const row = new Adw.ActionRow({title, subtitle});
+    const box = new Gtk.Box({css_classes: ['linked'], valign: Gtk.Align.CENTER});
+    for (const [label, values] of presets) {
+        const button = new Gtk.Button({label});
+        button.connect('clicked', () => {
+            for (const [key, value] of Object.entries(values))
+                settings.set_int(key, value);
+        });
+        box.append(button);
+    }
+    row.add_suffix(box);
+    group.add(row);
+    return row;
+}
+
 function addColorEntryRow(group, settings, key, title) {
     const row = new Adw.EntryRow({
         title,
@@ -130,6 +150,13 @@ export default class TesseraPreferences extends ExtensionPreferences {
 
         const sizeGroup = new Adw.PreferencesGroup({title: _('Size & Spacing')});
         page.add(sizeGroup);
+        addPresetRow(sizeGroup, settings, _('Preset'),
+            _('Sets size, spacing and padding together'), [
+                [_('Small'), {'square-size': 16, 'square-spacing': 2, 'square-padding': 2}],
+                [_('Medium'), {'square-size': 19, 'square-spacing': 3, 'square-padding': 3}],
+                [_('Large'), {'square-size': 22, 'square-spacing': 4, 'square-padding': 4}],
+                [_('XL'), {'square-size': 30, 'square-spacing': 6, 'square-padding': 6}],
+            ]);
         addSpinRow(sizeGroup, settings, 'square-size', _('Square size'),
             _('Width and height of each square, in pixels'), {lower: 12, upper: 64});
         addSpinRow(sizeGroup, settings, 'square-spacing', _('Spacing'),
@@ -143,6 +170,10 @@ export default class TesseraPreferences extends ExtensionPreferences {
         page.add(styleGroup);
         addComboRow(styleGroup, settings, 'indicator-style', _('Indicator style'),
             _('Filled squares or outlined squares'), ['filled', 'outline']);
+        addComboRow(styleGroup, settings, 'label-style', _('Label style'),
+            _('1 2 3 · I II III · १ २ ३ · A B C · a b c · क ख ग · ●'),
+            ['numbers', 'roman', 'devanagari', 'letters', 'letters-lower',
+                'devanagari-letters', 'dots']);
         addSpinRow(styleGroup, settings, 'font-size', _('Font size'),
             _('Size of the workspace number label, in points'), {lower: 6, upper: 32});
         addComboRow(styleGroup, settings, 'font-weight', _('Font weight'),

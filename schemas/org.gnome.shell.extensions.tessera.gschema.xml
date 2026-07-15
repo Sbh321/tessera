@@ -67,6 +67,12 @@
       <description>Visual style of the squares. One of: filled, outline.</description>
     </key>
 
+    <key name="label-style" type="s">
+      <default>'numbers'</default>
+      <summary>Workspace label style</summary>
+      <description>How each workspace square is labeled. One of: numbers (1 2 3), roman (I II III), devanagari (१ २ ३), letters (A B C), letters-lower (a b c), devanagari-letters (क ख ग), dots (●). Unrecognized values fall back to numbers.</description>
+    </key>
+
     <key name="active-background-color" type="s">
       <default>''</default>
       <summary>Active workspace background color</summary>

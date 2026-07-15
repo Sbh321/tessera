@@ -20,15 +20,45 @@ place, so editing `lib/*.js` or `stylesheet.css` and reloading the shell is
 enough — no rebuild/reinstall step. Re-run it after editing
 `schemas/*.gschema.xml` to recompile.
 
-**Reloading the shell:**
+**Reloading changed code — what actually works on GNOME 45+:**
 
-- **Wayland** (the default on Ubuntu 24.04): there is no in-place restart.
-  Log out and back in to load a brand-new extension for the first time.
-  Once it's already loaded and enabled, most day-to-day edits (JS logic,
-  CSS, settings changes) take effect by disabling and re-enabling it —
-  `gnome-extensions disable <uuid> && gnome-extensions enable <uuid>` —
-  without a full logout.
-- **X11**: `Alt+F2`, type `r`, `Enter` restarts GNOME Shell in place.
+Extensions are ES modules, and a running shell caches imported modules
+for the life of the process. `gnome-extensions disable && enable` re-runs
+`disable()`/`enable()` but does **not** re-import changed JS — an earlier
+version of this document claimed it did; it doesn't. New code needs a new
+gnome-shell process. In order of preference:
+
+1. **X11 session** (`Alt+F2`, `r`, `Enter`): restarts the real shell
+   in-place in seconds with all apps kept running — log into "Ubuntu on
+   Xorg" at the GDM gear icon for extended dev sessions. The fastest
+   stable loop currently available.
+2. **Wayland logout/login**: the only way to reload code in the *real*
+   Wayland session — needed for a brand-new uuid, and for final
+   verification of gesture/multi-monitor behavior before release.
+
+(A nested-shell loop — `dbus-run-session -- gnome-shell --nested
+--wayland` — was tried and removed: nested sessions proved buggy and
+unstable on this environment even with isolated dconf state. Notes if
+ever revisited: isolate settings with a throwaway seeded dconf database
+via `DCONF_PROFILE` — the database name must avoid hyphens, since dconf
+derives a D-Bus object path from it and hyphens make every write hang —
+enable only this extension inside the sandbox, and kill stale
+`gnome-shell --nested` processes first.)
+
+Two things never need a shell reload at all: `prefs.js` (runs in its own
+short-lived process — just close and reopen the Preferences window), and
+quick API experiments, which are fastest in Looking Glass (`Alt+F2`,
+`lg`) against the live shell before committing them to code.
+
+**⚠ Symlink mode vs. install.sh.** `dev-symlink.sh` makes the installed
+extension path a symlink to this repo. `gnome-extensions install --force`
+(run by `install.sh`) deletes the existing installation recursively and
+follows symlinks — which would delete **the repo itself, including
+`.git`**. `install.sh` now detects the symlink and removes only the link
+first, so running it in symlink mode is safe; but know that this footgun
+exists in the underlying tool (verified empirically after it wiped this
+repo once — the work was recovered from the pushed remote and the
+freshly-installed copy).
 
 ## Packaging for distribution
 

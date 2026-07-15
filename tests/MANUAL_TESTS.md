@@ -79,6 +79,12 @@ extension.
 ## Core indicator
 
 - [ ] Panel shows one square per workspace, numbered from 1.
+- [ ] Switching the label style in Preferences (numbers → roman →
+      devanagari → letters → letters-lower → devanagari-letters → dots)
+      relabels every square live, including after workspaces are
+      added/removed; setting an invalid value by hand
+      (`gsettings set ... label-style bogus`) falls back to numbers
+      without errors.
 - [ ] The active workspace's square is visually distinct (fill/outline per
       current `indicator-style`).
 - [ ] Clicking a square switches to that workspace.
@@ -240,6 +246,11 @@ extension.
 - [ ] Every spin row, switch, and combo row reflects the live GSettings
       value on open, and edits persist (`dconf-editor`
       `/org/gnome/shell/extensions/tessera/` to verify directly).
+- [ ] The Small/Medium/Large/XL preset buttons set square size, spacing,
+      and padding together — the three spin rows below update instantly
+      and the indicator resizes live; hand-tweaking a spin row afterwards
+      works normally (presets are one-shot, not a stored mode). Large
+      matches the schema defaults.
 - [ ] Clearing a color field back to empty reverts that square state to the
       GNOME-theme default from `stylesheet.css`.
 - [ ] Entering an invalid value in a color field (e.g. `notacolor`) is
