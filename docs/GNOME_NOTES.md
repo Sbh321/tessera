@@ -477,6 +477,57 @@ ARCHITECTURE.md):
 - User drag-moves of tiled windows snap back on `grab-op-end` (v1
   behavior; drag-to-swap needs a mutable tree).
 
+## Focus border: APIs and the workspace-switch-animation problem
+
+`lib/focusBorder.js` draws a Hyprland-style hint border around the
+currently focused window. Every API it uses is public and was verified
+the same way as everything else in this document, against the installed
+Mutter typelib (`grep -a <symbol> /usr/lib/x86_64-linux-gnu/mutter-14/Meta-14.typelib`)
+and the extracted shell source:
+
+- `Meta.Window` signals `position-changed`, `size-changed`,
+  `notify::fullscreen`, `notify::minimized`, `unmanaged`; methods
+  `get_frame_rect()`, `is_fullscreen()`, `window_type` /
+  `Meta.WindowType.NORMAL/DIALOG/MODAL_DIALOG`.
+- `global.display` `notify::focus-window`.
+- `Main.layoutManager.addChrome(actor, {affectsInputRegion: false})` --
+  same chrome mechanism `lib/tiling/stackTabBar.js` uses, here with
+  input-region participation explicitly turned off since the border must
+  never intercept a click.
+
+**A genuinely new discovery this feature required:** `global.window_manager`
+is a public GObject (the `Shell.WM` class, GNOME's own `windowManager.js`
+holds it as `this._shellwm`) distinct from the private
+`Main.wm._workspaceAnimation._swipeTracker` field `GestureProgressTracker`
+reaches into. It emits a public `switch-workspace` signal at the start of
+every keyboard- or mouse-driven workspace-switch animation -- confirmed
+by reading `js/ui/windowManager.js`'s own extracted source, where
+`this._shellwm.connect('switch-workspace', this._switchWorkspace.bind(this))`
+is the literal handler that kicks off the switch animation. This matters
+because a chrome actor (the border) does not slide with GNOME's
+workspace-switch animation -- the window group visually translates during
+a switch, but chrome sits in a separate layer above it and stays put.
+Left alone, the border would appear to hang motionless on screen while
+the real focused window slides away beneath it. Hiding on
+`switch-workspace` and resyncing on the already-established authoritative
+signal `workspace-switched` brackets a keyboard/mouse switch cleanly, with
+zero private API.
+
+**Why that's not sufficient for gesture switches, and the resulting
+second consumer of the swipe-tracker private field:** a 3-finger swipe's
+live drag never touches `switch-workspace` at all, because the active
+workspace doesn't actually change until the gesture commits -- the exact
+fact that already forced `GestureProgressTracker` to preview a guess
+rather than read ground truth (see that section above). So
+`lib/focusBorder.js` also connects, best-effort, to the very same private
+field that file already reaches into
+(`Main.wm._workspaceAnimation._swipeTracker`), purely for its `begin`
+signal, to hide the border for a gesture's live-drag portion. Same
+defensive posture as the original reach: optional chaining, a
+`typeof ... === 'function'` guard, try/catch around the whole setup. This
+is one documented private-API surface with two independent, equally
+fail-safe readers -- not a new, separate private reach.
+
 ## Things that were deliberately NOT assumed
 
 - The compiled `js/ui/*.js` source tree is not present as loose files on
@@ -518,11 +569,13 @@ ARCHITECTURE.md):
   3. `lib/accentColor.js` — reads (never writes)
      `org.gnome.desktop.interface gtk-theme`, a public schema, just not
      one this extension owns.
-  4. `lib/gestureProgressTracker.js` — the one genuine reach into a
+  4. `lib/gestureProgressTracker.js` (and, sharing the identical field
+     and guards, `lib/focusBorder.js`) — the one genuine reach into a
      private, `_`-prefixed internal field
      (`Main.wm._workspaceAnimation._swipeTracker`), guarded by optional
      chaining and try/catch so a mismatch on another device just disables
-     that one enhancement (see the section above).
+     that one enhancement (gesture preview, or the border's gesture-swipe
+     hide) rather than breaking anything (see the sections above).
 
 ## Porting to GNOME 47/48
 
@@ -543,13 +596,20 @@ imports) that has been stable since GNOME 45. To port:
    `stylesheet.css`'s `.tessera-hide-native-dots .workspace-dot`
    selector is the only thing that needs updating.
 3. Re-run `Object.keys(Main.wm._workspaceAnimation)` in Looking Glass to
-   confirm `_swipeTracker` still exists with the same shape. If not,
-   `lib/gestureProgressTracker.js` already fails safely (see above) — this
-   step is only needed to restore the live-preview enhancement, not to
+   confirm `_swipeTracker` still exists with the same shape. If not, both
+   `lib/gestureProgressTracker.js` and `lib/focusBorder.js` already fail
+   safely (see above) — this step is only needed to restore the
+   live-preview enhancement and the border's gesture-swipe hide, not to
    avoid breakage.
-4. Bump `"shell-version"` in `metadata.json` to include the new version
+4. Confirm `global.window_manager` still emits `switch-workspace` (used
+   by `lib/focusBorder.js` to hide during keyboard/mouse switch
+   animations) — this is a long-stable public signal GNOME's own
+   `windowManager.js` depends on internally, so it is very unlikely to
+   change, but re-verify with the same source-extraction technique above
+   if the border ever seems to hang mid-switch on a new version.
+5. Bump `"shell-version"` in `metadata.json` to include the new version
    string.
-5. Re-run the full manual test pass in `tests/MANUAL_TESTS.md`.
-6. If GNOME ever exposes a public Shell-theme accent-color API, that would
+6. Re-run the full manual test pass in `tests/MANUAL_TESTS.md`.
+7. If GNOME ever exposes a public Shell-theme accent-color API, that would
    be a good replacement for the Yaru-only lookup in `lib/accentColor.js`
    — see `docs/ROADMAP.md`.

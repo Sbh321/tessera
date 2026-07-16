@@ -45,6 +45,11 @@ windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
 - Configurable inner/outer gaps; panel and dock are never overlapped
   (work-area aware). The whole tiling system can be switched off in
   Preferences, leaving just the workspace manager.
+- **Focus border**: a Hyprland-style hint border around the currently
+  focused window, on every workspace and monitor — independent of
+  tiling, so floating windows get one too. Color, width, and radius are
+  configurable in Preferences; the default color follows your accent
+  color, same logic as the active workspace square.
 
 ### Workspaces & windows
 
@@ -135,8 +140,9 @@ Open via the Extensions app, or:
 gnome-extensions prefs tessera@sbh321.github.io
 ```
 
-Covers tiling on/off and gaps, panel position, whether to hide GNOME's
-built-in Activities-button dots, square size/spacing/radius/padding (with
+Covers tiling on/off and gaps, the focus border's on/off switch, color,
+width, and radius, panel position, whether to hide GNOME's built-in
+Activities-button dots, square size/spacing/radius/padding (with
 Small/Medium/Large/XL one-click presets), label style, font size/weight,
 filled vs. outline style, active/inactive colors, whether to show GNOME's
 trailing empty workspace, the keybindings master switch, and every
@@ -147,9 +153,10 @@ individual accelerator.
 ```
 extension.js          Entry point — wires modules together, no logic itself
 lib/                  workspaceIndicator.js, keybindingManager.js,
-                      windowMover.js, nativeIndicatorHider.js,
-                      accentColor.js, gestureProgressTracker.js,
-                      settingsManager.js, utils.js
+                      windowMover.js, focusBorder.js,
+                      nativeIndicatorHider.js, accentColor.js,
+                      gestureProgressTracker.js, settingsManager.js,
+                      utils.js
 lib/tiling/           The tiling subsystem: windowFilter.js,
                       layoutEngine.js (pure layout strategies),
                       stackTabBar.js, tilingManager.js

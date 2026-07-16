@@ -10,6 +10,7 @@ import {NativeIndicatorHider} from './lib/nativeIndicatorHider.js';
 import {AccentColorTracker} from './lib/accentColor.js';
 import {WindowMover} from './lib/windowMover.js';
 import {TilingManager} from './lib/tiling/tilingManager.js';
+import {FocusBorderManager} from './lib/focusBorder.js';
 
 export default class TesseraExtension extends Extension {
     enable() {
@@ -31,9 +32,16 @@ export default class TesseraExtension extends Extension {
 
         this._nativeIndicatorHider = new NativeIndicatorHider(this._settingsManager);
         this._nativeIndicatorHider.enable();
+
+        this._focusBorderManager = new FocusBorderManager(
+            this._settingsManager, this._accentColorTracker);
+        this._focusBorderManager.enable();
     }
 
     disable() {
+        this._focusBorderManager.disable();
+        this._focusBorderManager = null;
+
         this._nativeIndicatorHider.disable();
         this._nativeIndicatorHider = null;
 

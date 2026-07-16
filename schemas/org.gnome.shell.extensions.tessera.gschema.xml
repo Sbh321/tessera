@@ -125,6 +125,34 @@
       <description>Gap, in pixels, between tiled windows and the edge of the monitor work area.</description>
     </key>
 
+    <!-- Focus border -->
+
+    <key name="enable-focus-border" type="b">
+      <default>true</default>
+      <summary>Enable the focused-window hint border</summary>
+      <description>Hyprland-style border drawn around the currently focused window, on every workspace and monitor, independent of tiling (floating windows get one too).</description>
+    </key>
+
+    <key name="focus-border-color" type="s">
+      <default>''</default>
+      <summary>Focus border color</summary>
+      <description>Hex color (e.g. #3584e4) for the focus border. Empty string uses the current GNOME theme accent color, the same logic as the active workspace square.</description>
+    </key>
+
+    <key name="focus-border-width" type="i">
+      <default>2</default>
+      <range min="1" max="12"/>
+      <summary>Focus border width</summary>
+      <description>Thickness, in pixels, of the focus border.</description>
+    </key>
+
+    <key name="focus-border-radius" type="i">
+      <default>8</default>
+      <range min="0" max="32"/>
+      <summary>Focus border radius</summary>
+      <description>Corner radius, in pixels, of the focus border.</description>
+    </key>
+
     <!-- Keybindings -->
 
     <key name="enable-custom-keybindings" type="b">

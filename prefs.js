@@ -104,7 +104,34 @@ export default class TesseraPreferences extends ExtensionPreferences {
 
         window.add(this._buildAppearancePage(settings));
         window.add(this._buildTilingPage(settings));
+        window.add(this._buildFocusBorderPage(settings));
         window.add(this._buildKeybindingsPage(settings));
+    }
+
+    _buildFocusBorderPage(settings) {
+        const page = new Adw.PreferencesPage({
+            title: _('Focus Border'),
+            icon_name: 'window-symbolic',
+        });
+
+        const group = new Adw.PreferencesGroup({
+            description: _(
+                'Hyprland-style hint border around the currently focused ' +
+                'window, on every workspace and monitor. Independent of ' +
+                'tiling -- floating windows get one too. Color: hex e.g. ' +
+                '#3584e4, or leave empty to follow the current GNOME theme ' +
+                'accent color (the same logic as the active workspace square).'),
+        });
+        page.add(group);
+        addSwitchRow(group, settings, 'enable-focus-border',
+            _('Enable focus border'), '');
+        addColorEntryRow(group, settings, 'focus-border-color', _('Color'));
+        addSpinRow(group, settings, 'focus-border-width', _('Width'),
+            _('Thickness of the border, in pixels'), {lower: 1, upper: 12});
+        addSpinRow(group, settings, 'focus-border-radius', _('Radius'),
+            _('Corner radius of the border, in pixels'), {lower: 0, upper: 32});
+
+        return page;
     }
 
     _buildTilingPage(settings) {

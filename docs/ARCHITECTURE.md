@@ -71,6 +71,11 @@ lib/tiling/stackTabBar.js  St tab-bar actor for stacked workspaces.
                            Presentational only.
 lib/tiling/tilingManager.js Orchestrator: signals, per-workspace mode,
                            debounced relayout, geometry application.
+lib/focusBorder.js         Hyprland-style hint border around the focused
+                           window, on every workspace/monitor. Entirely
+                           independent of lib/tiling/ -- floating windows
+                           get one too. Tracks exactly one window at a
+                           time (whichever is focused).
 lib/utils.js               Pure helper functions (CSS string building, hex
                            color validation). No GNOME API usage.
 prefs.js                   Adwaita preferences window. Separate process
@@ -111,6 +116,12 @@ Shift+Super+S --(Main.wm keybinding dispatch)--> KeybindingManager handler --> T
 
 window/workspace/monitor events --> TilingManager (debounced) --> layoutEngine (pure) --> Meta.Window.move_resize_frame()
                                                               --> StackTabBar (stacked workspaces only)
+
+global.display --(notify::focus-window)--> FocusBorderManager --> resolves color/geometry --> St actor position/size
+global.window_manager --(switch-workspace)--\
+Main.wm._workspaceAnimation._swipeTracker --(begin, best-effort)--> FocusBorderManager.hide()
+global.workspace_manager --(workspace-switched)--> FocusBorderManager (resync/show)
+this-extension's GSettings / org.gnome.desktop.interface --(changed::<key>)--> FocusBorderManager (resync)
 ```
 
 The indicator never reads keybinding state, and the keybinding manager never
@@ -283,6 +294,81 @@ without restructuring: layout type per workspace (strategy key), master
 ratio / split ratio (strategy parameter), smart gaps (engine input),
 follow-focus behaviors (manager policy), animation (application step).
 
+## Focus border (`lib/focusBorder.js`)
+
+A Hyprland-style hint border drawn around the currently focused window.
+Deliberately built as its own module, entirely independent of
+`lib/tiling/` -- a floating window gets a border exactly like a tiled
+one, and the feature works with tiling disabled. This mirrors the
+project's existing separation of concerns: one visual concern per
+module, none of them aware the others exist beyond what `extension.js`
+composes.
+
+**Single-window tracking, not the tiling subsystem's per-workspace
+bucketing.** Only one window can be focused at a time, so
+`FocusBorderManager` needs none of `TilingManager`'s per-workspace/
+per-monitor bucket machinery or debounced batch relayout -- it connects
+to exactly one `Meta.Window`'s signals at a time (whichever is focused),
+disconnecting the previous one on every focus change. This is
+intentionally the simplest module in the project.
+
+**Colors are always resolved to a concrete inline value, matching
+`WorkspaceSquare._resolveBackgroundColor()` exactly** (user's hex, else
+the system accent color via the shared `AccentColorTracker` instance,
+else a hardcoded fallback literal) -- this was a real bug fix the first
+time around (see "Settings → rendering" below), so the focus border
+adopts the same discipline from day one rather than risking the same
+flash-of-wrong-color bug on its very first focus change.
+
+**Drawn entirely outside the window's frame**, expanded outward by the
+configured border width on every side (a picture frame, never an
+overlap) -- it can never obscure window content, and `reactive: false`
+on the actor means it can never intercept a click either, so it's purely
+decorative chrome layered via `Main.layoutManager.addChrome()`.
+
+**Which windows qualify** is deliberately a *different* filter from
+`lib/tiling/windowFilter.js`'s `isTileable()`, not a reuse of it: tiling
+asks "should this be auto-arranged", the focus border asks "is this a
+real user window worth highlighting" -- a focused dialog should get a
+border despite never being tiled. Only `Meta.WindowType.NORMAL`,
+`DIALOG`, and `MODAL_DIALOG` qualify; menus, tooltips, docks, the
+desktop, and other chrome-ish types are excluded. Minimized and
+fullscreen windows hide the border (nothing to highlight, or nothing
+that should be drawn over a fullscreen surface).
+
+**The one non-obvious problem this module had to solve: the border is
+chrome, so it does not slide with GNOME's workspace-switch animation.**
+The window group (containing the actual window actors) visually
+translates during a switch, but a chrome actor sits in a separate layer
+above it and stays put -- left alone, the border would appear to hang
+motionless on screen while the real window slides away beneath it. Two
+signals bracket every switch to hide-then-resync around this:
+
+- `global.window_manager` (`Shell.WM`, a public GObject distinct from
+  the private field below) emits `switch-workspace` at the start of
+  every keyboard- or mouse-driven switch animation -- hides the border.
+- A 3-finger swipe's live drag never touches this public signal at all
+  (the active workspace doesn't change until the gesture commits, which
+  is the whole reason `GestureProgressTracker` has to preview a guess
+  rather than read ground truth -- see that section above). So this
+  module ALSO connects, best-effort, to the exact same private field
+  `GestureProgressTracker` already reaches into
+  (`Main.wm._workspaceAnimation._swipeTracker`), purely for its `begin`
+  signal, with the identical defensive posture (optional chaining,
+  `typeof` guard, try/catch). A mismatch on some future GNOME build
+  means the border merely lags for the live-drag portion of a gesture
+  switch specifically -- corrected the instant `workspace-switched`
+  fires, never a crash, never a stuck border.
+- `global.workspace_manager`'s `workspace-switched` (the same
+  authoritative signal the indicator and tiling subsystem already treat
+  as ground truth) resyncs and re-shows the border once any switch --
+  gesture or keyboard -- actually settles.
+
+**Cleanup:** every signal id (display, window-manager, workspace-manager,
+the optional swipe-tracker connection, overview, settings, accent-color,
+and the currently-tracked window's five signals) is stored and
+disconnected in `disable()`; the chrome actor is removed and destroyed.
+
 ## Why `PanelMenu.Button` with no menu
 
 GNOME's own bundled `workspace-indicator` extension (see
@@ -440,6 +526,15 @@ GNOME can only ever cost the enhancement, not correctness. See
 [`GNOME_NOTES.md`](GNOME_NOTES.md) for the full history and how to
 re-verify the raw values via Looking Glass.
 
+**A second, later consumer of this same private field:**
+`lib/focusBorder.js` (see below) also connects to
+`Main.wm._workspaceAnimation._swipeTracker`'s `begin` signal, purely to
+hide the focus border for the live-drag portion of a gesture switch. It
+reuses the exact field this section documents rather than opening a new
+one, with the identical defensive posture (optional chaining, `typeof`
+guard, try/catch) -- so this remains one private-API surface with two
+independent, equally fail-safe readers, not a fifth reach.
+
 All four of the above are the only non-obvious, semi-invasive behaviors in
 the codebase; everything else is scoped to this extension's own
 `org.gnome.shell.extensions.tessera` schema.
@@ -484,3 +579,7 @@ together eliminate the whole class of leak:
    rule alone.
 3. `stylesheet.css` carries **no** colors on its `.active` rules anymore —
    there is simply no blue left anywhere for a transition to sample.
+
+`lib/focusBorder.js`'s `_resolveColor()` and `.tessera-focus-border`'s
+empty rule apply exactly this same three-part discipline from its very
+first version, rather than risking rediscovering the bug a second time.

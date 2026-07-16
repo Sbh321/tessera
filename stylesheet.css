@@ -93,6 +93,20 @@
 }
 
 /*
+ * Deliberately NO border-color/border-width/border-radius here.
+ * lib/focusBorder.js always sets all three as an inline style (accent
+ * color or a fallback literal -- see FocusBorderManager._resolveColor())
+ * before every show(), so a class-level color would be unreachable at
+ * best. At worst it's the same flash bug already fixed once for the
+ * workspace squares: St interpolates style transitions through
+ * whatever the class rule says, so a hardcoded color here would leak
+ * through on every focus change on a non-matching accent color.
+ */
+.tessera-focus-border {
+    background-color: transparent;
+}
+
+/*
  * Collapses GNOME's own built-in Activities-button workspace dots (see
  * lib/nativeIndicatorHider.js for why this exists and how it's scoped).
  * Zero size rather than display:none -- St's CSS engine doesn't support

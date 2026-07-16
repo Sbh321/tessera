@@ -241,6 +241,49 @@ extension.
 - [ ] Many windows (15+) on a stacked workspace: tabs compress with
       ellipsized titles, no clipping or overflow off-screen.
 
+## Focus border
+
+- [ ] Clicking between windows (tiled or floating) moves the border to
+      whichever window is now focused, immediately and correctly sized
+      around its frame — never overlapping the window's content, never
+      lagging behind.
+- [ ] Alt+Tab between windows moves the border correctly, including
+      across workspaces and monitors.
+- [ ] With `focus-border-color` empty (default), the border matches your
+      current Settings → Appearance accent color; it never flashes the
+      old default blue on a non-blue accent, including during fast
+      focus changes (Alt+Tab rapidly between several windows).
+- [ ] Setting a custom `focus-border-color` overrides the accent color;
+      clearing it back to empty reverts to following the accent again,
+      live, no re-enable needed. Width and radius changes in Preferences
+      apply immediately to whichever window currently has the border.
+- [ ] Focusing the desktop (clicking empty space, or `Super+D`/Show
+      Desktop) removes the border entirely — no border floating with no
+      target.
+- [ ] Minimizing the focused window removes its border; restoring it (or
+      focusing another window) resolves to a valid state either way.
+- [ ] Fullscreening the focused window removes the border for as long as
+      it's fullscreen; leaving fullscreen restores it.
+- [ ] Resizing or dragging the focused window (mouse drag, not a
+      keybinding) keeps the border tracking it continuously, with no
+      visible lag.
+- [ ] Focus a modal/attached dialog (e.g. a file chooser): the dialog
+      itself gets the border, sized to the dialog, not its parent window.
+- [ ] Switch workspaces via keyboard (`Super+Left/Right`), mouse click on
+      a panel square, and a 3-finger touchpad swipe: in every case the
+      border ends up correctly around the newly focused window on the
+      destination workspace, with no stale border left hanging at the old
+      position during or after the switch animation. The swipe case is
+      the important one — the border should disappear for the live drag
+      and reappear once the gesture settles, never appear to "hang" while
+      the workspace visually slides past it.
+- [ ] Disabling `enable-focus-border` in Preferences removes it
+      immediately; re-enabling restores it around whatever is currently
+      focused, live, no re-enable of the whole extension needed.
+- [ ] Enable/disable the whole extension repeatedly: no duplicate or
+      orphaned border actors, and `journalctl --user _COMM=gnome-shell`
+      shows no leaked-signal warnings referencing this extension.
+
 ## Preferences window
 
 - [ ] Every spin row, switch, and combo row reflects the live GSettings
