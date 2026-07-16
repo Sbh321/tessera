@@ -189,21 +189,36 @@ extension.
 ## Tiling
 
 - [ ] Open 1 window: it fills the work area minus outer gaps. Open a
-      2nd: 50/50 side-by-side. A 3rd: splits the second half vertically
-      (dwindle spiral). Continue to ~10 windows: every split stays
-      gap-consistent with no overlaps or holes.
-- [ ] Close windows in various orders (first, middle, last): remaining
-      windows re-flow immediately, never leaving stale geometry.
+      2nd: 50/50 side-by-side. A 3rd (with the 2nd still focused):
+      splits the second half vertically (dwindle spiral). Continue to
+      ~10 windows: every split stays gap-consistent with no overlaps or
+      holes.
+- [ ] **Focus-aware insertion**: with two windows side by side, focus
+      the LEFT one and open a third — it splits the *left* tile (left
+      window keeps the top/left half, newcomer takes the other half);
+      the right window must not move by a single pixel. Repeat with the
+      RIGHT one focused: only the right side splits.
+- [ ] With 4+ windows, focus one of the *early* windows (e.g. the big
+      left one) and open a new window: only that window's tile splits;
+      every other tile stays exactly where it was.
+- [ ] Focus a floating window (a dialog) or the desktop and open a new
+      tileable window: it joins at the spiral tail (the classic
+      position), no errors in the journal.
+- [ ] Close windows in various orders (first, middle, last): the closed
+      window's space goes to the window(s) it was split against — the
+      rest of the layout does not reshuffle — and never leaves stale
+      geometry.
 - [ ] Rapidly open several windows at once (e.g. shell-loop launching 5
       terminals): exactly one final layout, no flicker storm, no
       overlaps.
 - [ ] Dialogs (file choosers), splash screens, and utility windows float
       above the tiling and are never resized into the layout.
-- [ ] Minimize a tiled window: remaining windows reclaim the space.
-      Restore: it rejoins the layout.
+- [ ] Minimize a tiled window: its neighbors reclaim the space. Restore:
+      it returns to the *exact slot* it left, even if other windows were
+      focused in between.
 - [ ] Maximize a tiled window: it floats at full work area (not fought);
-      unmaximize: it rejoins the layout. An app that *starts* maximized
-      joins the layout tiled.
+      unmaximize: it returns to its previous slot. An app that *starts*
+      maximized joins the layout tiled.
 - [ ] Fullscreen a window: nothing on that workspace/monitor is
       resized while it's fullscreen; leaving fullscreen restores the
       layout.
@@ -221,8 +236,11 @@ extension.
 
 - [ ] Shift+Super+S on a tiled workspace: all tiled windows move to one
       shared content area below a tab bar (one tab per window, icons +
-      titles); the focused window is visible. Pressing again returns to
-      a fresh dwindle layout.
+      titles); the focused window is visible. Pressing again restores
+      the tiled arrangement the workspace had before stacking.
+- [ ] Open a window *while stacked* (a tab appears), then toggle stacked
+      off: the new window sits next to the window that was focused when
+      it opened, everything else in its prior slot.
 - [ ] Clicking a tab raises and focuses that window and highlights its
       tab; Alt+Tab to a stacked window also raises it and updates the
       highlight.

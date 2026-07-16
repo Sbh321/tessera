@@ -35,6 +35,11 @@ windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
   fills the work area, two split 50/50, each further window keeps
   subdividing — per workspace and per monitor, fully automatic as
   windows open, close, move, minimize, or change workspace.
+- **Focus-aware insertion**, Hyprland's default behavior: a new window
+  splits the *focused* window's tile — focus the left window and the
+  newcomer opens inside the left half; the right side never moves.
+  Closing a window likewise hands its space back to its neighbor alone,
+  and a minimized or maximized window returns to the exact slot it left.
 - **Stacked (tabbed) layout mode** per workspace (`Shift+Super+S`): all
   tiled windows share the full content area under a row of browser-style
   tabs with live titles and icons — Hyprland's stacked layout.

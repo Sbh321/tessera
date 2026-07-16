@@ -15,10 +15,19 @@ not planned.
   (`lib/windowMover.js`, composed from GNOME's own
   `Main.wm.actionMoveWindow()` / `insertWorkspace()`).
 - **Automatic dwindle tiling** (`lib/tiling/`): Hyprland's default
-  layout, recomputed statelessly per (workspace × monitor) bucket as
-  windows open/close/move/minimize/maximize/fullscreen; dialogs and
+  layout, one reconciled `LayoutTree` per (workspace × monitor) bucket,
+  re-synced against ground truth as windows
+  open/close/move/minimize/maximize/fullscreen; dialogs and
   other GNOME-floating windows float; configurable inner/outer gaps;
   master enable switch.
+- **Focus-aware window insertion**: a new window splits the *focused*
+  window's tile (Hyprland's insert-into-focused-container), the rest of
+  the layout untouched; closing a window returns its area to its tree
+  sibling alone; minimized/maximized windows keep their slot and reclaim
+  it on restore. This replaced the original stateless count-based
+  recompute with the mutable-but-reconciled tree the first design had
+  explicitly deferred (see the tiling section of
+  [`ARCHITECTURE.md`](ARCHITECTURE.md)).
 - **Stacked (tabbed) layout mode** per workspace (`Shift+Super+S`):
   Hyprland's stacked layout, with a per-monitor tab bar (live titles,
   icons, click-to-raise), implemented as a pluggable layout strategy.
@@ -61,12 +70,13 @@ not planned.
   [`ARCHITECTURE.md`](ARCHITECTURE.md)):
   - Directional focus keybindings (`Super+H/J/K/L`-style).
   - Drag-to-swap tiled windows (currently a drag snaps back on
-    `grab-op-end`; swapping needs target-slot hit testing).
-  - Adjustable split ratios and remembered tree shape — requires moving
-    from the stateless recompute to a real mutable tiling tree; the
-    engine's strategy interface is the seam where that would slot in.
-  - More layouts (master, grid, spiral variants) — one pure function
-    each in `lib/tiling/layoutEngine.js`.
+    `grab-op-end`; swapping is a leaf swap on the now-existing
+    `LayoutTree`, plus target-slot hit testing).
+  - Adjustable split ratios and node swaps — per-node state on the
+    `LayoutTree` (the tree itself shipped with focus-aware insertion;
+    what remains is exposing interactive operations on it).
+  - More layouts (master, grid, spiral variants) — pure additions to
+    `lib/tiling/layoutEngine.js`.
   - Per-workspace layout choice and smart gaps as settings.
 - **Press-to-record keybinding capture widget.** Preferences currently
   accept accelerators as typed text (e.g. `<Super>3`) via `Adw.EntryRow`.

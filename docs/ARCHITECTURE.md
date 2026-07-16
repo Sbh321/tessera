@@ -64,9 +64,12 @@ lib/tiling/                The automatic-tiling subsystem (see its own
                            knows tiling exists except KeybindingManager
                            (dispatches the stacked toggle) and
                            extension.js (composition).
-lib/tiling/windowFilter.js Pure tileable-vs-floating classification.
-lib/tiling/layoutEngine.js Pure layout strategies (dwindle, stacked):
-                           rects in, rects out, no GNOME imports.
+lib/tiling/windowFilter.js Pure classification: layout membership
+                           (identity-level) vs current tileability
+                           (adds transient states like minimized).
+lib/tiling/layoutEngine.js Pure layout structure and geometry: the
+                           LayoutTree dwindle split tree and the stacked
+                           geometry split. No GNOME imports.
 lib/tiling/stackTabBar.js  St tab-bar actor for stacked workspaces.
                            Presentational only.
 lib/tiling/tilingManager.js Orchestrator: signals, per-workspace mode,
@@ -193,39 +196,80 @@ Hyprland-style automatic tiling, built as an independent subsystem with
 strict internal separation:
 
 ```
-windowFilter.js   isTileable(window) — pure classification, no state
-layoutEngine.js   strategies: window count + work area + gaps → rects.
-                  Pure functions, zero GNOME imports, integer arithmetic.
+windowFilter.js   isLayoutMember() / isTileable() — pure classification,
+                  no state
+layoutEngine.js   LayoutTree (the dwindle split tree over opaque keys)
+                  and the stacked geometry split. Pure, zero GNOME
+                  imports, integer arithmetic.
 stackTabBar.js    presentational St actor; told what to display, never
                   computes or tracks anything itself
 tilingManager.js  the only stateful piece: signal lifecycles, per-
-                  workspace layout mode, debounced relayout, and the one
-                  place rectangles meet Meta.Window
+                  workspace layout mode, per-bucket trees + reconciliation,
+                  debounced relayout, and the one place rectangles meet
+                  Meta.Window
 ```
 
-**The central design decision: stateless layout.** There is no persistent
-tiling tree. Every layout pass re-derives its inputs from ground truth —
-`workspace.list_windows()`, filtered by `windowFilter.js`, ordered by
-`Meta.Window.get_stable_sequence()` (creation order, stable for a
-window's whole life). The only mutable layout state in the entire
-subsystem is *which workspaces are in stacked mode* (one `Set`). This is
-the same philosophy as the gesture tracker's self-correction: state that
-is recomputed from scratch on every pass cannot go stale, cannot corrupt,
-and recovers from any missed event on the next event. The trade-off,
-accepted deliberately: closing a middle window re-flows the windows after
-it (true Hyprland preserves the surviving tree shape), and there are no
-interactive per-node operations (manual split ratios, node swaps) — those
-would require a real mutable tree and are future work, not this design.
+**The central design decision: a reconciled layout tree.** Each bucket
+owns a `LayoutTree` — Hyprland's dwindle model made explicit as a binary
+split tree over opaque keys — because the behavior that matters most,
+*focus-aware insertion*, is structural: opening a window splits the
+**focused** window's tile in half (the focused window keeps the left/top
+half, the new one takes the right/bottom half) while every other tile is
+left untouched, and closing a window hands its area back to its tree
+sibling alone. A count-based stateless strategy fundamentally cannot
+express either — it can reassign slots, but never change the split
+*shape* around one leaf — which is why the first version of this
+subsystem (stateless recompute, windows ordered by
+`get_stable_sequence()`) documented exactly this as its accepted
+trade-off and the tree as the future work.
 
-**Layouts are pure strategies.** `layoutEngine.js` maps a `LayoutMode` to
-a function `(area, count, innerGap) → rects`; the manager picks the mode,
-the engine computes, the manager applies. Adding master/grid/spiral means
-adding one pure function. The dwindle strategy reproduces Hyprland's
-default: first window 100%, second 50/50, each further window recursively
-splits the last area, axis chosen by aspect ratio. All arithmetic is
-integer — the first child of a split is rounded, the second is defined as
-exactly the remainder — so there is no drift, overlap, or rounding gap at
-any depth or fractional scale, deterministically.
+The tree is structural state, but it is never *trusted*: every layout
+pass still re-derives the bucket's membership from ground truth
+(`workspace.list_windows()`, filtered by `windowFilter.js`) and
+reconciles the tree against it — leaves whose window left the bucket are
+pruned, windows that arrived are inserted, in creation order for
+determinism. Reconciliation is idempotent, so callers reconcile-on-read.
+This keeps the original philosophy (state re-synced from scratch on
+every pass cannot go stale or corrupt, and recovers from any missed
+event on the next one) while adding the one thing statelessness could
+not provide: memory of *where* each window sits. The insertion anchor —
+the toplevel focused at the instant `window-created` fires — is captured
+synchronously by the manager, because by the time the debounced layout
+pass runs, focus has usually already moved to the new window; the anchor
+is consumed on first insertion, and falls back to the classic
+dwindle-spiral tail whenever there is no usable anchor (enable-time
+adoption, workspace merges, an anchor that closed or lives in another
+bucket), which reproduces the old stateless layout bit-for-bit.
+
+Membership is deliberately two-tier (`windowFilter.js`):
+`isLayoutMember()` covers identity-level properties (window type,
+transient parent, skip-taskbar, stickiness) and decides tree membership;
+`isTileable()` adds the transient states (minimized, user-maximized,
+momentarily unresizable) and decides who gets a rectangle *this pass*. A
+member that is temporarily out — minimized, say — keeps its leaf while
+its area flows to its sibling, so restoring it returns it to exactly the
+slot it left instead of reinserting it somewhere new. Trees are dropped
+wholesale on workspace removal, on monitor topology changes (monitor
+indexes reshuffle, so reconciliation rebuilds each bucket in creation
+order — same posture as the tab bars), and on `disable()`; an unmanaged
+window is purged eagerly from every tree and anchor record rather than
+waiting for the next pass, so no layout state ever outlives its
+`Meta.Window`. Remaining future work on this structure: interactive
+per-node operations (manual split ratios, node swaps) — the tree is now
+the natural place for them.
+
+**Layout math is pure and integer.** `LayoutTree.computeRects()` chooses
+each split's axis at *compute* time from the aspect ratio of the area
+being split (wider than tall → side by side, else stacked vertically),
+so the same tree reflows correctly across monitor and work-area changes.
+All arithmetic is integer — the first child of a split is rounded, the
+second is defined as exactly the remainder — so there is no drift,
+overlap, or rounding gap at any depth or fractional scale,
+deterministically (verified by a standalone `gjs`/Node test over the
+pure engine, including bit-for-bit equivalence of anchorless insertion
+with the previous count-based strategy). The stacked layout needs no
+structure — every window shares one content rectangle — so it stays a
+pure geometry function (`computeStackGeometry`).
 
 **Buckets.** The layout unit is (workspace × monitor). Under
 `workspaces-only-on-primary` (this machine's default), Mutter marks every
@@ -254,8 +298,10 @@ and maximized windows ignore `move_resize_frame` anyway — but windows
 that *open* maximized are un-maximized within a short post-tracking grace
 period so they join the layout; on Wayland that state arrives after
 `window-created`, so a creation-time check alone misses nearly every
-real app — see GNOME_NOTES.md), and user-stickied windows. Fullscreen suspends the entire
-bucket: nothing is resized or reflowed until fullscreen ends.
+real app — see GNOME_NOTES.md), and user-stickied windows. The transient
+cases (minimized, maximized) keep their leaf in the layout tree while
+floating, so they return to their exact slot. Fullscreen suspends the
+entire bucket: nothing is resized or reflowed until fullscreen ends.
 
 **Stacked mode** is Hyprland's stacked layout as a strategy plus one
 piece of chrome: every tiled window gets the same content rectangle below
@@ -265,14 +311,15 @@ hidden during the overview). The bar is told its window list and the
 focused window; clicking a tab just calls `window.activate()` and the
 manager observes the resulting `notify::focus-window` like any other
 focus change — there is deliberately no local selected-tab state to
-drift. Tab order is creation order (same ordering as the dwindle
-strategy, matching Hyprland's tree-order tabs for sequentially opened
-windows); titles update per-tab via `connectObject` bound to the tab
-button so destruction disconnects automatically; overflow compresses tabs
-equally with ellipsized labels, as Hyprland's own tab bar does. Toggling
-stacked off recomputes a fresh dwindle layout rather than restoring the
-prior arrangement — a stated requirement that the stateless engine
-satisfies for free. A stacked workspace with one window stays stacked
+drift. Tab order is the layout tree's in-order traversal — the same
+tree-order tabs Hyprland shows, which for sequentially opened windows is
+simply creation order; titles update per-tab via `connectObject` bound
+to the tab button so destruction disconnects automatically; overflow
+compresses tabs equally with ellipsized labels, as Hyprland's own tab
+bar does. The bucket tree persists through stacked mode — reconciliation
+runs in both modes, so windows opened while stacked still take their
+focus-anchored place in the tree — and toggling stacked off restores
+that tiled arrangement. A stacked workspace with one window stays stacked
 (mode is a workspace property, not a window-count consequence); the
 workspace-movement shortcuts compose naturally because a moved window
 fires `workspace-changed`, which retiles both source and destination
@@ -284,15 +331,19 @@ window is the visible one.
 
 **Cleanup:** every signal id (display, workspace-manager, layout-manager,
 overview, settings, and per-window) is stored and disconnected in
-`disable()`; the idle source is removed; tab bars are destroyed. Windows
-keep their last geometry — they are ordinary movable windows and there is
-no meaningful "pre-tiling" geometry to restore for windows that were
-tiled from the moment they mapped (the same posture as every tiling WM).
+`disable()`; the idle source is removed; tab bars are destroyed; the
+bucket trees and insertion-anchor records are cleared (and are purged
+per-window the moment a window is unmanaged, so they never hold a dead
+`Meta.Window`). Windows keep their last geometry — they are ordinary
+movable windows and there is no meaningful "pre-tiling" geometry to
+restore for windows that were tiled from the moment they mapped (the
+same posture as every tiling WM).
 
 **Anticipated future settings** the architecture already accommodates
-without restructuring: layout type per workspace (strategy key), master
-ratio / split ratio (strategy parameter), smart gaps (engine input),
-follow-focus behaviors (manager policy), animation (application step).
+without restructuring: layout type per workspace (mode key), split
+ratios and node swaps (per-node state on the LayoutTree), smart gaps
+(engine input), follow-focus behaviors (manager policy), animation
+(application step).
 
 ## Focus border (`lib/focusBorder.js`)
 
