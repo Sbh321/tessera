@@ -305,9 +305,10 @@ entire bucket: nothing is resized or reflowed until fullscreen ends.
 
 **Stacked mode** is Hyprland's stacked layout as a strategy plus one
 piece of chrome: every tiled window gets the same content rectangle below
-a tab bar (`stackTabBar.js`, one per monitor, `Main.layoutManager.addChrome`
-with `trackFullscreen` so it vanishes in fullscreen, and explicitly
-hidden during the overview). The bar is told its window list and the
+a tab bar (`stackTabBar.js`, one per monitor, added via
+`Main.layoutManager.addChrome` — deliberately *without* `trackFullscreen`
+and manually managed instead; see "the manager is the sole owner of
+tab-bar visibility" below). The bar is told its window list and the
 focused window; clicking a tab just calls `window.activate()` and the
 manager observes the resulting `notify::focus-window` like any other
 focus change — there is deliberately no local selected-tab state to
@@ -319,11 +320,26 @@ compresses tabs equally with ellipsized labels, as Hyprland's own tab
 bar does. The bucket tree persists through stacked mode — reconciliation
 runs in both modes, so windows opened while stacked still take their
 focus-anchored place in the tree — and toggling stacked off restores
-that tiled arrangement. A stacked workspace with one window stays stacked
-(mode is a workspace property, not a window-count consequence); the
-workspace-movement shortcuts compose naturally because a moved window
-fires `workspace-changed`, which retiles both source and destination
-buckets whatever their modes.
+that tiled arrangement.
+
+**Stacked mode is a group posture: it requires at least two windows.**
+`Shift+Super+S` on a workspace with fewer than two layout members is a
+clean no-op (there is nothing to stack — a lone window under a one-tab
+bar is strictly worse than the same window tiled full-area), and a
+stacked workspace that *drops* below two members — the last-but-one
+window closed, or moved to another workspace/monitor — automatically
+reverts to tiled, giving the survivor the full work area back. The
+auto-exit lives in `_flush()`, checked against the same ground truth the
+buckets are reconciled with, so every membership-changing event heals
+the mode on its own relayout pass. The count is of *members*, not
+currently-tileable windows, deliberately: minimizing or maximizing one
+of two windows is a transient state that keeps its tree slot, so it
+keeps stacked mode alive too — only close/move genuinely end
+membership, matching the user actions that should end the mode. Turning
+stacked OFF is always allowed regardless of count, as a defensive
+escape hatch. The workspace-movement shortcuts compose naturally with
+all of this because a moved window fires `workspace-changed`, which
+retiles both source and destination buckets whatever their modes.
 
 **Focus** is never stolen: the manager never calls `focus()`; it only
 `raise()`s the already-focused window in stacked buckets so the focused

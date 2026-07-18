@@ -42,7 +42,10 @@ windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
   and a minimized or maximized window returns to the exact slot it left.
 - **Stacked (tabbed) layout mode** per workspace (`Shift+Super+S`): all
   tiled windows share the full content area under a row of browser-style
-  tabs with live titles and icons — Hyprland's stacked layout.
+  tabs with live titles and icons — Hyprland's stacked layout. Needs at
+  least two windows: the toggle no-ops on a single-window workspace, and
+  a stacked workspace that drops to one window (closed or moved away)
+  reverts to tiled on its own.
 - Windows GNOME wants floating stay floating: dialogs, utility and
   splash windows, minimized and user-maximized windows. Fullscreen
   suspends tiling until it ends. Apps that *open* maximized (browsers,

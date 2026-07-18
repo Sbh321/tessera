@@ -234,10 +234,17 @@ extension.
 
 ## Stacked layout (Shift+Super+S)
 
-- [ ] Shift+Super+S on a tiled workspace: all tiled windows move to one
-      shared content area below a tab bar (one tab per window, icons +
-      titles); the focused window is visible. Pressing again restores
-      the tiled arrangement the workspace had before stacking.
+- [ ] Shift+Super+S on a tiled workspace with 2+ windows: all tiled
+      windows move to one shared content area below a tab bar (one tab
+      per window, icons + titles); the focused window is visible.
+      Pressing again restores the tiled arrangement the workspace had
+      before stacking.
+- [ ] **Shift+Super+S needs at least two windows.** On an empty
+      workspace and on a workspace with a single window, pressing it is
+      a clean no-op: no tab bar, no mode change (open a second window
+      afterwards to confirm the workspace is still tiled), no errors in
+      the journal. One normal window plus a floating dialog is still a
+      no-op — dialogs are not layout members and don't count.
 - [ ] Open a window *while stacked* (a tab appears), then toggle stacked
       off: the new window sits next to the window that was focused when
       it opened, everything else in its prior slot.
@@ -246,9 +253,20 @@ extension.
       highlight.
 - [ ] Window titles in tabs update live (e.g. switch browser tabs).
 - [ ] Opening a window on a stacked workspace adds a tab immediately;
-      closing one (active or inactive, or the last one) removes its tab
-      and leaves a valid state. A stacked workspace with one window
-      stays stacked.
+      closing one (active or inactive) removes its tab and leaves a
+      valid state while 2+ windows remain.
+- [ ] **Dropping to one window auto-exits stacked mode.** On a stacked
+      workspace with exactly two windows: close one — the tab bar
+      disappears and the survivor immediately retiles to the full work
+      area (minus gaps), no one-tab bar left behind. Repeat by moving a
+      window away instead (Shift+Super+N and Shift+Super+Left/Right):
+      same result. Re-stacking afterwards requires pressing
+      Shift+Super+S again once 2+ windows are present — the mode does
+      not come back on its own.
+- [ ] **Minimize does NOT auto-exit stacked mode.** On a stacked
+      workspace with two windows, minimize one: the workspace stays
+      stacked (one tab remains). Restore it: both tabs return. Same for
+      maximizing one of the two and unmaximizing it.
 - [ ] Stacked state is per workspace: switch between a stacked and a
       tiled workspace repeatedly — mode and tab bar follow correctly.
 - [ ] Shift+Super+N moving a window off a stacked workspace removes its
