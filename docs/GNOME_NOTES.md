@@ -673,6 +673,83 @@ journalctl --user _COMM=gnome-shell -f
 #   Changing state of extension tessera@sbh321.github.io to ACTIVATING
 ```
 
+## Panel auto-hide: panelBox mechanics (verified on this install)
+
+Everything `lib/panelAutoHide.js` relies on was verified against the
+extracted `js/ui/layout.js` rather than assumed:
+
+- **`panelBox` is registered as** `addChrome(this.panelBox,
+  {affectsStruts: true, trackFullscreen: true})`, and `defaultParams`
+  fills in `affectsInputRegion: true` — these three values are what the
+  module must restore on disable, recorded as a literal in the module.
+- **`translation_y` is GNOME's own panel-slide mechanism**: the greeter
+  path sets `panelBox.translation_y = -panelBox.height` and
+  `_startupAnimationGreeter()` eases it back to 0. Moving the panel via
+  translation is therefore cooperating with the shell, not fighting it —
+  unlike `visible`, which `_updateActorVisibility()` force-writes for
+  every `trackFullscreen` actor (the stacked-tab-bar lesson above; the
+  auto-hide module never touches `visible` for exactly that reason, and
+  gets correct fullscreen behavior for free).
+- **`trackChrome()`/`untrackChrome()` are public and documented as each
+  other's inverse** ("Undoes the effect of trackChrome()"), and
+  `trackChrome` accepts the same params as `addChrome` — so
+  untrack-then-retrack with `affectsStruts: false` is the supported way
+  to change an existing chrome actor's strut participation. `_trackActor`
+  reconnects the same lifecycle signals (via `connectObject`, which
+  `_untrackActor` disconnects) and queues the region update itself. The
+  separate `panelBox.connect('notify::allocation', ...)` at layout.js
+  line ~288 is a plain `connect`, not `connectObject`, so it survives
+  the untrack/retrack cycle untouched.
+- **Struts and input rects are computed from transformed geometry**
+  (`get_transformed_position/size()` in `_updateRegions`), and on
+  Wayland the stage input region is never installed at all
+  (`wantsInputRegion` requires `!Meta.is_wayland_compositor()`; input
+  routing is actor picking). A translated-off panel therefore neither
+  reserves work-area space (moot anyway — struts are untracked while
+  active) nor intercepts clicks at the top edge.
+- **`Main.panel.style` is owned and clobbered by overview.js.** Verified
+  in this install's extracted `js/ui/overview.js`: `_gestureEnd()` and
+  `runStartupAnimation()` assign `Main.panel.style = 'transition-duration:
+  …'` wholesale, and `_hideDone()` assigns `Main.panel.style = null` after
+  *every* overview exit. An extension can therefore never "set and
+  forget" an inline style on the panel — it survives only until the
+  next overview visit. The panel-opacity feature composes its
+  `background-color` declaration into whatever the shell currently has
+  and re-asserts it from a `notify::style` handler (idempotent, so its
+  own write doesn't re-trigger it).
+- **`Main.overview.visibleTarget` vs `.visible`:** `visible` stays true
+  until the overview's hide animation *completes*; `visibleTarget`
+  flips to false the moment hiding *begins* (both verified in
+  overview.js). A "reveal while in overview" condition based on
+  `visible` keeps the panel around for the whole zoom-out; based on
+  `visibleTarget`, the panel's conceal runs together with the
+  overview's own animation.
+- **Clutter keys implicit transitions by the property's canonical
+  DASHED name.** `get_transition('translation_y')` /
+  `remove_transition('translation_y')` compile and run fine but match
+  nothing, silently, forever — the key is `'translation-y'`. Verified
+  in this install's extracted `js/ui/environment.js`: `_easeActor`
+  itself converts (`Object.keys(params).map(p => p.replace('_', '-',
+  'g'))`) before calling `remove_transition`/`get_transition`. The
+  underscore variant cost a full debugging round: the auto-hide
+  module's "is a slide running?" guard always answered no, so a poll
+  tick 100ms into every slide wrote `translation_y` directly — and a
+  direct set with 0 easing duration *removes* the running implicit
+  transition — snapping the panel to its final position and making the
+  slide duration appear to have no effect at all.
+- **Super shows up in `global.get_pointer()`'s modifier mask as MOD4**
+  (standard Mutter/X11 mapping on Ubuntu; `Clutter.ModifierType
+  .SUPER_MASK` is additionally checked defensively). Polling that one
+  call at 10 Hz covers both the hover-at-edge and hold-Super reveal
+  triggers with no barriers, hot-edge actors, or key grabs.
+
+To re-verify the panelBox parameters on a future GNOME version:
+
+```sh
+gresource extract /usr/lib/gnome-shell/libshell-*.so \
+    /org/gnome/shell/ui/layout.js | grep -A4 'addChrome(this.panelBox'
+```
+
 ## Things that were deliberately NOT assumed
 
 - The compiled `js/ui/*.js` source tree is not present as loose files on
@@ -773,9 +850,13 @@ been stable since GNOME 45. To port:
    lock. If that ever changes, the module-scope `stackedWorkspaces` Set
    in `lib/tiling/tilingManager.js` (there specifically to survive that
    cycle) simply becomes unnecessary rather than incorrect.
-7. Bump `"shell-version"` in `metadata.json` to include the new version
+7. Re-verify `panelBox`'s `addChrome()` parameters (the `gresource`
+   one-liner in the panel auto-hide section above): if they ever change,
+   `PANEL_BOX_CHROME_PARAMS` in `lib/panelAutoHide.js` must be updated
+   to match, or disable() would restore the wrong tracking flags.
+8. Bump `"shell-version"` in `metadata.json` to include the new version
    string.
-8. Re-run the full manual test pass in `tests/MANUAL_TESTS.md`.
-9. If GNOME ever exposes a public Shell-theme accent-color API, that would
-   be a good replacement for the Yaru-only lookup in `lib/accentColor.js`
-   — see `docs/ROADMAP.md`.
+9. Re-run the full manual test pass in `tests/MANUAL_TESTS.md`.
+10. If GNOME ever exposes a public Shell-theme accent-color API, that
+    would be a good replacement for the Yaru-only lookup in
+    `lib/accentColor.js` — see `docs/ROADMAP.md`.

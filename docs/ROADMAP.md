@@ -31,6 +31,13 @@ not planned.
 - **Stacked (tabbed) layout mode** per workspace (`Shift+Super+S`):
   Hyprland's stacked layout, with a per-monitor tab bar (live titles,
   icons, click-to-raise), implemented as a pluggable layout strategy.
+- **Top panel auto-hide** (`lib/panelAutoHide.js`, off by default):
+  dock-style slide-away for the GNOME top panel with the strut released
+  so windows reclaim the space; revealed on top-edge hover, held Super,
+  the overview, and open panel menus. Public API only (panelBox
+  translation — GNOME's own slide mechanism — plus
+  untrackChrome/trackChrome); one 10 Hz poll instead of barriers or key
+  grabs.
 - Gesture-preview reliability fixes (absolute progress mapping verified
   against extracted shell source; event-driven self-verification) and
   keybinding-conflict hardening (Ubuntu Dock hot-keys, move-to-monitor

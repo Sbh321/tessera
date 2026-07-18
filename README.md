@@ -58,6 +58,15 @@ windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
   tiling, so floating windows get one too. Color, width, and radius are
   configurable in Preferences; the default color follows your accent
   color, same logic as the active workspace square.
+- **Top panel auto-hide** (off by default): the GNOME top panel slides
+  off-screen like a dock and windows reclaim its space; it slides back
+  in when the pointer touches the top edge, while the Super key is
+  held, in the Activities overview, while a panel menu is open, and
+  while the current workspace is empty.
+- **Top panel background opacity**: a Preferences slider from the
+  normal solid background (100%, the default) down to fully
+  transparent. Panel text and icons are unaffected, and it works with
+  or without auto-hide.
 
 ### Workspaces & windows
 
@@ -149,19 +158,21 @@ gnome-extensions prefs tessera@sbh321.github.io
 ```
 
 Covers tiling on/off and gaps, the focus border's on/off switch, color,
-width, and radius, panel position, whether to hide GNOME's built-in
-Activities-button dots, square size/spacing/radius/padding (with
-Small/Medium/Large/XL one-click presets), label style, font size/weight,
-filled vs. outline style, active/inactive colors, whether to show GNOME's
-trailing empty workspace, the keybindings master switch, and every
-individual accelerator.
+width, and radius, top-panel auto-hide (with adjustable slide duration)
+and background opacity, panel position, whether to hide
+GNOME's built-in Activities-button dots, square
+size/spacing/radius/padding (with Small/Medium/Large/XL one-click
+presets), label style, font size/weight, filled vs. outline style,
+active/inactive colors, whether to show GNOME's trailing empty
+workspace, the keybindings master switch, and every individual
+accelerator.
 
 ## Project layout
 
 ```
 extension.js          Entry point — wires modules together, no logic itself
 lib/                  workspaceIndicator.js, keybindingManager.js,
-                      windowMover.js, focusBorder.js,
+                      windowMover.js, focusBorder.js, panelAutoHide.js,
                       nativeIndicatorHider.js, accentColor.js,
                       gestureProgressTracker.js, settingsManager.js,
                       utils.js

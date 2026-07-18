@@ -11,6 +11,7 @@ import {AccentColorTracker} from './lib/accentColor.js';
 import {WindowMover} from './lib/windowMover.js';
 import {TilingManager} from './lib/tiling/tilingManager.js';
 import {FocusBorderManager} from './lib/focusBorder.js';
+import {PanelAutoHideManager} from './lib/panelAutoHide.js';
 
 export default class TesseraExtension extends Extension {
     enable() {
@@ -36,9 +37,15 @@ export default class TesseraExtension extends Extension {
         this._focusBorderManager = new FocusBorderManager(
             this._settingsManager, this._accentColorTracker);
         this._focusBorderManager.enable();
+
+        this._panelAutoHideManager = new PanelAutoHideManager(this._settingsManager);
+        this._panelAutoHideManager.enable();
     }
 
     disable() {
+        this._panelAutoHideManager.disable();
+        this._panelAutoHideManager = null;
+
         this._focusBorderManager.disable();
         this._focusBorderManager = null;
 

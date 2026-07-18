@@ -79,6 +79,12 @@ lib/focusBorder.js         Hyprland-style hint border around the focused
                            independent of lib/tiling/ -- floating windows
                            get one too. Tracks exactly one window at a
                            time (whichever is focused).
+lib/panelAutoHide.js       Dock-style auto-hide for the GNOME top panel
+                           (off by default): slides panelBox off-screen
+                           via translation_y and reclaims its strut,
+                           revealing on top-edge hover, held Super, the
+                           overview, and open panel menus. Public API
+                           only; zero footprint while the setting is off.
 lib/utils.js               Pure helper functions (CSS string building, hex
                            color validation). No GNOME API usage.
 prefs.js                   Adwaita preferences window. Separate process
@@ -119,6 +125,9 @@ Shift+Super+S --(Main.wm keybinding dispatch)--> KeybindingManager handler --> T
 
 window/workspace/monitor events --> TilingManager (debounced) --> layoutEngine (pure) --> Meta.Window.move_resize_frame()
                                                               --> StackTabBar (stacked workspaces only)
+
+this-extension's GSettings --(changed::panel-autohide)--> PanelAutoHideManager --> layoutManager.{un,}trackChrome(panelBox) + poll loop --> panelBox.translation_y
+this-extension's GSettings --(changed::panel-opacity)---> PanelAutoHideManager --> composes rgba background into Main.panel.style (re-asserted on notify::style; nothing written at 100%)
 
 global.display --(notify::focus-window)--> FocusBorderManager --> resolves color/geometry --> St actor position/size
 global.window_manager --(switch-workspace)--\
@@ -522,6 +531,79 @@ signals bracket every switch to hide-then-resync around this:
 the optional swipe-tracker connection, overview, settings, accent-color,
 and the currently-tracked window's five signals) is stored and
 disconnected in `disable()`; the chrome actor is removed and destroyed.
+
+## Panel auto-hide (`lib/panelAutoHide.js`)
+
+Dock-style auto-hide for the GNOME top panel, off by default
+(`panel-autohide`). Like the focus border, it is its own isolated module
+that nothing else knows about beyond `extension.js` composition — and
+with the setting off it has zero footprint beyond two settings signals.
+Auto-hide never restyles, reparents, or `hide()`s the panel: only *how
+it appears* changes, per the feature's design brief.
+
+The module also owns the one deliberate exception to "never restyled":
+the independent `panel-opacity` setting (default 100). Below 100 a
+`background-color: rgba(0,0,0,a)` declaration is composed into
+`Main.panel.style` — the stock top bar background is solid black in
+every theme variant, so scaling the alpha fades the default look
+faithfully. Composed rather than assigned, and re-asserted from a
+`notify::style` handler, because overview.js overwrites that property
+wholesale on overview transitions and nulls it after every overview
+exit (see GNOME_NOTES.md). The write is idempotent (only when the
+declaration is missing), so it cannot loop. At 100 nothing is ever
+written; `disable()` strips only this module's declaration.
+
+**Sliding uses `panelBox.translation_y` — the shell's own mechanism.**
+GNOME's startup animation slides the panel with exactly this property
+(`layout.js` sets `translation_y = -height` and eases to 0), so this
+module moves the panel the way the shell itself does. It deliberately
+never touches `panelBox.visible`: the panelBox is `trackFullscreen`
+chrome, whose `visible` property `layout.js` owns and force-reasserts —
+the exact trap discovered on the stacked tab bar (see GNOME_NOTES.md).
+Cooperating instead of fighting means fullscreen behavior stays entirely
+GNOME's: `layout.js` makes the box invisible in fullscreen, and the poll
+loop simply never reveals while `panelBox.visible` is false.
+
+**Space is reclaimed with public API only.** While active, the module
+re-registers the panelBox's chrome tracking via
+`Main.layoutManager.untrackChrome()` + `trackChrome()` (both public and
+documented as each other's inverse) with `affectsStruts: false`, so the
+top strut disappears and windows — including tiled ones, via the
+resulting `workareas-changed` the tiling subsystem already listens to —
+extend to the top edge. The revealed panel overlays windows, exactly
+Ubuntu Dock's autohide model. On deactivation the original parameters
+(`affectsStruts: true, trackFullscreen: true, affectsInputRegion: true`,
+verified verbatim from the extracted `layout.js`) are restored. Struts
+and input regions are computed from *transformed* positions, and on
+Wayland the stage input region is not used at all
+(`_updateRegions` checks `!Meta.is_wayland_compositor()`), so a
+translated-away panel neither reserves space nor steals clicks.
+
+**One poll loop instead of a web of triggers.** A single 100ms tick
+calls `global.get_pointer()`, which answers *both* inputs this feature
+needs — pointer position and held modifiers — and re-derives the
+reveal/conceal decision from scratch: overview visible, active
+workspace empty (no unminimized, taskbar-worthy window on the primary
+monitor — nothing for the panel to obscure), Super held (MOD4, plus
+`SUPER_MASK` defensively), an open panel menu
+(`Main.panel.menuManager.activeMenu` — hiding would tear a menu off its
+anchor), keyboard focus inside the panel (Ctrl+Alt+Tab), or the pointer
+in the reveal band. The band is asymmetric on purpose — a 1px top edge
+while hidden, the full panel strip while revealed — which is the
+hysteresis that prevents flapping at the boundary. This is the same
+recompute-from-ground-truth posture as the rest of the project: there
+are no barriers, hot-edge actors, or global key grabs to leak or go
+stale, a missed condition self-corrects on the next tick, and the cost
+(one C call at 10Hz) is negligible. The trade-off, accepted: reveal
+latency is up to one tick (~100ms), which reads as a deliberate
+dock-like delay rather than lag.
+
+**Cleanup:** `disable()` removes the poll source, cancels any running
+slide transition, restores `translation_y = 0`, and re-registers the
+panelBox with its original tracking parameters — the shell is bit-for-bit
+back to stock. GNOME's own screen-lock disable/enable cycle composes
+correctly for free: disable restores the panel, and re-enable re-applies
+auto-hide only if the setting says so.
 
 ## Why `PanelMenu.Button` with no menu
 

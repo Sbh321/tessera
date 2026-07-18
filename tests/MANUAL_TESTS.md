@@ -307,6 +307,78 @@ extension.
       brings the origin's bar back. Repeat several swipes in a row,
       both directions, fast and slow.
 
+## Panel auto-hide
+
+- [ ] Off by default: on a fresh install the top panel behaves like
+      stock GNOME — always visible, windows never underlap it.
+- [ ] Enable "Auto-hide the top panel" in Preferences (Appearance → Top
+      Panel): the panel slides up and off within a moment (no re-enable
+      of the extension needed), and maximized/tiled windows grow to use
+      the freed space (tiled workspaces retile automatically).
+- [ ] Push the pointer against the very top edge of the primary
+      monitor: the panel slides in over the windows (they do not
+      resize), stays while the pointer is anywhere on it, and slides
+      away shortly after the pointer leaves it downward.
+- [ ] Sliding in and sliding out are equally smooth — the same speed
+      and gentle start/stop in both directions; the reveal never pops
+      most of the way in a single jump.
+- [ ] Changing "Slide duration" in Preferences (default 500 ms) takes
+      effect on the very next slide, in both directions, without
+      re-enabling anything.
+- [ ] Switch to an empty workspace (or close/minimize every window on
+      the current one): the panel slides in and stays without any
+      pointer or key input. Opening a window on it slides the panel
+      away again (once the pointer is off the top), and the new window
+      still gets the full reclaimed height.
+- [ ] Press and HOLD Super with the pointer anywhere: the panel slides
+      in and stays for as long as Super is held; releasing it (which
+      opens the overview — expected GNOME behavior for a bare Super
+      tap) or releasing after a combo like Super+2 slides it away
+      again.
+- [ ] Open the calendar or quick-settings from the revealed panel, then
+      move the pointer down into the open menu: the panel must NOT
+      slide away while the menu is open; closing the menu lets it hide.
+- [ ] Clicking panel items on the revealed panel works normally over a
+      maximized window (input lands on the panel, not the window
+      underneath).
+- [ ] Activities overview (Super tap or 3-finger swipe up): the panel
+      is visible for the whole time the overview is open, and on
+      leaving it the panel's slide-out starts together with the
+      overview's zoom-out animation — no visible pause where the panel
+      lingers before moving (pointer away from the top).
+- [ ] Fullscreen a window (e.g. a video): the panel does not appear,
+      not even when the pointer touches the top edge (stock GNOME
+      fullscreen behavior); leaving fullscreen restores auto-hide
+      behavior.
+- [ ] Toggle the setting off again: the panel returns immediately,
+      stays permanently visible, and windows shrink back below it
+      (strut restored). Disable the whole extension with the setting
+      still on: same full restoration, and re-enabling the extension
+      re-applies auto-hide.
+- [ ] Lock (Super+L) and unlock with auto-hide on: the lock screen is
+      unaffected, and after unlock the panel is auto-hidden again.
+- [ ] With "Background opacity" at its default 100%, the panel's look
+      is unchanged in every state — same style, height, and contents;
+      only sliding in/out is new.
+
+## Panel background opacity
+
+- [ ] Drag the "Background opacity" slider (Appearance → Top Panel)
+      down: the panel background fades live over a maximized window
+      (0% = fully see-through), while the clock, indicators, and this
+      extension's workspace squares stay fully opaque and clickable.
+- [ ] Works with auto-hide off — a permanently visible panel can still
+      be made translucent.
+- [ ] The translucency survives an overview round-trip: open the
+      Activities overview (Super tap, 3-finger swipe, or hot corner),
+      search for an app, come back — the panel background is still at
+      the slider's value, not reset to solid (GNOME's overview code
+      rewrites the panel's inline style on every exit; the extension
+      re-asserts it).
+- [ ] Back at 100%, the panel is pixel-identical to stock (the inline
+      style is removed, not a near-opaque black); disabling the
+      extension at any slider value also restores the stock look.
+
 ## Focus border
 
 - [ ] Clicking between windows (tiled or floating) moves the border to

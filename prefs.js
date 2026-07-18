@@ -24,6 +24,23 @@ function addSwitchRow(group, settings, key, title, subtitle) {
     return row;
 }
 
+function addScaleRow(group, settings, key, title, subtitle, {lower, upper, step = 1}) {
+    const row = new Adw.ActionRow({title, subtitle});
+    const scale = new Gtk.Scale({
+        adjustment: new Gtk.Adjustment({lower, upper, step_increment: step, page_increment: step * 5}),
+        draw_value: true,
+        value_pos: Gtk.PositionType.LEFT,
+        digits: 0,
+        hexpand: true,
+        valign: Gtk.Align.CENTER,
+        width_request: 220,
+    });
+    settings.bind(key, scale.adjustment, 'value', Gio.SettingsBindFlags.DEFAULT);
+    row.add_suffix(scale);
+    group.add(row);
+    return row;
+}
+
 function addComboRow(group, settings, key, title, subtitle, choices) {
     const row = new Adw.ComboRow({
         title,
@@ -174,6 +191,19 @@ export default class TesseraPreferences extends ExtensionPreferences {
         addSwitchRow(placementGroup, settings, 'hide-native-activities-dots',
             _('Hide GNOME’s built-in Activities-button dots'),
             _('GNOME Shell renders its own small workspace dots inside the Activities button; hide them so only this indicator is visible'));
+
+        const topPanelGroup = new Adw.PreferencesGroup({title: _('Top Panel')});
+        page.add(topPanelGroup);
+        addSwitchRow(topPanelGroup, settings, 'panel-autohide',
+            _('Auto-hide the top panel'),
+            _('Slide the panel off-screen like a dock and reclaim its space; reveal it by touching the top edge with the pointer or holding the Super key. It stays visible while the workspace is empty'));
+        addScaleRow(topPanelGroup, settings, 'panel-slide-time', _('Slide duration'),
+            _('How long the panel takes to slide in or out, in milliseconds'),
+            {lower: 50, upper: 2000, step: 50});
+        addScaleRow(topPanelGroup, settings, 'panel-opacity',
+            _('Background opacity'),
+            _('100% is the normal solid panel background; lower values make it translucent'),
+            {lower: 0, upper: 100, step: 5});
 
         const sizeGroup = new Adw.PreferencesGroup({title: _('Size & Spacing')});
         page.add(sizeGroup);

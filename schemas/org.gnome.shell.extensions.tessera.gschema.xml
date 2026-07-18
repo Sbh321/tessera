@@ -103,6 +103,28 @@
       <description>When dynamic workspaces are enabled, GNOME always keeps one empty trailing workspace. If disabled, that trailing workspace is not rendered in the indicator.</description>
     </key>
 
+    <!-- Top panel -->
+
+    <key name="panel-autohide" type="b">
+      <default>false</default>
+      <summary>Auto-hide the top panel</summary>
+      <description>Slide the GNOME top panel off-screen like a dock, reclaiming its space for windows. It slides back in while the pointer touches the top edge, while the Super key is held, in the Activities overview, while a panel menu is open, and while the current workspace is empty. The panel itself is not restyled, only hidden and revealed.</description>
+    </key>
+
+    <key name="panel-slide-time" type="i">
+      <default>500</default>
+      <range min="50" max="2000"/>
+      <summary>Panel slide duration</summary>
+      <description>How long, in milliseconds, the auto-hidden panel takes to slide in or out. The same duration is used in both directions.</description>
+    </key>
+
+    <key name="panel-opacity" type="i">
+      <default>100</default>
+      <range min="0" max="100"/>
+      <summary>Top panel background opacity</summary>
+      <description>Opacity of the top panel's background, in percent. 100 keeps the theme's normal solid background untouched; lower values make it translucent, 0 fully transparent. Panel text and icons are unaffected. Independent of auto-hide.</description>
+    </key>
+
     <!-- Tiling -->
 
     <key name="enable-tiling" type="b">
