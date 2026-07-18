@@ -14,8 +14,8 @@
 
     <key name="hide-native-activities-dots" type="b">
       <default>true</default>
-      <summary>Hide GNOME's built-in Activities-button workspace dots</summary>
-      <description>GNOME Shell 46 renders small workspace dots inside the Activities button itself (style class "workspace-dot"). When true, this extension hides them via a scoped CSS override so only its own square indicator is visible. This targets an internal, undocumented style class that could change in a future GNOME version -- turn this off if it stops working correctly, or if you want both indicators visible.</description>
+      <summary>Hide GNOME's built-in Activities button</summary>
+      <description>GNOME Shell 46's Activities button (top-left) renders small workspace dots and clicking it toggles the Activities overview. When true, this extension hides the whole button; its roles move to the extension's own indicator -- clicking the area around the workspace squares toggles the overview, and scrolling over the indicator switches workspaces. The dots are additionally collapsed via a scoped CSS override on an internal, undocumented style class ("workspace-dot") as a defensive layer. Turn this off if it stops working correctly on a future GNOME version, or if you want both indicators visible.</description>
     </key>
 
     <!-- Appearance -->

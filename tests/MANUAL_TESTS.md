@@ -7,20 +7,32 @@ themselves (see [`../docs/DEVELOPMENT.md`](../docs/DEVELOPMENT.md) for why).
 is a manual pass, done after `scripts/dev-symlink.sh` and enabling the
 extension.
 
-## Placement and native-dots hiding
+## Placement and Activities-button hiding
 
 - [ ] Indicator appears in the left panel box by default; switching
       `panel-position` in Preferences to center/right moves it live, no
       re-enable needed.
-- [ ] With `hide-native-activities-dots` on (default), GNOME's own dots
-      inside the Activities button (style class `.workspace-dot`) are not
-      visible. Confirm via Looking Glass (`Alt+F2`, `lg`,
-      `Main.panel.statusArea['activities']`) if unsure which widget you're
-      looking at.
+- [ ] With `hide-native-activities-dots` on (default), GNOME's whole
+      Activities button is gone from the top-left — no dots, and no
+      leftover clickable strip that toggles the overview. Confirm via
+      Looking Glass (`Alt+F2`, `lg`,
+      `Main.panel.statusArea['activities']`) if unsure which widget
+      you're looking at.
+- [ ] The indicator takes over the button's job: clicking the hover
+      patch AROUND/BETWEEN the squares (not a square itself) toggles the
+      Activities overview, and clicking it again inside the overview
+      leaves it. Clicking an individual square still switches to that
+      workspace without opening the overview.
+- [ ] Scrolling the mouse wheel anywhere over the indicator switches
+      workspaces, exactly like scrolling over the stock Activities
+      button.
 - [ ] Toggling `hide-native-activities-dots` off in Preferences brings the
-      native dots back immediately, without disabling the whole extension.
-- [ ] Disabling the extension restores the native dots even if they were
-      hidden at the time.
+      native button (dots included) back immediately, without disabling
+      the whole extension.
+- [ ] Disabling the extension restores the native button even if it was
+      hidden at the time. Lock (Super+L) and unlock with the setting on:
+      the button is still hidden after unlock (the panel re-shows every
+      indicator on session-mode changes; the extension re-hides it).
 
 ## Accent color
 

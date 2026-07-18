@@ -86,8 +86,10 @@ windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
 
 - Numbered square indicator, always visible (no collapsing into a
   dropdown at high workspace counts); click a square to switch.
-  Placeable left/center/right; GNOME's own Activities-button dots are
-  hidden by default (toggleable).
+  Placeable left/center/right; GNOME's own Activities button is hidden
+  by default (toggleable), and the indicator takes over its job —
+  clicking the space around the squares toggles the Activities
+  overview, scrolling over the indicator switches workspaces.
 - Live preview during a 3-finger touchpad swipe: the active square tracks
   your fingers in real time across every workspace you pass through, and
   snaps to the final one the instant you let go (best-effort — see
@@ -160,7 +162,7 @@ gnome-extensions prefs tessera@sbh321.github.io
 Covers tiling on/off and gaps, the focus border's on/off switch, color,
 width, and radius, top-panel auto-hide (with adjustable slide duration)
 and background opacity, panel position, whether to hide
-GNOME's built-in Activities-button dots, square
+GNOME's built-in Activities button, square
 size/spacing/radius/padding (with Small/Medium/Large/XL one-click
 presets), label style, font size/weight, filled vs. outline style,
 active/inactive colors, whether to show GNOME's trailing empty

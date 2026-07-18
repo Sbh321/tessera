@@ -189,8 +189,8 @@ export default class TesseraPreferences extends ExtensionPreferences {
         addComboRow(placementGroup, settings, 'panel-position', _('Panel position'),
             _('Which panel box the indicator sits in'), ['left', 'center', 'right']);
         addSwitchRow(placementGroup, settings, 'hide-native-activities-dots',
-            _('Hide GNOME’s built-in Activities-button dots'),
-            _('GNOME Shell renders its own small workspace dots inside the Activities button; hide them so only this indicator is visible'));
+            _('Hide GNOME’s built-in Activities button'),
+            _('The workspace squares take over its job: clicking the space around them toggles the overview, scrolling over them switches workspaces'));
 
         const topPanelGroup = new Adw.PreferencesGroup({title: _('Top Panel')});
         page.add(topPanelGroup);

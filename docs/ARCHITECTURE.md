@@ -40,9 +40,9 @@ lib/workspaceIndicator.js  The panel UI: PanelMenu.Button + one St.Button
 lib/keybindingManager.js   Super+1-9 / Super+Left / Super+Right, and the
                            save/restore logic for the GNOME defaults they
                            collide with.
-lib/nativeIndicatorHider.js  Hides GNOME's own built-in Activities-button
-                           workspace dots via a marker style class, so this
-                           extension's squares are the only indicator shown.
+lib/nativeIndicatorHider.js  Hides GNOME's own Activities button (the whole
+                           button, dots included); the indicator takes over
+                           its overview-toggle and scroll roles.
 lib/accentColor.js         Read-only lookup of Ubuntu's current accent
                            color, so the active square's default fill
                            follows Settings > Appearance.
@@ -685,19 +685,27 @@ eliminates the collision at the source rather than trying to out-race it;
 it's re-asserted by the same delayed re-grab and conflict watch as the
 other two schemas, and the user's prior value is restored on `disable()`.
 
-**2. `lib/nativeIndicatorHider.js`** hides GNOME Shell's own built-in
-workspace dots, which are rendered directly inside the Activities button
-(style class `.workspace-dot`) independently of any extension — a real user
-running this extension found both indicators visible side by side, which is
-how this was discovered (see [`GNOME_NOTES.md`](GNOME_NOTES.md) for the full
-Looking-Glass-based investigation). Rather than patch `js/ui/panel.js`
-directly, the manager only toggles a marker style class on `Main.panel`
-(itself a stable, public actor reference); the actual hiding is a plain CSS
-rule in this extension's own `stylesheet.css` targeting `.workspace-dot`.
-Because the coupling is CSS-selector-only and gated behind the
-`hide-native-activities-dots` setting (on by default), a class-name
-mismatch on some future GNOME version fails silently — both indicators
-would simply show again — rather than breaking anything.
+**2. `lib/nativeIndicatorHider.js`** hides GNOME Shell's own Activities
+button — the whole top-left button, not just the workspace dots it renders
+(style class `.workspace-dot`; a real user running this extension found
+both indicators visible side by side, which is how the dots were discovered
+— see [`GNOME_NOTES.md`](GNOME_NOTES.md) for the Looking-Glass-based
+investigation). The button is hidden via
+`Main.panel.statusArea.activities.container.visible` (public actor
+references only, no patching of `js/ui/panel.js`), re-asserted on
+`Main.sessionMode` 'updated' because the panel's `_updatePanel()` →
+`_addToPanelBox()` path calls `container.show()` on every indicator it
+lays out (verified in the extracted panel.js). The `.workspace-dot` CSS
+collapse in `stylesheet.css`, toggled by a marker class on `Main.panel`,
+is kept as a defensive second layer. Both are gated behind the
+`hide-native-activities-dots` setting (on by default), and a role or
+class-name mismatch on some future GNOME version fails silently — the
+button would simply show again — rather than breaking anything. The
+button's jobs move to the `WorkspaceIndicator` itself, whose
+`vfunc_event` mirrors the stock `ActivitiesButton` verbatim: a click on
+the indicator's outer patch (not on a square) toggles the overview
+behind the same `shouldToggleByCornerOrButton()` guard, and scrolling
+anywhere over it switches workspaces via `Main.wm.handleWorkspaceScroll()`.
 
 **3. `lib/accentColor.js`** reads (never writes) `org.gnome.desktop.interface
 gtk-theme` so the active square's default fill follows Ubuntu's
