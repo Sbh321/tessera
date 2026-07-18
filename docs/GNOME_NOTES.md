@@ -528,6 +528,151 @@ defensive posture as the original reach: optional chaining, a
 is one documented private-API surface with two independent, equally
 fail-safe readers -- not a new, separate private reach.
 
+## Stacked tab bar: trackFullscreen, chrome z-order, screen lock, gestures
+
+Four real user-reported bugs in `lib/tiling/tilingManager.js`'s stacked
+tab bar. Two of them (the gesture ones) survived a first round of fixes
+built on a plausible-but-wrong theory, and were only resolved after the
+actual re-show mechanism was found in the extracted shell source -- the
+finding below is the important one to keep for posterity.
+
+**`trackFullscreen: true` means GNOME owns your actor's `visible`
+property -- your own `hide()` calls WILL be overwritten.** From the
+extracted `js/ui/layout.js`:
+
+```js
+_updateActorVisibility(actorData) {
+    if (!actorData.trackFullscreen)
+        return;
+    let monitor = this.findMonitorForActor(actorData.actor);
+    actorData.actor.visible = !(global.window_group.visible &&
+                                monitor && monitor.inFullscreen);
+}
+```
+
+This *assigns* `visible` -- to `true` in the normal no-fullscreen case --
+and `_updateVisibility()` runs it for every tracked actor from
+`showOverview()`, `hideOverview()`, `_sessionUpdated()`,
+`_updateFullscreen()` (any fullscreen change), and `_windowsRestacked()`
+(window restacks!). So a `trackFullscreen` chrome actor that its owner
+hid can pop back at essentially any moment. That single flag explained
+both gesture bugs at once:
+
+- *Tab bar visible over a gesture-opened overview, but not a Super-key
+  one.* The two overview entry paths order things differently
+  (extracted `js/ui/overview.js`): `show()` (Super key) calls
+  `Main.layoutManager.showOverview()` **before** `_animateVisible()`
+  emits `'showing'` -- so the extension's hide runs last and sticks.
+  `_gestureUpdate()` (3-finger swipe up) emits `'showing'` **first**
+  and calls `showOverview()` **after** -- whose `_updateVisibility()`
+  then force-reasserted `visible = true` on the freshly-hidden bar.
+  Same signal, same handler, opposite outcome purely from call order.
+- *Tab bar hanging over the whole live drag of a 3-finger workspace
+  switch despite being hidden on the tracker's `begin` signal* --
+  restacks during the drag re-ran `_updateActorVisibility()` and
+  un-hid it.
+
+The fix is to **not use `trackFullscreen`** and own visibility outright
+(the manager already hides bars for fullscreen buckets itself via its
+per-monitor fullscreen check, relayout-driven on `notify::fullscreen`).
+Lesson recorded: `trackFullscreen` is only suitable for chrome whose
+visibility is *purely* a function of fullscreen state (GNOME uses it for
+things like the panel box); any actor whose owner also toggles
+visibility for its own reasons must not use it.
+
+**Hiding for the workspace-switch gesture must be a state, not an
+event.** Even without `trackFullscreen`, a one-shot `hide()` at gesture
+`begin` can be undone by the manager itself: any relayout flush landing
+mid-drag re-runs `_syncTabBars()`, whose ground truth (the active
+workspace) still says "stacked workspace, show a bar" for the origin
+until the gesture commits. So the gesture raises a flag that
+`_syncTabBars()` checks exactly like `Main.overview.visible`. Ending the
+window is subtle (extracted `js/ui/workspaceAnimation.js`,
+`_switchWorkspaceEnd`):
+
+```js
+params.onComplete = () => {
+    if (!newWs.active)
+        newWs.activate(endTime);   // fires workspace-switched at settle
+    ...
+};
+```
+
+- A *real* switch fires `workspace-switched` only when the settle
+  animation completes -- the perfect "user has arrived" moment to drop
+  the flag and re-show.
+- A *cancelled* swipe (snaps back to the origin) never calls
+  `activate()` at all -- `newWs.active` is already true -- so waiting
+  for `workspace-switched` alone would strand the bars hidden forever.
+  The tracker's `end` signal carries `(duration, endProgress)`, and
+  GNOME resolves the landing workspace as
+  `findClosestWorkspace(endProgress)` = clamped `round()` (the same
+  mapping `lib/gestureProgressTracker.js` already mirrors, documented
+  above). The extension applies that same mapping at `end`: landing ==
+  active means cancel, drop the flag and re-show.
+
+**Chrome z-order: `addChrome()` always stacks the newest actor on top.**
+From the extracted `js/ui/layout.js`:
+
+```js
+addChrome(actor, params) {
+    this.uiGroup.add_child(actor);
+    if (this.uiGroup.contains(global.top_window_group))
+        this.uiGroup.set_child_below_sibling(actor, global.top_window_group);
+    this._trackActor(actor, params);
+}
+```
+
+Every call repositions `actor` directly below `global.top_window_group`
+-- above every chrome actor added before it. `js/ui/messageTray.js`
+confirms `Main.messageTray` adds itself via this exact same
+`addChrome()` once during core shell startup, long before any user
+extension enables -- so an extension's chrome lands *above* the
+notification banner layer by construction, silently blocking banners
+(chat notifications, low battery, ...). One-line fix after adding:
+`Main.layoutManager.uiGroup.set_child_below_sibling(bar, Main.messageTray)`
+(`Main.messageTray` is a stable, public `Main.*` export, not a private
+field).
+
+**Screen lock disables this (and every non-lock-aware) extension for
+its duration -- confirmed, not assumed.** Locking pushes GNOME's session
+mode via `Main.sessionMode.pushMode('unlock-dialog')`
+(`js/ui/screenShield.js`). In `js/ui/sessionMode.js`, the
+`'unlock-dialog'` mode declares no `parentMode`; in
+`js/ui/extensionSystem.js`:
+
+```js
+_extensionSupportsSessionMode(uuid) {
+    ...
+    if (extension.sessionModes.includes(Main.sessionMode.currentMode))
+        return true;
+    if (extension.sessionModes.includes(Main.sessionMode.parentMode))
+        return true;
+    return false;
+}
+```
+
+`extension.sessionModes` defaults to `['user']` when `metadata.json` has
+no `session-modes` key (this extension's doesn't). While locked,
+`currentMode` is `'unlock-dialog'` and `parentMode` is `null` -- neither
+matches, so the extension is disabled at lock and re-enabled at unlock.
+This is standard, intentional GNOME behavior, not something to defeat by
+declaring `unlock-dialog` support (that would keep keybindings and
+window manipulation live on the lock screen). The stacked-workspace Set
+survives the cycle as module-scope state instead -- ES modules are
+cached for the life of the shell process -- see ARCHITECTURE.md. To
+re-verify on a specific install:
+
+```sh
+journalctl --user _COMM=gnome-shell -f
+# then lock (Super+L) and watch for:
+#   sessionMode: Pushing mode unlock-dialog
+#   Changing state of extension tessera@sbh321.github.io to DEACTIVATING
+# and, on unlock:
+#   sessionMode: Popping mode unlock-dialog
+#   Changing state of extension tessera@sbh321.github.io to ACTIVATING
+```
+
 ## Things that were deliberately NOT assumed
 
 - The compiled `js/ui/*.js` source tree is not present as loose files on
@@ -570,20 +715,25 @@ fail-safe readers -- not a new, separate private reach.
      `org.gnome.desktop.interface gtk-theme`, a public schema, just not
      one this extension owns.
   4. `lib/gestureProgressTracker.js` (and, sharing the identical field
-     and guards, `lib/focusBorder.js`) — the one genuine reach into a
-     private, `_`-prefixed internal field
+     and guards, `lib/focusBorder.js` and `lib/tiling/tilingManager.js`)
+     — the one genuine reach into a private, `_`-prefixed internal field
      (`Main.wm._workspaceAnimation._swipeTracker`), guarded by optional
      chaining and try/catch so a mismatch on another device just disables
-     that one enhancement (gesture preview, or the border's gesture-swipe
-     hide) rather than breaking anything (see the sections above).
+     that one enhancement (gesture preview, the border's gesture-swipe
+     hide, or the tab bar's gesture-swipe hide) rather than breaking
+     anything (see the sections above). One surface, three fail-safe
+     readers.
 
 ## Porting to GNOME 47/48
 
 Nothing in this codebase depends on GNOME-46-specific behavior beyond the
 two schema keys, the `.workspace-dot` style class, the
-`_workspaceAnimation`/`_swipeTracker` private fields, and the standard ESM
-extension API shape (`Extension`, `ExtensionPreferences`, ES module
-imports) that has been stable since GNOME 45. To port:
+`_workspaceAnimation`/`_swipeTracker` private fields, `addChrome()`'s
+newest-on-top stacking order, `Main.messageTray`'s existence as the
+notification-layer reference, GNOME's session-mode-based extension
+disable/enable around screen lock, and the standard ESM extension API
+shape (`Extension`, `ExtensionPreferences`, ES module imports) that has
+been stable since GNOME 45. To port:
 
 1. Re-run the `gsettings get` commands above against the target version —
    if GNOME or Ubuntu ever changes those defaults, `SHELL_KEYS_TO_CLEAR` /
@@ -596,20 +746,36 @@ imports) that has been stable since GNOME 45. To port:
    `stylesheet.css`'s `.tessera-hide-native-dots .workspace-dot`
    selector is the only thing that needs updating.
 3. Re-run `Object.keys(Main.wm._workspaceAnimation)` in Looking Glass to
-   confirm `_swipeTracker` still exists with the same shape. If not, both
-   `lib/gestureProgressTracker.js` and `lib/focusBorder.js` already fail
-   safely (see above) — this step is only needed to restore the
-   live-preview enhancement and the border's gesture-swipe hide, not to
-   avoid breakage.
+   confirm `_swipeTracker` still exists with the same shape. If not,
+   `lib/gestureProgressTracker.js`, `lib/focusBorder.js`, and
+   `lib/tiling/tilingManager.js` all already fail safely (see above) —
+   this step is only needed to restore the live-preview enhancement and
+   the two gesture-swipe hides, not to avoid breakage.
 4. Confirm `global.window_manager` still emits `switch-workspace` (used
    by `lib/focusBorder.js` to hide during keyboard/mouse switch
    animations) — this is a long-stable public signal GNOME's own
    `windowManager.js` depends on internally, so it is very unlikely to
    change, but re-verify with the same source-extraction technique above
    if the border ever seems to hang mid-switch on a new version.
-5. Bump `"shell-version"` in `metadata.json` to include the new version
+5. Re-check `addChrome()` in `js/ui/layout.js` still stacks newly-added
+   chrome directly below `global.top_window_group`, and that
+   `Main.messageTray` is still the exported message-tray singleton —
+   both back the tab bar's
+   `set_child_below_sibling(bar, Main.messageTray)` re-stack. Also
+   re-confirm `_updateActorVisibility()` still only force-writes
+   `visible` on `trackFullscreen` actors — the tab bars rely on plain
+   (non-trackFullscreen) chrome being left alone (see the stacked tab
+   bar section above).
+6. Re-verify the screen-lock session-mode behavior described above
+   (`_extensionSupportsSessionMode()` in `js/ui/extensionSystem.js`,
+   `'unlock-dialog'`'s missing `parentMode` in `js/ui/sessionMode.js`)
+   still disables/re-enables default-`session-modes` extensions around a
+   lock. If that ever changes, the module-scope `stackedWorkspaces` Set
+   in `lib/tiling/tilingManager.js` (there specifically to survive that
+   cycle) simply becomes unnecessary rather than incorrect.
+7. Bump `"shell-version"` in `metadata.json` to include the new version
    string.
-6. Re-run the full manual test pass in `tests/MANUAL_TESTS.md`.
-7. If GNOME ever exposes a public Shell-theme accent-color API, that would
+8. Re-run the full manual test pass in `tests/MANUAL_TESTS.md`.
+9. If GNOME ever exposes a public Shell-theme accent-color API, that would
    be a good replacement for the Yaru-only lookup in `lib/accentColor.js`
    — see `docs/ROADMAP.md`.

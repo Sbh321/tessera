@@ -258,6 +258,36 @@ extension.
       fullscreen, and reappears after.
 - [ ] Many windows (15+) on a stacked workspace: tabs compress with
       ellipsized titles, no clipping or overflow off-screen.
+- [ ] **Notifications draw above the tab bar, not behind it.** On a
+      stacked workspace, trigger a notification banner (a chat app
+      message, a low-battery warning, `notify-send "test"` from a
+      terminal) — it must appear fully on top of the tab bar, never
+      obscured by or clipped behind it.
+- [ ] **Stacked mode survives locking the screen.** On a stacked
+      workspace, lock the screen (`Super+L`), wait a few seconds, then
+      unlock: the workspace must still be stacked with its tab bar
+      intact, not silently reverted to tiled. Test with a mix of stacked
+      and tiled workspaces open at once to confirm only the
+      already-tiled ones stay tiled.
+- [ ] **The tab bar disappears for the Activities overview reached via
+      3-finger swipe up, not just via the Super key.** On a stacked
+      workspace, do a slow 3-finger swipe up and watch during the live
+      drag (not just after it settles) — the bar must vanish as the
+      overview starts appearing and MUST NOT pop back while the
+      overview is up (this was a real bug: trackFullscreen chrome gets
+      its visibility force-reasserted by the shell on the gesture path
+      specifically — see GNOME_NOTES.md). Also release the swipe
+      early/cancel it: the bar returns once the desktop settles back.
+- [ ] **The tab bar hides for the full duration of a workspace-switch
+      swipe.** With a stacked workspace active, do a slow 3-finger
+      left/right swipe and hold it mid-drag: the bar must disappear the
+      moment the swipe starts and stay gone for the entire drag —
+      including while windows open/close/retile on other workspaces in
+      the background — reappearing only once you land and the settle
+      animation completes (for the destination, if stacked). A
+      cancelled swipe (nudge and release back onto the same workspace)
+      brings the origin's bar back. Repeat several swipes in a row,
+      both directions, fast and slow.
 
 ## Focus border
 

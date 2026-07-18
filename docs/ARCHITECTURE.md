@@ -329,15 +329,102 @@ buckets whatever their modes.
 `raise()`s the already-focused window in stacked buckets so the focused
 window is the visible one.
 
+**Which workspaces are stacked survives screen lock, deliberately not by
+instance state.** The `disable()` around a screen lock is not optional or
+extension-controlled: locking pushes GNOME's session mode to
+`unlock-dialog`, and `js/ui/extensionSystem.js`'s
+`_extensionSupportsSessionMode()` checks `metadata.json`'s `session-modes`
+(defaulting to `['user']`, same as almost every user extension) against
+both the current and the parent session mode — `unlock-dialog` declares
+no parent mode of its own, so neither check passes and GNOME disables the
+extension for the duration of the lock, re-enabling it on unlock
+(verified against the extracted `js/ui/extensionSystem.js` and
+`js/ui/sessionMode.js`; see GNOME_NOTES.md). That destroys and rebuilds
+the whole `TilingManager` instance — correctly, for everything else in
+it — but a per-workspace *user choice* like stacked-vs-tiled should not
+silently reset just because the user stepped away. The fix is not
+declaring `session-modes: ['user', 'unlock-dialog']` (that would keep the
+*entire* extension — keybindings, tiling, focus border — live and
+manipulating windows while the screen is locked, a real security/privacy
+regression the user never asked for); instead, only the stacked-workspace
+`Set` lives at module scope in `tilingManager.js` rather than on the
+instance. ES modules stay cached for the life of the shell process (the
+same fact `DEVELOPMENT.md` cites as the reason a code change needs a full
+shell restart), so that one `Set` — and only that one — survives the
+lock/unlock disable-then-enable cycle intact, while the layout trees,
+insertion anchors, and every signal correctly rebuild fresh. It resets
+only on a genuine new session (a fresh module load), which is the
+expected "clean slate" moment.
+
+**The manager is the sole owner of tab-bar visibility — the bars are
+deliberately NOT `trackFullscreen` chrome.** The first version passed
+`trackFullscreen: true` to `addChrome()`, and that single flag was the
+root cause of two user-visible bugs that survived a first round of
+plausible-looking fixes: `js/ui/layout.js`'s `_updateActorVisibility()`
+**force-writes `visible`** on every `trackFullscreen` actor — from
+`showOverview()`/`hideOverview()`, from fullscreen changes, and from
+window restacks — so any `bar.hide()` this manager issued could be
+silently overwritten a moment later. Concretely (all verified in the
+extracted shell source): entering the overview with the Super key calls
+`layoutManager.showOverview()` *before* emitting `showing` (our hide ran
+last and stuck), but the 3-finger swipe-up gesture path emits `showing`
+*first* and calls `showOverview()` after — force-reasserting
+`visible = true` right after our hide, which is why the bar appeared over
+a gesture-opened overview but not a Super-opened one. Likewise, restacks
+during a 3-finger workspace switch kept re-showing a bar that had been
+hidden at gesture start. Dropping `trackFullscreen` loses nothing: the
+fullscreen case was already handled by `_syncTabBars()`'s own
+`_bucketHasFullscreen` check (relayout-driven via `notify::fullscreen`),
+and now no shell code ever fights this manager's `hide()`/`show()`
+decisions.
+
+**Tab bars hide for the whole lifetime of a workspace-switch gesture, as
+a state, not an event.** `_syncTabBars()` treats "a 3-finger
+workspace-switch swipe is in flight" exactly like it treats "the
+overview is visible": a condition that forces every bucket bar-less on
+every sync pass. The flag is raised by the swipe tracker's `begin`
+signal (the same `Main.wm._workspaceAnimation._swipeTracker` private
+field `gestureProgressTracker.js` and `focusBorder.js` already read,
+with the identical optional-chaining/`typeof`/try-catch posture) — a
+one-shot `hide()` on `begin` is *not* enough, because any relayout flush
+landing mid-drag would re-show the bar for the still-active origin
+workspace. The flag drops on `workspace-switched`, which for gestures
+fires only when the settle animation completes and GNOME finally
+`activate()`s the target — i.e. when the user has genuinely arrived —
+or, for a *cancelled* swipe that snaps back to the origin (where
+`workspace-switched` never fires at all; `workspaceAnimation.js` only
+calls `activate()` when the landing workspace isn't already active), on
+the tracker's `end` signal via the same clamped `round(endProgress)`
+landing resolution GNOME itself uses (`findClosestWorkspace`). A wrong
+prediction can only ever delay the bar's return until the next real
+switch, never strand it. Keyboard/mouse switches are deliberately left
+alone: the active workspace changes immediately there, the debounced
+flush re-syncs the bar right away, and GNOME's own panel chrome behaves
+the same way during those animations.
+
+**The tab bar sits below notifications, not above them.** `addChrome()`
+always repositions a newly-added actor directly below
+`global.top_window_group` (verified against the extracted
+`js/ui/layout.js`) — meaning the *last* chrome actor added ends up on top
+of every chrome actor added before it, permanently. `Main.messageTray` is
+added once, at shell startup, long before any extension enables; a tab
+bar created afterwards would otherwise sit above it forever, visually
+blocking notification banners (chat messages, low battery, …). The fix
+is one explicit re-stack right after `addChrome()`:
+`Main.layoutManager.uiGroup.set_child_below_sibling(bar, Main.messageTray)`
+— `Main.messageTray` is a stable public reference (not a private reach),
+so this is a one-line, version-safe correction rather than a new
+private-API surface.
+
 **Cleanup:** every signal id (display, workspace-manager, layout-manager,
-overview, settings, and per-window) is stored and disconnected in
-`disable()`; the idle source is removed; tab bars are destroyed; the
-bucket trees and insertion-anchor records are cleared (and are purged
-per-window the moment a window is unmanaged, so they never hold a dead
-`Meta.Window`). Windows keep their last geometry — they are ordinary
-movable windows and there is no meaningful "pre-tiling" geometry to
-restore for windows that were tiled from the moment they mapped (the
-same posture as every tiling WM).
+overview, settings, per-window, and the two swipe-tracker connections) is
+stored and disconnected in `disable()`; the idle source is removed; tab
+bars are destroyed; the bucket trees and insertion-anchor records are
+cleared (and are purged per-window the moment a window is unmanaged, so
+they never hold a dead `Meta.Window`). Windows keep their last geometry —
+they are ordinary movable windows and there is no meaningful "pre-tiling"
+geometry to restore for windows that were tiled from the moment they
+mapped (the same posture as every tiling WM).
 
 **Anticipated future settings** the architecture already accommodates
 without restructuring: layout type per workspace (mode key), split
@@ -577,13 +664,15 @@ GNOME can only ever cost the enhancement, not correctness. See
 [`GNOME_NOTES.md`](GNOME_NOTES.md) for the full history and how to
 re-verify the raw values via Looking Glass.
 
-**A second, later consumer of this same private field:**
-`lib/focusBorder.js` (see below) also connects to
-`Main.wm._workspaceAnimation._swipeTracker`'s `begin` signal, purely to
-hide the focus border for the live-drag portion of a gesture switch. It
-reuses the exact field this section documents rather than opening a new
-one, with the identical defensive posture (optional chaining, `typeof`
-guard, try/catch) -- so this remains one private-API surface with two
+**Two later consumers of this same private field:** `lib/focusBorder.js`
+(see below) connects to `Main.wm._workspaceAnimation._swipeTracker`'s
+`begin` signal, purely to hide the focus border for the live-drag
+portion of a gesture switch, and `lib/tiling/tilingManager.js` connects
+to its `begin` and `end` signals to bracket the stacked-mode tab bars'
+gesture-hidden state (see the tiling section above). Both reuse the
+exact field this section documents rather than opening new ones, with
+the identical defensive posture (optional chaining, `typeof` guard,
+try/catch) -- so this remains one private-API surface with three
 independent, equally fail-safe readers, not a fifth reach.
 
 All four of the above are the only non-obvious, semi-invasive behaviors in
