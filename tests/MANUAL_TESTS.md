@@ -30,9 +30,14 @@ extension.
       native button (dots included) back immediately, without disabling
       the whole extension.
 - [ ] Disabling the extension restores the native button even if it was
-      hidden at the time. Lock (Super+L) and unlock with the setting on:
-      the button is still hidden after unlock (the panel re-shows every
-      indicator on session-mode changes; the extension re-hides it).
+      hidden at the time.
+- [ ] Lock (Super+L) and unlock with the setting on: the Activities
+      button never appears — not on the lock screen, not as a flash
+      during the lock or unlock transition (the extension keeps running
+      in the unlock-dialog session mode and re-hides it whenever the
+      panel re-shows indicators on session-mode changes). The workspace
+      squares are also absent from the lock screen's panel, and
+      reappear immediately on unlock.
 
 ## Accent color
 
@@ -384,8 +389,15 @@ extension.
       (strut restored). Disable the whole extension with the setting
       still on: same full restoration, and re-enabling the extension
       re-applies auto-hide.
-- [ ] Lock (Super+L) and unlock with auto-hide on: the lock screen is
-      unaffected, and after unlock the panel is auto-hidden again.
+- [ ] Lock (Super+L) and unlock with auto-hide on: the lock screen's
+      panel (clock, battery) is visible and looks stock, and after
+      unlock the panel slides away again once no reveal condition
+      holds. Windows must NOT reflow/retile on lock or unlock (the
+      strut stays released across the lock — the extension keeps
+      running in the unlock-dialog session mode).
+- [ ] Lock and unlock repeatedly in quick succession: no flashing of
+      GNOME's Activities button, no workspace squares on the lock
+      screen, and no window jumping — each cycle looks identical.
 - [ ] With "Background opacity" at its default 100%, the panel's look
       is unchanged in every state — same style, height, and contents;
       only sliding in/out is new.
@@ -407,6 +419,9 @@ extension.
 - [ ] Back at 100%, the panel is pixel-identical to stock (the inline
       style is removed, not a near-opaque black); disabling the
       extension at any slider value also restores the stock look.
+- [ ] With opacity below 100%, lock the screen: the lock screen's panel
+      uses GNOME's own unlock-screen styling (no translucent black
+      injected); after unlock the configured translucency is back.
 
 ## Focus border
 

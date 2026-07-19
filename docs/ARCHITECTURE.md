@@ -603,9 +603,20 @@ dock-like delay rather than lag.
 **Cleanup:** `disable()` removes the poll source, cancels any running
 slide transition, restores `translation_y = 0`, and re-registers the
 panelBox with its original tracking parameters — the shell is bit-for-bit
-back to stock. GNOME's own screen-lock disable/enable cycle composes
-correctly for free: disable restores the panel, and re-enable re-applies
-auto-hide only if the setting says so.
+back to stock.
+
+**Screen lock:** the extension declares `"session-modes": ["user",
+"unlock-dialog"]`, so lock does NOT disable it. Auto-hide stays active
+across the lock — deactivating would restore the strut and reflow/retile
+every window on each lock and unlock — and instead simply force-reveals
+the panel while `Main.sessionMode.isLocked` (the unlock dialog's clock
+and battery must be visible) and lets the normal conditions resume on
+unlock. The opacity styling likewise contributes nothing while locked,
+deferring to the lock screen's own `unlock-screen` panel style. The
+indicator hides its own container on the lock screen, and the
+Activities-button hiding persists — which is the whole point: no
+per-lock flash of restored-then-rehidden panel state (see
+GNOME_NOTES.md).
 
 ## Why `PanelMenu.Button` with no menu
 

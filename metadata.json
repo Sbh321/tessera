@@ -3,6 +3,7 @@
     "name": "Tessera",
     "description": "Hyprland-inspired tiling workspace manager: automatic dwindle tiling, stacked (tabbed) layout mode, numbered workspace squares in the panel, and Super-based workspace and window-movement keybindings.",
     "shell-version": ["46"],
+    "session-modes": ["user", "unlock-dialog"],
     "url": "https://github.com/Sbh321/tessera",
     "settings-schema": "org.gnome.shell.extensions.tessera",
     "gettext-domain": "tessera",

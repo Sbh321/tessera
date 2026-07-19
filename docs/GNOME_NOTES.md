@@ -740,6 +740,28 @@ extracted `js/ui/layout.js` rather than assumed:
   routing is actor picking). A translated-off panel therefore neither
   reserves work-area space (moot anyway — struts are untracked while
   active) nor intercepts clicks at the top edge.
+- **Lock screen and session modes (verified in the extracted
+  sessionMode.js and panel.js):** the unlock-dialog mode's panel is
+  `{left: [], center: [], right: ['dwellClick', 'a11y', 'keyboard',
+  'quickSettings']}` with `panelStyle: 'unlock-screen'` — stock GNOME
+  never shows the Activities button on the lock screen. The flash a
+  user reported ("Ubuntu's workspace/Activities section comes back when
+  I lock") was the extension being DISABLED on lock (no session-modes
+  declared): disable() dutifully restored the Activities button,
+  destroyed the squares, and reset auto-hide — visibly, on every lock
+  and unlock. The fix is `"session-modes": ["user", "unlock-dialog"]`
+  in metadata.json so the extension stays enabled across lock, with
+  each component lock-aware instead: the indicator hides its container
+  while `Main.sessionMode.isLocked` (Panel's `_updatePanel()` only
+  manages built-in `PANEL_ITEM_IMPLEMENTATIONS` roles on mode changes —
+  custom status-area items must handle modes themselves), auto-hide
+  force-reveals but keeps its strut released (no window reflow per
+  lock cycle), and the opacity styling contributes nothing while
+  locked so `panelStyle: 'unlock-screen'` owns the look. Safe because
+  every input surface is inert on the lock screen anyway: keybindings
+  are `ActionMode.NORMAL | OVERVIEW`, gestures are action-mode-gated by
+  the shell, and mutter drops window focus (which hides the focus
+  border).
 - **`Main.panel.style` is owned and clobbered by overview.js.** Verified
   in this install's extracted `js/ui/overview.js`: `_gestureEnd()` and
   `runStartupAnimation()` assign `Main.panel.style = 'transition-duration:
