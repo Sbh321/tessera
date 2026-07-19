@@ -14,6 +14,7 @@ mkdir -p "$OUT_DIR"
 gnome-extensions pack \
     --force \
     --extra-source=lib \
+    --extra-source=LICENSE \
     --out-dir="$OUT_DIR" \
     .
 

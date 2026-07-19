@@ -13,6 +13,32 @@ import {TilingManager} from './lib/tiling/tilingManager.js';
 import {FocusBorderManager} from './lib/focusBorder.js';
 import {PanelAutoHideManager} from './lib/panelAutoHide.js';
 
+// SESSION-MODES JUSTIFICATION (metadata.json declares
+// ["user", "unlock-dialog"], which cannot carry this comment itself):
+//
+// This extension modifies persistent top-panel state -- it hides GNOME's
+// Activities button, changes the panelBox's strut registration for
+// auto-hide, and contributes an inline panel background style. If it were
+// disabled on every lock (the default without unlock-dialog), disable()
+// would dutifully restore all of that and enable() would re-apply it on
+// unlock, producing a visible flash of the restored Activities button and
+// a full window reflow/retile (strut restored, then released again) on
+// EVERY lock/unlock cycle. Running through unlock-dialog exists solely to
+// keep that panel state stable across the lock.
+//
+// While the session is locked the extension deliberately goes inert:
+// - the workspace-squares indicator hides its own container
+//   (lib/workspaceIndicator.js) -- nothing is added to the lock screen;
+// - panel auto-hide force-reveals the panel so the unlock dialog's
+//   clock/battery are visible and stock (lib/panelAutoHide.js);
+// - the panel-opacity style contributes nothing, deferring to GNOME's
+//   own 'unlock-screen' panel styling (lib/panelAutoHide.js);
+// - all keybindings are registered with ActionMode.NORMAL | OVERVIEW
+//   (lib/keybindingManager.js) and are therefore inactive on the lock
+//   screen; gestures are action-mode-gated by the shell itself.
+//
+// No input surface, shortcut, or UI this extension adds is reachable from
+// the lock screen.
 export default class TesseraExtension extends Extension {
     enable() {
         this._settingsManager = new SettingsManager(this.getSettings());

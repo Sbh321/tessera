@@ -109,7 +109,8 @@ windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
 | --- | --- |
 | 46 | ✅ Supported — the version this was built and verified on (Ubuntu 24.04 LTS, Wayland) |
 | 47 / 48 | ❌ Not yet — untested and not declared in `metadata.json`; the porting checklist lives in [`docs/GNOME_NOTES.md`](docs/GNOME_NOTES.md) ("Porting to GNOME 47/48") |
-| 45 and earlier | ❌ Not supported |
+| 45 | ❌ Not supported — same modern (ESM) extension format, so the code would load, but every shell internal this extension relies on was verified against 46's extracted source only |
+| 44 and earlier | ❌ Cannot work — GNOME 45 switched extensions to ES modules; this extension is ESM-only, and pre-45 shells use the old incompatible `imports.*` extension format |
 
 Only the versions declared in `metadata.json`'s `shell-version` (currently
 `["46"]`) will load — GNOME Shell refuses anything else unless
@@ -211,4 +212,5 @@ GNOME APIs and version-specific findings this was built against.
 
 ## License
 
-GPL-2.0-or-later.
+GPL-2.0-or-later — see [`LICENSE`](LICENSE) for the full text. Every
+source file carries a matching SPDX header.
