@@ -103,6 +103,21 @@ windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
   Settings → Appearance accent color automatically; set a custom color in
   Preferences to override it. Respects GNOME light/dark theming.
 
+## Supported GNOME Shell versions
+
+| GNOME Shell | Status |
+| --- | --- |
+| 46 | ✅ Supported — the version this was built and verified on (Ubuntu 24.04 LTS, Wayland) |
+| 47 / 48 | ❌ Not yet — untested and not declared in `metadata.json`; the porting checklist lives in [`docs/GNOME_NOTES.md`](docs/GNOME_NOTES.md) ("Porting to GNOME 47/48") |
+| 45 and earlier | ❌ Not supported |
+
+Only the versions declared in `metadata.json`'s `shell-version` (currently
+`["46"]`) will load — GNOME Shell refuses anything else unless
+version validation is disabled. Several of this extension's features were
+verified against Shell 46's actual extracted source (see
+[`docs/GNOME_NOTES.md`](docs/GNOME_NOTES.md)), so new versions are added
+there deliberately after re-verification, not by just widening the list.
+
 ## Install
 
 ```sh

@@ -47,7 +47,9 @@ lib/accentColor.js         Read-only lookup of Ubuntu's current accent
                            color, so the active square's default fill
                            follows Settings > Appearance.
 lib/gestureProgressTracker.js  Best-effort live preview of the active
-                           square during a 3-finger workspace-switch swipe.
+                           square during a 3-finger workspace-switch swipe,
+                           in both the normal view and the overview (two
+                           separate shell SwipeTrackers, same handlers).
                            The one genuinely private-API reach in this
                            project; mirrors GNOME's own progress-to-
                            workspace mapping (round of an absolute strip

@@ -60,6 +60,15 @@ extension.
 - [ ] Test both directions specifically: left-to-right and right-to-left
       should feel equally responsive, with similar finger travel needed
       per workspace step.
+- [ ] The SAME live preview works inside the overview: press Super once
+      (window picker, workspace thumbnails on top) and 3-finger swipe
+      horizontally — intermediate squares highlight as the strip passes
+      them, and lifting the fingers snaps the highlight to the final
+      workspace immediately, exactly like in the normal view. Repeat
+      from the app grid (double Super). Clicking a workspace thumbnail
+      in the overview also updates the indicator instantly (that path
+      commits the switch immediately and always worked via
+      workspace-switched).
 - [ ] Lifting the fingers snaps the highlight to the final workspace
       *immediately* — it must not trail GNOME's settle animation by a
       beat.
@@ -67,6 +76,14 @@ extension.
       of continuing to 5) leaves the correct square (3) highlighted, not
       whatever was last previewed. A cancelled swipe (small nudge,
       released) leaves the original square highlighted.
+- [ ] Swipe to the trailing (empty) workspace and IMMEDIATELY launch an
+      app (within ~1s, e.g. from the dock). GNOME's own race applies —
+      the switch only commits when the settle animation completes, so
+      the app may land on the origin (second-last) workspace and the
+      switch may never commit — but the indicator must repaint the REAL
+      active workspace within ~1.5s (the verify fallback) instead of
+      keeping the predicted trailing square highlighted until the next
+      manual switch.
 - [ ] The indicator must never get stuck on a stale preview square — it
       always resyncs on gesture end. If the preview ever disagrees with
       where gestures actually land twice in a row, it pauses itself with a

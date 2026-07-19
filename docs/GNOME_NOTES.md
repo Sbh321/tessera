@@ -138,20 +138,37 @@ This matches GNOME's own bundled `workspace-indicator` extension's
 behavior too (same two signals as this project, no gesture-progress
 tracking) -- so it's a real enhancement opportunity, not a regression.
 
-GNOME's 3-finger workspace-switch gesture is driven by a `SwipeTracker`
-instance private to `js/ui/workspaceAnimation.js`'s
-`WorkspaceAnimationController`, which the `WindowManager` instance
-(`Main.wm`) holds as `this._workspaceAnimation`. This has now been
+GNOME's 3-finger workspace-switch gesture is driven by TWO `SwipeTracker`
+instances, one per view, both private and both with identical semantics
+(one integer snap point per workspace, absolute fractional progress,
+`activate()` deferred to the settle animation's `onComplete`):
+
+- **Normal view**: `js/ui/workspaceAnimation.js`'s
+  `WorkspaceAnimationController`, which the `WindowManager` instance
+  (`Main.wm`) holds as `this._workspaceAnimation._swipeTracker`.
+- **Overview** (single Super = window picker, double Super = app grid):
+  `js/ui/workspacesView.js`'s `WorkspacesDisplay`, reachable as
+  `Main.overview._overview.controls._workspacesDisplay._swipeTracker`
+  (chain verified: overview.js `init()` creates `_overview`, whose
+  `controls` getter returns the `ControlsManager` that constructs the
+  `WorkspacesDisplay`). Its `_switchWorkspaceBegin` literally passes
+  `points = [0..n-1]` to `confirmSwipe`, which is what makes the two
+  trackers' progress values interchangeable. Only one tracker is active
+  at a time (`Shell.ActionMode.NORMAL` vs `.OVERVIEW`), so sharing one
+  set of handlers across both is race-free.
+
+This has now been
 verified against the installed environment's real source, extracted from
 the shell's gresource (see "Things that were deliberately NOT assumed"
 below -- an earlier version of this document wrongly believed that was
 impossible, and two rounds of misbehaving guesswork followed from it).
-`lib/gestureProgressTracker.js` still treats the field as the private API
-it is and stays fully defensive:
+`lib/gestureProgressTracker.js` still treats both fields as the private
+API they are and stays fully defensive, per tracker:
 
-- `Main.wm._workspaceAnimation?._swipeTracker` via optional chaining.
+- Optional chaining along the whole access path.
 - A `typeof ... === 'function'` guard before calling `.connect()`.
-- A try/catch around the whole setup.
+- A try/catch around each tracker's setup, so a mismatch on one view
+  costs only that view's preview.
 
 If you want to verify or update this against a specific install, the
 Looking Glass check is:
@@ -244,6 +261,22 @@ snappiness details:
   off, while a transient confounder (e.g. a keyboard switch landing
   mid-verify) costs a few swipes of liveness, never the rest of the
   session.
+
+A user-visible consequence of the deferred `activate()` worth knowing:
+**anything launched during a gesture's settle animation targets the
+ORIGIN workspace.** Swipe to the trailing empty workspace and launch an
+app within the settle window (which exceeds a second with 5+
+workspaces) and the app's startup sequence is pinned to the workspace
+you *came from* (`_checkWorkspaces` in the extracted windowManager.js
+reads `sequence.get_workspace()`), so the window maps on the second-last
+workspace — and the pending switch can end up never committing at all,
+in which case `workspace-switched` never fires. That last part bit the
+indicator: the gesture-end *prediction* stayed painted with nothing to
+correct it. `_resolveVerify` therefore repaints from
+`get_active_workspace_index()` on every resolution — the verify
+fallback doubles as the display's self-heal, bounding any stale preview
+at ~1.5s. The launch-targets-origin behavior itself is stock GNOME and
+deliberately not fought.
 
 To re-verify the raw values on a specific install via Looking Glass:
 
