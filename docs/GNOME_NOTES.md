@@ -657,15 +657,30 @@ addChrome(actor, params) {
 ```
 
 Every call repositions `actor` directly below `global.top_window_group`
--- above every chrome actor added before it. `js/ui/messageTray.js`
-confirms `Main.messageTray` adds itself via this exact same
-`addChrome()` once during core shell startup, long before any user
-extension enables -- so an extension's chrome lands *above* the
-notification banner layer by construction, silently blocking banners
-(chat notifications, low battery, ...). One-line fix after adding:
-`Main.layoutManager.uiGroup.set_child_below_sibling(bar, Main.messageTray)`
-(`Main.messageTray` is a stable, public `Main.*` export, not a private
-field).
+-- above every chrome actor added before it: the panel, the lock-screen
+shield (`screenShieldGroup`), the overview, and `Main.messageTray` (all
+added via this same `addChrome()` during core shell startup, long before
+any user extension enables). So an extension's chrome lands in the
+*system-chrome band on top of all of them*, which for the stacked tab bar
+meant it drew over an auto-hidden panel sliding down, over the lock
+screen, and over notification banners -- reading as a floating overlay,
+not as part of the workspace.
+
+The stacked tab bar is *workspace* chrome, so it belongs in the window
+layer. `global.window_group` and `global.top_window_group` are both
+`uiGroup` children (layout.js, lines ~229/255), so one restack after
+adding drops the bar to just above the ordinary-window group:
+
+```js
+Main.layoutManager.uiGroup.set_child_above_sibling(bar, global.window_group);
+```
+
+Now it is below the panel, lock shield, overview, `top_window_group`
+(menus/tooltips/fullscreen) and notifications -- everything that should
+cover it does, purely by z-order, so the auto-hide panel reveals *over*
+it and the lock screen hides it with no extra session-mode signal --
+while it still draws above ordinary app windows. (`global.window_group`
+is a stable public reference, not a private field.)
 
 **Screen lock disables this (and every non-lock-aware) extension for
 its duration -- confirmed, not assumed.** Locking pushes GNOME's session

@@ -311,8 +311,24 @@ period so they join the layout; on Wayland that state arrives after
 `window-created`, so a creation-time check alone misses nearly every
 real app — see GNOME_NOTES.md), and user-stickied windows. The transient
 cases (minimized, maximized) keep their leaf in the layout tree while
-floating, so they return to their exact slot. Fullscreen suspends the
-entire bucket: nothing is resized or reflowed until fullscreen ends.
+floating, so they return to their exact slot.
+
+**Exclusive occupants** (`isExclusiveOccupant`): a fullscreen window, or a
+user-maximized layout member, covers its whole bucket, so having one
+*suspends the entire bucket* — nothing is resized or reflowed, and the
+stacked tab bar hides — until the state ends (`notify::fullscreen` /
+`notify::maximized-*` drive the resume). Treating maximize the same as
+fullscreen here is what stops a maximize from briefly "zooming" the other
+tiles (they used to reflow to fill the maximized window's vacated slot,
+pointlessly, since it covers them anyway — most visible with the panel
+auto-hidden) and stops the tab bar from floating over a maximized window.
+Two explicit user actions override a *maximize* rather than hiding behind
+it — opening a new tiling app (`_onWindowCreated`) and toggling stacked
+mode (`toggleStacked`) both call `_exitMaximized` first, so the action
+lands on the real window set. True fullscreen is deliberately *not*
+force-exited by either (a fullscreen video must not be interrupted by an
+unrelated app opening) — it still suspends the bucket and hides the tab
+bar, it just stays fullscreen until the user leaves it.
 
 **Stacked mode** is Hyprland's stacked layout as a strategy plus one
 piece of chrome: every tiled window gets the same content rectangle below
@@ -400,10 +416,10 @@ last and stuck), but the 3-finger swipe-up gesture path emits `showing`
 a gesture-opened overview but not a Super-opened one. Likewise, restacks
 during a 3-finger workspace switch kept re-showing a bar that had been
 hidden at gesture start. Dropping `trackFullscreen` loses nothing: the
-fullscreen case was already handled by `_syncTabBars()`'s own
-`_bucketHasFullscreen` check (relayout-driven via `notify::fullscreen`),
-and now no shell code ever fights this manager's `hide()`/`show()`
-decisions.
+fullscreen/maximize case is handled by `_syncTabBars()`'s own
+`_bucketHasExclusiveWindow` check (relayout-driven via `notify::fullscreen`
+and `notify::maximized-*`), and now no shell code ever fights this
+manager's `hide()`/`show()` decisions.
 
 **Tab bars hide for the whole lifetime of a workspace-switch gesture, as
 a state, not an event.** `_syncTabBars()` treats "a 3-finger
@@ -429,19 +445,47 @@ alone: the active workspace changes immediately there, the debounced
 flush re-syncs the bar right away, and GNOME's own panel chrome behaves
 the same way during those animations.
 
-**The tab bar sits below notifications, not above them.** `addChrome()`
-always repositions a newly-added actor directly below
+**…but during that gesture the bar *slides* with its workspace instead of
+just vanishing** (`_attachSwipeTabBars`). The real bars stay hidden (the
+flag above); on `begin`, once GNOME's `WorkspaceAnimationController` has
+built its per-monitor `MonitorGroup`s (each holding a `WorkspaceGroup`
+that clones a workspace's window *actors* and slides on a `progress`
+property), we drop a throwaway `StackTabBar` into each stacked
+workspace's `WorkspaceGroup`, positioned monitor-locally like the window
+clones — so it rides the exact same slide GNOME gives the windows: the
+outgoing workspace's bar slides out, an incoming stacked workspace's
+slides in. This mirrors, for chrome, what GNOME does for windows (a chrome
+actor is never cloned into the animation on its own — the reason the plain
+`hide()` was needed in the first place). It is the tiler's *second*
+private reach past the swipe tracker — `switchData.monitors` and
+`MonitorGroup._workspaceGroups` — so it carries the same posture: one
+`try/catch`, everything optional-chained, and on any failure it falls back
+to the real bars simply staying hidden for the gesture (the prior
+behavior). The throwaway bars are owned by the animation groups —
+`_finishWorkspaceSwitch` destroys those on settle/cancel, taking the bars
+with them — and each removes itself from `_swipeTabBars` on `destroy`, so
+the list self-cleans; `disable()` destroys any that a mid-flight gesture
+left behind.
+
+**The tab bar sits in the window layer, not the system-chrome layer.**
+`addChrome()` always repositions a newly-added actor directly below
 `global.top_window_group` (verified against the extracted
-`js/ui/layout.js`) — meaning the *last* chrome actor added ends up on top
-of every chrome actor added before it, permanently. `Main.messageTray` is
-added once, at shell startup, long before any extension enables; a tab
-bar created afterwards would otherwise sit above it forever, visually
-blocking notification banners (chat messages, low battery, …). The fix
-is one explicit re-stack right after `addChrome()`:
-`Main.layoutManager.uiGroup.set_child_below_sibling(bar, Main.messageTray)`
-— `Main.messageTray` is a stable public reference (not a private reach),
-so this is a one-line, version-safe correction rather than a new
-private-API surface.
+`js/ui/layout.js`) — i.e. in the chrome band *above* the panel, the
+lock-screen shield (`screenShieldGroup`), the overview and notifications.
+Left there, the bar drew *over* an auto-hidden panel sliding down, *over*
+the lock screen, and over notification banners — it read as a free-
+floating overlay, not as part of the workspace. The fix is one explicit
+re-stack right after `addChrome()`:
+`Main.layoutManager.uiGroup.set_child_above_sibling(bar, global.window_group)`.
+`window_group` and `top_window_group` are both `uiGroup` children
+(layout.js), so this drops the bar to just above the ordinary-window
+group: below the panel, lock shield, overview, menus/tooltips
+(`top_window_group`) and notifications — everything that should cover it
+now does, purely by z-order, no extra signals — while it still draws
+above ordinary app windows. This is what makes it behave like part of the
+workspace: the auto-hide panel reveals over it, and the lock screen hides
+it, for free. (`global.window_group` is a stable public reference, not a
+private reach.)
 
 **Cleanup:** every signal id (display, workspace-manager, layout-manager,
 overview, settings, per-window, and the two swipe-tracker connections) is
@@ -791,10 +835,21 @@ to its `begin` and `end` signals to bracket the stacked-mode tab bars'
 gesture-hidden state (see the tiling section above). Both reuse the
 exact field this section documents rather than opening new ones, with
 the identical defensive posture (optional chaining, `typeof` guard,
-try/catch) -- so this remains one private-API surface with three
-independent, equally fail-safe readers, not a fifth reach.
+try/catch) -- so the *swipe tracker* remains one private-API surface with
+three independent, equally fail-safe readers.
 
-All four of the above are the only non-obvious, semi-invasive behaviors in
+The tab-bar slide (`_attachSwipeTabBars`) reaches one level deeper on
+`begin` -- `_workspaceAnimation._switchData.monitors` and each
+`MonitorGroup._workspaceGroups` -- to parent throwaway bars into the
+sliding groups. This is the one genuinely *new* private surface added
+beyond the swipe tracker, and it is the most volatile (it depends on the
+animation's internal actor tree, not just a signal), so it is wrapped in
+a single `try/catch` that abandons the whole enhancement on any shape
+mismatch, leaving the bars hidden exactly as the pre-slide code did. It
+never affects layout correctness -- only whether the bar slides or blinks
+during a ~250 ms gesture.
+
+All of the above are the only non-obvious, semi-invasive behaviors in
 the codebase; everything else is scoped to this extension's own
 `org.gnome.shell.extensions.tessera` schema.
 

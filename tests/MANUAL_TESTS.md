@@ -252,10 +252,20 @@ extension.
       focused in between.
 - [ ] Maximize a tiled window: it floats at full work area (not fought);
       unmaximize: it returns to its previous slot. An app that *starts*
-      maximized joins the layout tiled.
+      maximized joins the layout tiled. While it stays maximized its tiled
+      siblings are **not** reflowed — they hold their slots behind it (no
+      brief "zoom" of the other tiles, most visible with the top panel
+      auto-hidden); unmaximize retiles everything back.
 - [ ] Fullscreen a window: nothing on that workspace/monitor is
       resized while it's fullscreen; leaving fullscreen restores the
       layout.
+- [ ] **A new app drops an existing maximize.** With one window maximized
+      on a workspace, launch another app on that same workspace: the
+      maximize is released and both windows tile. Opening a *dialog or
+      transient* (e.g. a file chooser) does **not** break it, and a
+      maximize on a *different* workspace is untouched. A **true
+      fullscreen** window is deliberately left alone — opening an app does
+      not kick it out of fullscreen (a fullscreen video keeps playing).
 - [ ] Drag-move a tiled window and release: it snaps back into its slot
       (grab-op-end).
 - [ ] Panel/dock avoidance: tiles never underlap the top panel or Ubuntu
@@ -299,15 +309,25 @@ extension.
       not come back on its own.
 - [ ] **Minimize does NOT auto-exit stacked mode.** On a stacked
       workspace with two windows, minimize one: the workspace stays
-      stacked (one tab remains). Restore it: both tabs return. Same for
-      maximizing one of the two and unmaximizing it.
+      stacked (one tab remains). Restore it: both tabs return.
+- [ ] **Maximize/fullscreen a stacked window hides the whole tab bar**
+      (not just that window's tab), like fullscreen does — the tab bar
+      must not float over the maximized/fullscreen window. The workspace
+      stays stacked: unmaximize / leave fullscreen and the full tab bar
+      returns.
 - [ ] Stacked state is per workspace: switch between a stacked and a
       tiled workspace repeatedly — mode and tab bar follow correctly.
 - [ ] Shift+Super+N moving a window off a stacked workspace removes its
       tab; moving one onto a stacked workspace adds a tab. Same for
       Shift+Super+Left/Right into new workspaces.
-- [ ] The tab bar disappears in the Activities overview and during
-      fullscreen, and reappears after.
+- [ ] The tab bar disappears in the Activities overview and while a
+      window on the workspace is fullscreen or maximized, and reappears
+      after.
+- [ ] **Toggling stacked drops an existing maximize.** With a window on
+      the workspace maximized, press Shift+Super+S: the maximize is
+      released first, then the workspace toggles stacked/tiled on the real
+      window set. A true-fullscreen window is left alone (the mode flag
+      still toggles; the visible effect resumes when fullscreen ends).
 - [ ] Many windows (15+) on a stacked workspace: tabs compress with
       ellipsized titles, no clipping or overflow off-screen.
 - [ ] **Notifications draw above the tab bar, not behind it.** On a
@@ -315,6 +335,16 @@ extension.
       message, a low-battery warning, `notify-send "test"` from a
       terminal) — it must appear fully on top of the tab bar, never
       obscured by or clipped behind it.
+- [ ] **The auto-hide panel reveals OVER the tab bar, not behind it.**
+      With `panel-autohide` on and a stacked workspace, hover the top edge
+      to reveal the panel: it must slide down *on top of* the tab bar. The
+      panel-opacity and the panel's own contents stay fully visible; the
+      tab bar is what gets covered.
+- [ ] **The tab bar is not visible on the lock screen.** On a stacked
+      workspace, lock (`Super+L`): the lock screen must fully cover the tab
+      bar (no strip of tabs showing over/through the lock UI). (Distinct
+      from the stacked-mode-survives-lock test below, which is about state,
+      not visibility.)
 - [ ] **Stacked mode survives locking the screen.** On a stacked
       workspace, lock the screen (`Super+L`), wait a few seconds, then
       unlock: the workspace must still be stacked with its tab bar
@@ -330,16 +360,26 @@ extension.
       its visibility force-reasserted by the shell on the gesture path
       specifically — see GNOME_NOTES.md). Also release the swipe
       early/cancel it: the bar returns once the desktop settles back.
-- [ ] **The tab bar hides for the full duration of a workspace-switch
-      swipe.** With a stacked workspace active, do a slow 3-finger
-      left/right swipe and hold it mid-drag: the bar must disappear the
-      moment the swipe starts and stay gone for the entire drag —
-      including while windows open/close/retile on other workspaces in
-      the background — reappearing only once you land and the settle
-      animation completes (for the destination, if stacked). A
-      cancelled swipe (nudge and release back onto the same workspace)
-      brings the origin's bar back. Repeat several swipes in a row,
-      both directions, fast and slow.
+- [ ] **The tab bar slides WITH its workspace during a switch swipe.**
+      With a stacked workspace active, do a slow 3-finger left/right swipe
+      and hold it mid-drag: the bar must travel horizontally locked to its
+      workspace's windows (not blink out at the start, the old behavior),
+      exactly like an app window does. Swiping ONTO another stacked
+      workspace: that workspace's bar slides in with it. Swiping onto a
+      tiled (non-stacked) workspace: no bar slides in. The real (non-
+      sliding) bar must never additionally float on top during the drag —
+      including while windows open/close/retile on other workspaces in the
+      background. On landing, the destination's real bar takes over cleanly
+      (if stacked); a cancelled swipe (nudge and release back onto the same
+      workspace) restores the origin's bar. Repeat several swipes, both
+      directions, fast and slow, and confirm no leftover/duplicate bar and
+      no errors in the journal.
+- [ ] **Swipe-slide degrades safely.** If a future GNOME changes the
+      workspace-animation internals, the sliding-bar enhancement is fully
+      guarded: worst case the bar simply stays hidden for the swipe
+      (the previous behavior) — never a crash or a stuck/duplicated bar.
+      (Nothing to do here on this version; noted so the private-API reach
+      is on the checklist.)
 
 ## Panel auto-hide
 
