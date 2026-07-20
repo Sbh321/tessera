@@ -381,6 +381,39 @@ extension.
       (Nothing to do here on this version; noted so the private-API reach
       is on the checklist.)
 
+## Per-window floating (Shift+Super+V)
+
+- [ ] With two or more tiled windows, focus one and press Shift+Super+V:
+      it pops out, resizes to a centered rectangle (~65% of the work area
+      by default), and floats above the others, which reflow to fill its
+      old slot. Press Shift+Super+V again: it re-joins the tiled layout.
+- [ ] The floated window is freely movable and resizable with the mouse,
+      and the tiler never snaps it back (unlike a tiled window, which
+      snaps back on grab-op-end).
+- [ ] A floated window stays stacked ABOVE the tiled ones after a relayout
+      (open/close another window on the same workspace and confirm the
+      floater is still on top).
+- [ ] **Float geometry setting.** Change "Floating size" in Preferences →
+      Tiling → Floating (e.g. to 40 or 90) and float a window: the
+      centered size follows the new percentage.
+- [ ] **Float + maximize does not suspend tiling.** Float a window, then
+      maximize it: the still-tiled siblings keep their layout underneath
+      (a floated maximized window is not an exclusive occupant), unlike a
+      *tiled* window's maximize which suspends the bucket.
+- [ ] **Dialogs/utilities are unaffected.** Focus a dialog or other
+      already-floating window and press Shift+Super+V: nothing happens
+      (there is no layout membership to toggle).
+- [ ] **Floating survives locking the screen.** Float a window, lock and
+      unlock: it must still be floating (not silently re-tiled) — same
+      module-scoped-state guarantee as stacked mode.
+- [ ] Close a floated window: no errors in the journal, and its float
+      entry is dropped (open a new window in its place and confirm normal
+      tiling; nothing lingers).
+- [ ] Float toggle interacts cleanly with stacked mode: floating a window
+      on a stacked workspace removes it from the tab bar; unfloating adds
+      it back. Dropping a stacked workspace to one non-floated member via
+      float still auto-exits stacked (float ends membership like a move).
+
 ## Panel auto-hide
 
 - [ ] Off by default: on a fresh install the top panel behaves like

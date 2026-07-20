@@ -64,11 +64,12 @@ lib/windowMover.js         Moves the focused window between workspaces
 lib/tiling/                The automatic-tiling subsystem (see its own
                            section below). Nothing outside this directory
                            knows tiling exists except KeybindingManager
-                           (dispatches the stacked toggle) and
-                           extension.js (composition).
+                           (dispatches the stacked and floating toggles)
+                           and extension.js (composition).
 lib/tiling/windowFilter.js Pure classification: layout membership
-                           (identity-level) vs current tileability
-                           (adds transient states like minimized).
+                           (identity-level, plus the injected user-float
+                           override) vs current tileability (adds
+                           transient states like minimized).
 lib/tiling/layoutEngine.js Pure layout structure and geometry: the
                            LayoutTree dwindle split tree and the stacked
                            geometry split. No GNOME imports.
@@ -124,6 +125,8 @@ Super+1..9 / Super+Left/Right --(Main.wm keybinding dispatch)--> KeybindingManag
 Shift+Super+1..9 / Shift+Super+Left/Right --(Main.wm keybinding dispatch)--> KeybindingManager handler --> WindowMover --> Main.wm.actionMoveWindow() / Main.wm.insertWorkspace()
 
 Shift+Super+S --(Main.wm keybinding dispatch)--> KeybindingManager handler --> TilingManager.toggleStacked()
+
+Shift+Super+V --(Main.wm keybinding dispatch)--> KeybindingManager handler --> TilingManager.toggleFloating()
 
 window/workspace/monitor events --> TilingManager (debounced) --> layoutEngine (pure) --> Meta.Window.move_resize_frame()
                                                               --> StackTabBar (stacked workspaces only)
@@ -311,7 +314,10 @@ period so they join the layout; on Wayland that state arrives after
 `window-created`, so a creation-time check alone misses nearly every
 real app — see GNOME_NOTES.md), and user-stickied windows. The transient
 cases (minimized, maximized) keep their leaf in the layout tree while
-floating, so they return to their exact slot.
+floating, so they return to their exact slot. On top of all of those
+identity/state rules there is one *explicit* user override — a window
+toggled to float with Shift+Super+V (see "Per-window floating" below) —
+which `windowFilter` treats as a non-member exactly like a dialog.
 
 **Exclusive occupants** (`isExclusiveOccupant`): a fullscreen window, or a
 user-maximized layout member, covers its whole bucket, so having one
@@ -497,11 +503,54 @@ they are ordinary movable windows and there is no meaningful "pre-tiling"
 geometry to restore for windows that were tiled from the moment they
 mapped (the same posture as every tiling WM).
 
+**Per-window floating is a membership override, not a third mode.** Tiled
+and stacked are the two *layout* modes; floating is orthogonal — a
+per-window user choice (Shift+Super+V → `toggleFloating`) to pop one
+window out of whichever layout its bucket is in, mirroring Hyprland's
+`togglefloating` (and the pop-out-and-float feel of Omarchy). It is
+deliberately built as the counterpart to stacked mode's per-*workspace*
+choice: a module-scoped `Set` of `Meta.Window` (`floatingWindows`), at
+module scope for the identical reason `stackedWorkspaces` is — to survive
+the disable()/enable() cycle GNOME runs around screen lock — keyed by the
+mutter-owned window object (stable across that cycle) and pruned the
+instant a window is unmanaged, so it never holds a dead window.
+
+The whole mechanism is one line of classification plus one of placement.
+Classification: `windowFilter`'s `isLayoutMember()` gained an *injected*
+`floating` argument (the manager passes this Set to every filter call), so
+a floated window simply stops being a layout member — it drops its tree
+leaf, its siblings reclaim its area through the same reconciliation that
+handles a closed window, and it rejoins (at the dwindle tail) when toggled
+back. Keeping the filter pure by *injecting* the state rather than reading
+a global preserves the "evaluated fresh every pass, nothing to go stale"
+property the rest of the subsystem relies on. Because the override lives at
+the `isLayoutMember` level, it cascades correctly and for free through
+`isTileable` and `isExclusiveOccupant`: a floated window that is then
+maximized does **not** suspend its bucket (it is not a member, so
+`isExclusiveOccupant` is false) — it just floats at that size over the
+still-tiled siblings, which is the desired behavior. (One consequence of
+adding the second parameter: every `.filter(isTileable)` call site had to
+become `.filter(w => isTileable(w, floating))`, because `Array.filter`
+would otherwise pass the *index* as the floating Set.)
+
+Placement (`_floatWindow`): on float the window is un-maximized if needed
+(a maximized window ignores `move_resize_frame`), resized to a centered
+rectangle at `floating-window-size` percent of its monitor work area
+(default 65%), and raised. From then on the tiler never repositions it —
+it is not a member, and the manager already ignores size/position changes
+— so the user owns its geometry; each relayout pass only re-`raise()`s the
+bucket's floated windows above the tiled ones (`_raiseFloating`, a
+Hyprland-style always-above-tiling floating layer; `raise()` restacks
+without stealing focus). The existing focus border needs no change —
+`lib/focusBorder.js` already draws around floating windows.
+
 **Anticipated future settings** the architecture already accommodates
 without restructuring: layout type per workspace (mode key), split
 ratios and node swaps (per-node state on the LayoutTree), smart gaps
 (engine input), follow-focus behaviors (manager policy), animation
-(application step).
+(application step), and per-window floating refinements (remembered
+floating geometry per window; app-match rules that auto-float on open —
+both just richer population of the `floatingWindows` Set).
 
 ## Focus border (`lib/focusBorder.js`)
 

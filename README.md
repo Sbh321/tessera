@@ -46,6 +46,12 @@ windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
   least two windows: the toggle no-ops on a single-window workspace, and
   a stacked workspace that drops to one window (closed or moved away)
   reverts to tiled on its own.
+- **Per-window floating** (`Shift+Super+V`): pop the focused window out
+  of the layout so it floats — centered and stacked above the tiled
+  windows, freely movable and resizable — and press again to re-tile it.
+  Hyprland's `togglefloating`, the pop-out-and-float feel of Omarchy.
+  It's a per-window choice, not a separate layout mode, and the centered
+  size (default 65% of the work area) is configurable in Preferences.
 - Windows GNOME wants floating stay floating: dialogs, utility and
   splash windows, minimized and user-maximized windows. Fullscreen
   suspends tiling until it ends. Apps that *open* maximized (browsers,
@@ -151,6 +157,7 @@ For local development instead of a one-shot install, see
 | `Shift+Super+Left` | Move focused window to a new workspace inserted on the left |
 | `Shift+Super+Right` | Move focused window to a new workspace inserted on the right |
 | `Shift+Super+S` | Toggle stacked (tabbed) layout on the current workspace |
+| `Shift+Super+V` | Toggle floating for the focused window |
 
 These accelerators collide with four sets of pre-existing defaults on a
 stock Ubuntu install: GNOME's `Super+1..9` (switch to a pinned dash app),

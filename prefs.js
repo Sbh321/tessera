@@ -175,6 +175,21 @@ export default class TesseraPreferences extends ExtensionPreferences {
         addSpinRow(gapsGroup, settings, 'tiling-gap-outer', _('Outer gap'),
             _('Space between tiled windows and the screen edge, in pixels'), {lower: 0, upper: 64});
 
+        const floatingGroup = new Adw.PreferencesGroup({
+            title: _('Floating'),
+            description: _(
+                'Shift+Super+V pops the focused window out of the layout ' +
+                'and floats it, centered and stacked above the tiled ' +
+                'windows; press again to re-tile it. A floating window can ' +
+                'be freely moved and resized -- the tiler never repositions ' +
+                'it. Per-window, not a separate layout mode.'),
+        });
+        page.add(floatingGroup);
+        addSpinRow(floatingGroup, settings, 'floating-window-size',
+            _('Floating size'),
+            _('Centered size when a window is floated, as a percentage of the monitor work area'),
+            {lower: 30, upper: 95, step: 5});
+
         return page;
     }
 
@@ -306,6 +321,8 @@ export default class TesseraPreferences extends ExtensionPreferences {
         page.add(layoutGroup);
         addAcceleratorEntryRow(layoutGroup, settings, 'layout-toggle-stacked',
             _('Toggle stacked layout'));
+        addAcceleratorEntryRow(layoutGroup, settings, 'window-toggle-floating',
+            _('Toggle floating (focused window)'));
 
         return page;
     }

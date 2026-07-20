@@ -147,6 +147,13 @@
       <description>Gap, in pixels, between tiled windows and the edge of the monitor work area.</description>
     </key>
 
+    <key name="floating-window-size" type="i">
+      <default>65</default>
+      <range min="30" max="95"/>
+      <summary>Floating window size</summary>
+      <description>When a window is popped out to float (the toggle-floating keybinding), it is centered on its monitor's work area at this percentage of the work area's width and height. It can then be freely moved and resized -- the tiler never repositions a floating window; it only keeps it stacked above the tiled ones.</description>
+    </key>
+
     <!-- Focus border -->
 
     <key name="enable-focus-border" type="b">
@@ -278,6 +285,11 @@
     <key name="layout-toggle-stacked" type="as">
       <default>['&lt;Shift&gt;&lt;Super&gt;s']</default>
       <summary>Toggle stacked layout on the current workspace</summary>
+    </key>
+
+    <key name="window-toggle-floating" type="as">
+      <default>['&lt;Shift&gt;&lt;Super&gt;v']</default>
+      <summary>Toggle floating for the focused window</summary>
     </key>
 
   </schema>
