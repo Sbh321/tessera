@@ -220,18 +220,30 @@ own model does":
 - **Static workspaces:** `insertWorkspace` is dynamic-only by GNOME's own
   rule, so the insert bindings degrade to moving into the existing
   neighbor workspace (edge of strip: no-op).
-- **Emptied origin workspaces** are culled by GNOME's `WorkspaceTracker`
-  (never the active or trailing one) — deliberately not fought with
-  keep-alives; it's the platform's dynamic-workspace model. Consequence:
-  inserting a new workspace for a window that was *alone* nets out to no
-  visible change.
+- **Emptied origin workspaces** are still culled by GNOME's
+  `WorkspaceTracker` (never the active or trailing one) — the cull is not
+  *prevented*, it's the platform's dynamic-workspace model. It is only
+  *deferred* past the follow animation: both move actions run through
+  `_moveFollowing`, which, when the moved window was the source's last
+  occupant, calls `Main.wm.keepWorkspaceAlive(source, ~400ms)` so the
+  tracker removes it in a clean pass *after* the switch settles rather
+  than on the next `BEFORE_REDRAW` mid-slide. Without this, culling the
+  source during the animation reindexes every later workspace — including
+  the destination's — which jerked the slide and briefly desynced the
+  active-square highlight; most visible moving an app off the *viewed*
+  workspace onto the *trailing* one, which culls the source and appends a
+  new trailing in the same tracker pass. The keep-alive timer is GNOME's
+  own (stored on the workspace, self-clearing), so `WindowMover` still
+  owns no timer. Consequence unchanged: inserting a new workspace for a
+  window that was *alone* nets out to no visible change (the source
+  reappears as the freshly-inserted blank).
 - **Race-freedom:** the insert-then-move sequence is synchronous within
   one dispatch, and the tracker's empty-workspace cleanup only runs in a
   `BEFORE_REDRAW` later, so it can never observe the half-done state.
 
-`WindowMover` holds no state, connects no signals, and starts no timers —
-there is nothing to clean up, by construction; `disable()` is just
-dropping the reference.
+`WindowMover` holds no state of its own, connects no signals, and starts
+no timer it owns — there is nothing to clean up, by construction;
+`disable()` is just dropping the reference.
 
 ## Keybind fullscreen (`lib/fullscreenManager.js`)
 

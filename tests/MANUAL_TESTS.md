@@ -198,6 +198,17 @@ extension.
       the dialog is never separated from its window.
 - [ ] A fullscreen window stays fullscreen after moving; a maximized
       window stays maximized.
+- [ ] **Emptying the viewed workspace onto the trailing one is smooth.**
+      Set up 6 workspaces (5 with one window each, 6th the trailing
+      empty). On workspace 1, `Shift+Super+6` to move its only window to
+      the trailing workspace: the slide to the destination is smooth — no
+      mid-animation jump/jerk — and the emptied source (1) disappears
+      cleanly *after* you arrive, not during the slide. The indicator's
+      active square is correct throughout and never flickers to a wrong
+      square; final state is 5 windowed workspaces + 1 trailing empty with
+      the moved window's workspace active. Repeat from other workspaces
+      and moving to other targets — no stale/extra square lingers beyond a
+      brief moment, no errors in the journal.
 - [ ] `Shift+Super+Right` on workspace 3 of 6 inserts a new workspace
       between 3 and 4 with only the focused window on it, and follows it;
       the original workspaces 4-6 are now 5-7 with their windows intact.
