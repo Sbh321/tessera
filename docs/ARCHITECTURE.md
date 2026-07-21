@@ -525,13 +525,20 @@ back. Keeping the filter pure by *injecting* the state rather than reading
 a global preserves the "evaluated fresh every pass, nothing to go stale"
 property the rest of the subsystem relies on. Because the override lives at
 the `isLayoutMember` level, it cascades correctly and for free through
-`isTileable` and `isExclusiveOccupant`: a floated window that is then
-maximized does **not** suspend its bucket (it is not a member, so
-`isExclusiveOccupant` is false) — it just floats at that size over the
-still-tiled siblings, which is the desired behavior. (One consequence of
-adding the second parameter: every `.filter(isTileable)` call site had to
-become `.filter(w => isTileable(w, floating))`, because `Array.filter`
-would otherwise pass the *index* as the floating Set.)
+`isTileable`. `isExclusiveOccupant` is the one place that deliberately does
+**not** consult the float set: a floating window that is fullscreened *or
+maximized* covers the whole bucket, so — exactly like a tiled one — it must
+suspend reflow and hide the stacked tab bar (a floating window sits below
+the bar in z-order, so a maximized/fullscreen one would otherwise have the
+tab strip drawn across its top). `isExclusiveOccupant` therefore checks
+identity-level `isLayoutMember(window)` (no floating set), which is true for
+both tiled and user-floated normal windows and false only for stray
+maximized dialogs/popups. (Getting this wrong was a real bug: passing the
+float set here left the tab bar drawing over a maximized floating window.)
+One consequence of the injected parameter elsewhere: every
+`.filter(isTileable)` call site had to become
+`.filter(w => isTileable(w, floating))`, because `Array.filter` would
+otherwise pass the *index* as the floating Set.
 
 Placement (`_floatWindow`): on float the window is un-maximized if needed
 (a maximized window ignores `move_resize_frame`), resized to a centered
@@ -645,8 +652,15 @@ faithfully. Composed rather than assigned, and re-asserted from a
 `notify::style` handler, because overview.js overwrites that property
 wholesale on overview transitions and nulls it after every overview
 exit (see GNOME_NOTES.md). The write is idempotent (only when the
-declaration is missing), so it cannot loop. At 100 nothing is ever
-written; `disable()` strips only this module's declaration.
+declaration is missing), so it cannot loop. The same declaration pins
+`transition-duration: 0ms` (stripping the theme's/overview's own first):
+the stock theme sets a permanent 250ms transition on `#panel`, so
+without this the re-applied background would *fade* back from solid
+black over 250ms every time overview clobbered the style — the
+"split-second flash" on a 3-finger swipe out of the overview — instead
+of snapping. At 100 nothing is ever written (the shell's
+`transition-duration` is left untouched); `disable()` strips only this
+module's declaration.
 
 **Sliding uses `panelBox.translation_y` — the shell's own mechanism.**
 GNOME's startup animation slides the panel with exactly this property

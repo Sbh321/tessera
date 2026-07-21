@@ -396,10 +396,15 @@ extension.
 - [ ] **Float geometry setting.** Change "Floating size" in Preferences →
       Tiling → Floating (e.g. to 40 or 90) and float a window: the
       centered size follows the new percentage.
-- [ ] **Float + maximize does not suspend tiling.** Float a window, then
-      maximize it: the still-tiled siblings keep their layout underneath
-      (a floated maximized window is not an exclusive occupant), unlike a
-      *tiled* window's maximize which suspends the bucket.
+- [ ] **A maximized or fullscreen floating window hides the stacked tab
+      bar.** On a stacked workspace with 3+ windows, float one (2+ stay
+      stacked, so the tab bar still shows) then maximize the floating
+      window, and separately fullscreen it: in BOTH cases the tab bar must
+      hide — it must never remain drawn across the top of the covering
+      window. Un-maximize / leave fullscreen and the tab bar returns.
+      (A floating window covers the bucket exactly like a tiled one, so it
+      counts as an exclusive occupant; only a stray maximized dialog/popup
+      does not.)
 - [ ] **Dialogs/utilities are unaffected.** Focus a dialog or other
       already-floating window and press Shift+Super+V: nothing happens
       (there is no layout membership to toggle).
@@ -489,6 +494,14 @@ extension.
       the slider's value, not reset to solid (GNOME's overview code
       rewrites the panel's inline style on every exit; the extension
       re-asserts it).
+- [ ] **No flash on overview exit.** With opacity below 100%, 3-finger
+      swipe UP into the overview then swipe DOWN to exit (and repeat a
+      few times, fast and slow). The panel background must NOT flash
+      solid-black for a split second on the way out — it stays at the
+      configured translucency throughout. (The fix pins the panel's CSS
+      transition to 0ms; without it the theme's permanent 250ms
+      transition faded the re-applied background back from solid on every
+      exit.) Check the Super-tap and hot-corner exit paths too.
 - [ ] Back at 100%, the panel is pixel-identical to stock (the inline
       style is removed, not a near-opaque black); disabling the
       extension at any slider value also restores the stock look.

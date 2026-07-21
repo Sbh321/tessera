@@ -787,6 +787,22 @@ extracted `js/ui/layout.js` rather than assumed:
   `background-color` declaration into whatever the shell currently has
   and re-asserts it from a `notify::style` handler (idempotent, so its
   own write doesn't re-trigger it).
+- **The stock theme puts a permanent 250ms transition on `#panel` — the
+  cause of the panel-opacity "flash on overview exit".** Verified in the
+  extracted `org/gnome/shell/theme/gnome-shell-dark.css`:
+  `#panel { background-color: #000000; … transition-duration: 250ms; }`.
+  The panel background is solid black and always animates over 250ms. So
+  each time overview.js clobbers `Main.panel.style` (the two writes
+  above), the panel's *computed* background reverts to that solid black,
+  and when the `notify::style` handler re-adds the translucent
+  `rgba(0,0,0,a)`, the change **fades** back over 250ms instead of
+  snapping — a visible solid-black blink on every 3-finger swipe out of
+  the overview. The fix is to pin `transition-duration: 0ms` in the same
+  declaration (and strip the theme's/overview's `transition-duration`
+  from the base first), so the constant-color background snaps. Nothing
+  is lost animation-wise: there is never anything to tween on a fixed
+  color. Only applied while the feature is active (opacity < 100); at 100
+  the shell's `transition-duration` is left untouched.
 - **`Main.overview.visibleTarget` vs `.visible`:** `visible` stays true
   until the overview's hide animation *completes*; `visibleTarget`
   flips to false the moment hiding *begins* (both verified in
