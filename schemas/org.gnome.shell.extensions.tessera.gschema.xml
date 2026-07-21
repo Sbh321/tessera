@@ -108,7 +108,7 @@
     <key name="panel-autohide" type="b">
       <default>false</default>
       <summary>Auto-hide the top panel</summary>
-      <description>Slide the GNOME top panel off-screen like a dock, reclaiming its space for windows. It slides back in while the pointer touches the top edge, while the Super key is held, in the Activities overview, while a panel menu is open, and while the current workspace is empty. The panel itself is not restyled, only hidden and revealed.</description>
+      <description>Slide the GNOME top panel off-screen like a dock, reclaiming its space for windows. It slides back in while the pointer touches the top edge, when the reveal keybinding (default Super+Z, see panel-reveal-toggle) toggles it open, in the Activities overview, while a panel menu is open, and while the current workspace is empty. The panel itself is not restyled, only hidden and revealed.</description>
     </key>
 
     <key name="panel-slide-time" type="i">
@@ -290,6 +290,30 @@
     <key name="window-toggle-floating" type="as">
       <default>['&lt;Shift&gt;&lt;Super&gt;v']</default>
       <summary>Toggle floating for the focused window</summary>
+    </key>
+
+    <key name="window-toggle-maximize" type="as">
+      <default>['&lt;Shift&gt;&lt;Super&gt;f']</default>
+      <summary>Toggle maximize for the focused window</summary>
+      <description>Maximize the focused window to fill the work area (keeping the top panel and title bar, like the window's maximize button), or restore it if already maximized.</description>
+    </key>
+
+    <key name="window-toggle-fullscreen" type="as">
+      <default>['&lt;Super&gt;f']</default>
+      <summary>Toggle fullscreen for the focused window</summary>
+      <description>Put the focused window into true fullscreen (covering the whole monitor, including the top panel), or leave fullscreen if already in it. While a window fullscreened this way is focused, Escape leaves fullscreen; opening a new application window also leaves it.</description>
+    </key>
+
+    <key name="panel-reveal-toggle" type="as">
+      <default>['&lt;Super&gt;z']</default>
+      <summary>Reveal/hide the auto-hidden top panel</summary>
+      <description>Toggles the auto-hidden top panel open (and closed again). Only active while "Auto-hide the top panel" is on; it latches the panel visible until pressed again, then the normal reveal conditions (pointer at the top edge, overview, etc.) resume. Has no effect when auto-hide is off.</description>
+    </key>
+
+    <key name="window-fullscreen-escape" type="as">
+      <default>['Escape']</default>
+      <summary>Leave fullscreen (internal, active only while a keybind-fullscreened window is focused)</summary>
+      <description>Accelerator grabbed dynamically by the extension ONLY while a window it fullscreened via window-toggle-fullscreen is focused, so Escape leaves that fullscreen. Not a general shortcut: it is un-grabbed the instant such a window is no longer focused, so it never intercepts Escape from ordinary windows. Change it if Escape conflicts with how you use fullscreened apps.</description>
     </key>
 
   </schema>

@@ -66,9 +66,10 @@ windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
   color, same logic as the active workspace square.
 - **Top panel auto-hide** (off by default): the GNOME top panel slides
   off-screen like a dock and windows reclaim its space; it slides back
-  in when the pointer touches the top edge, while the Super key is
-  held, in the Activities overview, while a panel menu is open, and
-  while the current workspace is empty.
+  in when the pointer touches the top edge, when the reveal keybinding
+  (default `Super+Z`, customizable) toggles it open, in the Activities
+  overview, while a panel menu is open, and while the current workspace
+  is empty.
 - **Top panel background opacity**: a Preferences slider from the
   normal solid background (100%, the default) down to fully
   transparent. Panel text and icons are unaffected, and it works with
@@ -158,6 +159,9 @@ For local development instead of a one-shot install, see
 | `Shift+Super+Right` | Move focused window to a new workspace inserted on the right |
 | `Shift+Super+S` | Toggle stacked (tabbed) layout on the current workspace |
 | `Shift+Super+V` | Toggle floating for the focused window |
+| `Shift+Super+F` | Toggle maximize for the focused window (keeps the panel) |
+| `Super+F` | Toggle true fullscreen for the focused window (covers the panel) |
+| `Super+Z` | Reveal / hide the auto-hidden top panel (only while auto-hide is on) |
 
 These accelerators collide with four sets of pre-existing defaults on a
 stock Ubuntu install: GNOME's `Super+1..9` (switch to a pinned dash app),

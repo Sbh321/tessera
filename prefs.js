@@ -323,6 +323,18 @@ export default class TesseraPreferences extends ExtensionPreferences {
             _('Toggle stacked layout'));
         addAcceleratorEntryRow(layoutGroup, settings, 'window-toggle-floating',
             _('Toggle floating (focused window)'));
+        addAcceleratorEntryRow(layoutGroup, settings, 'window-toggle-maximize',
+            _('Toggle maximize (focused window)'));
+        addAcceleratorEntryRow(layoutGroup, settings, 'window-toggle-fullscreen',
+            _('Toggle fullscreen (focused window)'));
+
+        const panelGroup = new Adw.PreferencesGroup({
+            title: _('Panel'),
+            description: _('Only active while "Auto-hide the top panel" is on (Appearance → Top Panel).'),
+        });
+        page.add(panelGroup);
+        addAcceleratorEntryRow(panelGroup, settings, 'panel-reveal-toggle',
+            _('Reveal / hide the auto-hidden panel'));
 
         return page;
     }

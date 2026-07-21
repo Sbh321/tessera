@@ -55,12 +55,21 @@ lib/gestureProgressTracker.js  Best-effort live preview of the active
                            workspace mapping (round of an absolute strip
                            index), verifies itself against every gesture's
                            real outcome, and no-ops safely if unsupported.
-lib/windowMover.js         Moves the focused window between workspaces
-                           (Shift+Super bindings), including inserting a
-                           brand-new workspace beside the current one.
+lib/windowMover.js         Focused-window actions (Shift+Super bindings):
+                           moves the window between workspaces (incl.
+                           inserting a brand-new workspace beside the
+                           current one) and toggles its maximized state.
                            Stateless composition of GNOME's own
-                           Main.wm.actionMoveWindow / insertWorkspace;
-                           nothing to clean up by construction.
+                           Main.wm.actionMoveWindow / insertWorkspace /
+                           Meta.Window.{,un}maximize; nothing to clean up
+                           by construction.
+lib/fullscreenManager.js   "Keybind fullscreen" (Super+F): true,
+                           panel-covering fullscreen with exit triggers
+                           (toggle key, a new app window, focused-Escape).
+                           Tracks only windows IT fullscreened, so it never
+                           interrupts an app's own video fullscreen. Owns a
+                           window-created + focus signal and a dynamically
+                           scoped Escape grab.
 lib/tiling/                The automatic-tiling subsystem (see its own
                            section below). Nothing outside this directory
                            knows tiling exists except KeybindingManager
@@ -128,10 +137,18 @@ Shift+Super+S --(Main.wm keybinding dispatch)--> KeybindingManager handler --> T
 
 Shift+Super+V --(Main.wm keybinding dispatch)--> KeybindingManager handler --> TilingManager.toggleFloating()
 
+Shift+Super+F --(Main.wm keybinding dispatch)--> KeybindingManager handler --> WindowMover.toggleFocusedMaximize()
+
+Super+F --(Main.wm keybinding dispatch)--> KeybindingManager handler --> FullscreenManager.toggleFocused()
+Escape (grabbed only while a keybind-fullscreened window is focused) --> FullscreenManager --> Meta.Window.unmake_fullscreen()
+global.display --(window-created)--> FullscreenManager (a new app leaves our fullscreens on its workspace)
+Shift+Super+S --(same dispatch)--> KeybindingManager handler --> FullscreenManager.exitWorkspace(active) + TilingManager.toggleStacked()
+
 window/workspace/monitor events --> TilingManager (debounced) --> layoutEngine (pure) --> Meta.Window.move_resize_frame()
                                                               --> StackTabBar (stacked workspaces only)
 
 this-extension's GSettings --(changed::panel-autohide)--> PanelAutoHideManager --> layoutManager.{un,}trackChrome(panelBox) + poll loop --> panelBox.translation_y
+Super+Z (panel-reveal-toggle; grabbed only while auto-hide active) --> PanelAutoHideManager latches _keyRevealLatched --> poll reveals/conceals panelBox
 this-extension's GSettings --(changed::panel-opacity)---> PanelAutoHideManager --> composes rgba background into Main.panel.style (re-asserted on notify::style; nothing written at 100%)
 
 global.display --(notify::focus-window)--> FocusBorderManager --> resolves color/geometry --> St actor position/size
@@ -153,8 +170,8 @@ either of the other two signals).
 
 ## Window movement (`lib/windowMover.js`)
 
-Both Shift+Super actions are deliberately thin compositions of GNOME
-Shell's own `WindowManager` methods rather than re-implementations — see
+The Shift+Super actions are deliberately thin compositions of GNOME
+Shell's / Mutter's own methods rather than re-implementations — see
 [`GNOME_NOTES.md`](GNOME_NOTES.md) for how each was verified against this
 install's extracted source:
 
@@ -172,6 +189,18 @@ install's extracted source:
   evaluated and rejected — it exists and would avoid shifting windows,
   but GNOME's own insertion path has every window-class edge case
   (transients, override-redirect, sticky) already handled and proven.
+- **Toggle maximize** = `Meta.Window.maximize()` / `unmaximize()` on the
+  focused toplevel (resolved via `find_root_ancestor()`, gated to `NORMAL`
+  windows) — the ordinary maximize the window's own maximize button and a
+  title-bar double-click produce, keeping the top panel and title bar.
+  It needs no tiling-specific code: with tiling on, a user-maximized
+  member is already an exclusive occupant (bucket suspends, tab bar
+  hides), opening a new app already un-maximizes it
+  (`TilingManager._exitMaximized`), and restoring re-tiles it; with tiling
+  off it is a plain maximize. This is why it lives here — a focused-window
+  action, not a tiling operation. (True panel-covering fullscreen is a
+  *different* mode with its own exit rules; it lives in
+  `lib/fullscreenManager.js`, below.)
 
 Decisions on the edge cases, all of which resolve to "do what GNOME's
 own model does":
@@ -203,6 +232,63 @@ own model does":
 `WindowMover` holds no state, connects no signals, and starts no timers —
 there is nothing to clean up, by construction; `disable()` is just
 dropping the reference.
+
+## Keybind fullscreen (`lib/fullscreenManager.js`)
+
+`Super+F` is *true* fullscreen (`Meta.Window.make_fullscreen()` — covers
+the whole monitor including the panel, no title bar), deliberately kept
+separate from `Shift+Super+F` **Maximize** (which keeps the panel). Unlike
+Maximize — a stateless one-liner in `WindowMover` because the tiler
+already gives it every behavior it needs — fullscreen has *exit triggers*
+that require state and signals, so it is its own module:
+
+- **The toggle key** leaves it (plain).
+- **Opening a new application window** leaves it, so the new window isn't
+  hidden behind a fullscreen one — the same intent as the tiler's
+  `_exitMaximized` for maximize, driven off `window-created`.
+- **Toggling stacked mode** (`Shift+Super+S`) on the fullscreen window's
+  workspace leaves it, so the layout toggle actually takes effect instead
+  of staying hidden behind the fullscreen — the `exitWorkspace()` entry
+  point, composed with `TilingManager.toggleStacked()` in
+  `KeybindingManager` (the two modules stay mutually unaware; the
+  dispatcher, which already holds both, clears fullscreen exactly as
+  `toggleStacked` clears maximize, and only when tiling is enabled).
+- **Escape**, while such a window is focused, leaves it.
+
+**The one decision that makes this safe: the module only ever touches
+windows the user fullscreened *through it*** (tracked in a `_fullscreened`
+Set). A window that fullscreens *itself* — a video player, a game,
+YouTube — is never tracked, so none of the exit triggers can ever
+interrupt real fullscreen content. The Set is kept honest by a per-window
+`notify::fullscreen` watch (drop it the instant it leaves fullscreen by
+any means) and an `unmanaged` watch (drop it if it closes), so it can
+never hold a window that is no longer in our fullscreen or no longer
+exists.
+
+**The Escape grab is scoped by focus, not by "something is fullscreen".**
+It is added (`Main.wm.addKeybinding` on the internal
+`window-fullscreen-escape` accelerator, default `Escape`) only while the
+*focused* toplevel is one of our tracked windows, and removed the moment
+focus moves elsewhere (re-synced on `notify::focus-window`). So Escape is
+intercepted from exactly the one window the user is looking at in our
+fullscreen — never globally, never from an ordinary window, never on
+another workspace. Intercepting Escape from that focused window is the
+accepted trade-off (an app that itself needs Escape, e.g. vim, won't
+receive it while held in this fullscreen — which is why Maximize, not
+this, is the everyday full-size mode, and why the accelerator is a
+user-overridable schema key). This is the one place besides
+`KeybindingManager` that grabs an accelerator, precisely because the grab
+is *conditional on live window state* rather than static — a shape
+`KeybindingManager`'s save/clear/watch/restore model doesn't fit.
+
+The tiler and this module compose without knowing about each other: both
+independently observe `notify::fullscreen`; when this module un-fullscreens
+a window, the tiler sees the state change and resumes the bucket / restores
+the tab bar on its own. **Cleanup:** `disable()` disconnects the
+window-created and focus signals and every per-window watch, clears the
+Set, and removes the Escape grab; windows keep whatever fullscreen state
+they were in (never yanked out just because the extension is cycling, e.g.
+around screen lock).
 
 ## Tiling subsystem (`lib/tiling/`)
 
@@ -331,10 +417,14 @@ auto-hidden) and stops the tab bar from floating over a maximized window.
 Two explicit user actions override a *maximize* rather than hiding behind
 it — opening a new tiling app (`_onWindowCreated`) and toggling stacked
 mode (`toggleStacked`) both call `_exitMaximized` first, so the action
-lands on the real window set. True fullscreen is deliberately *not*
-force-exited by either (a fullscreen video must not be interrupted by an
-unrelated app opening) — it still suspends the bucket and hides the tab
-bar, it just stays fullscreen until the user leaves it.
+lands on the real window set. The **tiler** deliberately never
+force-exits *fullscreen* on either (a fullscreen video must not be
+interrupted by an unrelated app) — a fullscreen window still suspends the
+bucket and hides the tab bar until the user leaves it. Those same two
+triggers *do* leave a **keybind**-fullscreen, but that is
+`FullscreenManager`'s doing on its own tracked windows (see its section),
+not the tiler's, and precisely never touches an app's own video
+fullscreen — so the rationale here is intact.
 
 **Stacked mode** is Hyprland's stacked layout as a strategy plus one
 piece of chrome: every tiled window gets the same content rectangle below
@@ -688,29 +778,55 @@ Wayland the stage input region is not used at all
 (`_updateRegions` checks `!Meta.is_wayland_compositor()`), so a
 translated-away panel neither reserves space nor steals clicks.
 
+**One consequence of releasing the strut: the overview search entry.**
+The overview's `ControlsManagerLayout` positions everything from
+`getWorkAreaForMonitor().y` (its `_workAreaBox`), which normally starts
+*below* the panel because of the strut — with the strut released it
+starts at the monitor top, so the "Type to search" entry lands under the
+panel (which is revealed in the overview). The module gives
+`Main.overview.searchEntry` a `margin-top` of ~1.9x the panel height
+while auto-hide is active (`_syncOverviewTopMargin`, refreshed on each
+overview `showing` so it tracks the current panel height), which grows
+the entry's box and flows the whole top-anchored stack down clear of the
+panel; the bottom-anchored dash is untouched. It is cleared when
+auto-hide turns off (the returning strut makes the overview reserve the
+panel on its own), and the whole thing is guarded so a future shell
+change costs only the offset, never a crash. Preferred over
+re-asserting the strut in the overview, which would churn a
+`workareas-changed` retile of every window on each overview open/close.
+
 **One poll loop instead of a web of triggers.** A single 100ms tick
-calls `global.get_pointer()`, which answers *both* inputs this feature
-needs — pointer position and held modifiers — and re-derives the
+calls `global.get_pointer()` for the pointer position and re-derives the
 reveal/conceal decision from scratch: overview visible, active
 workspace empty (no unminimized, taskbar-worthy window on the primary
-monitor — nothing for the panel to obscure), Super held (MOD4, plus
-`SUPER_MASK` defensively), an open panel menu
+monitor — nothing for the panel to obscure), the reveal keybinding's
+latch (below), an open panel menu
 (`Main.panel.menuManager.activeMenu` — hiding would tear a menu off its
 anchor), keyboard focus inside the panel (Ctrl+Alt+Tab), or the pointer
 in the reveal band. The band is asymmetric on purpose — a 1px top edge
 while hidden, the full panel strip while revealed — which is the
 hysteresis that prevents flapping at the boundary. This is the same
 recompute-from-ground-truth posture as the rest of the project: there
-are no barriers, hot-edge actors, or global key grabs to leak or go
+are no barriers or hot-edge actors to leak or go
 stale, a missed condition self-corrects on the next tick, and the cost
 (one C call at 10Hz) is negligible. The trade-off, accepted: reveal
 latency is up to one tick (~100ms), which reads as a deliberate
 dock-like delay rather than lag.
 
-**Cleanup:** `disable()` removes the poll source, cancels any running
-slide transition, restores `translation_y = 0`, and re-registers the
-panelBox with its original tracking parameters — the shell is bit-for-bit
-back to stock.
+**The keyboard reveal is a grabbed accelerator, not a polled modifier**
+(an ordinary key like `Z` never appears in the pointer's modifier mask).
+`panel-reveal-toggle` (default `Super+Z`, customizable in Preferences) is
+grabbed only while auto-hide is active — added in `_activate()`, removed
+in `_deactivate()`, so it never consumes `Super+Z` when the feature is
+off — and its handler flips a `_keyRevealLatched` boolean that
+`_shouldReveal()` honors like any other condition: press to show, press
+to hide.
+
+**Cleanup:** `disable()` removes the poll source, releases the reveal
+keybinding grab, clears the overview search-entry margin, cancels any
+running slide transition, restores `translation_y = 0`, and re-registers
+the panelBox with its original tracking parameters — the shell is
+bit-for-bit back to stock.
 
 **Screen lock:** the extension declares `"session-modes": ["user",
 "unlock-dialog"]`, so lock does NOT disable it. Auto-hide stays active

@@ -9,6 +9,7 @@ import {KeybindingManager} from './lib/keybindingManager.js';
 import {NativeIndicatorHider} from './lib/nativeIndicatorHider.js';
 import {AccentColorTracker} from './lib/accentColor.js';
 import {WindowMover} from './lib/windowMover.js';
+import {FullscreenManager} from './lib/fullscreenManager.js';
 import {TilingManager} from './lib/tiling/tilingManager.js';
 import {FocusBorderManager} from './lib/focusBorder.js';
 import {PanelAutoHideManager} from './lib/panelAutoHide.js';
@@ -50,11 +51,15 @@ export default class TesseraExtension extends Extension {
 
         this._windowMover = new WindowMover();
 
+        this._fullscreenManager = new FullscreenManager(this._settingsManager);
+        this._fullscreenManager.enable();
+
         this._tilingManager = new TilingManager(this._settingsManager);
         this._tilingManager.enable();
 
         this._keybindingManager = new KeybindingManager(
-            this._settingsManager, this._windowMover, this._tilingManager);
+            this._settingsManager, this._windowMover, this._tilingManager,
+            this._fullscreenManager);
         this._keybindingManager.enable();
 
         this._nativeIndicatorHider = new NativeIndicatorHider(this._settingsManager);
@@ -83,6 +88,10 @@ export default class TesseraExtension extends Extension {
 
         this._keybindingManager.disable();
         this._keybindingManager = null;
+
+        // After the keybindings that dispatch into it are gone.
+        this._fullscreenManager.disable();
+        this._fullscreenManager = null;
 
         this._tilingManager.disable();
         this._tilingManager = null;

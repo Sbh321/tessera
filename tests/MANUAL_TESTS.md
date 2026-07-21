@@ -419,6 +419,51 @@ extension.
       it back. Dropping a stacked workspace to one non-floated member via
       float still auto-exits stacked (float ends membership like a move).
 
+## Toggle maximize (Shift+Super+F)
+
+- [ ] Focus a normal window and press Shift+Super+F: it maximizes to fill
+      the work area but KEEPS the top panel and title bar visible (exactly
+      like the window's maximize button / a title-bar double-click). Press
+      again: it restores / re-tiles.
+- [ ] On a stacked workspace, maximizing hides the tab bar; restoring
+      brings it back (exclusive-occupant path).
+- [ ] With tiling on, maximize a window then open a new app: the maximize
+      is released and both tile (TilingManager._exitMaximized).
+- [ ] No focused window / a focused dock or panel: clean no-op.
+- [ ] A focused dialog maximizes its parent window, never the dialog alone.
+
+## Toggle fullscreen (Super+F)
+
+- [ ] Focus a normal window and press Super+F: it goes TRUE fullscreen —
+      covers the panel and everything, no title bar (YouTube-video style),
+      distinct from Shift+Super+F maximize. Press Super+F again: it leaves
+      fullscreen and returns to its previous geometry.
+- [ ] Works with tiling both ON and OFF.
+- [ ] On a stacked workspace, fullscreening hides the tab bar; leaving it
+      brings the bar back.
+- [ ] **Escape leaves it — but only while focused.** With a window in
+      Super+F fullscreen and focused, press Escape: it leaves fullscreen.
+      Then verify Escape is NOT swallowed otherwise: with no keybind-
+      fullscreen active, Escape works normally in every app (menus close,
+      etc.).
+- [ ] **A new app window leaves our fullscreen.** Super+F a window, then
+      launch another app onto the same workspace: the fullscreen window
+      drops back out so the new one is visible.
+- [ ] **Toggling stacked leaves our fullscreen.** With a window in Super+F
+      fullscreen on a workspace that has 2+ windows, press Shift+Super+S:
+      the window leaves fullscreen and the stacked layout takes effect
+      (rather than the toggle doing nothing behind the fullscreen). With
+      tiling disabled, Shift+Super+S does NOT disturb the fullscreen.
+- [ ] **An app's OWN fullscreen is never force-exited.** Play a video and
+      let the PLAYER go fullscreen (its own button, not Super+F): opening a
+      new app or pressing Escape must NOT be intercepted by the extension —
+      only the app/player controls it. (The extension only tracks windows
+      it fullscreened via Super+F.)
+- [ ] No focused window / a focused dock or panel: Super+F is a clean
+      no-op, no errors in the journal.
+- [ ] A focused dialog fullscreens its parent window, never the dialog
+      alone (find_root_ancestor).
+
 ## Panel auto-hide
 
 - [ ] Off by default: on a fresh install the top panel behaves like
@@ -442,11 +487,14 @@ extension.
       pointer or key input. Opening a window on it slides the panel
       away again (once the pointer is off the top), and the new window
       still gets the full reclaimed height.
-- [ ] Press and HOLD Super with the pointer anywhere: the panel slides
-      in and stays for as long as Super is held; releasing it (which
-      opens the overview — expected GNOME behavior for a bare Super
-      tap) or releasing after a combo like Super+2 slides it away
-      again.
+- [ ] **Reveal keybinding (default Super+Z).** With the panel hidden and
+      the pointer away from the top edge, press Super+Z: the panel slides
+      in and STAYS (latched). Press Super+Z again: it slides away. Rebind
+      it in Preferences → Keybindings → Panel and confirm the new combo
+      works and Super+Z no longer does.
+- [ ] The reveal keybinding is scoped to auto-hide: turn "Auto-hide the
+      top panel" OFF and confirm Super+Z is no longer grabbed (it reaches
+      apps / does nothing), then ON again and it works.
 - [ ] Open the calendar or quick-settings from the revealed panel, then
       move the pointer down into the open menu: the panel must NOT
       slide away while the menu is open; closing the menu lets it hide.
@@ -458,6 +506,12 @@ extension.
       leaving it the panel's slide-out starts together with the
       overview's zoom-out animation — no visible pause where the panel
       lingers before moving (pointer away from the top).
+- [ ] **No overlap of the panel and the "Type to search" entry.** In the
+      overview (Super tap and 3-finger swipe up), the search entry sits
+      clear BELOW the panel, not underneath it. Confirm with auto-hide ON;
+      compare with auto-hide OFF (must look the same). Type a query — the
+      results area is also clear of the panel. Turn auto-hide off while in
+      the overview: the entry stays correctly placed (no leftover margin).
 - [ ] Fullscreen a window (e.g. a video): the panel does not appear,
       not even when the pointer touches the top edge (stock GNOME
       fullscreen behavior); leaving fullscreen restores auto-hide
