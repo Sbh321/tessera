@@ -121,34 +121,7 @@ export default class TesseraPreferences extends ExtensionPreferences {
 
         window.add(this._buildAppearancePage(settings));
         window.add(this._buildTilingPage(settings));
-        window.add(this._buildFocusBorderPage(settings));
         window.add(this._buildKeybindingsPage(settings));
-    }
-
-    _buildFocusBorderPage(settings) {
-        const page = new Adw.PreferencesPage({
-            title: _('Focus Border'),
-            icon_name: 'window-symbolic',
-        });
-
-        const group = new Adw.PreferencesGroup({
-            description: _(
-                'Hyprland-style hint border around the currently focused ' +
-                'window, on every workspace and monitor. Independent of ' +
-                'tiling -- floating windows get one too. Color: hex e.g. ' +
-                '#3584e4, or leave empty to follow the current GNOME theme ' +
-                'accent color (the same logic as the active workspace square).'),
-        });
-        page.add(group);
-        addSwitchRow(group, settings, 'enable-focus-border',
-            _('Enable focus border'), '');
-        addColorEntryRow(group, settings, 'focus-border-color', _('Color'));
-        addSpinRow(group, settings, 'focus-border-width', _('Width'),
-            _('Thickness of the border, in pixels'), {lower: 1, upper: 12});
-        addSpinRow(group, settings, 'focus-border-radius', _('Radius'),
-            _('Corner radius of the border, in pixels'), {lower: 0, upper: 32});
-
-        return page;
     }
 
     _buildTilingPage(settings) {
@@ -159,10 +132,7 @@ export default class TesseraPreferences extends ExtensionPreferences {
 
         const tilingGroup = new Adw.PreferencesGroup({
             description: _(
-                'Hyprland-style automatic tiling: normal windows are arranged ' +
-                'in a dwindle layout per workspace. Dialogs, minimized and ' +
-                'maximized windows float. Shift+Super+S toggles a stacked ' +
-                '(tabbed) layout per workspace.'),
+                'Shift+Super+S toggles a stacked (tabbed) layout per workspace.'),
         });
         page.add(tilingGroup);
         addSwitchRow(tilingGroup, settings, 'enable-tiling',
@@ -178,11 +148,7 @@ export default class TesseraPreferences extends ExtensionPreferences {
         const floatingGroup = new Adw.PreferencesGroup({
             title: _('Floating'),
             description: _(
-                'Shift+Super+V pops the focused window out of the layout ' +
-                'and floats it, centered and stacked above the tiled ' +
-                'windows; press again to re-tile it. A floating window can ' +
-                'be freely moved and resized -- the tiler never repositions ' +
-                'it. Per-window, not a separate layout mode.'),
+                'Shift+Super+V toggles floating for the focused window.'),
         });
         page.add(floatingGroup);
         addSpinRow(floatingGroup, settings, 'floating-window-size',
@@ -211,7 +177,7 @@ export default class TesseraPreferences extends ExtensionPreferences {
         page.add(topPanelGroup);
         addSwitchRow(topPanelGroup, settings, 'panel-autohide',
             _('Auto-hide the top panel'),
-            _('Slide the panel off-screen like a dock and reclaim its space; reveal it by touching the top edge with the pointer or holding the Super key. It stays visible while the workspace is empty'));
+            _('Slide the panel off-screen like a dock and reclaim its space; reveal it by touching the top edge with the pointer.'));
         addScaleRow(topPanelGroup, settings, 'panel-slide-time', _('Slide duration'),
             _('How long the panel takes to slide in or out, in milliseconds'),
             {lower: 50, upper: 2000, step: 50});
@@ -250,8 +216,6 @@ export default class TesseraPreferences extends ExtensionPreferences {
             _('Size of the workspace number label, in points'), {lower: 6, upper: 32});
         addComboRow(styleGroup, settings, 'font-weight', _('Font weight'),
             _('Weight of the workspace number label'), ['normal', 'bold', '600']);
-        addSwitchRow(styleGroup, settings, 'show-empty-workspaces', _('Show trailing empty workspace'),
-            _('GNOME keeps one empty workspace at the end when dynamic workspaces are on'));
 
         const colorGroup = new Adw.PreferencesGroup({
             title: _('Colors'),
@@ -263,6 +227,18 @@ export default class TesseraPreferences extends ExtensionPreferences {
         addColorEntryRow(colorGroup, settings, 'active-text-color', _('Active text'));
         addColorEntryRow(colorGroup, settings, 'inactive-text-color', _('Inactive text'));
 
+        const focusBorderGroup = new Adw.PreferencesGroup({
+            title: _('Focus Border'),
+        });
+        page.add(focusBorderGroup);
+        addSwitchRow(focusBorderGroup, settings, 'enable-focus-border',
+            _('Enable focus border'), '');
+        addColorEntryRow(focusBorderGroup, settings, 'focus-border-color', _('Color'));
+        addSpinRow(focusBorderGroup, settings, 'focus-border-width', _('Width'),
+            _('Thickness of the border, in pixels'), {lower: 1, upper: 12});
+        addSpinRow(focusBorderGroup, settings, 'focus-border-radius', _('Radius'),
+            _('Corner radius of the border, in pixels'), {lower: 0, upper: 32});
+
         return page;
     }
 
@@ -272,17 +248,17 @@ export default class TesseraPreferences extends ExtensionPreferences {
             icon_name: 'input-keyboard-symbolic',
         });
 
-        const masterGroup = new Adw.PreferencesGroup({
-            description: _(
-                'Super+1–9, Super+Left/Right and their Shift variants already ' +
-                'control other GNOME shortcuts by default (switching to favorite ' +
-                'apps, snapping windows, moving windows between monitors). ' +
-                'Enabling this temporarily clears those defaults and restores them ' +
-                'exactly when disabled.'),
-        });
-        page.add(masterGroup);
-        addSwitchRow(masterGroup, settings, 'enable-custom-keybindings',
-            _('Enable workspace and window-move keybindings'), '');
+        // const masterGroup = new Adw.PreferencesGroup({
+        //     description: _(
+        //         'Super+1–9, Super+Left/Right and their Shift variants already ' +
+        //         'control other GNOME shortcuts by default (switching to favorite ' +
+        //         'apps, snapping windows, moving windows between monitors). ' +
+        //         'Enabling this temporarily clears those defaults and restores them ' +
+        //         'exactly when disabled.'),
+        // });
+        // page.add(masterGroup);
+        // addSwitchRow(masterGroup, settings, 'enable-custom-keybindings',
+        //     _('Enable workspace and window-move keybindings'), '');
 
         const jumpGroup = new Adw.PreferencesGroup({
             title: _('Jump to Workspace'),

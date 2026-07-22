@@ -97,12 +97,6 @@
       <description>Hex color for the label text of inactive workspace squares. Empty string uses the current GNOME theme default.</description>
     </key>
 
-    <key name="show-empty-workspaces" type="b">
-      <default>true</default>
-      <summary>Show trailing empty workspace</summary>
-      <description>When dynamic workspaces are enabled, GNOME always keeps one empty trailing workspace. If disabled, that trailing workspace is not rendered in the indicator.</description>
-    </key>
-
     <!-- Top panel -->
 
     <key name="panel-autohide" type="b">
