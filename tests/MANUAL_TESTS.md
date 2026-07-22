@@ -233,6 +233,20 @@ extension.
 
 ## Tiling
 
+TODO: Need to rework if seen again:
+- [ ] **Freshly-mapped window settles onto its tile (gap glitch).**
+      Right after boot, open Brave (or another Chromium/Electron app) on an
+      empty workspace: it must end up with symmetric outer gaps on all four
+      sides. Watch for the bug this guards — the right/bottom gaps missing
+      while left/top look enlarged — which must self-correct within a
+      fraction of a second (as the window settles), NOT stay wrong until
+      you open another window or switch workspace. Repeat a few times, and
+      with other opens-maximized apps (Files, a browser). No errors in the
+      journal, and a window at rest afterward never twitches.
+- [ ] While a brand-new window is still settling (first ~2s), grab its
+      edge and resize it: the drag is smooth (not fighting you), and on
+      release it snaps back to its tile — same as resizing any tiled
+      window.
 - [ ] Open 1 window: it fills the work area minus outer gaps. Open a
       2nd: 50/50 side-by-side. A 3rd (with the 2nd still focused):
       splits the second half vertically (dwindle spiral). Continue to

@@ -398,8 +398,32 @@ buckets). Rapid bursts — an app spawning several windows, an
 pass. Application is loop-proof: a window is only moved when its frame
 rect differs from the target, so applying a layout converges rather than
 re-triggering itself, and the manager deliberately does *not* listen to
-size/position changes (only `grab-op-end`, which snaps a user-dragged
-tiled window back into its slot).
+size/position changes in steady state (only `grab-op-end`, which snaps a
+user-dragged tiled window back into its slot).
+
+**The one exception: a post-creation settling watch.** A freshly mapped
+window often finalizes its own size/position across several async
+configures *after* `window-created`/`shown` — CSD frame extents arriving,
+an opens-maximized state being undone, a multi-step Wayland configure
+(Chromium/Electron apps are the worst offenders). The first layout pass
+can land before that settles, so the window ignores the size we asked for
+and keeps its own; the visible symptom is a tiled window whose **right and
+bottom outer gaps vanish** (it is larger than its tile) while the left and
+top look enlarged, stuck that way until some unrelated event triggers a
+relayout that finally lands — the exact "wrong gaps after opening Brave on
+a fresh workspace, fixes itself once I do something" report. Because a
+plain relayout with the *same* work area heals it, the computed target was
+always right; only the timing was wrong. So `_watchSettling` connects
+`size-changed`/`position-changed` on the new window for a short grace
+(`MAP_SETTLE_GRACE_MS`, 2.5s) and re-queues its layout on each, healing it
+the instant the client stops fighting, then tears the watch down. It is
+scoped to that grace, not permanent, precisely so it does not relayout on
+every drag of a floating window or fight a user resizing a tiled one — and
+even within the grace it skips the re-apply while a move/resize grab is in
+progress (`get_grab_op`), deferring to the same `grab-op-end` snap as
+steady state. The re-apply is loop-proof by the same frame-vs-target check
+as everything else. The watch is torn down on grace-expiry, on `unmanaged`
+(via `_untrackWindow`), and on `disable()`.
 
 **What floats** (see `windowFilter.js` for the full reasoning): non-NORMAL
 window types (dialogs, utility, splash, menus, docks…), transients,
