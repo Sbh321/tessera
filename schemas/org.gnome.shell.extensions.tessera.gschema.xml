@@ -189,13 +189,6 @@
       <description>Thickness, in pixels, of the focus border.</description>
     </key>
 
-    <key name="focus-border-radius" type="i">
-      <default>8</default>
-      <range min="0" max="32"/>
-      <summary>Focus border radius</summary>
-      <description>Corner radius, in pixels, of the focus border.</description>
-    </key>
-
     <!-- Keybindings -->
 
     <key name="enable-custom-keybindings" type="b">

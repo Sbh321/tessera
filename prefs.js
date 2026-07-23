@@ -285,8 +285,6 @@ export default class TesseraPreferences extends ExtensionPreferences {
         addColorEntryRow(focusBorderGroup, settings, 'focus-border-color', _('Color'));
         addSpinRow(focusBorderGroup, settings, 'focus-border-width', _('Width'),
             _('Thickness of the border, in pixels'), {lower: 1, upper: 12});
-        addSpinRow(focusBorderGroup, settings, 'focus-border-radius', _('Radius'),
-            _('Corner radius of the border, in pixels'), {lower: 0, upper: 32});
 
         return page;
     }

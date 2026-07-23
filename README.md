@@ -61,9 +61,11 @@ windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
   Preferences, leaving just the workspace manager.
 - **Focus border**: a Hyprland-style hint border around the currently
   focused window, on every workspace and monitor — independent of
-  tiling, so floating windows get one too. Color, width, and radius are
-  configurable in Preferences; the default color follows your accent
-  color, same logic as the active workspace square.
+  tiling, so floating windows get one too. Color and width are
+  configurable in Preferences; the corner radius follows the window
+  (rounded like GNOME's windows, square when maximized). The default
+  color follows your accent color, same logic as the active workspace
+  square.
 - **Top panel auto-hide** (off by default): the GNOME top panel slides
   off-screen like a dock and windows reclaim its space; it slides back
   in when the pointer touches the top edge, when the reveal keybinding
@@ -198,8 +200,8 @@ Open via the Extensions app, or:
 gnome-extensions prefs tessera@sbh321.github.io
 ```
 
-Covers tiling on/off and gaps, the focus border's on/off switch, color,
-width, and radius, top-panel auto-hide (with adjustable slide duration)
+Covers tiling on/off and gaps, the focus border's on/off switch, color
+and width, top-panel auto-hide (with adjustable slide duration)
 and background opacity, panel position, whether to hide
 GNOME's built-in Activities button, square
 size/spacing/radius/padding (with Small/Medium/Large/XL one-click
