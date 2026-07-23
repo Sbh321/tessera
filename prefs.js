@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 import Adw from 'gi://Adw';
+import Gdk from 'gi://Gdk';
 import Gio from 'gi://Gio';
 import Gtk from 'gi://Gtk';
 
@@ -84,12 +85,51 @@ function addPresetRow(group, settings, title, subtitle, presets) {
     return row;
 }
 
+// #rrggbb from a Gdk.RGBA (alpha dropped -- these settings are plain hex
+// and the picker below runs with alpha disabled).
+function rgbaToHex(rgba) {
+    const toByte = v => Math.round(v * 255).toString(16).padStart(2, '0');
+    return `#${toByte(rgba.red)}${toByte(rgba.green)}${toByte(rgba.blue)}`;
+}
+
 function addColorEntryRow(group, settings, key, title) {
     const row = new Adw.EntryRow({
         title,
     });
     row.set_text(settings.get_string(key));
     settings.bind(key, row, 'text', Gio.SettingsBindFlags.DEFAULT);
+
+    // A swatch button that opens GTK's color chooser (which also offers the
+    // screen eyedropper). Kept two-way in sync with the hex text field:
+    // picking a color writes #rrggbb back, and editing/clearing the text
+    // updates the swatch. Empty (== use the theme default) leaves the last
+    // swatch shown; clearing the text is still how you reset to the theme.
+    const button = new Gtk.ColorDialogButton({
+        dialog: new Gtk.ColorDialog({with_alpha: false}),
+        valign: Gtk.Align.CENTER,
+    });
+
+    let syncing = false;
+    const syncButtonFromSettings = () => {
+        const rgba = new Gdk.RGBA();
+        if (rgba.parse(settings.get_string(key))) {
+            syncing = true;
+            button.set_rgba(rgba);
+            syncing = false;
+        }
+    };
+    syncButtonFromSettings();
+
+    button.connect('notify::rgba', () => {
+        if (syncing)
+            return;
+        const hex = rgbaToHex(button.get_rgba());
+        if (hex !== settings.get_string(key))
+            settings.set_string(key, hex);
+    });
+    settings.connect(`changed::${key}`, syncButtonFromSettings);
+
+    row.add_suffix(button);
     group.add(row);
     return row;
 }
