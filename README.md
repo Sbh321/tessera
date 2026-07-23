@@ -74,6 +74,18 @@ windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
   normal solid background (100%, the default) down to fully
   transparent. Panel text and icons are unaffected, and it works with
   or without auto-hide.
+- **Quick menu** (off by default): an optional button on the right of
+  the top panel with a **Overview | Tools | Keys** tabbed popup.
+  *Overview* has the most-used quick toggles (tiling, focus border,
+  panel auto-hide), inner/outer gap steppers, and a shortcut to the
+  full settings. *Tools* has a **port killer** (`Shift+Super+P`, SIGTERMs
+  whatever is listening on a TCP port) and a **color picker**
+  (`Shift+Super+C`, a large magnified lens; click to copy the pixel's
+  hex to the clipboard), each keeping a history of the last 20 colors
+  picked / ports killed. *Keys* is a read-only reference of every
+  configured keybinding. Both tool shortcuts work whether or not the
+  menu is shown; toggle the menu on in Preferences → Appearance →
+  Quick Menu.
 
 ### Workspaces & windows
 

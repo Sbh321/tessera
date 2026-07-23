@@ -13,6 +13,9 @@ import {FullscreenManager} from './lib/fullscreenManager.js';
 import {TilingManager} from './lib/tiling/tilingManager.js';
 import {FocusBorderManager} from './lib/focusBorder.js';
 import {PanelAutoHideManager} from './lib/panelAutoHide.js';
+import {QuickMenu} from './lib/quickMenu.js';
+import {pickColor} from './lib/colorPicker.js';
+import {PortKillerDialog} from './lib/portKiller.js';
 
 // SESSION-MODES JUSTIFICATION (metadata.json declares
 // ["user", "unlock-dialog"], which cannot carry this comment itself):
@@ -57,9 +60,16 @@ export default class TesseraExtension extends Extension {
         this._tilingManager = new TilingManager(this._settingsManager);
         this._tilingManager.enable();
 
+        // Quick-tools launchers, shared by the keybindings and the quick
+        // menu. Each dialog/overlay is transient and self-tearing-down.
+        this._tools = {
+            openPortKiller: () => new PortKillerDialog(this._settingsManager).open(),
+            openColorPicker: () => pickColor(this._settingsManager),
+        };
+
         this._keybindingManager = new KeybindingManager(
             this._settingsManager, this._windowMover, this._tilingManager,
-            this._fullscreenManager);
+            this._fullscreenManager, this._tools);
         this._keybindingManager.enable();
 
         this._nativeIndicatorHider = new NativeIndicatorHider(this._settingsManager);
@@ -71,9 +81,21 @@ export default class TesseraExtension extends Extension {
 
         this._panelAutoHideManager = new PanelAutoHideManager(this._settingsManager);
         this._panelAutoHideManager.enable();
+
+        // Optional right-hand panel menu, off by default. Its whole
+        // lifecycle is driven by the enable-quick-menu setting.
+        this._quickMenu = null;
+        this._quickMenuChangedId = this._settingsManager.gsettings.connect(
+            'changed::enable-quick-menu', () => this._syncQuickMenu());
+        this._syncQuickMenu();
     }
 
     disable() {
+        this._settingsManager.gsettings.disconnect(this._quickMenuChangedId);
+        this._quickMenuChangedId = null;
+        this._destroyQuickMenu();
+        this._tools = null;
+
         this._panelAutoHideManager.disable();
         this._panelAutoHideManager = null;
 
@@ -117,5 +139,32 @@ export default class TesseraExtension extends Extension {
         this._indicator = new WorkspaceIndicator(this._settingsManager, this._accentColorTracker);
         Main.panel.addToStatusArea(
             this.uuid, this._indicator, 0, this._settingsManager.panelPosition);
+    }
+
+    _syncQuickMenu() {
+        if (this._settingsManager.enableQuickMenu)
+            this._createQuickMenu();
+        else
+            this._destroyQuickMenu();
+    }
+
+    _createQuickMenu() {
+        if (this._quickMenu)
+            return;
+
+        this._quickMenu = new QuickMenu(
+            this._settingsManager, () => this.openPreferences());
+        // Always in the right box, at the leftmost position within it, so it
+        // sits ahead of the stock system indicators.
+        Main.panel.addToStatusArea(
+            `${this.uuid}-quick-menu`, this._quickMenu, 0, 'right');
+    }
+
+    _destroyQuickMenu() {
+        if (!this._quickMenu)
+            return;
+
+        this._quickMenu.destroy();
+        this._quickMenu = null;
     }
 }

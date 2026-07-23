@@ -119,6 +119,26 @@
       <description>Opacity of the top panel's background, in percent. 100 keeps the theme's normal solid background untouched; lower values make it translucent, 0 fully transparent. Panel text and icons are unaffected. Independent of auto-hide.</description>
     </key>
 
+    <key name="enable-quick-menu" type="b">
+      <default>false</default>
+      <summary>Show the Tessera quick menu in the top panel</summary>
+      <description>Adds a Tessera button to the right side of the top panel. Its popup is organised into Overview / Tools / Keys tabs: quick toggles (tiling, focus border, panel auto-hide) and gap steppers, quick tools (a port killer and a screen color picker) with their recent history, and a read-only reference of every configured keybinding. Off by default; the extension's other features work regardless of this setting.</description>
+    </key>
+
+    <!-- Tools -->
+
+    <key name="picked-colors" type="as">
+      <default>[]</default>
+      <summary>Recently picked colors</summary>
+      <description>History of the most recent colors chosen with the color picker, newest first, as #RRGGBB hex strings. Capped at 20 entries. Shown in the quick menu's Tools tab; safe to clear.</description>
+    </key>
+
+    <key name="killed-ports" type="as">
+      <default>[]</default>
+      <summary>Recently killed ports</summary>
+      <description>History of the most recent ports acted on with the port killer, newest first, as short display strings (port number, optionally with the process name). Capped at 20 entries. Shown in the quick menu's Tools tab; safe to clear.</description>
+    </key>
+
     <!-- Tiling -->
 
     <key name="enable-tiling" type="b">
@@ -296,6 +316,18 @@
       <default>['&lt;Super&gt;f']</default>
       <summary>Toggle fullscreen for the focused window</summary>
       <description>Put the focused window into true fullscreen (covering the whole monitor, including the top panel), or leave fullscreen if already in it. While a window fullscreened this way is focused, Escape leaves fullscreen; opening a new application window also leaves it.</description>
+    </key>
+
+    <key name="tool-port-killer" type="as">
+      <default>['&lt;Shift&gt;&lt;Super&gt;p']</default>
+      <summary>Open the port killer</summary>
+      <description>Opens the port-killer dialog (type a TCP port, SIGTERM whatever is listening on it). Also reachable from the quick menu's Tools tab. Independent of the quick menu setting.</description>
+    </key>
+
+    <key name="tool-color-picker" type="as">
+      <default>['&lt;Shift&gt;&lt;Super&gt;c']</default>
+      <summary>Open the color picker</summary>
+      <description>Starts the screen color picker (click a pixel to copy its #RRGGBB hex to the clipboard). Also reachable from the quick menu's Tools tab. Independent of the quick menu setting.</description>
     </key>
 
     <key name="panel-reveal-toggle" type="as">

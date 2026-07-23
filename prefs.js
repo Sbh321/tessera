@@ -186,6 +186,15 @@ export default class TesseraPreferences extends ExtensionPreferences {
             _('100% is the normal solid panel background; lower values make it translucent'),
             {lower: 0, upper: 100, step: 5});
 
+        const quickMenuGroup = new Adw.PreferencesGroup({
+            title: _('Quick Menu'),
+            description: _('A button on the right of the top panel with the most-used controls, quick tools (port killer, color picker) and a keybinding reference.'),
+        });
+        page.add(quickMenuGroup);
+        addSwitchRow(quickMenuGroup, settings, 'enable-quick-menu',
+            _('Show the quick menu'),
+            _('Adds the Tessera menu to the top panel. Off by default.'));
+
         const sizeGroup = new Adw.PreferencesGroup({title: _('Size & Spacing')});
         page.add(sizeGroup);
         addPresetRow(sizeGroup, settings, _('Preset'),
@@ -311,6 +320,14 @@ export default class TesseraPreferences extends ExtensionPreferences {
         page.add(panelGroup);
         addAcceleratorEntryRow(panelGroup, settings, 'panel-reveal-toggle',
             _('Reveal / hide the auto-hidden panel'));
+
+        const toolsGroup = new Adw.PreferencesGroup({
+            title: _('Tools'),
+            description: _('Reachable from the quick menu’s Tools tab too; these work regardless of the quick menu setting.'),
+        });
+        page.add(toolsGroup);
+        addAcceleratorEntryRow(toolsGroup, settings, 'tool-port-killer', _('Port killer'));
+        addAcceleratorEntryRow(toolsGroup, settings, 'tool-color-picker', _('Color picker'));
 
         return page;
     }

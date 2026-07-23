@@ -97,6 +97,23 @@ lib/panelAutoHide.js       Dock-style auto-hide for the GNOME top panel
                            revealing on top-edge hover, held Super, the
                            overview, and open panel menus. Public API
                            only; zero footprint while the setting is off.
+lib/quickMenu.js           Optional right-hand panel menu (off by default,
+                           gated on enable-quick-menu): a PanelMenu.Button
+                           whose popup is a segmented Overview | Tools | Keys
+                           tab set (toggles + gap steppers; tool launchers +
+                           recent-color/killed-port history; a read-only
+                           keybinding reference). extension.js owns its
+                           create/destroy lifecycle.
+lib/portKiller.js          The "port killer" tool: a modal that SIGTERMs
+                           whatever listens on a typed TCP port (lsof/ss
+                           discovery) and records it in the killed-ports
+                           history. Launched by a keybinding or the menu.
+lib/colorPicker.js         The "color picker" tool: a full-screen overlay
+                           modelled on GNOME's own PickPixel (GrabHelper +
+                           BindConstraint + ClickAction + Shell.Screenshot.
+                           pick_color) but with a large color lens/hex
+                           readout trailing the pointer. Copies #RRGGBB to
+                           the clipboard and records it in picked-colors.
 lib/utils.js               Pure helper functions (CSS string building, hex
                            color validation). No GNOME API usage.
 prefs.js                   Adwaita preferences window. Separate process

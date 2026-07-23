@@ -107,6 +107,184 @@
 }
 
 /*
+ * Quick menu (lib/quickMenu.js). Neutral, theme-agnostic grays matching
+ * the rest of the extension; leans on GNOME's own popup-menu chrome for
+ * everything else so it inherits the shell theme's light/dark styling.
+ */
+.tessera-stepper {
+    spacing: 6px;
+}
+
+.tessera-stepper-value {
+    min-width: 28px;
+    text-align: center;
+    font-feature-settings: "tnum";
+    font-weight: bold;
+}
+
+.tessera-stepper-button {
+    border-radius: 99px;
+    padding: 2px;
+    min-width: 24px;
+    min-height: 24px;
+    color: inherit;
+    background-color: rgba(127, 127, 127, 0.25);
+    transition-duration: 100ms;
+}
+
+.tessera-stepper-button:hover {
+    background-color: rgba(127, 127, 127, 0.45);
+}
+
+.tessera-stepper-button:active {
+    background-color: rgba(127, 127, 127, 0.6);
+}
+
+/* Segmented Overview | Tools | Keys tab bar. */
+.tessera-tabbar {
+    spacing: 4px;
+    padding: 3px;
+    border-radius: 10px;
+    background-color: rgba(127, 127, 127, 0.15);
+}
+
+.tessera-tab {
+    padding: 4px 14px;
+    border-radius: 7px;
+    color: inherit;
+    text-align: center;
+    transition-duration: 100ms;
+}
+
+.tessera-tab:hover {
+    background-color: rgba(127, 127, 127, 0.25);
+}
+
+.tessera-tab.selected {
+    background-color: rgba(127, 127, 127, 0.5);
+    font-weight: bold;
+}
+
+/*
+ * Read-only keybinding reference (Keys tab), laid out in two balanced
+ * columns so the popup never runs off the bottom of the screen. Each row
+ * is label-left / accelerator-right.
+ */
+.tessera-keys-columns {
+    spacing: 24px;
+}
+
+.tessera-keys-column {
+    spacing: 2px;
+    min-width: 200px;
+}
+
+.tessera-keys-header {
+    font-weight: bold;
+    font-size: 0.85em;
+    color: rgba(127, 127, 127, 0.9);
+    padding: 8px 0 2px 0;
+}
+
+.tessera-keys-row {
+    spacing: 16px;
+}
+
+.tessera-keybinding-accel {
+    font-feature-settings: "tnum";
+    font-size: 0.9em;
+    color: rgba(127, 127, 127, 0.9);
+}
+
+/* Tools-tab history: color swatch chips and killed-port lines. */
+.tessera-history {
+    spacing: 6px;
+    padding: 2px 0;
+}
+
+.tessera-chip-row {
+    spacing: 6px;
+}
+
+.tessera-color-chip {
+    min-width: 22px;
+    min-height: 22px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    transition-duration: 100ms;
+}
+
+.tessera-color-chip:hover {
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
+.tessera-history-empty {
+    font-size: 0.9em;
+    color: rgba(127, 127, 127, 0.9);
+}
+
+.tessera-history-port {
+    font-feature-settings: "tnum";
+    font-size: 0.95em;
+    padding: 1px 0;
+}
+
+/*
+ * Color-picker lens (lib/colorPicker.js): the large swatch + hex readout
+ * that trails the pointer, ~5x GNOME's own tiny recolored cursor preview.
+ * The pixel sizes here are kept in sync with the positioning constants in
+ * colorPicker.js (LENS_WIDTH/LENS_HEIGHT).
+ */
+.tessera-color-lens {
+    background-color: rgba(20, 20, 20, 0.92);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 12px;
+    spacing: 8px;
+}
+
+.tessera-color-lens-swatch {
+    min-width: 120px;
+    min-height: 120px;
+    border-radius: 60px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.tessera-color-lens-hex {
+    color: #ffffff;
+    font-size: 15pt;
+    font-weight: bold;
+    text-align: center;
+    font-feature-settings: "tnum";
+}
+
+/* Port-killer modal (lib/portKiller.js). */
+.tessera-dialog-content {
+    spacing: 10px;
+    padding: 12px 8px;
+    min-width: 320px;
+}
+
+.tessera-dialog-title {
+    font-weight: bold;
+    font-size: 1.15em;
+}
+
+.tessera-dialog-subtitle {
+    color: rgba(127, 127, 127, 0.9);
+    padding-bottom: 4px;
+}
+
+.tessera-dialog-entry {
+    min-height: 32px;
+}
+
+.tessera-dialog-status {
+    padding-top: 4px;
+    color: rgba(127, 127, 127, 0.9);
+}
+
+/*
  * Collapses GNOME's own built-in Activities-button workspace dots (see
  * lib/nativeIndicatorHider.js for why this exists and how it's scoped).
  * Zero size rather than display:none -- St's CSS engine doesn't support
