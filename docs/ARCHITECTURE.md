@@ -55,10 +55,12 @@ lib/gestureProgressTracker.js  Best-effort live preview of the active
                            workspace mapping (round of an absolute strip
                            index), verifies itself against every gesture's
                            real outcome, and no-ops safely if unsupported.
-lib/windowMover.js         Focused-window actions (Shift+Super bindings):
+lib/windowMover.js         Focused-window and workspace-content actions:
                            moves the window between workspaces (incl.
                            inserting a brand-new workspace beside the
-                           current one) and toggles its maximized state.
+                           current one), swaps all contents of the current
+                           workspace with another (Shift+Alt+N), and
+                           toggles its maximized state.
                            Stateless composition of GNOME's own
                            Main.wm.actionMoveWindow / insertWorkspace /
                            Meta.Window.{,un}maximize; nothing to clean up
@@ -704,8 +706,11 @@ both just richer population of the `floatingWindows` Set).
 
 ## Focus border (`lib/focusBorder.js`)
 
-A Hyprland-style hint border drawn around the currently focused window.
-Deliberately built as its own module, entirely independent of
+A Hyprland-style hint border drawn around the currently focused window,
+with a single configurable corner radius applied uniformly to every
+window (there is no API to read an app's own radius, so it is a user
+setting rather than something matched per app). Deliberately built as
+its own module, entirely independent of
 `lib/tiling/` -- a floating window gets a border exactly like a tiled
 one, and the feature works with tiling disabled. This mirrors the
 project's existing separation of concerns: one visual concern per
@@ -733,6 +738,14 @@ configured border width on every side (a picture frame, never an
 overlap) -- it can never obscure window content, and `reactive: false`
 on the actor means it can never intercept a click either, so it's purely
 decorative chrome layered via `Main.layoutManager.addChrome()`.
+
+**Only a real occupant of the current workspace is bordered.** The guard in
+`_sync()` excludes on-all-workspaces (sticky) windows and any window not
+literally on the active workspace. This is what keeps an *empty*
+workspace border-free: a sticky window (e.g. secondary-monitor windows
+under "workspaces only on primary", or a pinned window) counts as present
+on every workspace, so without this it would get a border on a workspace
+that looks empty.
 
 **Which windows qualify** is deliberately a *different* filter from
 `lib/tiling/windowFilter.js`'s `isTileable()`, not a reuse of it: tiling

@@ -61,11 +61,10 @@ windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
   Preferences, leaving just the workspace manager.
 - **Focus border**: a Hyprland-style hint border around the currently
   focused window, on every workspace and monitor — independent of
-  tiling, so floating windows get one too. Color and width are
-  configurable in Preferences; the corner radius follows the window
-  (rounded like GNOME's windows, square when maximized). The default
-  color follows your accent color, same logic as the active workspace
-  square.
+  tiling, so floating windows get one too. Color, width, and corner
+  radius are configurable in Preferences (the radius is applied uniformly
+  to every window); the default color follows your accent color, same
+  logic as the active workspace square.
 - **Top panel auto-hide** (off by default): the GNOME top panel slides
   off-screen like a dock and windows reclaim its space; it slides back
   in when the pointer touches the top edge, when the reveal keybinding
@@ -100,6 +99,11 @@ windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
 - `Shift+Super+Left` / `Shift+Super+Right` to move the focused window
   into a brand-new workspace inserted beside the current one,
   Hyprland-style.
+- `Shift+Alt+1` .. `Shift+Alt+9` to **swap the whole current workspace
+  with another** — all windows exchange places and the view follows your
+  content to the target. If the target is empty your windows simply move
+  there (and the emptied workspace is culled); does nothing if the
+  current workspace is empty.
 - Full dynamic-workspaces support — everything integrates with GNOME's
   own workspace model instead of replacing it.
 
@@ -187,7 +191,10 @@ Preferences) temporarily neutralizes all four and restores your exact
 prior values when disabled. Pressing `Super+N` or `Shift+Super+N` for a
 workspace that doesn't exist is a clean no-op — it never falls through to
 launching a dock app. Every accelerator is also individually rebindable in
-Preferences. See [`docs/GNOME_NOTES.md`](docs/GNOME_NOTES.md) for how each
+Preferences by clicking its row and pressing the new combo (Backspace
+clears, Esc cancels); combos already grabbed by the compositor or this
+extension are captured correctly, and any duplicate binding is flagged.
+See [`docs/GNOME_NOTES.md`](docs/GNOME_NOTES.md) for how each
 conflict was found and verified, and
 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for how the restore is kept
 exact and reversible.
@@ -200,8 +207,8 @@ Open via the Extensions app, or:
 gnome-extensions prefs tessera@sbh321.github.io
 ```
 
-Covers tiling on/off and gaps, the focus border's on/off switch, color
-and width, top-panel auto-hide (with adjustable slide duration)
+Covers tiling on/off and gaps, the focus border's on/off switch, color,
+width, and radius, top-panel auto-hide (with adjustable slide duration)
 and background opacity, panel position, whether to hide
 GNOME's built-in Activities button, square
 size/spacing/radius/padding (with Small/Medium/Large/XL one-click

@@ -134,24 +134,171 @@ function addColorEntryRow(group, settings, key, title) {
     return row;
 }
 
-function addAcceleratorEntryRow(group, settings, key, title) {
-    const row = new Adw.EntryRow({title});
+// Keyvals that are modifiers on their own -- ignored while recording, so we
+// keep waiting for a real key to complete the combo.
+const MODIFIER_KEYVALS = new Set([
+    Gdk.KEY_Shift_L, Gdk.KEY_Shift_R,
+    Gdk.KEY_Control_L, Gdk.KEY_Control_R,
+    Gdk.KEY_Alt_L, Gdk.KEY_Alt_R,
+    Gdk.KEY_Meta_L, Gdk.KEY_Meta_R,
+    Gdk.KEY_Super_L, Gdk.KEY_Super_R,
+    Gdk.KEY_Hyper_L, Gdk.KEY_Hyper_R,
+    Gdk.KEY_ISO_Level3_Shift, Gdk.KEY_ISO_Level5_Shift,
+    Gdk.KEY_Caps_Lock, Gdk.KEY_Num_Lock,
+]);
 
-    const current = settings.get_strv(key);
-    row.set_text(current.length > 0 ? current[0] : '');
+// Tracks every shortcut row on the page so it can flag when two of the
+// extension's own bindings share the same accelerator. (System-wide
+// conflicts with other apps aren't checked -- there is no cheap, reliable
+// way to enumerate every grabbed shortcut, and the extension already clears
+// the GNOME defaults it collides with.)
+function createShortcutRegistry(settings) {
+    const entries = [];
 
-    row.connect('notify::text', () => {
-        const text = row.get_text().trim();
-        settings.set_strv(key, text.length > 0 ? [text] : []);
+    const refresh = () => {
+        const byAccel = new Map();
+        for (const entry of entries) {
+            const value = settings.get_strv(entry.key);
+            const accel = value.length > 0 ? value[0] : '';
+            if (!accel)
+                continue;
+            if (!byAccel.has(accel))
+                byAccel.set(accel, []);
+            byAccel.get(accel).push(entry);
+        }
+
+        for (const entry of entries) {
+            const value = settings.get_strv(entry.key);
+            const accel = value.length > 0 ? value[0] : '';
+            const clashers = accel
+                ? byAccel.get(accel).filter(other => other !== entry)
+                : [];
+            if (clashers.length > 0) {
+                entry.row.set_subtitle(
+                    `⚠ ${_('Also bound to')}: ${clashers.map(o => o.title).join(', ')}`);
+                entry.row.add_css_class('warning');
+            } else {
+                entry.row.set_subtitle('');
+                entry.row.remove_css_class('warning');
+            }
+        }
+    };
+
+    return {
+        register: (key, title, row) => entries.push({key, title, row}),
+        refresh,
+    };
+}
+
+// A shortcut-recorder row: a button showing the current accelerator that,
+// when clicked, records the next key combo pressed. Uses the Wayland
+// shortcuts-inhibit protocol (Gdk.Toplevel.inhibit_system_shortcuts) while
+// recording so combos the compositor/this extension globally grab -- like
+// Super+1 -- actually reach us instead of firing their action.
+function addShortcutRow(group, settings, key, title, registry) {
+    const row = new Adw.ActionRow({title});
+
+    const shortcutLabel = new Gtk.ShortcutLabel({
+        valign: Gtk.Align.CENTER,
+        disabled_text: _('Disabled'),
     });
-    settings.connect(`changed::${key}`, () => {
+    const button = new Gtk.Button({
+        valign: Gtk.Align.CENTER,
+        child: shortcutLabel,
+        tooltip_text: _('Click, then press a shortcut. Backspace clears, Esc cancels.'),
+    });
+    row.add_suffix(button);
+    row.activatable_widget = button;
+
+    const showStored = () => {
         const value = settings.get_strv(key);
-        const text = value.length > 0 ? value[0] : '';
-        if (text !== row.get_text())
-            row.set_text(text);
+        shortcutLabel.set_accelerator(value.length > 0 ? value[0] : '');
+    };
+    showStored();
+
+    let capturing = false;
+    let toplevel = null;
+
+    const stopCapture = () => {
+        if (!capturing)
+            return;
+        capturing = false;
+        button.remove_css_class('suggested-action');
+        shortcutLabel.set_disabled_text(_('Disabled'));
+        showStored();
+        if (toplevel) {
+            toplevel.restore_system_shortcuts();
+            toplevel = null;
+        }
+    };
+
+    const startCapture = () => {
+        if (capturing) {
+            stopCapture();
+            return;
+        }
+        capturing = true;
+        button.add_css_class('suggested-action');
+        shortcutLabel.set_accelerator('');
+        shortcutLabel.set_disabled_text(_('Press a shortcut…'));
+
+        toplevel = button.get_native()?.get_surface?.() ?? null;
+        if (typeof toplevel?.inhibit_system_shortcuts === 'function')
+            toplevel.inhibit_system_shortcuts(null);
+        else
+            toplevel = null;
+
+        button.grab_focus();
+    };
+
+    button.connect('clicked', startCapture);
+
+    const controller = new Gtk.EventControllerKey();
+    controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE);
+    button.add_controller(controller);
+    controller.connect('key-pressed', (_controller, keyval, _keycode, state) => {
+        if (!capturing)
+            return Gdk.EVENT_PROPAGATE;
+
+        let mask = state & Gtk.accelerator_get_default_mod_mask();
+        mask &= ~Gdk.ModifierType.LOCK_MASK;
+
+        if (keyval === Gdk.KEY_Escape && mask === 0) {
+            stopCapture();
+            return Gdk.EVENT_STOP;
+        }
+        if ((keyval === Gdk.KEY_BackSpace || keyval === Gdk.KEY_Delete) && mask === 0) {
+            settings.set_strv(key, []);
+            stopCapture();
+            registry.refresh();
+            return Gdk.EVENT_STOP;
+        }
+        if (MODIFIER_KEYVALS.has(keyval))
+            return Gdk.EVENT_STOP; // still holding only modifiers
+        if (!Gtk.accelerator_valid(keyval, mask))
+            return Gdk.EVENT_STOP; // e.g. a bare letter -- keep waiting
+
+        settings.set_strv(key, [Gtk.accelerator_name(keyval, mask)]);
+        stopCapture();
+        registry.refresh();
+        return Gdk.EVENT_STOP;
+    });
+
+    // If focus leaves the button mid-recording (the user clicked elsewhere
+    // without pressing a combo), cancel cleanly so system shortcuts are
+    // never left inhibited.
+    const focusController = new Gtk.EventControllerFocus();
+    button.add_controller(focusController);
+    focusController.connect('leave', () => stopCapture());
+
+    settings.connect(`changed::${key}`, () => {
+        if (!capturing)
+            showStored();
+        registry.refresh();
     });
 
     group.add(row);
+    registry.register(key, title, row);
     return row;
 }
 
@@ -285,6 +432,8 @@ export default class TesseraPreferences extends ExtensionPreferences {
         addColorEntryRow(focusBorderGroup, settings, 'focus-border-color', _('Color'));
         addSpinRow(focusBorderGroup, settings, 'focus-border-width', _('Width'),
             _('Thickness of the border, in pixels'), {lower: 1, upper: 12});
+        addSpinRow(focusBorderGroup, settings, 'focus-border-radius', _('Radius'),
+            _('Corner radius of the border, in pixels'), {lower: 0, upper: 32});
 
         return page;
     }
@@ -307,65 +456,71 @@ export default class TesseraPreferences extends ExtensionPreferences {
         // addSwitchRow(masterGroup, settings, 'enable-custom-keybindings',
         //     _('Enable workspace and window-move keybindings'), '');
 
+        const registry = createShortcutRegistry(settings);
+        const addShortcut = (grp, key, ttl) =>
+            addShortcutRow(grp, settings, key, ttl, registry);
+
         const jumpGroup = new Adw.PreferencesGroup({
             title: _('Jump to Workspace'),
-            description: _('Accelerator format, e.g. <Super>1'),
+            description: _('Click a shortcut, then press the keys. Backspace clears it, Esc cancels. Conflicts within these bindings are flagged below the row.'),
         });
         page.add(jumpGroup);
-        for (let i = 1; i <= 9; i++) {
-            addAcceleratorEntryRow(jumpGroup, settings, `workspace-jump-${i}`,
-                `${_('Workspace')} ${i}`);
-        }
+        for (let i = 1; i <= 9; i++)
+            addShortcut(jumpGroup, `workspace-jump-${i}`, `${_('Workspace')} ${i}`);
 
         const navigateGroup = new Adw.PreferencesGroup({title: _('Navigate')});
         page.add(navigateGroup);
-        addAcceleratorEntryRow(navigateGroup, settings, 'workspace-previous', _('Previous workspace'));
-        addAcceleratorEntryRow(navigateGroup, settings, 'workspace-next', _('Next workspace'));
+        addShortcut(navigateGroup, 'workspace-previous', _('Previous workspace'));
+        addShortcut(navigateGroup, 'workspace-next', _('Next workspace'));
 
         const moveGroup = new Adw.PreferencesGroup({
             title: _('Move Window to Workspace'),
             description: _('Moves the focused window and follows it'),
         });
         page.add(moveGroup);
-        for (let i = 1; i <= 9; i++) {
-            addAcceleratorEntryRow(moveGroup, settings, `window-move-${i}`,
-                `${_('Workspace')} ${i}`);
-        }
+        for (let i = 1; i <= 9; i++)
+            addShortcut(moveGroup, `window-move-${i}`, `${_('Workspace')} ${i}`);
 
         const moveNewGroup = new Adw.PreferencesGroup({
             title: _('Move Window to New Workspace'),
             description: _('Inserts a new workspace beside the current one (dynamic workspaces only) and moves the focused window into it'),
         });
         page.add(moveNewGroup);
-        addAcceleratorEntryRow(moveNewGroup, settings, 'window-move-new-left', _('Insert left'));
-        addAcceleratorEntryRow(moveNewGroup, settings, 'window-move-new-right', _('Insert right'));
+        addShortcut(moveNewGroup, 'window-move-new-left', _('Insert left'));
+        addShortcut(moveNewGroup, 'window-move-new-right', _('Insert right'));
+
+        const swapGroup = new Adw.PreferencesGroup({
+            title: _('Swap Workspace Contents'),
+            description: _('Exchanges all windows between the current workspace and the chosen one, then follows the content there. Does nothing if the current workspace is empty.'),
+        });
+        page.add(swapGroup);
+        for (let i = 1; i <= 9; i++)
+            addShortcut(swapGroup, `workspace-swap-${i}`, `${_('Workspace')} ${i}`);
 
         const layoutGroup = new Adw.PreferencesGroup({title: _('Layout')});
         page.add(layoutGroup);
-        addAcceleratorEntryRow(layoutGroup, settings, 'layout-toggle-stacked',
-            _('Toggle stacked layout'));
-        addAcceleratorEntryRow(layoutGroup, settings, 'window-toggle-floating',
-            _('Toggle floating (focused window)'));
-        addAcceleratorEntryRow(layoutGroup, settings, 'window-toggle-maximize',
-            _('Toggle maximize (focused window)'));
-        addAcceleratorEntryRow(layoutGroup, settings, 'window-toggle-fullscreen',
-            _('Toggle fullscreen (focused window)'));
+        addShortcut(layoutGroup, 'layout-toggle-stacked', _('Toggle stacked layout'));
+        addShortcut(layoutGroup, 'window-toggle-floating', _('Toggle floating (focused window)'));
+        addShortcut(layoutGroup, 'window-toggle-maximize', _('Toggle maximize (focused window)'));
+        addShortcut(layoutGroup, 'window-toggle-fullscreen', _('Toggle fullscreen (focused window)'));
 
         const panelGroup = new Adw.PreferencesGroup({
             title: _('Panel'),
             description: _('Only active while "Auto-hide the top panel" is on (Appearance → Top Panel).'),
         });
         page.add(panelGroup);
-        addAcceleratorEntryRow(panelGroup, settings, 'panel-reveal-toggle',
-            _('Reveal / hide the auto-hidden panel'));
+        addShortcut(panelGroup, 'panel-reveal-toggle', _('Reveal / hide the auto-hidden panel'));
 
         const toolsGroup = new Adw.PreferencesGroup({
             title: _('Tools'),
             description: _('Reachable from the quick menu’s Tools tab too; these work regardless of the quick menu setting.'),
         });
         page.add(toolsGroup);
-        addAcceleratorEntryRow(toolsGroup, settings, 'tool-port-killer', _('Port killer'));
-        addAcceleratorEntryRow(toolsGroup, settings, 'tool-color-picker', _('Color picker'));
+        addShortcut(toolsGroup, 'tool-port-killer', _('Port killer'));
+        addShortcut(toolsGroup, 'tool-color-picker', _('Color picker'));
+
+        // Flag any pre-existing duplicate accelerators on open.
+        registry.refresh();
 
         return page;
     }

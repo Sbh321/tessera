@@ -189,6 +189,13 @@
       <description>Thickness, in pixels, of the focus border.</description>
     </key>
 
+    <key name="focus-border-radius" type="i">
+      <default>8</default>
+      <range min="0" max="32"/>
+      <summary>Focus border radius</summary>
+      <description>Corner radius, in pixels, of the focus border, applied uniformly to every window.</description>
+    </key>
+
     <!-- Keybindings -->
 
     <key name="enable-custom-keybindings" type="b">
@@ -278,6 +285,44 @@
     <key name="window-move-9" type="as">
       <default>['&lt;Shift&gt;&lt;Super&gt;9']</default>
       <summary>Move focused window to workspace 9</summary>
+    </key>
+
+    <key name="workspace-swap-1" type="as">
+      <default>['&lt;Shift&gt;&lt;Alt&gt;1']</default>
+      <summary>Swap current workspace contents with workspace 1</summary>
+    </key>
+    <key name="workspace-swap-2" type="as">
+      <default>['&lt;Shift&gt;&lt;Alt&gt;2']</default>
+      <summary>Swap current workspace contents with workspace 2</summary>
+    </key>
+    <key name="workspace-swap-3" type="as">
+      <default>['&lt;Shift&gt;&lt;Alt&gt;3']</default>
+      <summary>Swap current workspace contents with workspace 3</summary>
+    </key>
+    <key name="workspace-swap-4" type="as">
+      <default>['&lt;Shift&gt;&lt;Alt&gt;4']</default>
+      <summary>Swap current workspace contents with workspace 4</summary>
+    </key>
+    <key name="workspace-swap-5" type="as">
+      <default>['&lt;Shift&gt;&lt;Alt&gt;5']</default>
+      <summary>Swap current workspace contents with workspace 5</summary>
+    </key>
+    <key name="workspace-swap-6" type="as">
+      <default>['&lt;Shift&gt;&lt;Alt&gt;6']</default>
+      <summary>Swap current workspace contents with workspace 6</summary>
+    </key>
+    <key name="workspace-swap-7" type="as">
+      <default>['&lt;Shift&gt;&lt;Alt&gt;7']</default>
+      <summary>Swap current workspace contents with workspace 7</summary>
+    </key>
+    <key name="workspace-swap-8" type="as">
+      <default>['&lt;Shift&gt;&lt;Alt&gt;8']</default>
+      <summary>Swap current workspace contents with workspace 8</summary>
+    </key>
+    <key name="workspace-swap-9" type="as">
+      <default>['&lt;Shift&gt;&lt;Alt&gt;9']</default>
+      <summary>Swap current workspace contents with workspace 9</summary>
+      <description>Swap all movable windows between the current workspace and workspace N, then follow the content to N. No-op if the current workspace is empty or N is the current/out-of-range workspace; if N is empty the windows just move there and the emptied current workspace is culled (dynamic workspaces).</description>
     </key>
 
     <key name="window-move-new-left" type="as">
