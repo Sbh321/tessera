@@ -140,6 +140,10 @@ extension.
       this automatically when you activate a workspace index that doesn't
       exist yet only up to `n-workspaces`; jumping past the last one is a
       no-op, which is correct).
+- [ ] `Super+0` jumps to the trailing (last) workspace from anywhere,
+      whatever the workspace count — including from the trailing workspace
+      itself (clean no-op). It never launches a dock app (Ubuntu Dock owns
+      `Super+0` by default, and it must stay neutralized).
 - [ ] `Super+Left` / `Super+Right` move to the previous/next workspace and
       correctly wrap or stop at the ends the same way GNOME's own
       `switch-to-workspace-left/right` does (compare behavior with those
@@ -209,6 +213,10 @@ extension.
       the moved window's workspace active. Repeat from other workspaces
       and moving to other targets — no stale/extra square lingers beyond a
       brief moment, no errors in the journal.
+- [ ] `Shift+Super+0` moves the focused window to the trailing workspace
+      and follows it; GNOME then appends a fresh trailing workspace
+      behind it. Pressing it again with the same window focused is a
+      clean no-op (already there), not a workspace-strip churn.
 - [ ] `Shift+Super+Right` on workspace 3 of 6 inserts a new workspace
       between 3 and 4 with only the focused window on it, and follows it;
       the original workspaces 4-6 are now 5-7 with their windows intact.
@@ -230,6 +238,52 @@ extension.
       default): a focused window on a secondary monitor is a clean no-op
       for every move binding (those windows are effectively sticky);
       windows on the primary move normally.
+
+## New windows on their own workspace
+
+All of these need Preferences → Tiling → New Windows → *Open each new
+window on its own workspace* ON; it is off by default.
+
+- [ ] With the setting OFF, new windows open on the current workspace
+      exactly as before — the feature costs nothing when disabled.
+- [ ] Setting ON, *Place that workspace next to the current one* OFF
+      (trailing mode): with a window already on workspace 1, open a second
+      app — it lands on the trailing workspace, the view follows it, and a
+      new trailing empty workspace appears behind it. Repeat: each new app
+      gets its own workspace, appended in the order you opened them.
+- [ ] Same setup, but open the app on an *empty* workspace: the window
+      stays put (it already has that workspace to itself) — no move, no
+      flash, no leftover empty workspace.
+- [ ] Turn *Place that workspace next to the current one* ON: from
+      workspace 2 of 5 (each with a window), open an app — a brand-new
+      workspace is inserted between 2 and 3 with only the new window on
+      it, the view follows it, and the old workspaces 3-5 are now 4-6 with
+      their windows intact.
+- [ ] The adjacent-workspace row is desensitized in Preferences while the
+      master switch is off, and re-sensitizes the moment it is turned on.
+      With the master switch off, flipping the adjacent one has no effect
+      on where new windows open.
+- [ ] **Dialogs and popups are never moved.** With the setting on, open a
+      file chooser / print dialog / "About" window / a GTK popover-style
+      helper from an app: it opens on the app's own workspace, never
+      dragged away. Same for an app's second window opened via a
+      transient (e.g. Firefox's Library window).
+- [ ] Multi-monitor with `workspaces-only-on-primary=true`: a window
+      opening on a *secondary* monitor is never relocated (those windows
+      are workspace-independent); windows opening on the primary behave as
+      above.
+- [ ] With tiling on, the relocated window is correctly tiled on its new
+      workspace (full work area minus gaps, since it is alone), and the
+      workspace it left re-tiles its remaining windows.
+- [ ] Rapid-fire: launch three apps in quick succession (e.g. from the
+      overview) — each ends on its own workspace, the indicator's square
+      count and active square stay correct, and the journal is clean.
+- [ ] Open and immediately close a splash-screen-style window (e.g. an
+      Electron app that maps then replaces its window): no errors in the
+      journal (the pending idle turn is cancelled when the window is
+      unmanaged first).
+- [ ] Disable the extension with the setting on: new windows go back to
+      opening on the current workspace immediately.
 
 ## Tiling
 

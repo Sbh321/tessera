@@ -168,6 +168,20 @@
       <description>When a window is popped out to float (the toggle-floating keybinding), it is centered on its monitor's work area at this percentage of the work area's width and height. It can then be freely moved and resized -- the tiler never repositions a floating window; it only keeps it stacked above the tiled ones.</description>
     </key>
 
+    <!-- New-window placement -->
+
+    <key name="new-window-new-workspace" type="b">
+      <default>false</default>
+      <summary>Open every new window on a workspace of its own</summary>
+      <description>When on, a newly opened top-level application window is moved onto a fresh workspace and the view follows it there, so each app gets a workspace to itself. Dialogs, popups, transient and sticky windows are never moved. A window that opens onto an otherwise empty workspace is left where it is -- it already has that workspace to itself. Where the fresh workspace comes from is controlled by new-window-adjacent-workspace. Requires dynamic workspaces (GNOME's default) to actually create workspaces; with static workspaces it degrades to moving the window to the existing workspace in that position.</description>
+    </key>
+
+    <key name="new-window-adjacent-workspace" type="b">
+      <default>false</default>
+      <summary>Put that new workspace right next to the current one</summary>
+      <description>Only meaningful while new-window-new-workspace is on (ignored otherwise). When off, a new window goes to the trailing workspace at the end of the strip -- the empty one GNOME always keeps there -- so the workspace order stays chronological. When on, a brand-new workspace is instead inserted immediately to the right of the window's current workspace, shifting every later workspace along, so related work stays adjacent. Either way the view follows the window onto its new workspace.</description>
+    </key>
+
     <!-- Focus border -->
 
     <key name="enable-focus-border" type="b">
@@ -241,6 +255,12 @@
       <summary>Jump to workspace 9</summary>
     </key>
 
+    <key name="workspace-jump-last" type="as">
+      <default>['&lt;Super&gt;0']</default>
+      <summary>Jump to the trailing workspace</summary>
+      <description>Switch to the last workspace on the strip. With dynamic workspaces (GNOME's default) that is always the empty one GNOME keeps at the end, so this is "go to a blank workspace" regardless of how many exist.</description>
+    </key>
+
     <key name="workspace-previous" type="as">
       <default>['&lt;Super&gt;Left']</default>
       <summary>Switch to previous workspace</summary>
@@ -285,6 +305,12 @@
     <key name="window-move-9" type="as">
       <default>['&lt;Shift&gt;&lt;Super&gt;9']</default>
       <summary>Move focused window to workspace 9</summary>
+    </key>
+
+    <key name="window-move-last" type="as">
+      <default>['&lt;Shift&gt;&lt;Super&gt;0']</default>
+      <summary>Move focused window to the trailing workspace</summary>
+      <description>Move the focused window to the last workspace on the strip and follow it there. With dynamic workspaces that workspace is always empty, so this is the "give this window a fresh workspace at the end" counterpart to the insert-left/insert-right bindings.</description>
     </key>
 
     <key name="workspace-swap-1" type="as">

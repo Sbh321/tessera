@@ -343,6 +343,28 @@ export default class TesseraPreferences extends ExtensionPreferences {
             _('Centered size when a window is floated, as a percentage of the monitor work area'),
             {lower: 30, upper: 95, step: 5});
 
+        const newWindowGroup = new Adw.PreferencesGroup({
+            title: _('New Windows'),
+            description: _(
+                'Dialogs, popups and windows pinned to all workspaces are never ' +
+                'moved, and a window that opens on an already-empty workspace ' +
+                'stays where it is.'),
+        });
+        page.add(newWindowGroup);
+        addSwitchRow(newWindowGroup, settings, 'new-window-new-workspace',
+            _('Open each new window on its own workspace'),
+            _('Move a newly opened application window to a fresh workspace and follow it there'));
+        const adjacentRow = addSwitchRow(newWindowGroup, settings,
+            'new-window-adjacent-workspace',
+            _('Place that workspace next to the current one'),
+            _('Insert the new workspace immediately to the right of the current one instead of using the trailing workspace at the end'));
+        // Only meaningful while the switch above is on -- the shell ignores
+        // it otherwise, so the row follows suit instead of pretending to
+        // have an effect. GET-only: this reads the master switch, it must
+        // never write back to it.
+        settings.bind('new-window-new-workspace', adjacentRow, 'sensitive',
+            Gio.SettingsBindFlags.GET);
+
         return page;
     }
 
@@ -467,6 +489,7 @@ export default class TesseraPreferences extends ExtensionPreferences {
         page.add(jumpGroup);
         for (let i = 1; i <= 9; i++)
             addShortcut(jumpGroup, `workspace-jump-${i}`, `${_('Workspace')} ${i}`);
+        addShortcut(jumpGroup, 'workspace-jump-last', _('Trailing workspace'));
 
         const navigateGroup = new Adw.PreferencesGroup({title: _('Navigate')});
         page.add(navigateGroup);
@@ -480,6 +503,7 @@ export default class TesseraPreferences extends ExtensionPreferences {
         page.add(moveGroup);
         for (let i = 1; i <= 9; i++)
             addShortcut(moveGroup, `window-move-${i}`, `${_('Workspace')} ${i}`);
+        addShortcut(moveGroup, 'window-move-last', _('Trailing workspace'));
 
         const moveNewGroup = new Adw.PreferencesGroup({
             title: _('Move Window to New Workspace'),

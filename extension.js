@@ -9,6 +9,7 @@ import {KeybindingManager} from './lib/keybindingManager.js';
 import {NativeIndicatorHider} from './lib/nativeIndicatorHider.js';
 import {AccentColorTracker} from './lib/accentColor.js';
 import {WindowMover} from './lib/windowMover.js';
+import {NewWindowWorkspaceManager} from './lib/newWindowWorkspace.js';
 import {FullscreenManager} from './lib/fullscreenManager.js';
 import {TilingManager} from './lib/tiling/tilingManager.js';
 import {FocusBorderManager} from './lib/focusBorder.js';
@@ -53,6 +54,13 @@ export default class TesseraExtension extends Extension {
             'changed::panel-position', () => this._createIndicator());
 
         this._windowMover = new WindowMover();
+
+        // Optional "one app per workspace" placement. Always enabled as a
+        // listener; the setting is checked per window-created, so toggling
+        // it needs no lifecycle of its own here.
+        this._newWindowWorkspaceManager = new NewWindowWorkspaceManager(
+            this._settingsManager, this._windowMover);
+        this._newWindowWorkspaceManager.enable();
 
         this._fullscreenManager = new FullscreenManager(this._settingsManager);
         this._fullscreenManager.enable();
@@ -117,6 +125,10 @@ export default class TesseraExtension extends Extension {
 
         this._tilingManager.disable();
         this._tilingManager = null;
+
+        // Before the WindowMover it dispatches into.
+        this._newWindowWorkspaceManager.disable();
+        this._newWindowWorkspaceManager = null;
 
         // Stateless (no signals/timers/keybindings of its own) -- nothing
         // to tear down beyond dropping the reference.

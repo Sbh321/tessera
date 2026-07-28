@@ -93,6 +93,10 @@ windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
 - `Super+1` .. `Super+9` to jump directly to a workspace — reliably, even
   on Ubuntu where both GNOME and Ubuntu Dock normally own those shortcuts
   (see Keybindings below).
+- `Super+0` / `Shift+Super+0` for the **trailing workspace** — the empty
+  one GNOME always keeps at the end of the strip. Jump to a blank
+  workspace, or send the focused window off to a fresh one, without
+  counting how many you currently have.
 - `Super+Left` / `Super+Right` to switch to the previous/next workspace.
 - `Shift+Super+1` .. `Shift+Super+9` to move the focused window to that
   workspace and follow it.
@@ -104,6 +108,14 @@ windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
   content to the target. If the target is empty your windows simply move
   there (and the emptied workspace is culled); does nothing if the
   current workspace is empty.
+- **One app per workspace**, optional (Preferences → Tiling → New
+  Windows): every newly opened application window is moved onto a
+  workspace of its own and the view follows it there. A second toggle
+  chooses where that workspace comes from — the trailing workspace at the
+  end of the strip (default, keeps the order chronological), or a
+  brand-new workspace inserted right beside the current one (keeps
+  related work adjacent). Dialogs, popups and pinned windows are never
+  moved, and a window that opens on an already-empty workspace stays put.
 - Full dynamic-workspaces support — everything integrates with GNOME's
   own workspace model instead of replacing it.
 
@@ -170,9 +182,11 @@ For local development instead of a one-shot install, see
 | Shortcut | Action |
 |---|---|
 | `Super+1` .. `Super+9` | Jump to workspace 1-9 |
+| `Super+0` | Jump to the trailing workspace (the empty one at the end) |
 | `Super+Left` | Previous workspace |
 | `Super+Right` | Next workspace |
 | `Shift+Super+1` .. `Shift+Super+9` | Move focused window to workspace 1-9 (and follow) |
+| `Shift+Super+0` | Move focused window to the trailing workspace (and follow) |
 | `Shift+Super+Left` | Move focused window to a new workspace inserted on the left |
 | `Shift+Super+Right` | Move focused window to a new workspace inserted on the right |
 | `Shift+Super+S` | Toggle stacked (tabbed) layout on the current workspace |

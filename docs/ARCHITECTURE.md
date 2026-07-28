@@ -65,6 +65,15 @@ lib/windowMover.js         Focused-window and workspace-content actions:
                            Main.wm.actionMoveWindow / insertWorkspace /
                            Meta.Window.{,un}maximize; nothing to clean up
                            by construction.
+lib/newWindowWorkspace.js  Optional "one app per workspace" placement (off
+                           by default): decides whether a newly created
+                           window should be relocated onto a workspace of
+                           its own, and delegates the move itself to
+                           WindowMover.moveToNewWorkspace. Owns one
+                           window-created signal plus a one-idle-turn
+                           deferral per candidate window (a just-created
+                           window has not necessarily declared its
+                           transient/skip-taskbar state yet).
 lib/fullscreenManager.js   "Keybind fullscreen" (Super+F): true,
                            panel-covering fullscreen with exit triggers
                            (toggle key, a new app window, focused-Escape).
@@ -201,6 +210,14 @@ install's extracted source:
   matching both GNOME's and Hyprland's follow-the-window behavior, which
   is why "follow" is the default rather than an option (a Hyprland-style
   "silent move" could be added later as a setting without restructuring).
+- **Move to the trailing workspace** (`Super+0` / `Shift+Super+0`) =
+  the same `activate` / `actionMoveWindow` aimed at index
+  `n_workspaces - 1`. It addresses a *position*, not a fixed index, so
+  unlike the 1–9 bindings it never falls out of range; under dynamic
+  workspaces that position is always the empty workspace GNOME keeps at
+  the end (`WorkspaceTracker` never culls it), making `Shift+Super+0`
+  the "append a fresh workspace" counterpart to the insert-beside
+  bindings below.
 - **Move to new inserted workspace** = `Main.wm.insertWorkspace(pos)`
   followed by the same `actionMoveWindow`. GNOME already ships real
   workspace insertion (it uses it itself to prepend a workspace); an
@@ -263,6 +280,49 @@ own model does":
 `WindowMover` holds no state of its own, connects no signals, and starts
 no timer it owns — there is nothing to clean up, by construction;
 `disable()` is just dropping the reference.
+
+## New-window placement (`lib/newWindowWorkspace.js`)
+
+Optional, off by default (`new-window-new-workspace`): every newly opened
+top-level application window is moved onto a workspace of its own and the
+view follows it there. `new-window-adjacent-workspace` picks where that
+workspace comes from — the **trailing** workspace at the end of the strip
+(default; keeps workspace order chronological) or a **brand-new** one
+inserted immediately right of the current workspace (keeps related work
+adjacent, shifting every later workspace along). The second setting is
+only read while the first is on, and its preferences row is desensitized
+to match.
+
+The module decides only *whether* a window qualifies; the move itself —
+insertion, follow, and the emptied-source keep-alive — is
+`WindowMover.moveToNewWorkspace`, so "move a window to a fresh workspace"
+has exactly one implementation shared with the keybindings above.
+
+Two exclusions define the behavior:
+
+- **Identity gate.** Only `NORMAL`, non-transient, non-skip-taskbar,
+  non-sticky windows are moved — the same "a real app window is opening"
+  test the tiler uses (`TilingManager._opensAsTilingApp`), plus the sticky
+  exclusion every workspace move in this extension applies. Dialogs stay
+  with their parent; windows on secondary monitors under
+  `workspaces-only-on-primary` (which Mutter marks on-all-workspaces) are
+  workspace-independent and left alone.
+- **Sole-occupant no-op.** A window that opens onto an otherwise empty
+  workspace stays put: it already has a workspace to itself, and moving it
+  would only leave a hole for `WorkspaceTracker` to cull while dragging the
+  user elsewhere for no visible gain. This is also what makes the feature
+  *settle* instead of marching forward on every window — open an app, land
+  on a fresh workspace, and only its *second* window moves on.
+
+The decision is deferred by one idle turn rather than taken synchronously
+in `window-created`. A just-created window has not necessarily declared
+its transient parent or skip-taskbar state yet — the same client-settling
+lag `lib/tiling/tilingManager.js` documents around its own creation-time
+checks — so an immediate test would misclassify exactly the popups this
+must not touch. One idle turn later the client has committed, and the move
+still lands before the user can act on the window. Each pending window
+holds one idle source and one `unmanaged` handler, both torn down when the
+turn runs, the window closes first, or `disable()` runs.
 
 ## Keybind fullscreen (`lib/fullscreenManager.js`)
 
