@@ -297,14 +297,28 @@ its result count. Selecting one filters the list to that section; `All`
 clears it. Move between them with **`Ctrl+Tab` / `Ctrl+Shift+Tab`** or the
 mouse; `Backspace` on an empty query clears back to `All`.
 
-- **Counts come from the unscoped result set**, always. That is what
-  makes them useful *while filtered*: standing in Settings you can still
-  see that Apps has 12, and get there. It costs nothing, because the
-  pipeline already computes every provider's results on every keystroke —
-  scoping is a display filter over a complete set, not a narrower search.
+- **Counts always describe the unfiltered world**, so moving into one
+  section never erases the evidence that the others have something in
+  them. While searching that is free — the pipeline already computes
+  every provider's results on every keystroke, and scoping is a display
+  filter over that complete set. At rest the chips instead carry each
+  section's *total size* (`browseCount()`, answered in O(1) by providers
+  that already know it), because with nothing typed there is no match
+  count to report and the useful number is "how much is in here".
+- **"All" is passed separately, never summed.** At rest it shows the
+  curated resting view while each section chip shows that section's whole
+  contents — two different questions, and summing the chips would answer
+  neither. This was a real bug: filtering used to narrow the *gathering*
+  as well as the display, so selecting Open Windows collapsed `All 8` to
+  `All 2` and made the Recent chip disappear entirely.
 - **Chips follow `SECTION_ORDER`, not rank.** A strip that reshuffles as
   you type is one you can never build muscle memory for, and muscle
   memory is the whole value of a filter bar.
+- **The strip scrolls horizontally** (`EXTERNAL` policy, so no visible
+  scrollbar). At rest it lists every section you could browse into, and a
+  broad query can match eight — either legitimately outgrows the card.
+  `Ctrl+Tab` scrolls the selected chip into view, so the bar is never
+  something you have to drag.
 - **Only sections that matched get a chip** — plus the one being
   filtered to, always, even when it came up empty (`Open Windows 0`).
   A fixed strip of ten mostly-empty chips would be noise, but dropping

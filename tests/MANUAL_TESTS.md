@@ -920,6 +920,21 @@ section is for everything that needs a live shell.
 - [ ] Click a chip: the list shows only that section, the chip highlights,
       and **the other chips keep their counts** (that is how you leave
       again). Click `All`: everything comes back.
+- [ ] **Nothing disappears when you move between chips.** Open the
+      launcher with nothing typed and note the strip (e.g.
+      `All 8 · Open Windows 2 · Recent 6 · Applications 312 · …`).
+      Ctrl+Tab to Open Windows: `All` still says 8, Recent still says 6,
+      and every other chip is still there — only the LIST below changes.
+      This was a real bug: filtering used to narrow the gathering as well
+      as the display, so `All` collapsed to the filtered section's count
+      and the other chips vanished.
+- [ ] At rest, each section chip's count is that section's TOTAL (all
+      312 applications), while `All` counts the resting view it actually
+      shows. Selecting a chip shows as many results as its count claimed
+      (up to "maximum results").
+- [ ] With enough sections to overflow the card width, the strip scrolls
+      instead of clipping, and Ctrl+Tab keeps the selected chip in view
+      in both directions. Try a narrow launcher width (420) to force it.
 - [ ] `Ctrl+Tab` / `Ctrl+Shift+Tab` move between chips, with or without
       text in the entry.
 - [ ] `Left`/`Right` ALWAYS move the text cursor and never touch the
