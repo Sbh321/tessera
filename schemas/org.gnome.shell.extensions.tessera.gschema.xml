@@ -210,6 +210,202 @@
       <description>Corner radius, in pixels, of the focus border, applied uniformly to every window.</description>
     </key>
 
+    <!-- Launcher -->
+
+    <key name="enable-launcher" type="b">
+      <default>false</default>
+      <summary>Enable the Tessera launcher</summary>
+      <description>A Spotlight/Raycast-style search popup (default Super+Space) that finds installed applications, open windows, GNOME Settings panels, extensions, Tessera's own actions, and evaluates arithmetic. Off by default because its default shortcut, Super+Space, is GNOME's "switch input source" shortcut: while the launcher is enabled that shortcut is temporarily cleared and restored exactly on disable, the same way this extension handles its other keybinding conflicts.</description>
+    </key>
+
+    <key name="launcher-toggle" type="as">
+      <default>['&lt;Super&gt;space']</default>
+      <summary>Open/close the launcher</summary>
+      <description>Opens the launcher, or closes it if it is already open. Only grabbed while the launcher is enabled.</description>
+    </key>
+
+    <key name="launcher-width" type="i">
+      <default>720</default>
+      <range min="420" max="1400"/>
+      <summary>Launcher width</summary>
+      <description>Width of the launcher popup, in pixels.</description>
+    </key>
+
+    <key name="launcher-height" type="i">
+      <default>420</default>
+      <range min="200" max="1200"/>
+      <summary>Launcher result list height</summary>
+      <description>Maximum height of the result list, in pixels. The popup itself is only as tall as its contents, so this is a ceiling rather than a fixed size.</description>
+    </key>
+
+    <key name="launcher-max-results" type="i">
+      <default>30</default>
+      <range min="5" max="100"/>
+      <summary>Maximum results</summary>
+      <description>How many results the launcher shows in total across all sections. Each individual section is additionally capped so that no single provider can fill the whole list.</description>
+    </key>
+
+    <key name="launcher-remember-history" type="b">
+      <default>true</default>
+      <summary>Remember what you launch</summary>
+      <description>Records which results are activated and how recently, and uses that to rank future searches (frequency combined with recency). Turning this off stops both the recording and the ranking boost. Clipboard entries are never recorded regardless of this setting.</description>
+    </key>
+
+    <key name="launcher-enable-recent" type="b">
+      <default>true</default>
+      <summary>Show recent applications</summary>
+      <description>Lists recently and frequently used applications when the launcher is opened with an empty search box.</description>
+    </key>
+
+    <key name="launcher-enable-windows" type="b">
+      <default>true</default>
+      <summary>Search open windows</summary>
+      <description>Includes open windows, searchable by title, application and window class. Selecting one switches to its workspace and focuses it.</description>
+    </key>
+
+    <key name="launcher-enable-apps" type="b">
+      <default>true</default>
+      <summary>Search installed applications</summary>
+      <description>Includes installed applications, matched on name, keywords, description and executable, plus their .desktop actions (for example "New Private Window").</description>
+    </key>
+
+    <key name="launcher-enable-commands" type="b">
+      <default>true</default>
+      <summary>Allow running commands</summary>
+      <description>Enables the "&gt;" and "$" prefixes, which run the rest of the line as a command. The command is never passed to a shell: it is split with GLib's argument parser and spawned directly, so shell metacharacters have no special meaning.</description>
+    </key>
+
+    <key name="launcher-command-in-terminal" type="b">
+      <default>false</default>
+      <summary>Run commands in a terminal</summary>
+      <description>When on, commands typed with the "&gt;" or "$" prefix are launched inside the configured terminal application instead of in the background. Ctrl+Enter always does the opposite of this setting for one command.</description>
+    </key>
+
+    <key name="launcher-enable-calculator" type="b">
+      <default>true</default>
+      <summary>Evaluate arithmetic</summary>
+      <description>Shows the result of arithmetic typed into the search box (for example "2+2", "sqrt(144)", "200 + 15%", "0xff * 2"). Trigonometric functions work in degrees; press Enter to copy the result. A bare number is never treated as an expression.</description>
+    </key>
+
+    <key name="launcher-enable-clipboard" type="b">
+      <default>false</default>
+      <summary>Keep a searchable clipboard history</summary>
+      <description>Records text you copy and makes it searchable from the launcher. OFF by default because the history is a plain-text record of everything copied, stored in your settings database. Offers marked as passwords by password managers are never recorded, nothing is recorded while the session is locked, and clipboard entries never enter the launcher's own ranking history.</description>
+    </key>
+
+    <key name="launcher-clipboard-size" type="i">
+      <default>50</default>
+      <range min="5" max="500"/>
+      <summary>Clipboard history size</summary>
+      <description>How many clipboard entries to keep. Pinned entries are stored separately and are never dropped by this limit.</description>
+    </key>
+
+    <key name="launcher-clipboard-history" type="as">
+      <default>[]</default>
+      <summary>Clipboard history contents</summary>
+      <description>The recorded clipboard entries, newest first. Only written while the clipboard history is enabled; safe to clear at any time.</description>
+    </key>
+
+    <key name="launcher-clipboard-pinned" type="as">
+      <default>[]</default>
+      <summary>Pinned clipboard entries</summary>
+      <description>Clipboard entries pinned with Ctrl+Enter in the launcher. Kept regardless of the history size limit; safe to clear at any time.</description>
+    </key>
+
+    <key name="launcher-fuzzy" type="b">
+      <default>true</default>
+      <summary>Fuzzy search</summary>
+      <description>Also match results that merely contain the typed characters in order, and tolerate small typos in longer queries. Exact, prefix, word-prefix and acronym matches always rank above fuzzy ones. Turning this off only disables the typo-tolerance tier; the other match kinds are what make short queries work at all.</description>
+    </key>
+
+    <key name="launcher-show-icons" type="b">
+      <default>true</default>
+      <summary>Show icons</summary>
+      <description>Show an icon for every result. Turning this off gives a denser, text-only list.</description>
+    </key>
+
+    <key name="launcher-show-descriptions" type="b">
+      <default>true</default>
+      <summary>Show descriptions</summary>
+      <description>Show the second line of each result (an application's description, a window's workspace, an action's current state).</description>
+    </key>
+
+    <key name="launcher-compact" type="b">
+      <default>false</default>
+      <summary>Compact mode</summary>
+      <description>Shorter rows, smaller icons and tighter padding, so more results fit on screen. Also hides the keyboard-hint footer.</description>
+    </key>
+
+    <key name="launcher-animations" type="b">
+      <default>true</default>
+      <summary>Animate the launcher</summary>
+      <description>Fade and scale the popup as it opens and closes. Animations are additionally skipped whenever GNOME's own "reduce animations" accessibility setting is on, regardless of this value.</description>
+    </key>
+
+    <key name="launcher-follow-theme" type="b">
+      <default>true</default>
+      <summary>Follow the GNOME light/dark theme</summary>
+      <description>Match the system colour scheme. When off, the launcher stays dark regardless of the desktop theme.</description>
+    </key>
+
+    <key name="launcher-follow-accent" type="b">
+      <default>true</default>
+      <summary>Follow the GNOME accent color</summary>
+      <description>Tint the selected result with the system accent color (or with the custom active-background-color if one is set). When off, the selection uses a neutral gray.</description>
+    </key>
+
+    <key name="launcher-blur" type="b">
+      <default>false</default>
+      <summary>Blur behind the launcher</summary>
+      <description>Blur the desktop behind the popup and make its background translucent. OFF by default because of a limitation in the shell's blur effect: it always fills the popup's whole rectangle and cannot be clipped to its rounded corners, so with blur on, faintly blurred square corners remain visible around the rounded card. With blur off the popup uses an opaque background and its corners are perfectly transparent.</description>
+    </key>
+
+    <key name="launcher-position" type="s">
+      <default>'center'</default>
+      <summary>Horizontal position of the launcher</summary>
+      <description>Where the launcher sits horizontally on its monitor. One of: center (the default), left, right. Left and right anchor to the edge of the monitor's work area, so the popup never lands underneath a dock or a side panel. Unrecognized values fall back to center. Vertical placement is fixed near the upper third of the monitor.</description>
+    </key>
+
+    <key name="launcher-offset-y" type="i">
+      <default>0</default>
+      <range min="-2000" max="2000"/>
+      <summary>Vertical offset</summary>
+      <description>Nudges the launcher up or down from its default height on the monitor (near the upper third), in pixels: negative moves it up, positive moves it down. The result is clamped so the popup can never be pushed above the work area or so far down that it leaves the screen — an offset larger than the space available simply parks it at that limit.</description>
+    </key>
+
+    <key name="launcher-corner-radius" type="i">
+      <default>18</default>
+      <range min="0" max="40"/>
+      <summary>Launcher corner radius</summary>
+      <description>Corner rounding of the launcher popup, in pixels. Row and entry radii are derived from it.</description>
+    </key>
+
+    <key name="launcher-search-delay" type="i">
+      <default>0</default>
+      <range min="0" max="500"/>
+      <summary>Search delay</summary>
+      <description>Milliseconds to wait after a keystroke before searching. 0 (the default) searches on every keystroke, which is what the built-in providers are designed for; raise it only if searching feels expensive on a very large application set.</description>
+    </key>
+
+    <key name="launcher-font-size" type="i">
+      <default>12</default>
+      <range min="8" max="24"/>
+      <summary>Launcher font size</summary>
+      <description>Base font size of the launcher, in points. The search entry, descriptions and section headers are sized relative to it.</description>
+    </key>
+
+    <key name="launcher-favorites" type="as">
+      <default>[]</default>
+      <summary>Pinned launcher results</summary>
+      <description>Results pinned with Ctrl+D, in the user's chosen order (reorder with Ctrl+Shift+Up/Down). Stored as "provider:id" keys, so a pin survives the target being uninstalled and reinstalled; a key that no longer resolves is simply skipped.</description>
+    </key>
+
+    <key name="launcher-history" type="s">
+      <default>'{}'</default>
+      <summary>Launcher ranking history</summary>
+      <description>Internal. A compact JSON map of "provider:id" to [launch count, last launch time in milliseconds], used for frequency/recency ranking. Not user-editable; clearing it (or setting it to {}) resets adaptive ranking.</description>
+    </key>
+
     <!-- Keybindings -->
 
     <key name="enable-custom-keybindings" type="b">

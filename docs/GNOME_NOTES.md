@@ -301,6 +301,7 @@ symptoms looked identical:
 | `Super+Left` / `Super+Right` | `toggle-tiled-left` / `toggle-tiled-right` (half-screen window snap) | `org.gnome.mutter.keybindings` |
 | `Shift+Super+Left` / `Shift+Super+Right` | `move-to-monitor-left` / `move-to-monitor-right` (move window to adjacent monitor) | `org.gnome.desktop.wm.keybindings` |
 | `Super+1` .. `Super+0` (+ Shift/Ctrl variants) | Ubuntu Dock's own "activate Nth pinned app" hot-keys, gated by the `hot-keys` boolean (default `true`) | `org.gnome.shell.extensions.dash-to-dock` |
+| `Super+Space` / `Shift+Super+Space` | `switch-input-source` / `switch-input-source-backward` (cycle keyboard layouts) — the launcher's default shortcut, and the only conflict cleared *conditionally* (see the launcher section below) | `org.gnome.desktop.wm.keybindings` |
 
 `Shift+Super+1..9` (the move-window-to-workspace bindings) has no GNOME
 default of its own -- `move-to-workspace-N` keys are unbound except
@@ -349,6 +350,7 @@ gsettings get org.gnome.mutter.keybindings toggle-tiled-left
 gsettings get org.gnome.desktop.wm.keybindings move-to-monitor-left
 gsettings get org.gnome.shell.extensions.dash-to-dock hot-keys
 gsettings get org.gnome.shell.extensions.dash-to-dock app-shift-hotkey-1
+gsettings get org.gnome.desktop.wm.keybindings switch-input-source
 ```
 
 `switch-to-workspace-1..9` (`org.gnome.desktop.wm.keybindings`) is a
@@ -835,6 +837,152 @@ To re-verify the panelBox parameters on a future GNOME version:
 gresource extract /usr/lib/gnome-shell/libshell-*.so \
     /org/gnome/shell/ui/layout.js | grep -A4 'addChrome(this.panelBox'
 ```
+
+## Launcher: APIs verified on this install
+
+Everything `lib/launcher/` uses was checked against this machine's real
+Shell/Mutter typelibs and extracted shell source before being written --
+the same discipline as the tiling subsystem, and with the same outcome:
+**the launcher contains zero private-API reaches.**
+
+Verified against `/usr/lib/gnome-shell/Shell-14.typelib` and
+`/usr/lib/x86_64-linux-gnu/mutter-14/Meta-14.typelib` (`grep -a <symbol>`
+as elsewhere in this document):
+
+- `Shell.AppSystem`: `get_default()`, `get_installed()`, `lookup_app()`,
+  and the `installed-changed` signal.
+- `Shell.App`: `activate()`, `open_new_window()`, `get_windows()`,
+  `get_n_windows()`, `get_name()`, `get_id()`, `get_icon()`,
+  `get_app_info()`.
+- `Shell.AppUsage`: `get_default()`, `get_most_used()`, `compare()`.
+  `get_most_used()` is the one call here whose signature has changed
+  across GNOME versions (it used to take a context argument), so
+  `recentProvider.js` wraps it in a try/catch and falls back to
+  Tessera's own launch history.
+- `Shell.WindowTracker.get_default().get_window_app()`.
+- `Shell.BlurEffect` with `radius`, `brightness` and
+  `Shell.BlurMode.BACKGROUND` / `ACTOR`.
+- `Meta.Display.get_tab_list(Meta.TabList.NORMAL_ALL, null)` --
+  most-recently-used order, which is where the launcher's
+  "recently focused" ranking comes from for free.
+- `Meta.Display.get_selection()` -> `Meta.Selection` with the
+  `owner-changed` signal, `get_mimetypes()`, and
+  `Meta.SelectionType.SELECTION_CLIPBOARD`. This is what makes clipboard
+  monitoring event-driven instead of polled; the text itself is then read
+  with `St.Clipboard.get_default().get_text()`, the same async getter
+  `js/ui/shellEntry.js` uses for its paste menu item.
+- `Meta.restart(message, global.context)` -- two arguments on this
+  version, verified in the extracted `js/ui/runDialog.js`, which also
+  supplies the `Meta.is_wayland_compositor()` guard the launcher's
+  "Restart GNOME Shell" action copies verbatim.
+
+Verified in extracted shell source rather than the typelib:
+
+- **`Main.pushModal(actor, {actionMode})` returns a `Clutter.Grab`**, and
+  the caller must check `grab.get_seat_state() !== Clutter.GrabState.ALL`
+  and `Main.popModal(grab)` if the grab is incomplete
+  (`js/ui/modalDialog.js`'s own `pushModal()`). The launcher copies that
+  check exactly, so opening while another grab is up fails cleanly
+  instead of half-opening.
+- **`Shell.ActionMode.POPUP` is the mode menu-like grabs take**
+  (`js/ui/popupMenu.js`, `js/ui/appDisplay.js`, `js/ui/screenshot.js`),
+  and a keybinding registered with POPUP still dispatches while such a
+  grab is active -- which is what lets the launcher's own shortcut close
+  it again.
+- **`Main.layoutManager.modalDialogGroup`** is where `ModalDialog` parents
+  itself (`js/ui/modalDialog.js`), so the launcher uses the same layer
+  rather than `addChrome()`.
+- **`Main.activateWindow(window)`** switches workspace with
+  `activate_with_focus()`, raises, focuses and hides the overview
+  (`js/ui/main.js`) -- reimplementing any of that would fight GNOME's
+  window-management model.
+- **`ensureActorVisibleInScrollView(scrollView, actor)`** moved to
+  `js/misc/animationUtils.js` in this version and reads
+  `scrollView.vadjustment` (GNOME 46 dropped the older
+  `scrollView.vscroll.adjustment`). `St.ScrollView` likewise takes its
+  content through the `child` property now.
+- **`Util.trySpawnCommandLine()`** (`js/misc/util.js`) is
+  `GLib.shell_parse_argv()` + `GLib.spawn_async()` -- no shell -- and is
+  exactly what the Alt+F2 run dialog uses. The launcher's command
+  provider uses the same call, and reads the same
+  `org.gnome.desktop.default-applications.terminal` `exec`/`exec-arg`
+  keys for its "run in a terminal" mode.
+- **`ExtensionManager.enableExtension()` / `disableExtension()` PERSIST**:
+  both rewrite `global.settings`' `enabled-extensions` /
+  `disabled-extensions` (extracted `js/ui/extensionSystem.js`). The
+  launcher's extension toggle and its "Disable Tessera" action therefore
+  behave exactly like the Extensions app's switch, and the action's
+  subtitle says so rather than implying it is temporary.
+- **GNOME Settings panels are ordinary `.desktop` files marked
+  `NoDisplay`**, each declaring `Categories=...X-GNOME-Settings-Panel...`
+  with its own translated `Name`, `Comment`, `Icon` and `Keywords`
+  (e.g. `/usr/share/applications/gnome-display-panel.desktop`). The
+  launcher enumerates them by that category marker instead of hardcoding
+  a panel list, so Ubuntu's extra panels and any future ones come along
+  for free. `should_show()` is what keeps them out of the *application*
+  provider, so the two providers partition one list rather than
+  competing over it.
+
+**`<Super>space` is already taken.** Confirmed on this install:
+
+```sh
+$ gsettings get org.gnome.desktop.wm.keybindings switch-input-source
+['<Super>space', 'XF86Keyboard']
+$ gsettings get org.gnome.desktop.wm.keybindings switch-input-source-backward
+['<Shift><Super>space', '<Shift>XF86Keyboard']
+```
+
+This is a fifth entry in the keybinding-conflict table further up, and
+the only one handled *conditionally* -- see the launcher section of
+ARCHITECTURE.md for why and how.
+
+**St's CSS engine implements `min-width`/`min-height`/`max-width`/
+`max-height` but NOT a plain `width` or `height` property.** Verified
+directly against the library:
+
+```sh
+strings -a /usr/lib/gnome-shell/libst-14.so | grep -xE 'width|height|max-width|max-height'
+# -> only the min-/max- forms exist
+```
+
+So a fixed-width St actor has to be expressed as equal `min-width` and
+`max-width` (`lib/launcher/theme.js` does exactly that for the launcher
+card). The same check confirms `box-shadow`, `padding`, `border`,
+`icon-size`, `text-align` and `transition-duration` are supported, which
+is what `stylesheet.css`'s launcher rules rely on.
+
+**`Shell.BlurEffect` fills the actor's whole bounding rectangle and
+cannot be clipped to a `border-radius`.** Reported by a user as "the
+launcher's corners are rounded but faint corners can still be seen".
+`BACKGROUND` mode captures the framebuffer under the actor's
+*allocation*, blurs it, and paints it over that same rectangle, before
+the actor's own rounded, St-drawn background goes on top -- so the corner
+regions the rounding excludes still get blurred desktop.
+
+Three things do NOT fix it, recorded so they are not re-attempted:
+
+- St has no way to clip an effect (`min-`/`max-` sizing and
+  `border-radius` are painting properties, not a clip), and Clutter's
+  `set_clip()` / `clip_to_allocation` are rectangular.
+- Wrapping the blur in a rounding GLSL `Clutter.ShaderEffect` *would*
+  clip it, but only as the OUTER effect -- and an outer offscreen effect
+  breaks `BACKGROUND` blur outright, because that mode reads the stage
+  framebuffer behind the actor, which is not what is bound while the
+  actor renders into an offscreen buffer.
+- Inset the blurred actor by the corner radius and the leak is replaced
+  by an unblurred frame just inside the border, which is worse.
+
+What actually works is to stop blurring a rounded actor: either turn the
+effect off (Tessera's default, `launcher-blur`), or move it to a
+full-screen layer, which has no corners to clip. `BLUR_BRIGHTNESS` is
+also kept at 1.0 -- the effect's darkening was what made the leaked
+corners read as grey squares rather than as a barely-noticeable change in
+sharpness.
+
+**`Gio.ThemedIcon.new_with_default_fallbacks()`** is what keeps icon
+names like `org.gnome.Settings-display-symbolic` from failing outright on
+an icon theme that lacks the exact variant -- the usual cause of blank
+rows in a launcher on non-Adwaita icon themes.
 
 ## Things that were deliberately NOT assumed
 

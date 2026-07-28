@@ -299,3 +299,62 @@
     padding: 0;
     border-width: 0;
 }
+
+/*
+ * Launcher (lib/launcher/). Structure only -- every color, size and
+ * radius that must follow the user's settings, the GNOME light/dark
+ * preference or the accent color is applied inline by lib/launcher/
+ * theme.js. That split is the same discipline the workspace squares and
+ * the focus border follow (see docs/ARCHITECTURE.md, "Settings ->
+ * rendering"): a color left in a class rule would leak through St's
+ * style transitions as a flash of the wrong theme.
+ */
+.tessera-launcher-backdrop {
+    /* Opacity is animated on the actor; this is only the dim color. */
+    background-color: #000000;
+}
+
+.tessera-launcher-card {
+    spacing: 6px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+}
+
+.tessera-launcher-entry {
+    min-height: 34px;
+    padding: 4px 10px;
+    border: none;
+}
+
+.tessera-launcher-entry-icon {
+    icon-size: 16px;
+    padding-right: 6px;
+}
+
+.tessera-launcher-scroll {
+    padding: 0;
+}
+
+.tessera-launcher-list {
+    spacing: 1px;
+}
+
+.tessera-launcher-section {
+    /* Color, size and padding are inline (theme.sectionHeaderStyle). */
+    text-align: left;
+}
+
+.tessera-launcher-row {
+    transition-duration: 80ms;
+}
+
+.tessera-launcher-row-box {
+    spacing: 10px;
+}
+
+.tessera-launcher-empty {
+    padding: 24px 0;
+}
+
+.tessera-launcher-footer {
+    text-align: left;
+}

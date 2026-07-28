@@ -85,6 +85,22 @@ function addPresetRow(group, settings, title, subtitle, presets) {
     return row;
 }
 
+// A row whose only control is a button -- used for the destructive
+// "forget what the launcher has learned" actions, which are one-shot
+// operations rather than settings.
+function addButtonRow(group, title, subtitle, label, onClick, {destructive = false} = {}) {
+    const row = new Adw.ActionRow({title, subtitle});
+    const button = new Gtk.Button({
+        label,
+        valign: Gtk.Align.CENTER,
+        css_classes: destructive ? ['destructive-action'] : [],
+    });
+    button.connect('clicked', () => onClick(button));
+    row.add_suffix(button);
+    group.add(row);
+    return row;
+}
+
 // #rrggbb from a Gdk.RGBA (alpha dropped -- these settings are plain hex
 // and the picker below runs with alpha disabled).
 function rgbaToHex(rgba) {
@@ -306,9 +322,170 @@ export default class TesseraPreferences extends ExtensionPreferences {
     fillPreferencesWindow(window) {
         const settings = this.getSettings();
 
+        // One registry across every page, so the launcher's shortcut is
+        // checked for conflicts against the workspace and tool shortcuts
+        // too -- they all end up in the same accelerator namespace.
+        const registry = createShortcutRegistry(settings);
+
         window.add(this._buildAppearancePage(settings));
         window.add(this._buildTilingPage(settings));
-        window.add(this._buildKeybindingsPage(settings));
+        window.add(this._buildLauncherPage(settings, registry));
+        window.add(this._buildKeybindingsPage(settings, registry));
+
+        // Flag any pre-existing duplicate accelerators on open.
+        registry.refresh();
+    }
+
+    _buildLauncherPage(settings, registry) {
+        const page = new Adw.PreferencesPage({
+            title: _('Launcher'),
+            icon_name: 'edit-find-symbolic',
+        });
+
+        const generalGroup = new Adw.PreferencesGroup({
+            description: _(
+                'A Spotlight-style search popup for applications, open windows, ' +
+                'settings panels, extensions, Tessera’s own actions and arithmetic. ' +
+                'Super+Space is GNOME’s “switch input source” shortcut by default: ' +
+                'while the launcher is enabled that shortcut is cleared, and it is ' +
+                'restored exactly as it was when the launcher is turned off again.'),
+        });
+        page.add(generalGroup);
+        addSwitchRow(generalGroup, settings, 'enable-launcher',
+            _('Enable the launcher'), '');
+        addShortcutRow(generalGroup, settings, 'launcher-toggle',
+            _('Open the launcher'), registry);
+        addSpinRow(generalGroup, settings, 'launcher-max-results', _('Maximum results'),
+            _('Across all sections; each section is additionally capped'),
+            {lower: 5, upper: 100, step: 5});
+        addSwitchRow(generalGroup, settings, 'launcher-remember-history',
+            _('Remember what you launch'),
+            _('Rank future searches by how often and how recently you pick each result'));
+
+        const sourcesGroup = new Adw.PreferencesGroup({
+            title: _('What to Search'),
+            description: _(
+                'Actions, GNOME Settings panels and extensions are always searched.'),
+        });
+        page.add(sourcesGroup);
+        addSwitchRow(sourcesGroup, settings, 'launcher-enable-apps',
+            _('Installed applications'), '');
+        addSwitchRow(sourcesGroup, settings, 'launcher-enable-windows',
+            _('Open windows'), '');
+        addSwitchRow(sourcesGroup, settings, 'launcher-enable-recent',
+            _('Recent applications'),
+            _('Shown when the search box is empty'));
+        addSwitchRow(sourcesGroup, settings, 'launcher-enable-calculator',
+            _('Calculator'),
+            _('“2+2”, “sqrt(144)”, “200 + 15%”, “0xff * 2”. Enter copies the result.'));
+        addSwitchRow(sourcesGroup, settings, 'launcher-enable-commands',
+            _('Run commands'),
+            _('Type “>” or “$” first. Commands never go through a shell, so “;” and “|” have no special meaning.'));
+        const terminalRow = addSwitchRow(sourcesGroup, settings, 'launcher-command-in-terminal',
+            _('Run commands in a terminal'),
+            _('Ctrl+Enter always does the opposite for one command'));
+        settings.bind('launcher-enable-commands', terminalRow, 'sensitive',
+            Gio.SettingsBindFlags.GET);
+
+        const clipboardGroup = new Adw.PreferencesGroup({
+            title: _('Clipboard History'),
+            description: _(
+                'Off by default: this keeps a plain-text record of everything you copy ' +
+                'in your settings database. Entries that password managers mark as ' +
+                'secrets are never recorded, nothing is recorded while the screen is ' +
+                'locked, and clipboard entries never enter the ranking history.'),
+        });
+        page.add(clipboardGroup);
+        addSwitchRow(clipboardGroup, settings, 'launcher-enable-clipboard',
+            _('Keep a searchable clipboard history'), '');
+        const clipboardSizeRow = addSpinRow(clipboardGroup, settings, 'launcher-clipboard-size',
+            _('Entries to keep'),
+            _('Pinned entries are kept regardless of this limit'),
+            {lower: 5, upper: 500, step: 5});
+        settings.bind('launcher-enable-clipboard', clipboardSizeRow, 'sensitive',
+            Gio.SettingsBindFlags.GET);
+
+        const searchGroup = new Adw.PreferencesGroup({title: _('Matching')});
+        page.add(searchGroup);
+        addSwitchRow(searchGroup, settings, 'launcher-fuzzy',
+            _('Tolerate typos'),
+            _('Exact, prefix, word and initials matches always rank above fuzzy ones'));
+        addSpinRow(searchGroup, settings, 'launcher-search-delay', _('Search delay'),
+            _('Milliseconds to wait after a keystroke; 0 searches immediately'),
+            {lower: 0, upper: 500, step: 10});
+
+        const placementGroup = new Adw.PreferencesGroup({
+            title: _('Placement'),
+            description: _(
+                'The launcher opens on whichever monitor the pointer is on, near the ' +
+                'upper third of it.'),
+        });
+        page.add(placementGroup);
+        addComboRow(placementGroup, settings, 'launcher-position', _('Horizontal position'),
+            _('Left and right anchor to the work area, clear of docks and side panels'),
+            ['center', 'left', 'right']);
+        addSpinRow(placementGroup, settings, 'launcher-offset-y', _('Vertical offset'),
+            _('Nudge up or down from the default height, in pixels: negative moves up, positive moves down'),
+            {lower: -2000, upper: 2000, step: 10});
+
+        const appearanceGroup = new Adw.PreferencesGroup({title: _('Appearance')});
+        page.add(appearanceGroup);
+        addSpinRow(appearanceGroup, settings, 'launcher-width', _('Width'),
+            _('Width of the popup, in pixels'), {lower: 420, upper: 1400, step: 20});
+        addSpinRow(appearanceGroup, settings, 'launcher-height', _('Result list height'),
+            _('Maximum height of the result list, in pixels'), {lower: 200, upper: 1200, step: 20});
+        addSpinRow(appearanceGroup, settings, 'launcher-corner-radius', _('Corner radius'),
+            _('Corner rounding of the popup, in pixels'), {lower: 0, upper: 40});
+        addSpinRow(appearanceGroup, settings, 'launcher-font-size', _('Font size'),
+            _('Base font size, in points'), {lower: 8, upper: 24});
+        addSwitchRow(appearanceGroup, settings, 'launcher-compact', _('Compact mode'),
+            _('Shorter rows and smaller icons, so more results fit'));
+        addSwitchRow(appearanceGroup, settings, 'launcher-show-icons', _('Show icons'), '');
+        addSwitchRow(appearanceGroup, settings, 'launcher-show-descriptions',
+            _('Show descriptions'), _('The second line of each result'));
+        addSwitchRow(appearanceGroup, settings, 'launcher-animations', _('Animate'),
+            _('Also skipped whenever GNOME’s “reduce animations” setting is on'));
+        addSwitchRow(appearanceGroup, settings, 'launcher-blur', _('Blur the background'),
+            _('Off by default: the shell’s blur always fills a rectangle, so it leaves faintly blurred square corners around the rounded popup'));
+        addSwitchRow(appearanceGroup, settings, 'launcher-follow-theme',
+            _('Follow the system light/dark theme'),
+            _('When off, the launcher stays dark'));
+        addSwitchRow(appearanceGroup, settings, 'launcher-follow-accent',
+            _('Follow the system accent color'),
+            _('Tints the selected result; uses the custom active color if one is set'));
+
+        const dataGroup = new Adw.PreferencesGroup({
+            title: _('Stored Data'),
+            description: _('All of this lives in Tessera’s own settings and is safe to clear.'),
+        });
+        page.add(dataGroup);
+        addButtonRow(dataGroup, _('Ranking history'),
+            _('What you have launched, and how recently'),
+            _('Forget'), button => {
+                settings.set_string('launcher-history', '{}');
+                button.set_label(_('Forgotten'));
+            }, {destructive: true});
+        addButtonRow(dataGroup, _('Pinned results'), _('Everything pinned with Ctrl+D'),
+            _('Clear'), button => {
+                settings.set_strv('launcher-favorites', []);
+                button.set_label(_('Cleared'));
+            }, {destructive: true});
+        addButtonRow(dataGroup, _('Clipboard history'),
+            _('Recorded and pinned clipboard entries'),
+            _('Clear'), button => {
+                settings.set_strv('launcher-clipboard-history', []);
+                settings.set_strv('launcher-clipboard-pinned', []);
+                button.set_label(_('Cleared'));
+            }, {destructive: true});
+
+        // Everything below the master switch is meaningless while the
+        // launcher is off, and the shell ignores it -- so the rows say so
+        // instead of pretending to have an effect (the same GET-only
+        // binding pattern the tiling page uses).
+        for (const group of [sourcesGroup, clipboardGroup, searchGroup, placementGroup, appearanceGroup])
+            settings.bind('enable-launcher', group, 'sensitive', Gio.SettingsBindFlags.GET);
+
+        return page;
     }
 
     _buildTilingPage(settings) {
@@ -460,7 +637,7 @@ export default class TesseraPreferences extends ExtensionPreferences {
         return page;
     }
 
-    _buildKeybindingsPage(settings) {
+    _buildKeybindingsPage(settings, registry) {
         const page = new Adw.PreferencesPage({
             title: _('Keybindings'),
             icon_name: 'input-keyboard-symbolic',
@@ -478,7 +655,6 @@ export default class TesseraPreferences extends ExtensionPreferences {
         // addSwitchRow(masterGroup, settings, 'enable-custom-keybindings',
         //     _('Enable workspace and window-move keybindings'), '');
 
-        const registry = createShortcutRegistry(settings);
         const addShortcut = (grp, key, ttl) =>
             addShortcutRow(grp, settings, key, ttl, registry);
 
@@ -542,9 +718,6 @@ export default class TesseraPreferences extends ExtensionPreferences {
         page.add(toolsGroup);
         addShortcut(toolsGroup, 'tool-port-killer', _('Port killer'));
         addShortcut(toolsGroup, 'tool-color-picker', _('Color picker'));
-
-        // Flag any pre-existing duplicate accelerators on open.
-        registry.refresh();
 
         return page;
     }

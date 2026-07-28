@@ -17,6 +17,7 @@ import {PanelAutoHideManager} from './lib/panelAutoHide.js';
 import {QuickMenu} from './lib/quickMenu.js';
 import {pickColor} from './lib/colorPicker.js';
 import {PortKillerDialog} from './lib/portKiller.js';
+import {LauncherManager} from './lib/launcher/launcher.js';
 
 // SESSION-MODES JUSTIFICATION (metadata.json declares
 // ["user", "unlock-dialog"], which cannot carry this comment itself):
@@ -75,9 +76,24 @@ export default class TesseraExtension extends Extension {
             openColorPicker: () => pickColor(this._settingsManager),
         };
 
+        // The launcher subsystem. Everything it can act on is handed over
+        // here, in one object -- this is the only coupling between it and
+        // the rest of the extension. Inert while enable-launcher is off.
+        this._launcherManager = new LauncherManager(
+            this._settingsManager, this._accentColorTracker, {
+                tilingManager: this._tilingManager,
+                windowMover: this._windowMover,
+                fullscreenManager: this._fullscreenManager,
+                openPreferences: () => this.openPreferences(),
+                openPortKiller: this._tools.openPortKiller,
+                openColorPicker: this._tools.openColorPicker,
+                uuid: this.uuid,
+            });
+        this._launcherManager.enable();
+
         this._keybindingManager = new KeybindingManager(
             this._settingsManager, this._windowMover, this._tilingManager,
-            this._fullscreenManager, this._tools);
+            this._fullscreenManager, this._tools, this._launcherManager);
         this._keybindingManager.enable();
 
         this._nativeIndicatorHider = new NativeIndicatorHider(this._settingsManager);
@@ -120,6 +136,9 @@ export default class TesseraExtension extends Extension {
         this._keybindingManager = null;
 
         // After the keybindings that dispatch into it are gone.
+        this._launcherManager.disable();
+        this._launcherManager = null;
+
         this._fullscreenManager.disable();
         this._fullscreenManager = null;
 

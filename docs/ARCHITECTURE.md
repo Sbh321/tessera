@@ -115,6 +115,15 @@ lib/quickMenu.js           Optional right-hand panel menu (off by default,
                            recent-color/killed-port history; a read-only
                            keybinding reference). extension.js owns its
                            create/destroy lifecycle.
+lib/launcher/              The launcher subsystem (off by default): a
+                           Spotlight/Raycast-style search popup over
+                           apps, windows, settings panels, extensions,
+                           arithmetic, commands, the clipboard, and
+                           every Tessera action. Its own document:
+                           docs/LAUNCHER.md. Nothing outside this
+                           directory knows it exists except extension.js
+                           (composition) and KeybindingManager (which
+                           dispatches launcher-toggle into it).
 lib/portKiller.js          The "port killer" tool: a modal that SIGTERMs
                            whatever listens on a typed TCP port (lsof/ss
                            discovery) and records it in the killed-ports
@@ -178,6 +187,12 @@ window/workspace/monitor events --> TilingManager (debounced) --> layoutEngine (
 this-extension's GSettings --(changed::panel-autohide)--> PanelAutoHideManager --> layoutManager.{un,}trackChrome(panelBox) + poll loop --> panelBox.translation_y
 Super+Z (panel-reveal-toggle; grabbed only while auto-hide active) --> PanelAutoHideManager latches _keyRevealLatched --> poll reveals/conceals panelBox
 this-extension's GSettings --(changed::panel-opacity)---> PanelAutoHideManager --> composes rgba background into Main.panel.style (re-asserted on notify::style; nothing written at 100%)
+
+Super+Space (launcher-toggle; NORMAL|OVERVIEW|POPUP) --> LauncherManager.toggle() --> LauncherPopup.open/close
+LauncherPopup entry text --> SearchController.search() --> every enabled provider.query() --> fuzzyMatcher --> ranked sections --> LauncherList
+LauncherPopup Enter --> SearchController.activate() --> HistoryManager.record() + result.activate() --> Shell.App / Main.activateWindow / TilingManager / WindowMover / ...
+Shell.AppSystem --(installed-changed)--> AppProvider/SettingsProvider cache invalidation
+global.display.get_selection() --(owner-changed, clipboard only)--> ClipboardProvider --> St.Clipboard.get_text --> capped strv in GSettings
 
 global.display --(notify::focus-window)--> FocusBorderManager --> resolves color/geometry --> St actor position/size
 global.window_manager --(switch-workspace)--\
@@ -967,6 +982,100 @@ Activities-button hiding persists — which is the whole point: no
 per-lock flash of restored-then-rehidden panel state (see
 GNOME_NOTES.md).
 
+## Launcher subsystem (`lib/launcher/`)
+
+A native Spotlight/Raycast-style search popup, off by default
+(`enable-launcher`). It has its own full document —
+[`LAUNCHER.md`](LAUNCHER.md) — covering the search pipeline, the
+providers, ranking, the theme system, keyboard/mouse handling,
+performance and security. Only the parts that matter to *this* document
+(how it fits the rest of the extension) are repeated here.
+
+**It is the second subsystem, built on the same rules as `lib/tiling/`:**
+a directory nothing outside it imports except `extension.js`
+(composition) and `KeybindingManager` (which dispatches one accelerator
+into it), with strict internal separation:
+
+```
+constants.js / utils.js / fuzzyMatcher.js / calculatorEngine.js
+                  pure, zero GNOME imports, unit-tested outside the shell
+searchResult.js / searchProvider.js
+                  the record every provider emits and the contract it
+                  implements
+searchController.js
+                  the ONLY place that ranks or groups anything
+keyboardController.js
+                  the ONLY place that decides what a key means
+launcherUI.js / launcherPopup.js / theme.js
+                  drawing, the modal grab, and settings-to-CSS
+*Provider.js / actionRegistry.js / iconProvider.js /
+historyManager.js / favoritesManager.js
+                  data sources and stores; none of them touch an actor
+```
+
+**The organising rule: providers never render, the UI never searches, and
+nothing else ranks.** That is what makes a new provider a new subclass
+plus four registration lines rather than a change to the controller, the
+UI, the ranking or the popup — the extensibility the feature was asked
+for, expressed as a constraint rather than as a plugin API.
+
+**Results are recomputed from scratch on every keystroke**, the same
+"re-derive from ground truth, never trust cached state" posture the
+tiling subsystem takes with its layout trees. What *is* cached is only
+what is expensive and externally invalidated: the installed-app list
+(rebuilt on `Shell.AppSystem`'s `installed-changed`) and the
+settings-panel list. Windows come straight from Mutter's tab list, so a
+closed window can never be listed.
+
+**Two pieces of state deliberately outlive a single search**, both in
+GSettings rather than in memory: launch frecency (`launcher-history`) and
+pins (`launcher-favorites`). Favorites store *keys*
+(`apps:firefox.desktop`), never resolved objects, so a pin survives an
+app being uninstalled and reinstalled and a key that no longer resolves
+is skipped rather than erroring.
+
+**The one genuinely new integration problem: "the focused window" is not
+knowable at activation time.** The popup holds a modal grab, so by the
+time an action runs, live focus is not necessarily the window the user
+was looking at when they started typing. Rather than guess, the popup
+captures `global.display.focus_window` when it opens and passes it
+explicitly. That is why `WindowMover.moveFocusedToWorkspace/
+moveFocusedToLastWorkspace/moveFocusedToNewWorkspace/
+toggleFocusedMaximize`, `TilingManager.toggleFloating` and
+`FullscreenManager.toggleFocused` each gained one optional trailing
+window parameter, defaulting to the existing "resolve from focus"
+behavior for every existing caller. A captured window whose actor is
+already gone (it closed while the launcher was open) falls back to live
+focus. `WindowMover` also gained a public `moveToWorkspace(window,
+index)` — the general form its own `moveFocusedToWorkspace` now delegates
+to — because the launcher's `move firefox 4` grammar addresses a window
+by name rather than by focus.
+
+**Keybinding conflict handling gained one refinement for this feature.**
+`Super+Space` is GNOME's `switch-input-source`, so it joins the existing
+save/clear/watch/restore machinery in `KeybindingManager` — but
+*conditionally*: the input-source keys are cleared only while the
+launcher is enabled **and** its accelerator genuinely collides with them
+(`_inputSourceConflicts()` compares the actual accelerator values). A
+user who never enables the launcher, or who rebinds it, keeps
+input-source switching untouched. The managed-schema list therefore
+allows an entry's `keys` to be a function evaluated at bind time, and
+`_activeManagedSchemas` records which entries were in force so restore
+walks exactly the same list. Toggling either setting rebinds outright
+rather than patching the difference, keeping one uniform lifecycle. The
+launcher accelerator is also the only one registered with
+`Shell.ActionMode.POPUP` on top of `NORMAL | OVERVIEW` — that is what
+lets a second press close the launcher from under its own modal grab.
+
+**Cleanup:** with `enable-launcher` off the subsystem's entire footprint
+is a constructed object with null fields — no providers, no popup, no
+caches, no signals beyond the two settings watchers `enable()` installs.
+Turning it off or disabling the extension closes and destroys the popup
+(releasing the modal grab), disables every provider (each disconnects its
+own signals: the app system's `installed-changed`, the clipboard
+selection's `owner-changed`), cancels the warm-up timeout and drops the
+icon cache.
+
 ## Why `PanelMenu.Button` with no menu
 
 GNOME's own bundled `workspace-indicator` extension (see
@@ -1153,6 +1262,39 @@ a single `try/catch` that abandons the whole enhancement on any shape
 mismatch, leaving the bars hidden exactly as the pre-slide code did. It
 never affects layout correctness -- only whether the bar slides or blinks
 during a ~250 ms gesture.
+
+**What the launcher subsystem adds to this list.** It opens no new
+private-API surface at all, but it does widen two of the four above and
+add one small read-only schema:
+
+- `lib/keybindingManager.js` (#1) additionally clears
+  `org.gnome.desktop.wm.keybindings switch-input-source` /
+  `switch-input-source-backward` — but *only* while the launcher is
+  enabled and its accelerator actually collides with them (see the
+  launcher section above). Same save/clear/watch/restore lifecycle,
+  same exact restore.
+- `lib/accentColor.js`'s settings object (#3) is also read for
+  `color-scheme`, so the launcher can follow the light/dark preference.
+  Still read-only, still the same schema, still no new Gio.Settings
+  instance.
+- `lib/launcher/commandProvider.js` reads (never writes)
+  `org.gnome.desktop.default-applications.terminal`'s `exec`/`exec-arg`
+  to run a command in a terminal — the same two keys GNOME's own Alt+F2
+  run dialog reads for the same purpose, looked up through the schema
+  source so a system without it degrades to a notification instead of
+  aborting the shell.
+- `lib/launcher/actionRegistry.js` calls logind's public
+  `org.freedesktop.login1.Manager` D-Bus interface for Hibernate, which
+  GNOME's own `SystemActions` does not expose. That is an external
+  system service with a stable published interface, not a shell
+  internal, and the action only appears once `CanHibernate` has
+  confirmed support.
+
+Everything else the launcher touches is public Shell/Mutter API
+(`Shell.AppSystem`, `Shell.AppUsage`, `Shell.WindowTracker`,
+`Shell.BlurEffect`, `Main.pushModal`, `Main.activateWindow`,
+`Main.extensionManager`, `Meta.Selection`) — see
+[`GNOME_NOTES.md`](GNOME_NOTES.md) for how each was verified.
 
 All of the above are the only non-obvious, semi-invasive behaviors in
 the codebase; everything else is scoped to this extension's own

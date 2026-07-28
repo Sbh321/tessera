@@ -87,15 +87,31 @@ submission will too.
   gnome-shell log — run `gnome-extensions prefs <uuid>` from a terminal to
   see `prefs.js` exceptions printed directly to stdout/stderr.
 
+## Tests
+
+```sh
+./tests/run-tests.sh
+```
+
+Runs everything that can be verified without a live shell: the GSettings
+schema (`glib-compile-schemas --strict`) and
+`tests/launcher-engine-test.js` — assertions over the launcher's fuzzy
+matcher, arithmetic evaluator, string helpers, and the history/favorites
+stores (driven with a fake settings object). Those modules are pure ES
+modules with no GNOME imports, so the runner uses `gjs -m` when available
+and falls back to `node` otherwise.
+
 ## Why there's no automated test suite for the UI
 
 The panel indicator and keybindings only make sense running inside an
 actual Mutter/GNOME Shell compositor process — `St`, `Clutter`, and
 `Meta.Workspace` aren't meaningfully mockable outside it, and GNOME Shell
 itself doesn't offer a supported headless test harness for third-party
-extensions. `tests/schema-validate.sh` covers the one thing that *can* be
-verified in isolation (the GSettings schema compiles under
-`--strict`). Everything else is covered by the manual checklist in
+extensions. That is also why the two most logic-dense pieces of the
+codebase (`lib/tiling/layoutEngine.js` and the launcher's
+matcher/evaluator) are deliberately split out as GNOME-free modules: it
+is the only way to get real unit tests on the parts where the bugs
+actually live. Everything else is covered by the manual checklist in
 [`../tests/MANUAL_TESTS.md`](../tests/MANUAL_TESTS.md) — run it after any
 change to `lib/workspaceIndicator.js` or `lib/keybindingManager.js` in
 particular, since those are the two modules touching live shell/session

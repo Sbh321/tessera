@@ -1,7 +1,7 @@
 {
     "uuid": "tessera@sbh321.github.io",
     "name": "Tessera",
-    "description": "Hyprland-inspired tiling workspace manager: automatic dwindle tiling, stacked (tabbed) layout mode, numbered workspace squares in the panel, and Super-based workspace and window-movement keybindings.",
+    "description": "Hyprland-inspired tiling workspace manager: automatic dwindle tiling, stacked (tabbed) layout mode, numbered workspace squares in the panel, Super-based workspace and window-movement keybindings, and an optional Spotlight-style launcher for apps, windows, settings and Tessera's own actions.",
     "shell-version": ["46"],
     "session-modes": ["user", "unlock-dialog"],
     "url": "https://github.com/Sbh321/tessera",

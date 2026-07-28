@@ -9,6 +9,16 @@ not planned.
 
 - **Renamed to Tessera** (from "Workspace Squares"), uuid
   `tessera@sbh321.github.io`.
+- **Launcher** (`lib/launcher/`, off by default): a native
+  Spotlight/Raycast-style search popup on `Super+Space` covering
+  installed applications (and their `.desktop` actions), open windows,
+  GNOME Settings panels, installed extensions, arithmetic, shell
+  commands, an opt-in clipboard history, and every Tessera action —
+  including an argument grammar (`workspace 12`, `move firefox 4`) that
+  reaches workspaces the `Super+1..9` bindings cannot address. Built as
+  an independent subsystem with a strict provider/controller/UI split,
+  adaptive frecency ranking, pinned favorites, and a pure engine that is
+  unit-tested outside the shell. See [`LAUNCHER.md`](LAUNCHER.md).
 - **Window movement**: `Shift+Super+1..9` moves the focused window to a
   workspace and follows it; `Shift+Super+Left/Right` inserts a brand-new
   workspace beside the current one and moves the window into it
@@ -85,6 +95,19 @@ not planned.
   - More layouts (master, grid, spiral variants) — pure additions to
     `lib/tiling/layoutEngine.js`.
   - Per-workspace layout choice and smart gaps as settings.
+- **Launcher follow-ups** (each a new provider or one new field — see the
+  "Future work" section of [`LAUNCHER.md`](LAUNCHER.md), which explains
+  why none of them need architectural changes):
+  - More providers: recent files, git repositories, SSH hosts, browser
+    tabs and bookmarks, emoji, unit conversion, media/volume/brightness
+    controls, notifications.
+  - Currency conversion, which needs network I/O and therefore an
+    out-of-process helper rather than work in the compositor — the
+    asynchronous provider seam already exists and is unused.
+  - Workspace sessions / saved window layouts, as an action plus storage
+    over the tiling subsystem's existing `LayoutTree`.
+  - Sub-queries (a result that opens its own scoped search), which need
+    one new field on the result record and a mode in the popup.
 - **Press-to-record keybinding capture widget.** Preferences currently
   accept accelerators as typed text (e.g. `<Super>3`) via `Adw.EntryRow`.
   A `Gtk.EventControllerKey`-based "click here and press a key" widget

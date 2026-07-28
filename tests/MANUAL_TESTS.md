@@ -3,9 +3,10 @@
 GNOME Shell extensions run inside the compositor process, so there is no
 practical automated test harness for the panel indicator or keybindings
 themselves (see [`../docs/DEVELOPMENT.md`](../docs/DEVELOPMENT.md) for why).
-`schema-validate.sh` covers what *can* be automated. Everything else below
-is a manual pass, done after `scripts/dev-symlink.sh` and enabling the
-extension.
+`./run-tests.sh` covers what *can* be automated — the GSettings schema and
+the launcher's pure engine modules (matching, arithmetic, ranking stores).
+Everything else below is a manual pass, done after
+`scripts/dev-symlink.sh` and enabling the extension.
 
 ## Placement and Activities-button hiding
 
@@ -708,6 +709,331 @@ TODO: Need to rework if seen again:
       both.
 - [ ] Try at least one non-Yaru shell theme if available (via the bundled
       `user-theme` extension) to confirm the squares don't visually break.
+
+## Launcher
+
+Everything below assumes Preferences → Launcher → "Enable the launcher"
+is ON unless a step says otherwise. The pure engine (matching, the
+calculator, ranking stores) is covered by `./tests/run-tests.sh` — this
+section is for everything that needs a live shell.
+
+### Enabling, shortcut and the input-source conflict
+
+- [ ] With the launcher OFF (the default), `Super+Space` still switches
+      keyboard layout (if you have more than one) — Tessera has not
+      touched `switch-input-source`. Confirm directly:
+      `gsettings get org.gnome.desktop.wm.keybindings switch-input-source`
+      still lists `<Super>space`.
+- [ ] Turn the launcher ON: `Super+Space` now opens the launcher, and the
+      same `gsettings get` reports `[]`. Turn it back OFF: the original
+      value is restored *exactly* (including any customization you made
+      beforehand), and layout switching works again.
+- [ ] Rebind the launcher shortcut in Preferences to something else (e.g.
+      `Ctrl+Space`) while it is enabled: `switch-input-source` is
+      restored immediately, because the conflict no longer exists. Rebind
+      back to `Super+Space` and it is cleared again.
+- [ ] Disabling the whole extension while the launcher is enabled
+      restores `switch-input-source` too.
+- [ ] Pressing the shortcut a second time while the launcher is open
+      closes it (this is the POPUP action-mode path — a plain
+      NORMAL-only binding would be swallowed by the launcher's own grab).
+- [ ] Open a panel menu (e.g. the system menu), then press the launcher
+      shortcut: nothing half-opens or breaks — the launcher either opens
+      cleanly or does nothing, and the desktop stays usable either way.
+- [ ] Press the shortcut with the Activities overview open: the overview
+      closes and the launcher opens over the desktop.
+
+### Opening, closing and appearance
+
+- [ ] The popup appears centered horizontally on the monitor the pointer
+      is on, near the upper third, over a dimmed desktop (the defaults:
+      position `center`, offset 0).
+- [ ] With two monitors, moving the pointer to the second monitor and
+      opening the launcher centers it there.
+- [ ] Preferences → Launcher → Placement → "Horizontal position": `left`
+      and `right` anchor the popup to that side with a small gap;
+      `center` restores the default. Changing it while the launcher is
+      OPEN moves it immediately.
+- [ ] With Ubuntu Dock (or any side dock) visible, the `left` anchor puts
+      the popup beside the dock, never underneath it — placement uses the
+      work area, not the raw monitor rectangle.
+- [ ] "Vertical offset": negative values move the popup up, positive move
+      it down, from its default height. Changing it while the launcher is
+      OPEN moves it immediately.
+- [ ] Set the vertical offset to its minimum (-2000): the popup stops at
+      the top of the work area and never slides up behind the top panel.
+- [ ] Set it to its maximum (2000): the popup parks near the bottom with
+      at least the search entry still on screen — it must never leave the
+      screen entirely, since that would make the setting unreachable.
+- [ ] With the panel auto-hidden (work area extends to the top edge), a
+      large negative offset puts the popup at the very top rather than
+      off-screen.
+- [ ] `Esc` closes. Clicking outside the card closes. Clicking *on* the
+      card does not.
+- [ ] Opening the second time is visibly instant (the actor tree is built
+      once and reused).
+- [ ] With blur OFF (the default), **the card's rounded corners are fully
+      transparent** — no faint square corners, no patch poking out past
+      the rounding. Check against a busy, high-contrast wallpaper at
+      corner radius 0, 18 and 40.
+- [ ] Toggle "Blur the background" on: the desktop behind the card is
+      blurred. Faintly blurred square corners around the rounded card are
+      EXPECTED here and are the documented reason the setting ships off
+      (docs/LAUNCHER.md, "Blur, and why it is off by default") — they
+      should be subtle, not dark grey blocks. Toggle it back off and the
+      corners are exact again.
+- [ ] Change width, height, corner radius and font size in Preferences
+      while the launcher is open — every one applies live, without
+      re-enabling the extension.
+- [ ] Toggle "Compact mode": rows and icons shrink and the hint footer
+      disappears. Toggle "Show icons" and "Show descriptions"
+      independently.
+- [ ] Switch GNOME to light mode (Settings → Appearance): the launcher
+      follows. Turn "Follow the system light/dark theme" off: it stays
+      dark in both modes.
+- [ ] Change your accent color: the selected row's tint follows it. Turn
+      "Follow the system accent color" off: the selection goes neutral
+      gray.
+- [ ] Turn GNOME's "Reduce Animations" (Settings → Accessibility) on: the
+      launcher opens and closes with no animation regardless of the
+      launcher's own animation setting.
+
+### Searching applications
+
+- [ ] Opening with an empty box shows **Open Windows first**, then pinned
+      results (if any) and recent applications — not an empty list. The
+      first row is preselected, so `Super+Space` then Enter switches to
+      your most recently used window.
+- [ ] Typing `term` finds Terminal/Console at or near the top.
+- [ ] Typing initials finds the app: `vsc`/`vs` → Visual Studio Code,
+      `gimp` → GNU Image Manipulation Program (if installed).
+- [ ] `ff` finds Firefox (subsequence matching).
+- [ ] A one-character typo in a longer name still finds the app (e.g.
+      `fierfox`), and turning off "Tolerate typos" makes that specific
+      query stop matching while `ff` and `fire` still work.
+- [ ] Matched characters are visibly bold inside each result title, and
+      the bolding lines up with the characters you actually typed —
+      including for an app with accented characters in its name.
+- [ ] Enter launches the app; the launcher closes first, and the app
+      appears on the current workspace.
+- [ ] `Ctrl+Enter` on an already-running app opens a *second* window
+      rather than switching to the existing one.
+- [ ] `Shift+Enter` opens the app on the trailing (empty) workspace and
+      the view follows it there.
+- [ ] An app with `.desktop` actions (Firefox, Files, most terminals)
+      offers those actions as their own rows when you type their name
+      (e.g. "New Private Window"), ranked just below the app itself.
+- [ ] Install or remove an application (or run
+      `update-desktop-database ~/.local/share/applications` after adding a
+      `.desktop` file) with the shell running: the new app appears in
+      search without re-enabling the extension.
+- [ ] Turning "Installed applications" off removes them from results
+      immediately, with no restart.
+
+### Searching windows
+
+- [ ] Open several windows across workspaces, then search a window title
+      fragment: the window is listed, with its application and workspace
+      number as the subtitle.
+- [ ] Enter switches to that window's workspace and focuses it.
+- [ ] `Ctrl+Enter` instead *brings* the window to the current workspace
+      and focuses it there.
+- [ ] Windows on the current workspace rank above identically-matching
+      windows on other workspaces.
+- [ ] Close a window, reopen the launcher, search for it: it is gone (the
+      window list is read live, never cached).
+- [ ] A window pinned to all workspaces shows "All workspaces" as its
+      subtitle, and `Ctrl+Enter` on it does not try to move it.
+
+### Actions and the Tessera grammar
+
+- [ ] `tile` finds "Toggle Automatic Tiling", and its subtitle reports the
+      current state ("Currently on"/"Currently off"). Running it flips the
+      setting, and the tiling actually changes.
+- [ ] `stack`, `float`, `max`, `full`, `border`, `panel` each find the
+      matching Tessera toggle and work exactly like their keybindings.
+- [ ] **Focused-window actions act on the window you were looking at.**
+      Focus a window, open the launcher, run "Toggle Maximize" — that
+      window maximizes (not some other window, and not nothing). Repeat
+      for "Toggle Fullscreen" and "Toggle Floating".
+- [ ] Close the focused window while the launcher is open (from another
+      device or by other means), then run a focused-window action: it is
+      a clean no-op or acts on the currently focused window, never an
+      error in the journal.
+- [ ] `workspace 3` offers "Switch to Workspace 3" with a window count as
+      its subtitle; Enter switches there.
+- [ ] `workspace 12` works if you have 12 workspaces — reaching a
+      workspace `Super+1..9` cannot address at all.
+- [ ] `move 4` moves the focused window to workspace 4 and follows it.
+- [ ] `move firefox 4` moves Firefox's window to workspace 4. With
+      several Firefox windows, each candidate is offered separately.
+- [ ] `move zzz 4` offers nothing (no confident app match) rather than
+      moving the wrong window.
+- [ ] `workspace` alone (no number) does NOT trigger the grammar — it
+      just searches normally.
+- [ ] Lock Screen, Suspend, Log Out, Power Off, Restart appear and work.
+      Hibernate appears only if `systemctl hibernate` is actually
+      supported on the machine.
+- [ ] "Restart GNOME Shell" is absent on Wayland and present on X11
+      (log into "Ubuntu on Xorg" to check the second half).
+- [ ] "Tessera Preferences" opens the preferences window; "Port Killer"
+      and "Color Picker" open those tools.
+- [ ] "Disable Tessera" turns the extension off cleanly (no errors in the
+      journal), and it stays off after a shell restart until re-enabled
+      from the Extensions app — matching what its subtitle claims.
+
+### Settings panels and extensions
+
+- [ ] `display` finds the Displays settings panel; Enter opens GNOME
+      Settings *on that panel*, not on its front page.
+- [ ] `bluetooth`, `sound`, `wifi` likewise. Panels appear once, never
+      duplicated with the Settings app itself.
+- [ ] Searching an installed extension's name lists it with
+      "Enabled"/"Disabled" in the subtitle; Enter toggles it (verify with
+      `gnome-extensions list --enabled`), `Ctrl+Enter` opens its
+      preferences when it has any.
+
+### Calculator
+
+- [ ] `2+2`, `4*18`, `sqrt(144)`, `sin(90)` (= 1, degrees), `15%`,
+      `200 + 15%` (= 230), `0xff * 2` all produce a `=` row at the top.
+- [ ] The subtitle of an integer result shows hex/binary/octal
+      alternatives; Enter copies the plain result and shows a
+      notification. Paste to confirm.
+- [ ] After copying a result, `ans * 2` uses it.
+- [ ] Typing a plain number (`5`) does NOT produce a calculator row —
+      searching for a port number or a version string still works.
+- [ ] `firefox`, `rm -rf /`, `2+2; ls`, `$(id)` and `` `id` `` produce no
+      calculator row at all (they are not expressions — and nothing is
+      executed).
+
+### Commands
+
+- [ ] `> gedit` (or any installed program) shows one row whose subtitle
+      confirms the resolved path; Enter runs it.
+- [ ] `> definitelynotinstalled` says it was not found in PATH, and
+      pressing Enter anyway produces a notification rather than a stack
+      trace in the journal.
+- [ ] `$ gedit` behaves identically to `>`.
+- [ ] Turn on "Run commands in a terminal": `> top` opens in a terminal.
+      `Ctrl+Enter` inverts the setting for that one command (with the
+      setting on, `Ctrl+Enter` runs it without a terminal).
+- [ ] **Injection check:** `> touch /tmp/tessera-should-not-exist; id`
+      must NOT create the file and must NOT run `id`; it fails to find a
+      program literally named `touch;`... (verify `/tmp` afterwards).
+- [ ] While a `>` command is typed, no application/window/action results
+      are shown — the prefix addresses the command provider alone.
+
+### Clipboard history (opt-in)
+
+- [ ] With the setting OFF (the default), copying text records nothing:
+      `gsettings get org.gnome.shell.extensions.tessera
+      launcher-clipboard-history` stays `[]`.
+- [ ] Turn it ON, copy a few different strings, then search for one of
+      them in the launcher: it appears with a character count; Enter
+      copies it again (paste to confirm).
+- [ ] `Ctrl+Enter` pins an entry (it shows "Pinned" and a star icon);
+      pinned entries survive exceeding the history size limit.
+- [ ] `Ctrl+Delete` removes the selected entry, and the list refreshes
+      without jumping back to the top.
+- [ ] Copy a password from a password manager that marks it as a secret
+      (KeePassXC, Bitwarden): it must NOT appear in the history.
+- [ ] Lock the screen, copy something from the lock screen if possible,
+      unlock: nothing new was recorded.
+- [ ] Turning the setting off stops recording immediately (copy something
+      new and confirm the list does not grow), without re-enabling the
+      extension.
+- [ ] Clipboard entries never appear in
+      `gsettings get org.gnome.shell.extensions.tessera launcher-history`.
+
+### Keyboard and mouse
+
+- [ ] Up/Down move the selection and wrap at both ends; the list scrolls
+      to keep the selection visible.
+- [ ] `Ctrl+N` / `Ctrl+P` move down/up.
+- [ ] `Page Up` / `Page Down` move by roughly a screenful.
+- [ ] `Home` / `End` jump to the first/last result (and `Ctrl+A` /
+      `Ctrl+E` still move the text cursor).
+- [ ] `Tab` / `Shift+Tab` jump between section headers.
+- [ ] `Alt+1` … `Alt+9` activate the Nth visible result directly; the row
+      hints match what actually happens.
+- [ ] `Left`/`Right`, plain `Backspace` and `Delete` edit the query
+      normally and never move the selection.
+- [ ] `Ctrl+Backspace` clears the whole query.
+- [ ] `Ctrl+D` pins the selected app; it appears under "Favorites" when
+      the search box is empty. `Ctrl+D` again unpins it.
+- [ ] `Ctrl+Shift+Up`/`Down` reorders a pinned result in the Favorites
+      section, and the order survives closing and reopening.
+- [ ] Uninstall a pinned app: the pin is silently skipped rather than
+      showing a broken row (reinstalling brings it back).
+- [ ] Hovering a row selects it; left click activates; middle click does
+      the alternate action; right click does the secondary action;
+      scrolling scrolls the list.
+- [ ] The footer hints update as the selection moves and match what the
+      modifiers actually do for that result.
+
+### Ranking
+
+- [ ] **Open Windows leads every list.** With Firefox open, type `fire`:
+      the Firefox window is the first section and the first row, above
+      the Firefox application entry. Enter switches to the window;
+      `Ctrl+Enter` on the application row below still opens a new one.
+- [ ] It leads even when another section matches better: type an exact
+      application name whose window is open under a different title — the
+      window section is still first.
+- [ ] With no window matching the query, the list starts with whichever
+      section has the best result, as before (type an app that is not
+      running).
+- [ ] Set "Maximum results" to 5 with several windows open and type a
+      broad query: windows still appear — they claim the budget first,
+      rather than being squeezed out by applications.
+- [ ] Type a `>` command: only the command result shows (windows are not
+      consulted at all for a prefixed query).
+- [ ] Launch one app through the launcher several times. It moves to the
+      top of its own section for its query, above an
+      alphabetically-earlier competitor.
+- [ ] Turn "Remember what you launch" off: ranking stops changing with
+      use. Turn it back on: previous learning is still there.
+- [ ] Preferences → Launcher → Stored Data → "Forget" resets ranking to
+      neutral; "Clear" empties the pins; the clipboard "Clear" empties
+      both the history and the pinned entries.
+- [ ] A pinned result outranks an unpinned one that matches equally well.
+
+### Edge cases and stress
+
+- [ ] Empty search: no errors, and the resting view is populated (or
+      shows "Type to search" on a completely fresh profile).
+- [ ] Type gibberish (`qxzqxz`): "No results", no errors.
+- [ ] Type and delete very fast for ~10 seconds (hold a key down): the
+      list keeps up, nothing flickers into an inconsistent state, and the
+      journal stays clean.
+- [ ] Paste a very long string into the search box: the popup does not
+      grow beyond its configured width and nothing hangs.
+- [ ] Switch workspaces / open and close windows while the launcher is
+      open, then search windows: results reflect reality.
+- [ ] Set "Maximum results" to 5 and confirm at most 5 rows appear; set
+      it to 100 and confirm the list scrolls.
+- [ ] Set "Search delay" to 300ms: results visibly lag one beat behind
+      typing, and the last keystroke always wins (no stale list).
+- [ ] Open the launcher, then lock the screen (`Super+L`): nothing is
+      stuck on the lock screen and the session unlocks normally.
+- [ ] Open and close the launcher ~20 times in a row: no growth in
+      gnome-shell memory that does not settle, no leftover dimming, and
+      the desktop remains interactive.
+
+### Launcher cleanup correctness
+
+- [ ] Toggle "Enable the launcher" off while the popup is OPEN: it closes
+      cleanly, the desktop is interactive (no stuck modal grab), and the
+      shortcut stops working.
+- [ ] Disable the extension while the launcher popup is open: same — no
+      stuck grab, no leftover dim layer, and no errors in
+      `journalctl --user _COMM=gnome-shell`.
+- [ ] Enable/disable the extension three times in a row with the launcher
+      enabled, then open it: exactly one popup appears, one result per
+      match (no doubled providers), and the shortcut fires once.
+- [ ] With the launcher disabled, `journalctl` shows no launcher activity
+      at all and no `.desktop` files are read (the subsystem is inert).
 
 ## Cleanup correctness
 

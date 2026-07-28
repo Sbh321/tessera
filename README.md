@@ -29,6 +29,45 @@ windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
 
 ## Features
 
+### Launcher
+
+- **A native Spotlight/Raycast-style launcher** on `Super+Space` (off by
+  default — turn it on in Preferences → Launcher). Not a wrapper around
+  Rofi, Walker or Ulauncher: it runs inside GNOME Shell on public APIs,
+  like everything else here.
+- **One search box, every kind of result**, merged and ranked together:
+  installed applications (and their `.desktop` actions like *New Private
+  Window*), open windows, GNOME Settings panels, installed extensions,
+  arithmetic, shell commands, an opt-in clipboard history, and every
+  action Tessera itself can perform.
+- **Matching that understands how people type**: exact, prefix, word
+  (`code` → Visual Studio **Code**), initials (`vsc`, `gimp` → GNU Image
+  Manipulation Program), substring, subsequence (`ff` → Firefox), and
+  bounded typo tolerance — in that strict order, so a weak match can
+  never outrank a strong one.
+- **It learns.** Results are re-ranked by how often *and* how recently
+  you pick them, whether they are pinned (`Ctrl+D`), and what is relevant
+  right now — a window on the current workspace, an app that is already
+  running.
+- **Tessera's own features are searchable**: `tile`, `stack`, `float`,
+  `border`, `panel`, `port`, `color`… plus an argument grammar —
+  `workspace 12`, `move firefox 4` — that reaches workspaces beyond the
+  `Super+1..9` bindings entirely.
+- **Fully keyboard-driven** (arrows, `Ctrl+N`/`P`, `Tab` between
+  sections, `Alt+1..9` to jump straight to a result, `Ctrl+Enter` /
+  `Shift+Enter` for each result's alternate actions), with mouse support
+  and a hint footer that shows what the current result's alternates do.
+- **Native look**: follows your GNOME light/dark preference and accent
+  color, rounded, animated (and honours GNOME's reduce-animations
+  setting). Width, height, corner radius, font size, icons, descriptions
+  and a compact density mode are all configurable. Background blur is
+  available but off by default — the shell's blur effect always fills a
+  rectangle and cannot be clipped to the rounded corners.
+- Commands never go through a shell and the calculator has no `eval()` —
+  see [`docs/LAUNCHER.md`](docs/LAUNCHER.md), which documents the whole
+  subsystem: architecture, providers, ranking, adding your own provider,
+  security, performance and limitations.
+
 ### Tiling
 
 - **Automatic dwindle tiling**, Hyprland's default layout: one window
@@ -194,6 +233,7 @@ For local development instead of a one-shot install, see
 | `Shift+Super+F` | Toggle maximize for the focused window (keeps the panel) |
 | `Super+F` | Toggle true fullscreen for the focused window (covers the panel) |
 | `Super+Z` | Reveal / hide the auto-hidden top panel (only while auto-hide is on) |
+| `Super+Space` | Open / close the launcher (only while the launcher is enabled) |
 
 These accelerators collide with four sets of pre-existing defaults on a
 stock Ubuntu install: GNOME's `Super+1..9` (switch to a pinned dash app),
@@ -208,6 +248,12 @@ launching a dock app. Every accelerator is also individually rebindable in
 Preferences by clicking its row and pressing the new combo (Backspace
 clears, Esc cancels); combos already grabbed by the compositor or this
 extension are captured correctly, and any duplicate binding is flagged.
+The launcher's `Super+Space` is a fifth collision — GNOME's
+`switch-input-source` — and the only one handled *conditionally*: those
+keys are cleared only while the launcher is enabled **and** its
+accelerator really is `Super+Space`, so leaving the launcher off, or
+rebinding it, leaves keyboard-layout switching completely untouched.
+
 See [`docs/GNOME_NOTES.md`](docs/GNOME_NOTES.md) for how each
 conflict was found and verified, and
 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for how the restore is kept
@@ -221,7 +267,13 @@ Open via the Extensions app, or:
 gnome-extensions prefs tessera@sbh321.github.io
 ```
 
-Covers tiling on/off and gaps, the focus border's on/off switch, color,
+The **Launcher** page covers its on/off switch and shortcut, which
+sources to search, the clipboard history and its size, typo tolerance and
+search delay, every appearance option (width, height, corner radius, font
+size, compact mode, icons, descriptions, animations, blur, light/dark and
+accent following), and buttons to forget the ranking history, the pins,
+or the clipboard history. The rest of the window covers tiling on/off and
+gaps, the focus border's on/off switch, color,
 width, and radius, top-panel auto-hide (with adjustable slide duration)
 and background opacity, panel position, whether to hide
 GNOME's built-in Activities button, square
@@ -243,13 +295,18 @@ lib/                  workspaceIndicator.js, keybindingManager.js,
 lib/tiling/           The tiling subsystem: windowFilter.js,
                       layoutEngine.js (pure layout strategies),
                       stackTabBar.js, tilingManager.js
+lib/launcher/         The launcher subsystem: searchController.js,
+                      fuzzyMatcher.js + calculatorEngine.js (pure,
+                      unit-tested), one file per provider,
+                      launcherPopup.js / launcherUI.js / theme.js
 prefs.js              Adwaita preferences window
 stylesheet.css        Default appearance
 schemas/              GSettings schema (source of truth for settings)
-docs/                 ARCHITECTURE.md, DEVELOPMENT.md, ROADMAP.md,
-                      GNOME_NOTES.md
+docs/                 ARCHITECTURE.md, LAUNCHER.md, DEVELOPMENT.md,
+                      ROADMAP.md, GNOME_NOTES.md
 scripts/              build.sh, install.sh, dev-symlink.sh
-tests/                schema-validate.sh, MANUAL_TESTS.md
+tests/                run-tests.sh, schema-validate.sh,
+                      launcher-engine-test.js, MANUAL_TESTS.md
 ```
 
 See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the design
