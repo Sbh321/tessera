@@ -969,6 +969,24 @@ section is for everything that needs a live shell.
 - [ ] Hovering a row selects it; left click activates; middle click does
       the alternate action; right click does the secondary action;
       scrolling scrolls the list.
+- [ ] **A stationary mouse never steals the selection.** Park the cursor
+      in the middle of where the launcher's result list will appear, then
+      open it with the keyboard: the FIRST result is selected, not the
+      row under the cursor. Press Enter without touching the mouse and
+      the first result is what runs.
+- [ ] With the cursor still parked over the list, type a query: the
+      selection stays on the first result of each new list and never
+      jumps to whatever row happens to slide under the cursor.
+- [ ] Now move the mouse a few pixels: hover takes over immediately and
+      selects the row under the cursor. Type again — the selection
+      returns to the first result and stays there until the mouse moves
+      once more.
+- [ ] With the cursor parked over the list, scroll with the wheel: the
+      list scrolls and the selection stays put (rows moving under a
+      still mouse is not a hover).
+- [ ] Clicking still works regardless: park the cursor, open the
+      launcher (first row selected, cursor's row not highlighted), then
+      click the row under the cursor without moving — it activates.
 - [ ] The footer hints update as the selection moves and match what the
       modifiers actually do for that result.
 

@@ -489,6 +489,23 @@ and a click outside the card dismisses it. There is no popup context menu
 (the two extra buttons cover the same actions, and a menu would have to
 fight the launcher's own modal grab for the pointer grab).
 
+**Hover only steers the selection when the pointer actually moves.** A
+hover event does not mean "the user pointed at this row" — it means
+"this row is now under the pointer", which is equally true when the *row*
+moves and the mouse does not. Three things do that: opening the launcher
+under a resting cursor, rebuilding the list on every keystroke, and
+scrolling. Left ungated, the first stole the preselected first result
+whenever the cursor happened to be over the list, and the second kept
+re-stealing the selection from under someone who was typing.
+
+The gate is a comparison, not a timer or a motion handler:
+`LauncherList` records the pointer position whenever hover is evaluated
+and whenever the list is rebuilt, and honours a hover only if the
+coordinates have changed since. If they have not, the list moved rather
+than the mouse, and the keyboard keeps the selection. Clicking is
+unaffected — a click sets the selection explicitly, so any row can still
+be clicked whether or not hover ever selected it.
+
 ---
 
 ## The popup
