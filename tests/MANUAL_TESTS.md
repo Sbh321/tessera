@@ -254,7 +254,22 @@ window on its own workspace* ON; it is off by default.
       gets its own workspace, appended in the order you opened them.
 - [ ] Same setup, but open the app on an *empty* workspace: the window
       stays put (it already has that workspace to itself) — no move, no
-      flash, no leftover empty workspace.
+      flash, no leftover empty workspace. This must hold in BOTH modes
+      (trailing and adjacent) and for every app you have, including
+      Electron/Chromium ones — a workspace whose only other window is a
+      splash screen, a task-list-hidden helper or a stray dialog counts
+      as empty, because those are exactly the windows this feature would
+      never relocate either.
+- [ ] **An empty workspace you are viewing is used instead of a new
+      one.** Put a window on workspace 1, switch to an empty workspace,
+      then trigger a new window from the app on workspace 1 (e.g. Ctrl+N
+      in it via the overview, or its "New Window" dash/launcher action).
+      The new window arrives on the empty workspace you were viewing and
+      takes focus — no third workspace is inserted, and you are not
+      dragged anywhere.
+- [ ] Repeat the previous step immediately: the second such window now
+      finds your workspace occupied and does get a workspace of its own,
+      as normal.
 - [ ] Turn *Place that workspace next to the current one* ON: from
       workspace 2 of 5 (each with a window), open an app — a brand-new
       workspace is inserted between 2 and 3 with only the new window on
@@ -893,13 +908,116 @@ section is for everything that needs a live shell.
       `gnome-extensions list --enabled`), `Ctrl+Enter` opens its
       preferences when it has any.
 
+### Scope chips
+
+- [ ] Type a broad query (e.g. `a`) that matches several sections: a chip
+      strip appears under the entry — `All N` first, then one chip per
+      section that matched, each with its count. `All` is selected.
+- [ ] The chip order is the same every time, whatever the ranking does —
+      it must not reshuffle as you keep typing.
+- [ ] Chips only exist for sections that actually matched; a section with
+      no results has no chip.
+- [ ] Click a chip: the list shows only that section, the chip highlights,
+      and **the other chips keep their counts** (that is how you leave
+      again). Click `All`: everything comes back.
+- [ ] `Ctrl+Tab` / `Ctrl+Shift+Tab` move between chips, with or without
+      text in the entry.
+- [ ] `Left`/`Right` ALWAYS move the text cursor and never touch the
+      chips — including with an empty query, and with the cursor already
+      at the start or end. Selecting text with `Shift+Left/Right` works
+      normally too.
+- [ ] Plain `Tab` / `Shift+Tab` still jump between result sections and do
+      not change the chip.
+- [ ] `Ctrl+Tab` WRAPS: holding it cycles All → … → last → All again,
+      without ever needing the opposite chord to get back.
+      `Ctrl+Shift+Tab` wraps the other way.
+- [ ] **A filter with no results still shows its chip, selected.** With
+      no windows open, pick Open Windows from the palette (or its chip):
+      the strip shows `Open Windows 0` highlighted and the list says
+      "No results in Open Windows" — the bar is never left with nothing
+      selected while a filter is in force. Repeat for a section you know
+      is empty (Clipboard with history off).
+- [ ] Filtered to a section, press `Backspace` on an empty query: the
+      filter clears back to `All`. With text in the entry, `Backspace`
+      deletes a character as normal.
+- [ ] Filter to a section, then type something it has no match for: the
+      list says "No results in <Section>" — the filter is not silently
+      dropped.
+- [ ] Filter to a section with many matches (e.g. Applications) and check
+      you get more than 8 rows — a filtered section gets the full
+      "maximum results" budget, not the shared 8-per-section ration.
+- [ ] Close and reopen the launcher: the filter is back to `All`.
+
+### Slash palette
+
+- [ ] Type `/` as the first character: the list is replaced by a palette
+      with **Filter Results** (one row per section, each with that
+      section's icon) and **Commands** (Search the web).
+- [ ] Keep typing to narrow it: `/set` leaves System Settings, `/win`
+      leaves Open Windows, `/xyz` leaves nothing.
+- [ ] Select a filter and press Enter: the launcher **stays open**, the
+      entry is cleared, and the matching chip is now selected. **The
+      whole section is now listed** — every application, every Settings
+      panel, every action — not an empty list and not the resting view.
+      Type something: it narrows what is already on screen.
+- [ ] Browse each filter in turn and check the order reads sensibly:
+      Applications / System Settings / Extensions alphabetically (with
+      your most-used ones lifted to the top), Actions in catalogue order
+      (system, then shell, then Tessera), Open Windows and Clipboard
+      most-recent-first with pinned clipboard entries above the rest.
+- [ ] Browsing Open Windows lists ALL of them, not just the eight the
+      resting view shows.
+- [ ] Browsing a section with nothing in it (Clipboard with history off)
+      says "No results in Clipboard" rather than showing an empty box.
+- [ ] `Backspace` on the empty query leaves browse mode and returns to
+      the normal resting view.
+- [ ] `/all` (or the "All results" row) clears the filter.
+- [ ] Select "Search the web" with no argument: the launcher stays open
+      and the entry now reads `/search ` with the cursor at the end.
+- [ ] Type terms after it: the row becomes "Search the web for …".
+      Enter opens the query in your default browser and the launcher
+      closes.
+- [ ] Change the engine in Preferences → Launcher → Slash Palette (or
+      click a preset) and repeat: the new engine is used, and the row's
+      subtitle shows the new host.
+- [ ] `/chat` behaves the same way: with no argument it completes to
+      `/chat ` and waits; with a prompt it opens the configured AI chat
+      in the browser and the launcher closes. The subtitle names the
+      host it will open (chatgpt.com by default).
+- [ ] Try each AI preset in Preferences and confirm the URL field
+      updates. Services that accept a prompt parameter start the
+      conversation; any that ignore it just open with an empty box —
+      both are acceptable, nothing should error.
+- [ ] Type a prompt with spaces, quotes and an ampersand
+      (`/chat what is a & b?`): the URL is encoded correctly and the
+      whole prompt arrives intact.
+- [ ] A `/` typed in the MIDDLE of a query is ordinary text — search for
+      something containing a slash and confirm the palette does not open.
+- [ ] While filtered to a section, `/` still opens the palette and `>`
+      still runs commands — an explicit prefix always beats the filter.
+- [ ] Palette choices never appear in the ranking history: filter a few
+      times, then check that
+      `gsettings get org.gnome.shell.extensions.tessera launcher-history`
+      contains no `palette:` keys.
+- [ ] `Alt+1`…`Alt+9` work on palette rows exactly as on results.
+
 ### Calculator
 
 - [ ] `2+2`, `4*18`, `sqrt(144)`, `sin(90)` (= 1, degrees), `15%`,
       `200 + 15%` (= 230), `0xff * 2` all produce a `=` row at the top.
+- [ ] The row reads as a question and its answer: the expression you
+      typed on the LEFT, the value in large bold type on the RIGHT, and
+      the alternate bases as a quiet second line. The footer hint says
+      "↵ Copy", not "↵ Open".
+- [ ] The large value stays vertically centred and does not stretch the
+      row oddly — check with a very long expression, and again with
+      Compact mode on (where it grows less).
 - [ ] The subtitle of an integer result shows hex/binary/octal
-      alternatives; Enter copies the plain result and shows a
-      notification. Paste to confirm.
+      alternatives; a non-integer result has no second line at all and
+      the row is a clean single line. Enter copies the plain result
+      (not the "= " prefix) and shows a notification. Paste to confirm.
+- [ ] Ordinary results are unaffected: no stray gap where the large
+      value would be on an application or window row.
 - [ ] After copying a result, `ans * 2` uses it.
 - [ ] Typing a plain number (`5`) does NOT produce a calculator row —
       searching for a port number or a version string still works.
@@ -989,6 +1107,18 @@ section is for everything that needs a live shell.
       click the row under the cursor without moving — it activates.
 - [ ] The footer hints update as the selection moves and match what the
       modifiers actually do for that result.
+- [ ] A settings gear sits in the bottom-RIGHT corner of the popup. It
+      dims when idle and brightens on hover.
+- [ ] Clicking it closes the launcher and opens Tessera Preferences **on
+      the Launcher page**, not on Appearance.
+- [ ] Close Preferences, then open it the normal way (Extensions app or
+      `gnome-extensions prefs`): it lands on the FIRST page again — the
+      page request is consumed, not sticky.
+- [ ] Turn Compact mode on: the hint text disappears but the gear stays
+      in the corner and still works.
+- [ ] With Preferences ALREADY open, clicking the gear re-presents that
+      window (a known limitation: it does not switch the page, since
+      GNOME only re-presents an existing window).
 
 ### Ranking
 

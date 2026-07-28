@@ -36,6 +36,7 @@ lib/launcher/
     searchController.js    Ranking, grouping, activation. Owns providers.
     keyboardController.js  Key press -> intent. Nothing else.
     launcherUI.js          The result list (pooled rows). Draws only.
+    scopeBar.js            The filter chips. Presentational only.
     launcherPopup.js       The card, the modal grab, the animations.
     theme.js               Settings + GNOME theme -> concrete CSS.
     iconProvider.js        Result -> Gio.Icon, with fallbacks.
@@ -46,6 +47,7 @@ lib/launcher/
     windowProvider.js      Open windows.
     actionProvider.js      Actions + the "workspace 5" grammar.
     commandProvider.js     "> command" execution.
+    paletteProvider.js     The "/" palette: filters and slash commands.
     calculatorProvider.js  Arithmetic results.
     recentProvider.js      The resting (empty-query) view.
     clipboardProvider.js   Clipboard history (opt-in).
@@ -123,12 +125,14 @@ its **Keys** tab lists `launcher-toggle` alongside the other shortcuts.
             |
             v
    parseQuery()                    searchController.js
-   { trimmed, terms[], prefix, commandBody, allowTypos }
+   { trimmed, terms[], prefix, commandBody, palette, allowTypos }
             |
             +--> (empty query) --> favorites resolved by their provider
             |                      + every provider's defaultResults()
             |
             +--> (prefix "> ") --> commandProvider ONLY
+            |
+            +--> (prefix "/")  --> paletteProvider ONLY
             |
             +--> (otherwise)  --> every enabled provider's query(parsed)
                                        |
@@ -146,11 +150,12 @@ its **Keys** tab lists `launcher-toggle` alongside the other shortcuts.
              + provider-declared context boost
             |
             v
-   group into sections, cap per section and overall,
+   group into sections, count them all, cap per section and
+   overall, drop everything outside the active scope,
    priority sections first, then by their best result
             |
             v
-   launcherUI.setSections()
+   launcherUI.setSections()  +  scopeBar.setSections(counts)
 ```
 
 Results are recomputed from scratch on every keystroke — the same
@@ -257,6 +262,8 @@ where you expect it. Sections and their titles are:
 
 | Section | Title |
 |---|---|
+| `palette-filters` | Filter Results |
+| `palette-commands` | Commands |
 | `windows` | Open Windows |
 | `calculator` | Calculator |
 | `commands` | Run Command |
@@ -270,6 +277,123 @@ where you expect it. Sections and their titles are:
 
 ---
 
+## Filtering: the scope bar and the slash palette
+
+Once every section has something to say about a query, a single merged
+list stops being an answer. Type `a` and Applications and Open Windows
+legitimately fill the screen; the three Settings panels that matched are
+real answers, just buried. Both halves of the fix set **one value** — the
+controller's *scope* — so there is no second system to keep in sync.
+
+### The chips
+
+```
+🔍 a
+[All 27]  Windows 4   Apps 12   Actions 2   Settings 3
+```
+
+A strip under the entry, one chip per section that actually matched, with
+its result count. Selecting one filters the list to that section; `All`
+clears it. Move between them with **`Ctrl+Tab` / `Ctrl+Shift+Tab`** or the
+mouse; `Backspace` on an empty query clears back to `All`.
+
+- **Counts come from the unscoped result set**, always. That is what
+  makes them useful *while filtered*: standing in Settings you can still
+  see that Apps has 12, and get there. It costs nothing, because the
+  pipeline already computes every provider's results on every keystroke —
+  scoping is a display filter over a complete set, not a narrower search.
+- **Chips follow `SECTION_ORDER`, not rank.** A strip that reshuffles as
+  you type is one you can never build muscle memory for, and muscle
+  memory is the whole value of a filter bar.
+- **Only sections that matched get a chip** — plus the one being
+  filtered to, always, even when it came up empty (`Open Windows 0`).
+  A fixed strip of ten mostly-empty chips would be noise, but dropping
+  the *selected* chip because it found nothing would leave the bar with
+  no selection at all while a filter was plainly in force, which reads
+  as a bug rather than as an answer.
+- **`Ctrl+Tab` wraps at both ends.** It is a key you hold and repeat, on
+  the gesture that cycles browser tabs; stopping dead at the last chip
+  would mean reaching for the opposite chord to get back.
+- **A filtered section gets the entire results budget** (`max-results`
+  instead of the 8-per-section ration) — you asked for that section, so
+  you get all of it.
+- **The scope resets on every open.** A filter surviving invisibly from
+  last time would silently hide results.
+- **A filter with an empty query BROWSES that section** — every
+  application, every Settings panel, every action — rather than showing
+  the launcher's resting view through a filter that would leave it
+  blank. Typing then narrows what is already on screen. That is what a
+  filter is for, and it is why `browseResults()` exists as its own
+  provider hook (see below).
+
+### The slash palette
+
+Typing `/` as the **first** character (one typed later is just text —
+paths, dates, "and/or") replaces the list with a menu:
+
+```
+🔍 /
+
+Filter Results
+  🪟  Open Windows          Show only these
+  📦  Applications          Show only these
+  ⚙   System Settings       Show only these
+  …
+Commands
+  🌐  Search the web        Type what to search for
+  💬  Ask an AI chat        Type what to ask
+```
+
+Keep typing to narrow it (`/set` → System Settings), then Enter. It is a
+regular provider answering a prefix, exactly as `commandProvider`
+answers `>`, so its entries are drawn, selected, quick-picked with
+`Alt+N` and activated by the same code as every other result.
+
+Two kinds of entry, distinguished by what Enter does:
+
+| Kind | Enter |
+|---|---|
+| **Filter** | sets the scope chip and hands the entry back empty, so the next thing you type searches inside it |
+| **Command** | with no argument yet, *completes itself into the entry* (`/search `) and waits — the way a chat client's slash commands do; with an argument, runs |
+
+Both are marked `keepOpen`, a flag on the result record for results that
+change what the launcher is *showing* rather than doing something outside
+it — closing would undo the very thing that was just asked for. Both are
+also `ephemeral`, so choosing a filter never lands in the ranking
+history.
+
+`/search <terms>` and `/chat <prompt>` both open the query in the default
+browser through `launch_default_for_uri()` — the same call GNOME's own
+run dialog uses to open a path, so "the default browser" means exactly
+what it means everywhere else on the desktop.
+
+**Both are URL templates rather than special-cased code**
+(`launcher-search-url`, `launcher-chat-url`; `%s` = the query, appended
+if absent). That is what keeps a moving target maintainable: search
+engines and AI chats all take the prompt as a query parameter, they all
+change it occasionally, and a template makes that a one-line settings
+edit instead of a code change. It is also what makes "custom" free — the
+Preferences presets (Google/DuckDuckGo/Bing; ChatGPT/Claude/Gemini/Grok/
+DeepSeek) do nothing but fill the field in, and any other service works
+by typing its URL. Each command's subtitle shows the host it will open,
+so "which one is this pointed at?" never needs a trip to Preferences.
+
+Whether a chat service actually *starts* the conversation is up to that
+service: those that accept a prompt parameter open with it filled in and
+sent, those that ignore it open with an empty box. That is the honest
+limit of what a URL can promise, and the reason the field is editable.
+
+**Adding a slash command later** is one entry in
+`PaletteProvider._commandEntries()`: a title, keywords, an icon, an
+argument hint and a `run(argument)`. Nothing else changes.
+
+### Why an explicit prefix always beats the scope
+
+A `/` or `>` query ignores whatever filter is set. Those are the user
+asking for something specific *right now*; hiding their answers because a
+filter was applied earlier would be obtuse. That is also why the palette
+is reachable while scoped — it is how you get back out.
+
 ## Providers
 
 Every provider extends `SearchProvider` and implements at most six
@@ -279,10 +403,22 @@ things:
 get enabled()      // consult the user's settings
 warmUp()           // optional: build caches off the critical path
 query(parsed)      // the search; returns results or a Promise of them
-defaultResults()   // optional: the empty-query view
+defaultResults()   // optional: this provider's slice of the resting view
+browseResults()    // optional: EVERYTHING, for when its filter is on
 enable()/disable() // optional: signals and other resources
 resultForKey(id)   // optional: needed only if entries can be pinned
 ```
+
+`defaultResults()` and `browseResults()` answer different questions and
+default to the same thing. "Show me the launcher's home screen" wants a
+curated handful from every provider; "show me the applications" wants all
+of them. Providers whose answers only exist in response to a query
+(calculator, commands, palette) inherit the default and offer nothing to
+browse. Because a browse list has no match quality to rank by, entries
+share one score and are returned in the order they should read —
+alphabetical for apps, panels and extensions, registry order for actions,
+most-recent-first for windows and clipboard — which the controller's
+stable sort preserves while frecency still lifts what you actually use.
 
 | Provider | Searches | Enter | Ctrl+Enter | Shift+Enter |
 |---|---|---|---|---|
@@ -290,6 +426,7 @@ resultForKey(id)   // optional: needed only if entries can be pinned
 | `windowProvider` | title, application, WM class | switch to it | bring it to this workspace | — |
 | `actionProvider` | the action catalogue + `workspace N` / `move <app> N` | run | — | — |
 | `commandProvider` | `>`/`$` prefixed command lines | run | run with the opposite terminal setting | — |
+| `paletteProvider` | `/` filters and slash commands | apply filter / complete or run | — | — |
 | `calculatorProvider` | arithmetic | copy the result | — | — |
 | `recentProvider` | (empty query only) | launch or focus | new window | — |
 | `clipboardProvider` | clipboard text | copy again | pin / unpin | — |
@@ -321,6 +458,14 @@ Notes on specific ones:
   app ranking), so the resting view is useful on a profile that has never
   used the launcher before. Anything already pinned is skipped, since the
   favorites section above it is showing that already.
+- **The calculator row is laid out as a question and its answer**: the
+  expression you typed on the left, the value in large type on the right
+  (`display`), and the alternate bases as a quiet second line. When the
+  answer is what you came for, reading it should not require finding it
+  first. `display` is a generic field on the result record, not a
+  calculator special case — a unit conversion or a count would use the
+  same slot — and the footer reads "↵ Copy" there rather than "↵ Open"
+  via `activateLabel`.
 - **Settings panels** are `NoDisplay` `.desktop` files, which is exactly
   why `appProvider` cannot surface them. The two providers partition the
   same list rather than competing over it, so a panel never appears
@@ -416,7 +561,9 @@ rather than guessing when several match. The grammar reaches workspaces
 2. Add its id to `ProviderId` and its weight to `PROVIDER_WEIGHT` in
    `constants.js`, plus an entry in `SECTION_ORDER`.
 3. Add its section title to `sectionTitle()` in `launcherUI.js` and a
-   fallback icon to `PROVIDER_FALLBACK_ICON` in `iconProvider.js`.
+   fallback icon to `PROVIDER_FALLBACK_ICON` in `iconProvider.js` (that
+   icon is also what the slash palette shows beside its filter row).
+   Add it to `FILTERABLE_SECTIONS` if filtering to it makes sense.
 4. Construct it in `LauncherManager._activate()`.
 
 Nothing in the controller, the UI, the ranking, the keyboard handling or
@@ -443,6 +590,9 @@ web search, AI commands — none of which require an architectural change.
 | `Shift+Enter` | Secondary action |
 | `Up` / `Down` | Move the selection (wraps) |
 | `Ctrl+P` / `Ctrl+N` | Move the selection (readline style) |
+| `Ctrl+Tab` / `Ctrl+Shift+Tab` | Move between filter chips |
+| `Backspace` | Clear the filter, **once the query is empty** |
+| `/` (first character) | Open the slash palette |
 | `Page Up` / `Page Down` | Move by a page |
 | `Home` / `End` | First / last result |
 | `Tab` / `Shift+Tab` | Jump to the next / previous section |
@@ -453,7 +603,7 @@ web search, AI commands — none of which require an architectural change.
 | `Ctrl+Backspace` | Clear the query |
 | `Left` / `Right`, `Backspace` | Ordinary text editing (never intercepted) |
 
-Two deliberate decisions:
+Three deliberate decisions:
 
 - `Home`/`End` navigate the **list**, not the text. A launcher query is a
   few words long; jumping to the last result is the more valuable
@@ -461,6 +611,17 @@ Two deliberate decisions:
 - `Tab` cycles **sections** rather than widgets. The popup has exactly
   one focusable widget (the entry), so the usual focus-chain meaning
   would do nothing at all.
+- **`Left`/`Right` are never intercepted.** They belong to the entry,
+  which holds key focus for the whole session. An earlier version claimed
+  them for the chips whenever the cursor sat at that end of the query;
+  even that much fought the text field in practice, so the chips moved to
+  `Ctrl+Tab` — a chord no text field wants, on the gesture people already
+  use to change tabs in a browser or an editor. Plain `Backspace` *is*
+  conditional, but it can only ever fire when there is no text left to
+  delete, so it never takes a keystroke the entry had a use for.
+  `keyboardController.js` maps the keys; the popup makes that one
+  emptiness check, because entry state is deliberately not visible to the
+  mapper.
 
 **The Super+Space conflict.** GNOME binds `<Super>space` to
 `switch-input-source` (and `<Shift><Super>space` to its backward twin).
@@ -528,6 +689,22 @@ Behaviour that belongs to the window itself rather than to searching:
   selection visible via GNOME's own `ensureActorVisibleInScrollView()`.
 - **The first nine rows carry an `Alt+N` hint** on the right, which both
   advertises the shortcut and matches exactly what that shortcut does.
+- **A settings gear sits in the bottom-right corner**, opening
+  Preferences on the Launcher page. It survives compact mode (which
+  drops the hint text but keeps the bar), because density is worth
+  trading text for but not the one affordance that says the thing is
+  configurable. It is deliberately the only pointer-only control in the
+  popup — the keyboard path to the same place is the "Tessera
+  Preferences" action. Clicking it closes the launcher first: the
+  preferences window cannot take focus while the modal grab is up.
+
+  GNOME's `openExtensionPrefs()` takes no page argument and `prefs.js`
+  runs in its own process, so the page is handed over through GSettings:
+  the shell writes `prefs-initial-page` immediately before opening, and
+  the preferences window reads it once on startup and clears it, so a
+  later manual open still lands on the usual first page. It has no
+  effect when the preferences window is *already* open, since that path
+  only re-presents the existing window.
 - **A footer shows the selected result's key hints** — `↵ Open`, plus
   `Ctrl+↵` / `Shift+↵` labelled with what *that* provider does with them,
   `Ctrl+D Pin` when the result is pinnable and `Ctrl+Del Remove` when it
@@ -675,6 +852,9 @@ Everything lives in Preferences → Launcher.
 | `launcher-command-in-terminal` | `false` | Ctrl+Enter inverts it per command |
 | `launcher-enable-clipboard` | `false` | Opt-in; see Privacy below |
 | `launcher-clipboard-size` | 50 | Pinned entries are exempt |
+| `launcher-search-url` | Google | `/search` template; `%s` = the terms |
+| `launcher-chat-url` | ChatGPT | `/chat` template; `%s` = the prompt |
+| `prefs-initial-page` | `''` | Internal; how the gear reaches the Launcher page |
 | `launcher-fuzzy` | `true` | Typo tier only |
 | `launcher-search-delay` | 0 | ms; 0 searches on the keystroke |
 | `launcher-show-icons` | `true` | |

@@ -334,6 +334,23 @@
     padding: 0;
 }
 
+/*
+ * Scope chips (lib/launcher/scopeBar.js). Colors come from theme.js;
+ * this is only the geometry of the strip.
+ */
+.tessera-launcher-scopebar {
+    spacing: 4px;
+    padding: 2px 4px 4px 4px;
+}
+
+.tessera-launcher-chip {
+    transition-duration: 80ms;
+}
+
+.tessera-launcher-chip-box {
+    spacing: 5px;
+}
+
 .tessera-launcher-list {
     spacing: 1px;
 }
@@ -357,4 +374,9 @@
 
 .tessera-launcher-footer {
     text-align: left;
+    spacing: 8px;
+}
+
+.tessera-launcher-icon-button {
+    transition-duration: 100ms;
 }

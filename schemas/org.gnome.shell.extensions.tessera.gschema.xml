@@ -173,7 +173,7 @@
     <key name="new-window-new-workspace" type="b">
       <default>false</default>
       <summary>Open every new window on a workspace of its own</summary>
-      <description>When on, a newly opened top-level application window is moved onto a fresh workspace and the view follows it there, so each app gets a workspace to itself. Dialogs, popups, transient and sticky windows are never moved. A window that opens onto an otherwise empty workspace is left where it is -- it already has that workspace to itself. Where the fresh workspace comes from is controlled by new-window-adjacent-workspace. Requires dynamic workspaces (GNOME's default) to actually create workspaces; with static workspaces it degrades to moving the window to the existing workspace in that position.</description>
+      <description>When on, a newly opened top-level application window is moved onto a fresh workspace and the view follows it there, so each app gets a workspace to itself. Dialogs, popups, transient and sticky windows are never moved. An empty workspace that already exists is always preferred over creating another one: a window that opens onto an empty workspace is left where it is, and a window that opens onto an occupied workspace while the workspace you are viewing is empty is moved to the one you are viewing. A workspace counts as empty when it holds no ordinary application window -- splash screens, dialogs, task-list-hidden helper windows and windows pinned to all workspaces do not make it occupied. Where a genuinely new workspace comes from is controlled by new-window-adjacent-workspace. Requires dynamic workspaces (GNOME's default) to actually create workspaces; with static workspaces it degrades to moving the window to the existing workspace in that position.</description>
     </key>
 
     <key name="new-window-adjacent-workspace" type="b">
@@ -310,6 +310,24 @@
       <default>[]</default>
       <summary>Pinned clipboard entries</summary>
       <description>Clipboard entries pinned with Ctrl+Enter in the launcher. Kept regardless of the history size limit; safe to clear at any time.</description>
+    </key>
+
+    <key name="prefs-initial-page" type="s">
+      <default>''</default>
+      <summary>Preferences page to open next (internal)</summary>
+      <description>Internal hand-off, not a user setting. GNOME's openExtensionPrefs cannot address a particular page, and the preferences window runs in its own process, so the shell leaves the wanted page name here (currently only "launcher") immediately before opening it. The preferences window reads the value once on startup and clears it back to empty, so a later manual open lands on the usual first page. Has no effect while the preferences window is already open — that path only re-presents the existing window.</description>
+    </key>
+
+    <key name="launcher-search-url" type="s">
+      <default>'https://www.google.com/search?q=%s'</default>
+      <summary>Web search URL for the launcher's /search command</summary>
+      <description>Where the launcher's "/search" palette command sends your query. %s is replaced with the URL-encoded search terms; if the template contains no %s the terms are appended to the end. The URL is opened with the system's default handler, so it lands in your default browser. Examples: https://duckduckgo.com/?q=%s, https://www.bing.com/search?q=%s.</description>
+    </key>
+
+    <key name="launcher-chat-url" type="s">
+      <default>'https://chatgpt.com/?q=%s'</default>
+      <summary>AI chat URL for the launcher's /chat command</summary>
+      <description>Where the launcher's "/chat" palette command sends your prompt. %s is replaced with the URL-encoded prompt; if the template contains no %s the prompt is appended to the end. Opened with the system's default handler, so it lands in your default browser. Presets for several services are offered in Preferences, and any other service can be used by writing its URL here. Whether the prompt is filled in and sent automatically is up to the service: those that accept a prompt parameter start the conversation, those that ignore it simply open with an empty box.</description>
     </key>
 
     <key name="launcher-fuzzy" type="b">

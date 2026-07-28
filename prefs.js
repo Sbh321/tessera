@@ -85,6 +85,25 @@ function addPresetRow(group, settings, title, subtitle, presets) {
     return row;
 }
 
+// A row of linked buttons that each write one string value. Same
+// one-shot idea as addPresetRow: clicking a preset just fills the key
+// (the entry row above updates through its binding), so there is no
+// "which preset is active" state to drift once the value is hand-edited.
+function addStringPresetRow(group, settings, key, title, subtitle, presets) {
+    const row = new Adw.ActionRow({title, subtitle});
+    const box = new Gtk.Box({css_classes: ['linked'], valign: Gtk.Align.CENTER});
+
+    for (const [label, value] of presets) {
+        const button = new Gtk.Button({label});
+        button.connect('clicked', () => settings.set_string(key, value));
+        box.append(button);
+    }
+
+    row.add_suffix(box);
+    group.add(row);
+    return row;
+}
+
 // A row whose only control is a button -- used for the destructive
 // "forget what the launcher has learned" actions, which are one-shot
 // operations rather than settings.
@@ -327,13 +346,34 @@ export default class TesseraPreferences extends ExtensionPreferences {
         // too -- they all end up in the same accelerator namespace.
         const registry = createShortcutRegistry(settings);
 
-        window.add(this._buildAppearancePage(settings));
-        window.add(this._buildTilingPage(settings));
-        window.add(this._buildLauncherPage(settings, registry));
-        window.add(this._buildKeybindingsPage(settings, registry));
+        const pages = {
+            appearance: this._buildAppearancePage(settings),
+            tiling: this._buildTilingPage(settings),
+            launcher: this._buildLauncherPage(settings, registry),
+            keybindings: this._buildKeybindingsPage(settings, registry),
+        };
+        for (const page of Object.values(pages))
+            window.add(page);
 
         // Flag any pre-existing duplicate accelerators on open.
         registry.refresh();
+
+        this._openRequestedPage(window, settings, pages);
+    }
+
+    // The shell cannot ask openExtensionPrefs for a particular page, so
+    // it leaves the wanted one in GSettings just before opening this
+    // window (the launcher's settings gear does this). The note is
+    // consumed here, so the next manual open lands on the usual first
+    // page instead of wherever the last shortcut pointed.
+    _openRequestedPage(window, settings, pages) {
+        const requested = settings.get_string('prefs-initial-page');
+        if (!requested)
+            return;
+
+        settings.set_string('prefs-initial-page', '');
+        if (pages[requested])
+            window.set_visible_page(pages[requested]);
     }
 
     _buildLauncherPage(settings, registry) {
@@ -404,6 +444,41 @@ export default class TesseraPreferences extends ExtensionPreferences {
             {lower: 5, upper: 500, step: 5});
         settings.bind('launcher-enable-clipboard', clipboardSizeRow, 'sensitive',
             Gio.SettingsBindFlags.GET);
+
+        const paletteGroup = new Adw.PreferencesGroup({
+            title: _('Slash Palette'),
+            description: _(
+                'Typing “/” as the first character opens a palette: pick a section to ' +
+                'filter the results to, or run a command such as “/search” or “/chat”. The result ' +
+                'list is also filterable directly from the chips under the search box ' +
+                '(click them, or move between them with Ctrl+Tab).'),
+        });
+        page.add(paletteGroup);
+        const searchUrlRow = new Adw.EntryRow({title: _('Web search URL')});
+        settings.bind('launcher-search-url', searchUrlRow, 'text',
+            Gio.SettingsBindFlags.DEFAULT);
+        paletteGroup.add(searchUrlRow);
+        addStringPresetRow(paletteGroup, settings, 'launcher-search-url',
+            _('Search engine'),
+            _(''), [
+                [_('Google'), 'https://www.google.com/search?q=%s'],
+                [_('DuckDuckGo'), 'https://duckduckgo.com/?q=%s'],
+                [_('Bing'), 'https://www.bing.com/search?q=%s'],
+            ]);
+
+        const chatUrlRow = new Adw.EntryRow({title: _('AI chat URL')});
+        settings.bind('launcher-chat-url', chatUrlRow, 'text',
+            Gio.SettingsBindFlags.DEFAULT);
+        paletteGroup.add(chatUrlRow);
+        addStringPresetRow(paletteGroup, settings, 'launcher-chat-url',
+            _('AI chat service'),
+            _(''), [
+                ['ChatGPT', 'https://chatgpt.com/?q=%s'],
+                ['Claude', 'https://claude.ai/new?q=%s'],
+                ['Gemini', 'https://gemini.google.com/app?q=%s'],
+                ['Grok', 'https://grok.com/?q=%s'],
+                ['DeepSeek', 'https://chat.deepseek.com/?q=%s'],
+            ]);
 
         const searchGroup = new Adw.PreferencesGroup({title: _('Matching')});
         page.add(searchGroup);
@@ -482,7 +557,8 @@ export default class TesseraPreferences extends ExtensionPreferences {
         // launcher is off, and the shell ignores it -- so the rows say so
         // instead of pretending to have an effect (the same GET-only
         // binding pattern the tiling page uses).
-        for (const group of [sourcesGroup, clipboardGroup, searchGroup, placementGroup, appearanceGroup])
+        for (const group of [sourcesGroup, clipboardGroup, paletteGroup, searchGroup, placementGroup,
+            appearanceGroup])
             settings.bind('enable-launcher', group, 'sensitive', Gio.SettingsBindFlags.GET);
 
         return page;
@@ -524,8 +600,10 @@ export default class TesseraPreferences extends ExtensionPreferences {
             title: _('New Windows'),
             description: _(
                 'Dialogs, popups and windows pinned to all workspaces are never ' +
-                'moved, and a window that opens on an already-empty workspace ' +
-                'stays where it is.'),
+                'moved. An empty workspace that already exists is used instead of ' +
+                'creating another one: a window opening on an empty workspace stays ' +
+                'where it is, and one that opens elsewhere while you are looking at ' +
+                'an empty workspace comes to you.'),
         });
         page.add(newWindowGroup);
         addSwitchRow(newWindowGroup, settings, 'new-window-new-workspace',

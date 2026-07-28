@@ -154,7 +154,10 @@ windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
   end of the strip (default, keeps the order chronological), or a
   brand-new workspace inserted right beside the current one (keeps
   related work adjacent). Dialogs, popups and pinned windows are never
-  moved, and a window that opens on an already-empty workspace stays put.
+  moved, and an empty workspace that already exists is always preferred
+  over creating another one — a window opening on an empty workspace
+  stays put, and one that opens elsewhere while you are looking at an
+  empty workspace comes to you.
 - Full dynamic-workspaces support — everything integrates with GNOME's
   own workspace model instead of replacing it.
 

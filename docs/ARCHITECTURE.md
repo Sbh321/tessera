@@ -322,12 +322,29 @@ Two exclusions define the behavior:
   with their parent; windows on secondary monitors under
   `workspaces-only-on-primary` (which Mutter marks on-all-workspaces) are
   workspace-independent and left alone.
-- **Sole-occupant no-op.** A window that opens onto an otherwise empty
-  workspace stays put: it already has a workspace to itself, and moving it
-  would only leave a hole for `WorkspaceTracker` to cull while dragging the
-  user elsewhere for no visible gain. This is also what makes the feature
+- **Never manufacture an empty workspace when one already exists.** Two
+  cases of one rule. A window that opens onto an empty workspace stays
+  put: it already has a workspace to itself, and moving it would only
+  leave a hole for `WorkspaceTracker` to cull while dragging the user
+  elsewhere for no visible gain. This is also what makes the feature
   *settle* instead of marching forward on every window — open an app, land
-  on a fresh workspace, and only its *second* window moves on.
+  on a fresh workspace, and only its *second* window moves on. And a
+  window that opens onto an *occupied* workspace while the workspace the
+  user is **viewing** is empty is moved to the viewed one — an
+  already-running app typically places a new window beside its existing
+  ones, and inserting yet another empty workspace next to that one (then
+  dragging the user off to it) is strictly worse than using the empty
+  workspace they are already sitting on.
+
+  **What counts as occupied is the same predicate as what counts as
+  relocatable** (`_isContentWindow`: `NORMAL`, non-transient,
+  non-skip-taskbar, non-sticky), and it has to be. When the two differed,
+  a workspace holding nothing but a splash screen, a skip-taskbar helper
+  or a stray dialog counted as occupied, so a window opening onto a
+  *visibly* empty workspace was relocated off it anyway — the user's
+  screen said "empty", the check said "occupied". Anything the feature
+  would not bother moving is now equally something it does not count as
+  being in the way.
 
 The decision is deferred by one idle turn rather than taken synchronously
 in `window-created`. A just-created window has not necessarily declared

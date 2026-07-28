@@ -84,7 +84,7 @@ export default class TesseraExtension extends Extension {
                 tilingManager: this._tilingManager,
                 windowMover: this._windowMover,
                 fullscreenManager: this._fullscreenManager,
-                openPreferences: () => this.openPreferences(),
+                openPreferences: page => this._openPreferencesAt(page),
                 openPortKiller: this._tools.openPortKiller,
                 openColorPicker: this._tools.openColorPicker,
                 uuid: this.uuid,
@@ -172,6 +172,16 @@ export default class TesseraExtension extends Extension {
             this.uuid, this._indicator, 0, this._settingsManager.panelPosition);
     }
 
+    // Opens Preferences, optionally on a named page. GNOME's
+    // openExtensionPrefs takes no page argument and prefs.js runs in its
+    // own process, so the page is handed over through GSettings: the
+    // shell leaves a note, the preferences window reads it once on
+    // startup and clears it. Passing nothing opens the usual first page.
+    _openPreferencesAt(page) {
+        this._settingsManager.gsettings.set_string('prefs-initial-page', page ?? '');
+        this.openPreferences();
+    }
+
     _syncQuickMenu() {
         if (this._settingsManager.enableQuickMenu)
             this._createQuickMenu();
@@ -184,7 +194,7 @@ export default class TesseraExtension extends Extension {
             return;
 
         this._quickMenu = new QuickMenu(
-            this._settingsManager, () => this.openPreferences());
+            this._settingsManager, () => this._openPreferencesAt(null));
         // Always in the right box, at the leftmost position within it, so it
         // sits ahead of the stock system indicators.
         Main.panel.addToStatusArea(
