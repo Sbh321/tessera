@@ -514,33 +514,40 @@ buckets). Rapid bursts — an app spawning several windows, an
 `insertWorkspace` shifting every window's workspace — coalesce into one
 pass. Application is loop-proof: a window is only moved when its frame
 rect differs from the target, so applying a layout converges rather than
-re-triggering itself, and the manager deliberately does *not* listen to
-size/position changes in steady state (only `grab-op-end`, which snaps a
-user-dragged tiled window back into its slot).
+re-triggering itself.
 
-**The one exception: a post-creation settling watch.** A freshly mapped
-window often finalizes its own size/position across several async
-configures *after* `window-created`/`shown` — CSD frame extents arriving,
-an opens-maximized state being undone, a multi-step Wayland configure
-(Chromium/Electron apps are the worst offenders). The first layout pass
-can land before that settles, so the window ignores the size we asked for
-and keeps its own; the visible symptom is a tiled window whose **right and
-bottom outer gaps vanish** (it is larger than its tile) while the left and
-top look enlarged, stuck that way until some unrelated event triggers a
-relayout that finally lands — the exact "wrong gaps after opening Brave on
-a fresh workspace, fixes itself once I do something" report. Because a
-plain relayout with the *same* work area heals it, the computed target was
-always right; only the timing was wrong. So `_watchSettling` connects
-`size-changed`/`position-changed` on the new window for a short grace
-(`MAP_SETTLE_GRACE_MS`, 2.5s) and re-queues its layout on each, healing it
-the instant the client stops fighting, then tears the watch down. It is
-scoped to that grace, not permanent, precisely so it does not relayout on
-every drag of a floating window or fight a user resizing a tiled one — and
-even within the grace it skips the re-apply while a move/resize grab is in
-progress (`get_grab_op`), deferring to the same `grab-op-end` snap as
-steady state. The re-apply is loop-proof by the same frame-vs-target check
-as everything else. The watch is torn down on grace-expiry, on `unmanaged`
-(via `_untrackWindow`), and on `disable()`.
+**The tile guard.** A freshly mapped window often finalizes its own
+size/position across several async configures *after*
+`window-created`/`shown` — CSD frame extents arriving, an opens-maximized
+state being undone, a multi-step Wayland configure, and above all a
+browser restoring its remembered window bounds once its session has
+loaded (Chromium/Electron apps are the worst offenders). The first layout
+pass can land before that, so the window ends up at the size it chose;
+the visible symptom is a tiled window whose **right and bottom outer gaps
+vanish** while the left and top look doubled, stuck that way until some
+unrelated event triggers a relayout that finally lands. Because a plain
+relayout with the *same* work area heals it, the computed target was
+always right; only the timing was wrong.
+
+The first fix watched a new window for a fixed 2.5 s grace. That is
+exactly what kept failing for the first browser opened after a cold
+boot: with the disk busy and a dozen tabs to restore, the browser's own
+resize landed *after* the grace, and once the watch was gone nobody
+corrected it. So there is no grace now. `_moveResize` records the tile
+it applied to each window (`_targets`), every tracked window's
+`size-changed`/`position-changed` runs `_onGeometryChanged`, and that
+re-queues a layout only when the window (a) is a tiled member at that
+moment — floating, minimized, user-maximized and fullscreen windows are
+skipped — (b) is not under an interactive grab (`get_grab_op`; a user
+drag is left alone and `grab-op-end` snaps it back as before), and (c)
+is actually off its recorded tile. The check is a rect comparison, so
+watching every window costs nothing measurable. It cannot loop: the ack
+of a correction leaves the window on its tile, which is a no-op, and a
+client that refuses its tile outright (a minimum size larger than the
+tile) hits a small per-window correction budget
+(`TILE_GUARD_BUDGET` per two seconds, then three seconds of silence)
+and is left alone rather than argued with. Targets and budget state go
+with the window on `unmanaged` and on `disable()`.
 
 **What floats** (see `windowFilter.js` for the full reasoning): non-NORMAL
 window types (dialogs, utility, splash, menus, docks…), transients,

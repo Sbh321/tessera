@@ -303,16 +303,24 @@ window on its own workspace* ON; it is off by default.
 
 ## Tiling
 
-TODO: Need to rework if seen again:
-- [ ] **Freshly-mapped window settles onto its tile (gap glitch).**
-      Right after boot, open Brave (or another Chromium/Electron app) on an
-      empty workspace: it must end up with symmetric outer gaps on all four
-      sides. Watch for the bug this guards — the right/bottom gaps missing
-      while left/top look enlarged — which must self-correct within a
-      fraction of a second (as the window settles), NOT stay wrong until
-      you open another window or switch workspace. Repeat a few times, and
-      with other opens-maximized apps (Files, a browser). No errors in the
-      journal, and a window at rest afterward never twitches.
+- [ ] **Freshly-mapped window lands on its tile (the gap glitch).**
+      Right after a COLD boot and login, open Brave (or another
+      Chromium/Electron app that restores a session) as the very first
+      app, on an empty workspace: it must end up with symmetric outer
+      gaps on all four sides. The bug this guards — right/bottom gaps
+      missing while left/top look doubled — must self-correct the moment
+      the app finishes its own resize, however long that takes (a slow
+      session restore can be several seconds), NOT stay wrong until you
+      open another window or switch workspace. Repeat a few boots, and
+      with other opens-maximized apps (Files, a browser). No errors in
+      the journal, and a window at rest afterward never twitches.
+- [ ] **A tiled window that resizes itself is put back.** With a tiled
+      terminal that honours the resize escape (GNOME Terminal with
+      "allow window resize" on, or xterm), run
+      `printf '\e[8;20;60t'`: the window snaps back to its tile at once.
+      Then resize the same window by dragging its edge: nothing fights
+      the drag, and it snaps back on release as before. Float a window
+      (Shift+Super+V) and resize it: it is left alone.
 - [ ] While a brand-new window is still settling (first ~2s), grab its
       edge and resize it: the drag is smooth (not fighting you), and on
       release it snaps back to its tile — same as resizing any tiled

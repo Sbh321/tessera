@@ -252,10 +252,10 @@
     "semantic_hash": ""
   },
   "lib/tiling/tilingManager.js": {
-    "mtime": 1785255176.2240732,
-    "seen": 1789293346.1625042,
-    "ast_hash": "43503556dec1ab9007ee177dcbfc7ec8",
-    "semantic_hash": "43503556dec1ab9007ee177dcbfc7ec8"
+    "mtime": 1789403450.6444411,
+    "seen": 1789403491.1714818,
+    "ast_hash": "00e4c0c1ccfe0b08818fea5f15049f44",
+    "semantic_hash": ""
   },
   "lib/tiling/windowFilter.js": {
     "mtime": 1784724648.3180513,
@@ -360,9 +360,9 @@
     "semantic_hash": ""
   },
   "docs/ARCHITECTURE.md": {
-    "mtime": 1789378650.1110435,
-    "seen": 1789378669.3771284,
-    "ast_hash": "25a85fd79e1d368105fafce20ffc8f2e",
+    "mtime": 1789403484.651791,
+    "seen": 1789403491.1715178,
+    "ast_hash": "4e6b3557cc193153155a8320093d5eaf",
     "semantic_hash": ""
   },
   "docs/DEVELOPMENT.md": {
@@ -390,9 +390,9 @@
     "semantic_hash": ""
   },
   "tests/MANUAL_TESTS.md": {
-    "mtime": 1789378650.1118383,
-    "seen": 1789378669.377132,
-    "ast_hash": "b20037f981e26bffe2388c3523941ecb",
+    "mtime": 1789403467.163537,
+    "seen": 1789403491.1715221,
+    "ast_hash": "14224dfa5530ebb766a3397ed24ae19b",
     "semantic_hash": ""
   },
   ".claude/settings.json": {
