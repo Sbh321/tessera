@@ -423,8 +423,14 @@ TODO: Need to rework if seen again:
       released first, then the workspace toggles stacked/tiled on the real
       window set. A true-fullscreen window is left alone (the mode flag
       still toggles; the visible effect resumes when fullscreen ends).
-- [ ] Many windows (15+) on a stacked workspace: tabs compress with
-      ellipsized titles, no clipping or overflow off-screen.
+- [ ] Many windows (15+) on a stacked workspace: tabs KEEP their full
+      titles (never "…") and the bar scrolls horizontally with NO
+      scrollbar; instead the right edge fades while more tabs lie beyond
+      it, and the left edge fades once scrolled. The windows below never
+      move. The mouse wheel over the bar scrolls it (vertical wheel
+      included); Alt+Tab or clicking to a window whose tab is off the
+      edge scrolls that tab into view. With few windows the tabs still
+      share the bar equally, as before.
 - [ ] **Notifications draw above the tab bar, not behind it.** On a
       stacked workspace, trigger a notification banner (a chat app
       message, a low-battery warning, `notify-send "test"` from a
@@ -850,6 +856,18 @@ section is for everything that needs a live shell.
 - [ ] Open several windows across workspaces, then search a window title
       fragment: the window is listed, with its application and workspace
       number as the subtitle.
+- [ ] **The application outranks the title.** With VS Code open on some
+      file and a browser tab titled with the word "code" somewhere, type
+      `code`: the VS Code window ranks first, and the matched letters
+      are bold in its SUBTITLE ("Visual Studio **Code** · Workspace 1"),
+      not in the file-name title. Type a word from the file name: the
+      same window is still found, now with the bold in its title.
+- [ ] Type a single letter: only windows whose APPLICATION name starts
+      with it (or a word of it) appear, never ones whose changing title
+      happens to contain it.
+- [ ] For browser tabs, type part of a domain (`github`): the host is
+      bold in the tab's subtitle and host matches rank above tabs that
+      merely mention the word in their title.
 - [ ] Enter switches to that window's workspace and focuses it.
 - [ ] `Ctrl+Enter` instead *brings* the window to the current workspace
       and focuses it there.
@@ -935,6 +953,13 @@ section is for everything that needs a live shell.
 - [ ] With enough sections to overflow the card width, the strip scrolls
       instead of clipping, and Ctrl+Tab keeps the selected chip in view
       in both directions. Try a narrow launcher width (420) to force it.
+- [ ] **Chips are never truncated.** With every section populated (a
+      browser connected, clipboard on), no chip reads "Op…" or "Bro…" —
+      each shows its full name and count. The strip has no scrollbar;
+      its right edge is faded while more chips lie beyond it and the
+      left edge fades once scrolled. The mouse wheel over the strip
+      scrolls it. At a wide launcher width where everything fits, no
+      edge is faded.
 - [ ] `Ctrl+Tab` / `Ctrl+Shift+Tab` move between chips, with or without
       text in the entry.
 - [ ] `Left`/`Right` ALWAYS move the text cursor and never touch the
@@ -1183,6 +1208,154 @@ section is for everything that needs a live shell.
 - [ ] Open and close the launcher ~20 times in a row: no growth in
       gnome-shell memory that does not settle, no leftover dimming, and
       the desktop remains interactive.
+
+### Browser tabs
+
+Needs Preferences → Launcher → Browser Integration → "Register the
+relay" ON, and Tessera Companion loaded in each Chrome/Chromium profile
+under test (see `docs/BROWSER_TABS.md`), with "Browser tabs" ON. Everything here was
+designed and unit-tested but **not exercised against a live browser in
+the environment it was written in** — this checklist is the live
+verification.
+
+Setup and mapping:
+
+- [ ] With the companion NOT loaded, browser windows are ordinary Open
+      Windows rows: no badge, no chevron, no "Browser Tabs" chip, and
+      nothing in the journal. `ls $XDG_RUNTIME_DIR/tessera/` shows the
+      socket (mode 0600, directory 0700) while the launcher is enabled.
+- [ ] **Preferences installer.** Turn "Register the relay with Chromium
+      browsers" ON: the row lists the browsers registered (Google Chrome,
+      Chromium, plus Brave/Edge/Vivaldi if installed);
+      `~/.config/google-chrome/NativeMessagingHosts/io.github.sbh321.tessera.browser_tabs.json`
+      exists and its `path` is the `native-host/tessera-browser-host`
+      inside the installed extension directory, which is now executable.
+      Turn it OFF: the files are gone and the row says "Not registered".
+      Turn it back ON.
+- [ ] Load Tessera Companion (chrome://extensions → Developer mode →
+      Load unpacked → `companion/`). Its id reads
+      `dcalnkplbhcblhdidppkmgoooggflphg`, its service worker shows no
+      errors, and its options page opens once, listing the "Launcher
+      tabs" module ON with a status line. Within a second the status
+      reads "Connected to Tessera as Google Chrome" and the launcher's
+      resting view shows the Chrome window with an `N tabs` badge
+      matching its real tab count.
+- [ ] In the companion's options page, switch "Launcher tabs" OFF: the
+      badge disappears within a moment and `pgrep -f tessera-browser-host`
+      finds nothing. Switch it back ON: the badge returns.
+- [ ] Open a second Chrome window with different pages: BOTH windows show
+      their own counts without you focusing either (title pairing).
+- [ ] Open two windows both on the New Tab page from a terminal (`google-
+      chrome --new-window` twice) WITHOUT focusing them, then open the
+      launcher: neither shows a count (ambiguous, deliberately). Focus one
+      and reopen: both now show counts, and expanding each lists the
+      right tabs.
+- [ ] Two Chrome profiles (or Chrome + Chromium/Brave) at once: each
+      window shows its own count; expanding shows only that window's
+      tabs; nothing is cross-attributed. `Browser Tabs` chip count is the
+      sum across profiles.
+- [ ] Turn "Browser tabs" OFF in Preferences: badges and chevrons vanish
+      immediately, the "Browser Tabs" chip is gone, and the socket file
+      is removed. Turn it back ON: within a minute (the companion's
+      watchdog) everything is back — faster if you open/close a tab.
+
+Counts and children:
+
+- [ ] Open the launcher and leave it open. In the browser (via another
+      device, or `xdg-open https://example.com` from a terminal), open a
+      tab: the badge increments in place, selection stays where it was.
+      Close it: it decrements.
+- [ ] `→` on a browser window row expands it: its tabs appear beneath,
+      indented, in tab-strip order, subtitled by host; the chevron turns
+      down; the footer reads "← Collapse". `→` again moves to the first
+      tab. `←` on a tab returns to the window; `←` again collapses.
+- [ ] `Up`/`Down` walk through expanded tabs as ordinary rows; `Alt+N`
+      hints count them; `Page Down` / `End` behave; `Tab` still jumps
+      between SECTIONS, not into tabs.
+- [ ] Click the chevron with the mouse: toggles without activating the
+      window. Click the row itself: activates (focuses) the window.
+- [ ] With text in the entry, `←`/`→` move the text cursor and never
+      expand or collapse anything; `Shift+←` selects text.
+- [ ] Reopen the launcher: everything starts collapsed.
+- [ ] Filter to Open Windows (`/win`): all windows, browser ones still
+      expandable. Filter to Browser Tabs (`/tab`): every tab, flat,
+      focused window's first.
+- [ ] Turn "Show descriptions" off: tab rows lose their host subtitle
+      and nothing else breaks; compact mode: indentation still reads.
+- [ ] **Icons.** Expanded tab rows show each site's favicon with a small
+      Chrome icon in the bottom-right corner of it; a tab on a page with
+      no favicon (a fresh `about:blank`, some chrome:// pages) shows the
+      plain Chrome icon instead; a "Browser Tabs" search result shows the
+      same. Icons appear within a second of the count appearing (they
+      arrive after the state, so a brief fallback is fine).
+- [ ] The browser WINDOW row shows its active tab's favicon with the
+      Chrome icon in the corner, and switches favicon when you change
+      the active tab in the browser (reopen the launcher to see it, or
+      keep it open: it refreshes in place).
+- [ ] Open ten tabs of the same site: the favicon arrives once and all
+      ten rows show it. Turn "Show icons" off: rows lose icon and corner
+      mark together.
+- [ ] With Chrome and Brave (or Chromium) both connected on the same
+      site, the two tabs are told apart by the corner mark.
+
+Activation:
+
+- [ ] Enter on the parent row focuses the browser window (as before);
+      `Ctrl+Enter` brings it to this workspace.
+- [ ] Expand a window, select a tab that is NOT its active tab, Enter:
+      the browser window is raised AND that exact tab becomes active.
+      Repeat from a different workspace: the launcher switches workspace
+      and raises it.
+- [ ] Type a word that appears only in a background tab's title (the
+      window's own title does not contain it): a "Browser Tabs" result
+      appears with `host · Google Chrome`; Enter activates that tab.
+- [ ] Type part of a hostname (`github`) and part of a URL path that is
+      not in any title: both find the tab; the URL-only match ranks
+      below title matches.
+- [ ] A `Browser Tabs` row is never pinnable (`Ctrl+D` does nothing) and
+      `gsettings get org.gnome.shell.extensions.tessera launcher-history`
+      never contains a `browser-tabs:` key after activations.
+
+Correctness cases (do each with the launcher open on the expanded
+window, then act in the browser, then press Enter on the row you had
+selected):
+
+- [ ] Tabs A, B, C. Select B's row. Close A in the browser. Enter: B is
+      activated (never C), and the count read 2.
+- [ ] Select B. Drag B to the end of the tab strip. Enter: B.
+- [ ] Select B. Drag B out into a new window / into the other window.
+      Both windows' counts update; B now lists under its new window;
+      Enter on the old row still activates B in its new window and
+      raises THAT window.
+- [ ] Select B. Close B, then open a new tab D. Enter on the stale B
+      row: nothing is activated in the browser (D is not touched); a
+      "no longer open" notification appears.
+- [ ] Open the same URL in three tabs. Expand: three rows. Each row
+      activates its own tab (check the tab strip highlight each time).
+- [ ] Quit the browser entirely and relaunch it (restoring tabs). The
+      badges come back with the new counts. A launcher that was open
+      across the restart, or a row remembered from before: Enter does
+      nothing but the notification — a reused numeric id is never
+      followed.
+
+Robustness:
+
+- [ ] 50–100+ tabs across several windows: the launcher opens and
+      searches without visible lag; expanding a 100-tab window scrolls
+      fine; typing narrows instantly.
+- [ ] Hold `Ctrl+T` / `Ctrl+W` to open and close ~30 tabs in a few
+      seconds with the launcher open: the badge ends on the right
+      number, no journal warnings about the companion.
+- [ ] Kill the relay (`pkill -f tessera-browser-host`): the window's
+      badge disappears within a moment; the companion reconnects on its
+      own (within ~1–16 s) and the badge returns.
+- [ ] Reload the companion from chrome://extensions: counts return
+      after reconnect; rows built before the reload still activate.
+- [ ] Disable the extension with the launcher open and browsers
+      connected: no errors; the socket is gone; re-enable and it all
+      comes back.
+- [ ] Nothing in `journalctl --user _COMM=gnome-shell` ever prints a
+      URL or a tab title.
 
 ### Launcher cleanup correctness
 

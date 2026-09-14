@@ -115,6 +115,50 @@ equal(matchText('cafe', 'Café').tier, MatchTier.EXACT, 'accents fold for matchi
 equal(matchText('cafe', 'Café').positions.length, 4,
     'folding preserves one position per original character');
 
+section('fuzzy matcher: short queries');
+
+equal(matchText('f', 'Firefox').tier, MatchTier.PREFIX, 'one character matches as a prefix');
+equal(matchText('c', 'Visual Studio Code').tier, MatchTier.WORD_PREFIX, 'one character matches a word start');
+equal(matchText('o', 'Visual Studio Code'), null, 'one character never matches inside a word');
+equal(matchText('x', 'Firefox'), null, 'one character never matches as a substring');
+equal(matchText('fi', 'Firefox').tier, MatchTier.PREFIX, 'two characters as a prefix');
+equal(matchText('ud', 'Visual Studio Code').tier, MatchTier.SUBSTRING, 'two characters may match inside a word');
+equal(matchText('fx', 'Firefox').tier, MatchTier.SUBSEQUENCE, 'a two-letter subsequence from a word start');
+equal(matchText('rx', 'Firefox'), null, 'a two-letter subsequence must start on a word boundary');
+equal(matchText('aei', 'A very long title indeed'), null, 'a subsequence scattered too widely is refused');
+check(matchText('vlt', 'A very long title') !== null, 'a compact subsequence still matches');
+
+const shortFields = [
+    {key: 'title', text: 'Terminal', weight: 1},
+    {key: 'keywords', text: 'shell console', weight: 0.72},
+    {key: 'description', text: 'Use the command line', weight: 0.5},
+];
+equal(matchFields(['t'], shortFields).score > 0, true, 'one character matches the title');
+equal(matchFields(['u'], shortFields), null, 'one character does not reach descriptions');
+equal(matchFields(['s'], shortFields), null, 'one character does not reach keywords');
+check(matchFields(['sh'], shortFields) !== null, 'two characters reach keywords');
+equal(matchFields(['us'], shortFields), null, 'two characters do not reach descriptions');
+check(matchFields(['use'], shortFields) !== null, 'three characters reach everything');
+
+section('fuzzy matcher: primary fields and subtitle highlights');
+
+const windowFields = [
+    {key: 'app', text: 'Visual Studio Code', weight: 1, primary: true, highlight: 'subtitle'},
+    {key: 'title', text: 'random-file.js - tessera', weight: 0.85, primary: false},
+];
+check(matchFields(['code'], windowFields).score > matchFields(['tessera'], windowFields).score,
+    'the primary field outranks the title at equal match quality');
+equal(JSON.stringify(matchFields(['code'], windowFields).subtitlePositions),
+    JSON.stringify([14, 15, 16, 17]), 'a primary-field match reports subtitle positions');
+equal(matchFields(['code'], windowFields).positions.length, 0, 'and none in the title');
+equal(matchFields(['tessera'], windowFields).positions.length, 7, 'a title match reports title positions');
+equal(matchFields(['tessera'], windowFields).subtitlePositions.length, 0, 'and none in the subtitle');
+check(matchFields(['v'], windowFields) !== null, 'one character is judged against the primary field');
+equal(matchFields(['r'], windowFields), null, 'one character no longer reaches a non-primary title');
+check(matchFields(['ra'], windowFields) !== null, 'two characters still reach the title');
+equal(matchFields(['code'], [{key: 'title', text: 'Code', weight: 1}]).subtitlePositions.length, 0,
+    'plain fields report no subtitle positions');
+
 section('fuzzy matcher: multi-term queries');
 
 const fields = [

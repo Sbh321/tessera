@@ -1,0 +1,24 @@
+#!/usr/bin/env -S gjs -m
+// SPDX-License-Identifier: GPL-2.0-or-later
+//
+// The Native Messaging host Chromium starts for Tessera Companion. Only
+// an entry point: everything is in relay.js beside it. Registered with
+// the browser by Tessera's Preferences (Browser Integration), which
+// writes a manifest pointing at this file and makes it executable.
+
+import GLib from 'gi://GLib';
+import System from 'system';
+
+import {runRelay} from './relay.js';
+
+const loop = new GLib.MainLoop(null, false);
+let exitCode = 1;
+runRelay().then(code => {
+    exitCode = code;
+    loop.quit();
+}).catch(error => {
+    printerr(`tessera-browser-host: ${error.message}`);
+    loop.quit();
+});
+loop.run();
+System.exit(exitCode);

@@ -40,6 +40,14 @@ windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
   Window*), open windows, GNOME Settings panels, installed extensions,
   arithmetic, shell commands, an opt-in clipboard history, and every
   action Tessera itself can perform.
+- **Browser tabs, inside the window list.** With the Tessera Companion
+  extension in Chrome/Chromium, each browser window shows its tab count,
+  expands (`→`/`←` or its chevron) to list its tabs with their favicons,
+  marked with the browser they belong to, and every tab is
+  searchable directly by title, host and URL — Enter switches to exactly
+  that tab, never a neighbour, even after tabs are reordered, moved
+  between windows or closed. Event-driven, local-only, nothing persisted;
+  Wayland-native. See [`docs/BROWSER_TABS.md`](docs/BROWSER_TABS.md).
 - **Matching that understands how people type**: exact, prefix, word
   (`code` → Visual Studio **Code**), initials (`vsc`, `gimp` → GNU Image
   Manipulation Program), substring, subsequence (`ff` → Firefox), and
@@ -301,15 +309,20 @@ lib/tiling/           The tiling subsystem: windowFilter.js,
 lib/launcher/         The launcher subsystem: searchController.js,
                       fuzzyMatcher.js + calculatorEngine.js (pure,
                       unit-tested), one file per provider,
-                      launcherPopup.js / launcherUI.js / theme.js
+                      launcherPopup.js / launcherUI.js / theme.js,
+                      browser*.js (the browser tab link)
+companion/            Tessera Companion, the browser extension (modules/)
+native-host/          The Native Messaging relay (GJS), registered
+                      from Preferences
 prefs.js              Adwaita preferences window
 stylesheet.css        Default appearance
 schemas/              GSettings schema (source of truth for settings)
-docs/                 ARCHITECTURE.md, LAUNCHER.md, DEVELOPMENT.md,
-                      ROADMAP.md, GNOME_NOTES.md
+docs/                 ARCHITECTURE.md, LAUNCHER.md, BROWSER_TABS.md,
+                      DEVELOPMENT.md, ROADMAP.md, GNOME_NOTES.md
 scripts/              build.sh, install.sh, dev-symlink.sh
-tests/                run-tests.sh, schema-validate.sh,
-                      launcher-engine-test.js, MANUAL_TESTS.md
+tests/                run-tests.sh, schema-validate.sh, the launcher
+                      engine / browser tab / companion / relay /
+                      installer tests, MANUAL_TESTS.md
 ```
 
 See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the design

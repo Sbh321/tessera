@@ -44,7 +44,16 @@ lib/launcher/
     favoritesManager.js    Pinned results, in user order.
     actionRegistry.js      The static action catalogue.
     appProvider.js         Installed applications.
-    windowProvider.js      Open windows.
+    windowProvider.js      Open windows (with tab counts and expandable
+                           tabs for mapped browser windows).
+    browserTabsProvider.js Browser tabs: direct search, and the child
+                           rows under a browser window.
+    browserTabService.js   Owns the browser link: bridge, store, window
+                           mapping, activation. The only browser file
+                           that touches Mutter.
+    browserBridge.js       Unix socket server for the browser companion.
+    browserTabStore.js     Pure session/window/tab state. No GNOME imports.
+    browserWindowMapper.js Pure browser-window <-> Meta.Window pairing.
     actionProvider.js      Actions + the "workspace 5" grammar.
     commandProvider.js     "> command" execution.
     paletteProvider.js     The "/" palette: filters and slash commands.
@@ -65,6 +74,11 @@ and has no access to a provider; `searchController.js` is the only file
 that scores or orders anything; `keyboardController.js` is the only file
 that decides what a key means. Each of those can be changed without
 reading the others.
+
+Browser tabs have their own document, [`BROWSER_TABS.md`](BROWSER_TABS.md):
+the approaches weighed, the protocol, the identity model, the window
+mapping, and setup. This document covers only how they appear in the
+launcher.
 
 `calculatorEngine.js` is the one file not named in the original brief. It
 exists so the arithmetic evaluator — the most logic-dense, most
@@ -194,12 +208,35 @@ character (`firfox`) never reaches it — that is already a subsequence.
 The `launcher-fuzzy` setting gates this tier alone; the others are what
 make short queries work at all.
 
+**Short queries are held to stricter tiers and fewer fields.** One
+character means "starts with this": it matches only as an exact, prefix
+or word-prefix match, and only against titles — as a substring it is in
+nearly every string on the system. Two characters may also match inside
+words and as scattered letters, but a scattered match must begin on a
+word boundary (`ff` → **F**ire**f**ox, not "of"), and they reach only
+the strong fields (titles, keywords, an app's name on a window), never
+descriptions. From three characters on every tier and field applies. A
+subsequence match spread over more than three times the query's length
+(plus two) is also refused as coincidence — the letters of almost any
+short query occur in order somewhere in a long enough title.
+
 Multi-term queries (`vs code`) require **every** term to match some
 field. The combined score is 75% average, 25% worst term, so one strong
 term cannot carry a weak one — `firefox zzz` does not find Firefox.
 
 Fields are weighted per provider (title 1.0, keywords ~0.75, description
-~0.5). Highlight positions are collected for the `title` field only and
+~0.5). **Windows and browser tabs invert the usual order**: a window's
+application name and a tab's site host are the *primary* fields (1.0),
+and their titles come one notch down (0.85). A title is whatever the
+app happens to be showing — a random file left open in an editor, the
+current page in a browser — while the application and the site are
+what the thing *is* and what you remember it by. The title is still
+searched, so a window can be found by what it shows; it just does not
+outrank a match on what it is. One-character queries are judged against
+the primary field. Highlight positions are collected for the title field
+and, for these two providers, for the primary field too, which is
+drawn at the start of the subtitle — so `code` bolds **Code** in
+"Visual Studio Code · Workspace 2" under the window's title. Positions
 are guaranteed to line up with the original string: case/accent folding
 is done per character so that folding never changes the string's length.
 
@@ -265,6 +302,7 @@ where you expect it. Sections and their titles are:
 | `palette-filters` | Filter Results |
 | `palette-commands` | Commands |
 | `windows` | Open Windows |
+| `browser-tabs` | Browser Tabs |
 | `calculator` | Calculator |
 | `commands` | Run Command |
 | `favorites` | Favorites |
@@ -314,11 +352,17 @@ mouse; `Backspace` on an empty query clears back to `All`.
 - **Chips follow `SECTION_ORDER`, not rank.** A strip that reshuffles as
   you type is one you can never build muscle memory for, and muscle
   memory is the whole value of a filter bar.
-- **The strip scrolls horizontally** (`EXTERNAL` policy, so no visible
-  scrollbar). At rest it lists every section you could browse into, and a
-  broad query can match eight — either legitimately outgrows the card.
-  `Ctrl+Tab` scrolls the selected chip into view, so the bar is never
-  something you have to drag.
+- **The strip scrolls horizontally, and chips are never squeezed.** At
+  rest it lists every section you could browse into, and a broad query
+  can match eight — either legitimately outgrows the card. There is no
+  scrollbar (`EXTERNAL` policy): an edge with more chips beyond it is
+  faded (St's scroll-view fade, which fades only while there *is* more
+  that way), `Ctrl+Tab` scrolls the selected chip into view, and the
+  wheel scrolls the strip. Chip labels are never ellipsized — St
+  labels ellipsize by default, which makes their minimum width a few
+  pixels, and a scrollable St box only extends as far as its children's
+  minimum widths, so the default quietly shrank the strip to fit the
+  card ("Op…", "Bro…", "App…") instead of scrolling it.
 - **Only sections that matched get a chip** — plus the one being
   filtered to, always, even when it came up empty (`Open Windows 0`).
   A fixed strip of ten mostly-empty chips would be noise, but dropping
@@ -437,7 +481,8 @@ stable sort preserves while frecency still lifts what you actually use.
 | Provider | Searches | Enter | Ctrl+Enter | Shift+Enter |
 |---|---|---|---|---|
 | `appProvider` | name, keywords, description, executable, `.desktop` actions | launch or focus | new window | open on the trailing workspace |
-| `windowProvider` | title, application, WM class | switch to it | bring it to this workspace | — |
+| `windowProvider` | **application name** first, then title, then WM class | switch to it | bring it to this workspace | — |
+| `browserTabsProvider` | **site host** first, then tab title, then URL (every tab of every connected browser) | activate that exact tab and raise its window | — | — |
 | `actionProvider` | the action catalogue + `workspace N` / `move <app> N` | run | — | — |
 | `commandProvider` | `>`/`$` prefixed command lines | run | run with the opposite terminal setting | — |
 | `paletteProvider` | `/` filters and slash commands | apply filter / complete or run | — | — |
@@ -463,7 +508,18 @@ Notes on specific ones:
   the same MRU ordering Alt+Tab walks — so "recently focused" ranking is
   free and a closed window can never be listed. Activation hands off to
   `Main.activateWindow()`, GNOME's own helper. This section always leads
-  the list; see "Section order" below.
+  the list; see "Section order" below. A browser window whose tabs are
+  known carries an `N tabs` badge and, with nothing typed, its tabs as
+  expandable children (`→` / `←`, or the chevron); Enter on the window
+  still focuses the window.
+- **Browser tabs** are searched *directly* while typing — the tab you
+  want is usually not the one its window is showing — and appear as
+  their own section, subtitled with host and browser. At rest they only
+  appear under their windows. Result ids carry the tab's
+  browser/profile/session/tab identity; title, URL and position are
+  display data, and activation resolves the identity again on both ends
+  so a stale row can never reach a different tab. See
+  [`BROWSER_TABS.md`](BROWSER_TABS.md).
 - **Recent** answers only the empty query. During a search, recency and
   frequency are applied as a ranking boost to the app provider's results
   instead, which is what stops every search listing Firefox twice. Its
@@ -615,7 +671,8 @@ web search, AI commands — none of which require an architectural change.
 | `Ctrl+Shift+Up/Down` | Reorder a pinned result |
 | `Ctrl+Delete` | Remove the selected entry (clipboard history) |
 | `Ctrl+Backspace` | Clear the query |
-| `Left` / `Right`, `Backspace` | Ordinary text editing (never intercepted) |
+| `Right` / `Left` | **Only with an empty query:** expand / collapse a browser window's tabs; `Right` on an expanded window steps into its first tab, `Left` on a tab returns to its window |
+| `Left` / `Right`, `Backspace` | Ordinary text editing whenever there is text |
 
 Three deliberate decisions:
 
@@ -625,17 +682,19 @@ Three deliberate decisions:
 - `Tab` cycles **sections** rather than widgets. The popup has exactly
   one focusable widget (the entry), so the usual focus-chain meaning
   would do nothing at all.
-- **`Left`/`Right` are never intercepted.** They belong to the entry,
-  which holds key focus for the whole session. An earlier version claimed
-  them for the chips whenever the cursor sat at that end of the query;
-  even that much fought the text field in practice, so the chips moved to
-  `Ctrl+Tab` — a chord no text field wants, on the gesture people already
-  use to change tabs in a browser or an editor. Plain `Backspace` *is*
-  conditional, but it can only ever fire when there is no text left to
-  delete, so it never takes a keystroke the entry had a use for.
-  `keyboardController.js` maps the keys; the popup makes that one
-  emptiness check, because entry state is deliberately not visible to the
-  mapper.
+- **`Left`/`Right` belong to the entry**, which holds key focus for the
+  whole session. An earlier version claimed them for the chips whenever
+  the cursor sat at that end of the query; even that much fought the
+  text field in practice, so the chips moved to `Ctrl+Tab` — a chord no
+  text field wants, on the gesture people already use to change tabs in
+  a browser or an editor. They now expand and collapse a browser
+  window's tabs, but *only while the query is empty*: that hierarchy
+  exists only at rest, and an empty entry has no cursor to move, so no
+  keystroke the entry had a use for is ever taken. Plain `Backspace`
+  works the same way — it clears the filter only once there is no text
+  left to delete. `keyboardController.js` maps the keys; the popup makes
+  the emptiness checks, because entry state is deliberately not visible
+  to the mapper. Modified arrows (`Shift`, `Ctrl`) are never taken.
 
 **The Super+Space conflict.** GNOME binds `<Super>space` to
 `switch-input-source` (and `<Shift><Super>space` to its backward twin).
@@ -660,7 +719,8 @@ in Preferences.
 
 Hover selects, left click activates, middle click is the alternate
 action, right click is the secondary action, scrolling scrolls the list,
-and a click outside the card dismisses it. There is no popup context menu
+a click on a browser window's chevron expands or collapses its tabs
+without activating it, and a click outside the card dismisses it. There is no popup context menu
 (the two extra buttons cover the same actions, and a menu would have to
 fight the launcher's own modal grab for the pointer grab).
 
@@ -860,6 +920,7 @@ Everything lives in Preferences → Launcher.
 | `launcher-remember-history` | `true` | Frecency ranking |
 | `launcher-enable-apps` | `true` | |
 | `launcher-enable-windows` | `true` | |
+| `launcher-enable-tabs` | `true` | Tab counts, expandable tabs and direct tab search; needs Tessera Companion and the relay registered under Browser Integration ([`BROWSER_TABS.md`](BROWSER_TABS.md)) |
 | `launcher-enable-recent` | `true` | Empty-query view |
 | `launcher-enable-calculator` | `true` | |
 | `launcher-enable-commands` | `true` | `>` / `$` prefixes |
@@ -889,9 +950,11 @@ Actions, Settings panels and Extensions have no toggle — they are cheap
 and always searched.
 
 The preferences page groups these as **General** (enable, shortcut,
-maximum results, remember history), **What to Search**, **Clipboard
-History**, **Matching**, **Placement**, **Appearance**, and **Stored
-Data** — the last holding three one-shot buttons that forget the ranking
+maximum results, remember history), **What to Search**, **Browser
+Integration** (registering the relay and a link to Tessera Companion —
+not settings, but files; see [`BROWSER_TABS.md`](BROWSER_TABS.md)),
+**Clipboard History**, **Matching**, **Placement**, **Appearance**, and
+**Stored Data** — the last holding three one-shot buttons that forget the ranking
 history, clear the pins, and clear the clipboard history (both lists)
 independently. Everything below the master switch is desensitised while
 the launcher is off, the same GET-only binding pattern the tiling page
@@ -933,6 +996,13 @@ the launcher's own ranking history.
 why clipboard entries are not pinnable through the shared favorites list
 and have their own pin list instead.
 
+**Browser tab data stays local and ephemeral.** It reaches the shell over
+a mode-0600 socket in the user's runtime directory, lives in memory
+only, is marked `ephemeral` so it never enters the ranking history, is
+never pinnable, and is never logged. The companion holds no host
+permissions and cannot read page contents. Details in
+[`BROWSER_TABS.md`](BROWSER_TABS.md).
+
 ---
 
 ## Performance
@@ -953,6 +1023,10 @@ Targets from the brief, and how they are met:
   once per `installed-changed`, not per keystroke. Windows come straight
   from Mutter's tab list. Results are capped per section and overall
   before any actor work happens.
+- **Hundreds of browser tabs.** Browser state is kept incrementally from
+  events (map updates), full snapshots happen only at connection and
+  recovery boundaries, and redraws while the popup is open are coalesced.
+  Child rows use the same pooled rows as everything else.
 - **No unnecessary allocations.** Result rows are pooled and re-filled
   rather than constructed per keystroke; themed icons are cached by name;
   the ASCII fast path in `normalizeText` skips per-character work for the
@@ -984,6 +1058,11 @@ releases the modal grab if one is somehow still held. `KeybindingManager`
 separately releases the accelerator and restores the input-source
 shortcuts.
 
+The browser link (`BrowserTabService`) runs only while both the launcher
+and `launcher-enable-tabs` are on: turning either off stops the socket
+server, disconnects every companion, cancels pending activations and
+clears the store — nothing is persisted, so there is nothing to restore.
+
 Screen lock does not disable Tessera (it declares `unlock-dialog`), but
 the launcher is unreachable there: the accelerator is registered with
 `NORMAL | OVERVIEW | POPUP`, none of which is the lock screen's action
@@ -1000,6 +1079,12 @@ the calculator, the string helpers, and the history/favorites stores
 (both driven with a fake settings object). Those modules import no GNOME
 namespace, which is exactly why they can be tested at all; the runner
 uses `gjs` when available and falls back to `node`.
+
+The browser tab integration adds its own suites — the pure store and
+window mapper, the real socket bridge under gjs, the companion under
+node against a mocked WebExtension API (as Chromium and as Firefox), and
+the Native Messaging relay under python — listed in
+[`BROWSER_TABS.md`](BROWSER_TABS.md#testing).
 
 Everything that touches St, Meta or Shell is covered by the launcher
 section of [`../tests/MANUAL_TESTS.md`](../tests/MANUAL_TESTS.md), for
@@ -1029,6 +1114,11 @@ offers no supported headless harness for third-party extensions.
   and `LIST_ITEM` roles and the list carries `LIST`, but the selection is
   drawn rather than focused (the entry keeps key focus), so a screen
   reader does not receive a focus change per selection move.
+- **Browser tabs need a companion in the browser**, and two browser
+  windows with identical titles that have not been focused since the
+  browser connected show no tab count until one of them is. Firefox
+  support is implemented but unverified. See
+  [`BROWSER_TABS.md`](BROWSER_TABS.md#limitations).
 - **`>` with nothing after it** shows no results rather than a hint row.
 - **Extension enable/disable is persistent**, matching the Extensions
   app: it rewrites GNOME's `enabled-extensions` / `disabled-extensions`.
@@ -1040,13 +1130,17 @@ offers no supported headless harness for third-party extensions.
 The architecture already accommodates these without restructuring:
 
 - **New providers** (the common case): recent files, git repositories,
-  SSH hosts, browser tabs and bookmarks, emoji, unit conversion, package
+  SSH hosts, browser bookmarks, emoji, unit conversion, package
   manager, Bluetooth/Wi-Fi/volume/brightness, media controls, calendar,
   notifications, notes, AI commands. Each is a new subclass plus four
   registration lines.
 - **Asynchronous providers** are already supported end to end
   (`Promise` from `query()`, generation-token staleness handling); no
-  provider needs it yet.
+  provider needs it yet — browser tabs arrive through a push channel
+  and are searched synchronously from the store.
+- **Nested results** now exist (`children` on the result record, shown
+  under an expanded row); a second provider wanting a hierarchy — a
+  window's dialogs, an app's recent documents — needs no UI work.
 - **Window layouts and workspace sessions** — saving and restoring a
   workspace's tiling arrangement — would be an action provider entry plus
   storage, using the `LayoutTree` the tiling subsystem already has.

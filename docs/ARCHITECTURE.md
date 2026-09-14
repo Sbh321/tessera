@@ -118,8 +118,10 @@ lib/quickMenu.js           Optional right-hand panel menu (off by default,
 lib/launcher/              The launcher subsystem (off by default): a
                            Spotlight/Raycast-style search popup over
                            apps, windows, settings panels, extensions,
-                           arithmetic, commands, the clipboard, and
-                           every Tessera action. Its own document:
+                           arithmetic, commands, the clipboard, browser
+                           tabs (via a companion in the browser; see
+                           docs/BROWSER_TABS.md), and every Tessera
+                           action. Its own document:
                            docs/LAUNCHER.md. Nothing outside this
                            directory knows it exists except extension.js
                            (composition) and KeybindingManager (which
@@ -193,6 +195,10 @@ LauncherPopup entry text --> SearchController.search() --> every enabled provide
 LauncherPopup Enter --> SearchController.activate() --> HistoryManager.record() + result.activate() --> Shell.App / Main.activateWindow / TilingManager / WindowMover / ...
 Shell.AppSystem --(installed-changed)--> AppProvider/SettingsProvider cache invalidation
 global.display.get_selection() --(owner-changed, clipboard only)--> ClipboardProvider --> St.Clipboard.get_text --> capped strv in GSettings
+browser companion --(Native Messaging)--> native-host relay --($XDG_RUNTIME_DIR/tessera socket)--> BrowserBridge --> BrowserTabStore (snapshot + sequenced events) --> BrowserTabService.describeWindows()/listTabs() --> WindowProvider badges+children / BrowserTabsProvider
+BrowserTabStore change --> BrowserTabService.onChanged (coalesced) --> LauncherPopup.refreshResults()
+browser WINDOW_FOCUSED --> BrowserTabService: global.display.focus_window paired with that browser window --> BrowserWindowMapper (strong binding)
+Enter on a tab --> BrowserTabService.activate(identity) --> store.resolve() --> companion tabs.get()+tabs.update()+windows.update() --> Main.activateWindow(mapped Meta.Window)
 
 global.display --(notify::focus-window)--> FocusBorderManager --> resolves color/geometry --> St actor position/size
 global.window_manager --(switch-workspace)--\
@@ -585,9 +591,13 @@ focus change — there is deliberately no local selected-tab state to
 drift. Tab order is the layout tree's in-order traversal — the same
 tree-order tabs Hyprland shows, which for sequentially opened windows is
 simply creation order; titles update per-tab via `connectObject` bound
-to the tab button so destruction disconnects automatically; overflow
-compresses tabs equally with ellipsized labels, as Hyprland's own tab
-bar does. The bucket tree persists through stacked mode — reconciliation
+to the tab button so destruction disconnects automatically; on overflow
+the strip scrolls horizontally (the bar is an `St.ScrollView` with no
+scrollbar; edges with more tabs beyond them are faded, its height stays
+fixed so nothing below reflows), keeping the active tab in view and
+letting the wheel scroll it, rather than squeezing every title to an
+ellipsis as Hyprland's own bar does.
+The bucket tree persists through stacked mode — reconciliation
 runs in both modes, so windows opened while stacked still take their
 focus-anchored place in the tree — and toggling stacked off restores
 that tiled arrangement.
@@ -1028,6 +1038,11 @@ launcherUI.js / launcherPopup.js / theme.js
 *Provider.js / actionRegistry.js / iconProvider.js /
 historyManager.js / favoritesManager.js
                   data sources and stores; none of them touch an actor
+browserTabStore.js / browserWindowMapper.js
+                  pure browser state and window pairing, unit-tested
+browserBridge.js / browserTabService.js
+                  the socket to the browser companion, and the one
+                  browser file that talks to Mutter
 ```
 
 **The organising rule: providers never render, the UI never searches, and
@@ -1043,6 +1058,23 @@ what is expensive and externally invalidated: the installed-app list
 (rebuilt on `Shell.AppSystem`'s `installed-changed`) and the
 settings-panel list. Windows come straight from Mutter's tab list, so a
 closed window can never be listed.
+
+**Browser tabs are the one data source that lives outside the shell**,
+and they follow the same rule through a different boundary: the browser
+is the only source of truth, a companion WebExtension pushes a complete
+snapshot and then sequenced events over a private socket, and
+`BrowserTabStore` holds the single, ephemeral, derived copy — hidden
+the moment a sequence gap makes it untrustworthy, until the next
+snapshot. Nothing is persisted. Providers derive from it per keystroke
+like from any other source. The one genuinely new problem, pairing a
+browser's windows with Mutter's on Wayland (where a toplevel carries no
+handle a client could name), is solved by evidence rather than
+guessing: the compositor's focus window at the moment the browser
+reports a focus change, then exact-title elimination, then nothing —
+ambiguous windows stay unmapped rather than mismapped. Activation never
+depends on that mapping; a tab is activated by its own identity, on
+both ends, or not at all. [`BROWSER_TABS.md`](BROWSER_TABS.md) has the
+approaches weighed and the full model.
 
 **Two pieces of state deliberately outlive a single search**, both in
 GSettings rather than in memory: launch frecency (`launcher-history`) and
@@ -1307,10 +1339,26 @@ add one small read-only schema:
   internal, and the action only appears once `CanHibernate` has
   confirmed support.
 
+- `lib/launcher/browserBridge.js` listens on a Unix socket it creates
+  under `$XDG_RUNTIME_DIR/tessera/` (0700 directory, 0600 socket) for
+  Tessera Companion's relay, and removes it on stop. It is the only
+  listener of any kind; it accepts connections from this user only and
+  validates every message. The companion side lives in the browser and
+  holds no host permissions.
+- `lib/browserIntegration.js`, from the Preferences process and only on
+  the user's explicit switch, writes one Native Messaging manifest per
+  Chromium-family browser under `~/.config/<browser>/NativeMessagingHosts/`
+  pointing at the GJS relay inside the extension directory, sets that
+  relay's executable bit, and deletes exactly those manifests when the
+  switch is turned off. The same shape GSConnect ships on
+  extensions.gnome.org.
+
 Everything else the launcher touches is public Shell/Mutter API
 (`Shell.AppSystem`, `Shell.AppUsage`, `Shell.WindowTracker`,
 `Shell.BlurEffect`, `Main.pushModal`, `Main.activateWindow`,
-`Main.extensionManager`, `Meta.Selection`) — see
+`Main.extensionManager`, `Meta.Selection`, and for browser windows
+`Meta.Window.get_wm_class/get_gtk_application_id/get_sandboxed_app_id/
+get_title/get_stable_sequence` plus `global.display.focus_window`) — see
 [`GNOME_NOTES.md`](GNOME_NOTES.md) for how each was verified.
 
 All of the above are the only non-obvious, semi-invasive behaviors in

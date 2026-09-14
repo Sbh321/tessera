@@ -263,6 +263,12 @@
       <description>Includes open windows, searchable by title, application and window class. Selecting one switches to its workspace and focuses it.</description>
     </key>
 
+    <key name="launcher-enable-tabs" type="b">
+      <default>true</default>
+      <summary>Show and search browser tabs</summary>
+      <description>Shows each supported browser window's tab count in Open Windows, lets those windows be expanded to list their tabs, and searches every tab directly by title and address. Needs the Tessera browser companion extension installed in the browser (see docs/BROWSER_TABS.md); without it nothing changes. Tab data is received over a private socket in the user's runtime directory, kept in memory only, and never written to disk or to the launcher's ranking history.</description>
+    </key>
+
     <key name="launcher-enable-apps" type="b">
       <default>true</default>
       <summary>Search installed applications</summary>

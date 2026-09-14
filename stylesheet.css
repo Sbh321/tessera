@@ -68,7 +68,15 @@
     background-color: rgba(30, 30, 30, 0.85);
     border-radius: 8px;
     padding: 3px;
+}
+
+.tessera-stack-bar-strip {
     spacing: 3px;
+}
+
+/* Geometry only; the label is never ellipsized (see stackTabBar.js). */
+.tessera-stack-tab-label {
+    padding: 0;
 }
 
 .tessera-stack-tab {
@@ -366,6 +374,11 @@
 
 .tessera-launcher-row-box {
     spacing: 10px;
+}
+
+.tessera-launcher-chevron {
+    /* Color, width and hover fill are inline (theme.chevronStyle). */
+    transition-duration: 80ms;
 }
 
 .tessera-launcher-empty {

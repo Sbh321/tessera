@@ -7,6 +7,8 @@ import Gtk from 'gi://Gtk';
 
 import {ExtensionPreferences, gettext as _} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
+import * as BrowserIntegration from './lib/browserIntegration.js';
+
 function addSpinRow(group, settings, key, title, subtitle, {lower, upper, step = 1}) {
     const row = new Adw.SpinRow({
         title,
@@ -376,6 +378,78 @@ export default class TesseraPreferences extends ExtensionPreferences {
             window.set_visible_page(pages[requested]);
     }
 
+    /**
+     * The one place this extension writes outside its own directory and
+     * schema: registering the Native Messaging relay with the Chromium
+     * browsers on this machine, on the user's explicit switch. The
+     * relay stays inside the extension directory; only a small manifest
+     * per browser is written, and turning the switch off removes exactly
+     * those files again.
+     */
+    _addBrowserIntegrationGroup(page) {
+        const group = new Adw.PreferencesGroup({
+            title: _('Browser Integration'),
+            description: _(
+                'Lets the launcher show, search and switch to browser tabs. Two parts: ' +
+                'register the relay below, then install the Tessera Companion extension in ' +
+                'each Chromium-family browser (Chrome, Chromium, Brave, Edge, Vivaldi). ' +
+                'Snap and Flatpak browsers cannot start the relay and are not supported.'),
+        });
+        page.add(group);
+
+        const relayRow = new Adw.SwitchRow({
+            title: _('Register the relay with Chromium browsers'),
+        });
+        group.add(relayRow);
+
+        const refresh = () => {
+            const state = BrowserIntegration.status(this.path);
+            relayRow.freeze_notify();
+            relayRow.active = state.installed;
+            relayRow.thaw_notify();
+            if (!state.installed)
+                relayRow.subtitle = _('Not registered');
+            else if (!state.current)
+                relayRow.subtitle = _('Registered for %s, but pointing at an old location. Turn off and on again.').format(state.browsers.join(', '));
+            else
+                relayRow.subtitle = _('Registered for %s').format(state.browsers.join(', '));
+        };
+
+        let applying = false;
+        relayRow.connect('notify::active', () => {
+            if (applying)
+                return;
+            applying = true;
+            try {
+                if (relayRow.active)
+                    BrowserIntegration.install(this.path);
+                else
+                    BrowserIntegration.uninstall();
+            } catch (error) {
+                relayRow.subtitle = _('Failed: %s').format(error.message);
+            }
+            refresh();
+            applying = false;
+        });
+        refresh();
+
+        addButtonRow(group, _('Tessera Companion'),
+            _('The browser extension. Install it in every profile whose tabs should appear.'),
+            _('Open Store Page'), () => {
+                new Gtk.UriLauncher({uri: BrowserIntegration.COMPANION_STORE_URL})
+                    .launch(page.get_root(), null, null);
+            });
+
+        // Until the store listing exists (and for development), the
+        // companion can be loaded unpacked from a checkout.
+        const unpackedRow = new Adw.ActionRow({
+            title: _('Load unpacked (development)'),
+            subtitle: _('chrome://extensions → Developer mode → Load unpacked → the “companion” folder of a Tessera checkout. Its id must read %s.').format(BrowserIntegration.COMPANION_EXTENSION_ID),
+            subtitle_selectable: true,
+        });
+        group.add(unpackedRow);
+    }
+
     _buildLauncherPage(settings, registry) {
         const page = new Adw.PreferencesPage({
             title: _('Launcher'),
@@ -412,6 +486,9 @@ export default class TesseraPreferences extends ExtensionPreferences {
             _('Installed applications'), '');
         addSwitchRow(sourcesGroup, settings, 'launcher-enable-windows',
             _('Open windows'), '');
+        addSwitchRow(sourcesGroup, settings, 'launcher-enable-tabs',
+            _('Browser tabs'),
+            _('Tab counts and expandable tabs on browser windows, and direct tab search. Needs the Tessera browser companion (see docs/BROWSER_TABS.md).'));
         addSwitchRow(sourcesGroup, settings, 'launcher-enable-recent',
             _('Recent applications'),
             _('Shown when the search box is empty'));
@@ -426,6 +503,8 @@ export default class TesseraPreferences extends ExtensionPreferences {
             _('Ctrl+Enter always does the opposite for one command'));
         settings.bind('launcher-enable-commands', terminalRow, 'sensitive',
             Gio.SettingsBindFlags.GET);
+
+        this._addBrowserIntegrationGroup(page);
 
         const clipboardGroup = new Adw.PreferencesGroup({
             title: _('Clipboard History'),

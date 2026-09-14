@@ -94,12 +94,25 @@ submission will too.
 ```
 
 Runs everything that can be verified without a live shell: the GSettings
-schema (`glib-compile-schemas --strict`) and
+schema (`glib-compile-schemas --strict`);
 `tests/launcher-engine-test.js` — assertions over the launcher's fuzzy
 matcher, arithmetic evaluator, string helpers, and the history/favorites
-stores (driven with a fake settings object). Those modules are pure ES
-modules with no GNOME imports, so the runner uses `gjs -m` when available
-and falls back to `node` otherwise.
+stores (driven with a fake settings object); the browser tab store and
+window mapper (`tests/browser-tab-store-test.js`,
+`tests/browser-window-mapper-test.js`); the real browser socket bridge,
+the Native Messaging relay run as a subprocess against it, and the
+Preferences-side relay installer (`tests/browser-bridge-test.js`,
+`tests/native-host-test.js`, `tests/browser-integration-test.js`, gjs
+only — they need Gio); and Tessera Companion's Tabs module against a
+mocked Chromium API (`tests/browser-companion-test.js`, node only — it
+is browser JavaScript). The pure modules are plain ES modules with no
+GNOME imports, so the runner uses `gjs -m` when available and falls back
+to `node` otherwise.
+
+The browser tab feature needs Tessera Companion loaded in the browser to
+see anything: register the relay from Preferences → Launcher → Browser
+Integration, then load `companion/` unpacked (or install it from the
+store once published). See [`BROWSER_TABS.md`](BROWSER_TABS.md).
 
 ## Why there's no automated test suite for the UI
 

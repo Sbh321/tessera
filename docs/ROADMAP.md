@@ -99,8 +99,12 @@ not planned.
   "Future work" section of [`LAUNCHER.md`](LAUNCHER.md), which explains
   why none of them need architectural changes):
   - More providers: recent files, git repositories, SSH hosts, browser
-    tabs and bookmarks, emoji, unit conversion, media/volume/brightness
-    controls, notifications.
+    bookmarks, emoji, unit conversion, media/volume/brightness
+    controls, notifications. (Browser *tabs* shipped — see
+    [`BROWSER_TABS.md`](BROWSER_TABS.md). Remaining: publishing Tessera
+    Companion to the Chrome Web Store, which turns the unpacked-load
+    step into one click; and further companion modules, such as a home
+    screen, which are folders under `companion/modules/`.)
   - Currency conversion, which needs network I/O and therefore an
     out-of-process helper rather than work in the compositor — the
     asynchronous provider seam already exists and is unused.
