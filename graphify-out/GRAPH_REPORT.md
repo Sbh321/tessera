@@ -6,12 +6,12 @@
 - Unclassified: 9 file(s) not represented in the graph (top: (none) 7, .xml 1, .css 1)
 
 ## Summary
-- 1211 nodes · 2180 edges · 79 communities (52 shown, 26 thin omitted)
+- 1211 nodes · 2177 edges · 80 communities (52 shown, 27 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 32 edges (avg confidence: 0.89)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `fd5139d3`
+- Built from commit: `9b79f62c`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -41,7 +41,7 @@
 - Reconciled Layout Tree
 - What You Must Do When Invoked
 - Tessera Tiling Workspace Manager
-- paletteProvider.js
+- PaletteProvider
 - graphify reference: extra exports and benchmark
 - Semantic Extraction Contract
 - Existing Graph Query Workflow
@@ -92,20 +92,21 @@
 - AppProvider
 - BrowserBridge
 - browser-tab-store-test.js
-- SettingsProvider
+- BrowserTabsProvider
 - normalizeTab
+- paletteProvider.js
 
 ## God Nodes (most connected - your core abstractions)
 1. `SettingsManager` - 70 edges
 2. `TilingManager` - 40 edges
-3. `SearchProvider` - 35 edges
+3. `SearchProvider` - 32 edges
 4. `BrowserTabStore` - 30 edges
 5. `ClipboardProvider` - 23 edges
 6. `LauncherTheme` - 22 edges
-7. `KeybindingManager` - 20 edges
-8. `BrowserTabService` - 20 edges
-9. `SearchController` - 20 edges
-10. `ActionRegistry` - 19 edges
+7. `BrowserTabService` - 20 edges
+8. `SearchController` - 20 edges
+9. `KeybindingManager` - 20 edges
+10. `PanelAutoHideManager` - 19 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `Native Unified Launcher` --semantically_similar_to--> `Tessera Launcher Design`  [INFERRED] [semantically similar]
@@ -130,7 +131,7 @@
 - **Project Graphify Guidance** — _claude_claude_graphify_directive, _claude_skills_graphify_skill_graphify_skill, _codex_skills_graphify_skill_graphify_skill, agents_graphify_project_policy [INFERRED 0.85]
 - **Public GNOME Integration Principle** — readme_public_gnome_integration, docs_architecture_public_api_cooperation, docs_gnome_notes_verified_public_tiling_apis, docs_gnome_notes_verified_launcher_apis [INFERRED 0.95]
 
-## Communities (79 total, 26 thin omitted)
+## Communities (80 total, 27 thin omitted)
 
 ### Community 0 - "constants.js"
 Cohesion: 0.12
@@ -178,11 +179,11 @@ Nodes (15): BrowserTabService, defaultSuffixes(), shellKey(), windowClass(), Bin
 
 ### Community 17 - "._activate"
 Cohesion: 0.08
-Nodes (5): BrowserTabsProvider, hostOf(), CommandProvider, ExtensionProvider, LauncherManager
+Nodes (4): CommandProvider, ExtensionProvider, LauncherManager, SettingsProvider
 
 ### Community 18 - "fuzzyMatcher.js"
-Cohesion: 0.14
-Nodes (17): MOVE_WORDS, WORKSPACE_WORDS, TERMINAL_APP_IDS, anchoredSubsequence(), boundedEditDistance(), fieldAllowed(), highlightTarget(), isPrimary() (+9 more)
+Cohesion: 0.20
+Nodes (14): anchoredSubsequence(), boundedEditDistance(), fieldAllowed(), highlightTarget(), isPrimary(), matchAcronym(), matchFields(), matchSubsequence() (+6 more)
 
 ### Community 19 - "Tessera Architecture"
 Cohesion: 0.33
@@ -207,10 +208,6 @@ Nodes (24): For /graphify add and --watch, For /graphify query, For the commit h
 ### Community 24 - "Tessera Tiling Workspace Manager"
 Cohesion: 0.17
 Nodes (12): Exact Disable Restoration, Cooperate with GNOME Public APIs, Launcher Action Catalogue, Captured Target Window, Lazy Launcher Lifecycle, Shell-Free Command Execution, GNOME-Owned Behavior Out of Scope, Native Unified Launcher (+4 more)
-
-### Community 25 - "paletteProvider.js"
-Cohesion: 0.21
-Nodes (6): PALETTE_COMMANDS_SECTION, PALETTE_FILTERS_SECTION, PROVIDER_FALLBACK_ICON, sectionIconName(), hostOf(), PaletteProvider
 
 ### Community 26 - "graphify reference: extra exports and benchmark"
 Cohesion: 0.22
@@ -265,8 +262,8 @@ Cohesion: 0.50
 Nodes (4): Defensive Private API Reach, Absolute Swipe Progress Mapping, Native Workspace Dot Sources, Numbered Workspace Indicator
 
 ### Community 39 - "launcher.js"
-Cohesion: 0.30
-Nodes (6): SECRET_MIME_TYPES, ProviderId, APPEARANCE_KEYS, ActivationMode, createResult(), collapseWhitespace()
+Cohesion: 0.21
+Nodes (9): MOVE_WORDS, WORKSPACE_WORDS, TERMINAL_APP_IDS, SECRET_MIME_TYPES, ProviderId, APPEARANCE_KEYS, ActivationMode, createResult() (+1 more)
 
 ### Community 40 - "Graphify Integration Instructions"
 Cohesion: 0.67
@@ -321,8 +318,8 @@ Cohesion: 0.11
 Nodes (18): background, service_worker, type, description, icons, 128, 16, 32 (+10 more)
 
 ### Community 70 - "launcher/utils.js"
-Cohesion: 0.11
-Nodes (11): urlContainsEveryTerm(), FavoritesManager, ResultRow, parseQuery(), clamp(), ellipsize(), escapeMarkup(), foldChar() (+3 more)
+Cohesion: 0.12
+Nodes (10): urlContainsEveryTerm(), FavoritesManager, ResultRow, clamp(), ellipsize(), escapeMarkup(), foldChar(), markupWithHighlights() (+2 more)
 
 ### Community 72 - "options.js"
 Cohesion: 0.28
@@ -340,20 +337,24 @@ Nodes (7): SessionState, check(), equal(), hello(), readyStore(), tab(), window(
 Cohesion: 0.35
 Nodes (6): boundedString(), normalizeTab(), normalizeWindow(), validIntegerId(), validSequence(), event()
 
+### Community 79 - "paletteProvider.js"
+Cohesion: 0.53
+Nodes (4): PALETTE_COMMANDS_SECTION, PALETTE_FILTERS_SECTION, PROVIDER_FALLBACK_ICON, sectionIconName()
+
 ## Knowledge Gaps
 - **234 isolated node(s):** `IMPLEMENTATIONS`, `manifest_version`, `name`, `version`, `description` (+229 more)
   These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 481 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **26 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **27 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `SettingsManager` connect `SettingsManager` to `extension.js`, `._pushHistory`?**
-  _High betweenness centrality (0.072) - this node is a cross-community bridge._
+  _High betweenness centrality (0.055) - this node is a cross-community bridge._
 - **Why does `TilingManager` connect `TilingManager` to `extension.js`?**
-  _High betweenness centrality (0.059) - this node is a cross-community bridge._
-- **Why does `SearchProvider` connect `SearchProvider` to `ActionProvider`, `launcher.js`, `calculatorEngine.js`, `ClipboardProvider`, `AppProvider`, `WindowProvider`, `SettingsProvider`, `._activate`, `fuzzyMatcher.js`, `paletteProvider.js`?**
-  _High betweenness centrality (0.042) - this node is a cross-community bridge._
+  _High betweenness centrality (0.043) - this node is a cross-community bridge._
+- **Why does `BrowserBridge` connect `BrowserBridge` to `BrowserTabStore`, `native-host-test.js`, `protocol.js`, `BrowserTabService`, `browser-bridge-test.js`?**
+  _High betweenness centrality (0.033) - this node is a cross-community bridge._
 - **What connects `IMPLEMENTATIONS`, `manifest_version`, `name` to the rest of the system?**
   _234 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `constants.js` be split into smaller, more focused modules?**

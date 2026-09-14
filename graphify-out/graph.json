@@ -183,19 +183,6 @@
       "source_location": "L109"
     },
     {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider",
-      "label": "BrowserTabsProvider",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": "browsertabsprovider",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L46"
-    },
-    {
       "id": "lib_launcher_commandprovider_commandprovider",
       "label": "CommandProvider",
       "_callable": true,
@@ -235,6 +222,19 @@
       "source_location": "L66"
     },
     {
+      "id": "lib_launcher_settingsprovider_settingsprovider",
+      "label": "SettingsProvider",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": "settingsprovider",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L36"
+    },
+    {
       "id": "lib_settingsmanager_settingsmanager",
       "label": "SettingsManager",
       "_callable": true,
@@ -254,7 +254,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "paletteProvider.js",
+      "community_name": "PaletteProvider",
       "file_type": "code",
       "norm_label": "paletteprovider",
       "source_file": "lib/launcher/paletteProvider.js",
@@ -599,17 +599,17 @@
       "source_location": "L41"
     },
     {
-      "id": "lib_launcher_settingsprovider_settingsprovider",
-      "label": "SettingsProvider",
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider",
+      "label": "BrowserTabsProvider",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "community": 77,
-      "community_name": "SettingsProvider",
+      "community_name": "BrowserTabsProvider",
       "file_type": "code",
-      "norm_label": "settingsprovider",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L36"
+      "norm_label": "browsertabsprovider",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L46"
     },
     {
       "id": "lib_keybindingmanager_keybindingmanager",
@@ -756,6 +756,18 @@
       "norm_label": "section()",
       "source_file": "tests/launcher-engine-test.js",
       "source_location": "L49"
+    },
+    {
+      "id": "lib_launcher_searchcontroller_parsequery",
+      "label": "parseQuery()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "SearchController",
+      "file_type": "code",
+      "norm_label": "parsequery()",
+      "source_file": "lib/launcher/searchController.js",
+      "source_location": "L22"
     },
     {
       "id": "lib_launcher_searchcontroller_searchcontroller_activate",
@@ -2318,138 +2330,6 @@
       "source_location": "L36"
     },
     {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_browsecount",
-      "label": ".browseCount()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": ".browsecount()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L89"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_browseresults",
-      "label": ".browseResults()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": ".browseresults()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L84"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_childresults",
-      "label": ".childResults()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": ".childresults()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L102"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_childsubtitle",
-      "label": "._childSubtitle()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": "._childsubtitle()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L159"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_constructor",
-      "label": ".constructor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": ".constructor()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L51"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_enabled",
-      "label": ".enabled()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": ".enabled()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L56"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_query",
-      "label": ".query()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": ".query()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L60"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_subtitle",
-      "label": "._subtitle()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": "._subtitle()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L152"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_tabresult",
-      "label": ".tabResult()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": ".tabresult()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L113"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_title",
-      "label": "._title()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": "._title()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L148"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_hostof",
-      "label": "hostOf()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": "hostof()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L170"
-    },
-    {
       "id": "lib_launcher_commandprovider_commandprovider_constructor",
       "label": ".constructor()",
       "_callable": true,
@@ -2748,6 +2628,126 @@
       "norm_label": ".toggle()",
       "source_file": "lib/launcher/launcher.js",
       "source_location": "L140"
+    },
+    {
+      "id": "lib_launcher_settingsprovider_settingsprovider_browsecount",
+      "label": ".browseCount()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".browsecount()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L83"
+    },
+    {
+      "id": "lib_launcher_settingsprovider_settingsprovider_browseresults",
+      "label": ".browseResults()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".browseresults()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L76"
+    },
+    {
+      "id": "lib_launcher_settingsprovider_settingsprovider_constructor",
+      "label": ".constructor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".constructor()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L37"
+    },
+    {
+      "id": "lib_launcher_settingsprovider_settingsprovider_disable",
+      "label": ".disable()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".disable()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L51"
+    },
+    {
+      "id": "lib_launcher_settingsprovider_settingsprovider_enable",
+      "label": ".enable()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".enable()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L44"
+    },
+    {
+      "id": "lib_launcher_settingsprovider_settingsprovider_ensureentries",
+      "label": "._ensureEntries()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": "._ensureentries()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L110"
+    },
+    {
+      "id": "lib_launcher_settingsprovider_settingsprovider_entryresult",
+      "label": "._entryResult()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": "._entryresult()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L92"
+    },
+    {
+      "id": "lib_launcher_settingsprovider_settingsprovider_query",
+      "label": ".query()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".query()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L63"
+    },
+    {
+      "id": "lib_launcher_settingsprovider_settingsprovider_resultforkey",
+      "label": ".resultForKey()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".resultforkey()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L87"
+    },
+    {
+      "id": "lib_launcher_settingsprovider_settingsprovider_warmup",
+      "label": ".warmUp()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".warmup()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L59"
     },
     {
       "id": "lib_launcher_fuzzymatcher_anchoredsubsequence",
@@ -3686,24 +3686,12 @@
       "source_location": "L291"
     },
     {
-      "id": "lib_launcher_iconprovider_sectioniconname",
-      "label": "sectionIconName()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "paletteProvider.js",
-      "file_type": "code",
-      "norm_label": "sectioniconname()",
-      "source_file": "lib/launcher/iconProvider.js",
-      "source_location": "L39"
-    },
-    {
       "id": "lib_launcher_paletteprovider_hostof",
       "label": "hostOf()",
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "paletteProvider.js",
+      "community_name": "PaletteProvider",
       "file_type": "code",
       "norm_label": "hostof()",
       "source_file": "lib/launcher/paletteProvider.js",
@@ -3715,7 +3703,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "paletteProvider.js",
+      "community_name": "PaletteProvider",
       "file_type": "code",
       "norm_label": "._commandentries()",
       "source_file": "lib/launcher/paletteProvider.js",
@@ -3727,7 +3715,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "paletteProvider.js",
+      "community_name": "PaletteProvider",
       "file_type": "code",
       "norm_label": "._commandresult()",
       "source_file": "lib/launcher/paletteProvider.js",
@@ -3739,7 +3727,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "paletteProvider.js",
+      "community_name": "PaletteProvider",
       "file_type": "code",
       "norm_label": ".constructor()",
       "source_file": "lib/launcher/paletteProvider.js",
@@ -3751,7 +3739,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "paletteProvider.js",
+      "community_name": "PaletteProvider",
       "file_type": "code",
       "norm_label": "._filterentries()",
       "source_file": "lib/launcher/paletteProvider.js",
@@ -3763,7 +3751,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "paletteProvider.js",
+      "community_name": "PaletteProvider",
       "file_type": "code",
       "norm_label": "._filterresult()",
       "source_file": "lib/launcher/paletteProvider.js",
@@ -3775,7 +3763,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "paletteProvider.js",
+      "community_name": "PaletteProvider",
       "file_type": "code",
       "norm_label": "._filtertitles()",
       "source_file": "lib/launcher/paletteProvider.js",
@@ -3787,7 +3775,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "paletteProvider.js",
+      "community_name": "PaletteProvider",
       "file_type": "code",
       "norm_label": "._matchentry()",
       "source_file": "lib/launcher/paletteProvider.js",
@@ -3799,7 +3787,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "paletteProvider.js",
+      "community_name": "PaletteProvider",
       "file_type": "code",
       "norm_label": "._opentemplate()",
       "source_file": "lib/launcher/paletteProvider.js",
@@ -3811,7 +3799,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 25,
-      "community_name": "paletteProvider.js",
+      "community_name": "PaletteProvider",
       "file_type": "code",
       "norm_label": ".query()",
       "source_file": "lib/launcher/paletteProvider.js",
@@ -7082,18 +7070,6 @@
       "source_location": "L176"
     },
     {
-      "id": "lib_launcher_searchcontroller_parsequery",
-      "label": "parseQuery()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 70,
-      "community_name": "launcher/utils.js",
-      "file_type": "code",
-      "norm_label": "parsequery()",
-      "source_file": "lib/launcher/searchController.js",
-      "source_location": "L22"
-    },
-    {
       "id": "lib_launcher_utils_clamp",
       "label": "clamp()",
       "_callable": true,
@@ -7922,124 +7898,136 @@
       "source_location": "L54"
     },
     {
-      "id": "lib_launcher_settingsprovider_settingsprovider_browsecount",
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_browsecount",
       "label": ".browseCount()",
       "_callable": true,
       "_origin": "ast",
       "community": 77,
-      "community_name": "SettingsProvider",
+      "community_name": "BrowserTabsProvider",
       "file_type": "code",
       "norm_label": ".browsecount()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L83"
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L89"
     },
     {
-      "id": "lib_launcher_settingsprovider_settingsprovider_browseresults",
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_browseresults",
       "label": ".browseResults()",
       "_callable": true,
       "_origin": "ast",
       "community": 77,
-      "community_name": "SettingsProvider",
+      "community_name": "BrowserTabsProvider",
       "file_type": "code",
       "norm_label": ".browseresults()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L76"
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L84"
     },
     {
-      "id": "lib_launcher_settingsprovider_settingsprovider_constructor",
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_childresults",
+      "label": ".childResults()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "BrowserTabsProvider",
+      "file_type": "code",
+      "norm_label": ".childresults()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L102"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_childsubtitle",
+      "label": "._childSubtitle()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "BrowserTabsProvider",
+      "file_type": "code",
+      "norm_label": "._childsubtitle()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L159"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_constructor",
       "label": ".constructor()",
       "_callable": true,
       "_origin": "ast",
       "community": 77,
-      "community_name": "SettingsProvider",
+      "community_name": "BrowserTabsProvider",
       "file_type": "code",
       "norm_label": ".constructor()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L37"
-    },
-    {
-      "id": "lib_launcher_settingsprovider_settingsprovider_disable",
-      "label": ".disable()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 77,
-      "community_name": "SettingsProvider",
-      "file_type": "code",
-      "norm_label": ".disable()",
-      "source_file": "lib/launcher/settingsProvider.js",
+      "source_file": "lib/launcher/browserTabsProvider.js",
       "source_location": "L51"
     },
     {
-      "id": "lib_launcher_settingsprovider_settingsprovider_enable",
-      "label": ".enable()",
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_enabled",
+      "label": ".enabled()",
       "_callable": true,
       "_origin": "ast",
       "community": 77,
-      "community_name": "SettingsProvider",
+      "community_name": "BrowserTabsProvider",
       "file_type": "code",
-      "norm_label": ".enable()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L44"
+      "norm_label": ".enabled()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L56"
     },
     {
-      "id": "lib_launcher_settingsprovider_settingsprovider_ensureentries",
-      "label": "._ensureEntries()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 77,
-      "community_name": "SettingsProvider",
-      "file_type": "code",
-      "norm_label": "._ensureentries()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L110"
-    },
-    {
-      "id": "lib_launcher_settingsprovider_settingsprovider_entryresult",
-      "label": "._entryResult()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 77,
-      "community_name": "SettingsProvider",
-      "file_type": "code",
-      "norm_label": "._entryresult()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L92"
-    },
-    {
-      "id": "lib_launcher_settingsprovider_settingsprovider_query",
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_query",
       "label": ".query()",
       "_callable": true,
       "_origin": "ast",
       "community": 77,
-      "community_name": "SettingsProvider",
+      "community_name": "BrowserTabsProvider",
       "file_type": "code",
       "norm_label": ".query()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L63"
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L60"
     },
     {
-      "id": "lib_launcher_settingsprovider_settingsprovider_resultforkey",
-      "label": ".resultForKey()",
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_subtitle",
+      "label": "._subtitle()",
       "_callable": true,
       "_origin": "ast",
       "community": 77,
-      "community_name": "SettingsProvider",
+      "community_name": "BrowserTabsProvider",
       "file_type": "code",
-      "norm_label": ".resultforkey()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L87"
+      "norm_label": "._subtitle()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L152"
     },
     {
-      "id": "lib_launcher_settingsprovider_settingsprovider_warmup",
-      "label": ".warmUp()",
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_tabresult",
+      "label": ".tabResult()",
       "_callable": true,
       "_origin": "ast",
       "community": 77,
-      "community_name": "SettingsProvider",
+      "community_name": "BrowserTabsProvider",
       "file_type": "code",
-      "norm_label": ".warmup()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L59"
+      "norm_label": ".tabresult()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L113"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_title",
+      "label": "._title()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "BrowserTabsProvider",
+      "file_type": "code",
+      "norm_label": "._title()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L148"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_hostof",
+      "label": "hostOf()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "BrowserTabsProvider",
+      "file_type": "code",
+      "norm_label": "hostof()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L170"
     },
     {
       "id": "companion_modules_tabs_protocol_boundedstring",
@@ -8172,6 +8160,18 @@
       "norm_label": "event()",
       "source_file": "tests/browser-tab-store-test.js",
       "source_location": "L71"
+    },
+    {
+      "id": "lib_launcher_iconprovider_sectioniconname",
+      "label": "sectionIconName()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 79,
+      "community_name": "paletteProvider.js",
+      "file_type": "code",
+      "norm_label": "sectioniconname()",
+      "source_file": "lib/launcher/iconProvider.js",
+      "source_location": "L39"
     },
     {
       "id": "lib_keybindingmanager_keybindingmanager_addkeybinding",
@@ -9421,61 +9421,6 @@
       "source_location": "L34"
     },
     {
-      "id": "lib_launcher_actionprovider",
-      "label": "actionProvider.js",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "fuzzyMatcher.js",
-      "file_type": "code",
-      "norm_label": "actionprovider.js",
-      "source_file": "lib/launcher/actionProvider.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "lib_launcher_actionprovider_move_words",
-      "label": "MOVE_WORDS",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "fuzzyMatcher.js",
-      "file_type": "code",
-      "norm_label": "move_words",
-      "source_file": "lib/launcher/actionProvider.js",
-      "source_location": "L24"
-    },
-    {
-      "id": "lib_launcher_actionprovider_workspace_words",
-      "label": "WORKSPACE_WORDS",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "fuzzyMatcher.js",
-      "file_type": "code",
-      "norm_label": "workspace_words",
-      "source_file": "lib/launcher/actionProvider.js",
-      "source_location": "L23"
-    },
-    {
-      "id": "lib_launcher_actionregistry",
-      "label": "actionRegistry.js",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "fuzzyMatcher.js",
-      "file_type": "code",
-      "norm_label": "actionregistry.js",
-      "source_file": "lib/launcher/actionRegistry.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "lib_launcher_actionregistry_terminal_app_ids",
-      "label": "TERMINAL_APP_IDS",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "fuzzyMatcher.js",
-      "file_type": "code",
-      "norm_label": "terminal_app_ids",
-      "source_file": "lib/launcher/actionRegistry.js",
-      "source_location": "L16"
-    },
-    {
       "id": "lib_launcher_fuzzymatcher",
       "label": "fuzzyMatcher.js",
       "_origin": "ast",
@@ -9825,61 +9770,6 @@
       "source_location": "L49"
     },
     {
-      "id": "lib_launcher_constants_palette_commands_section",
-      "label": "PALETTE_COMMANDS_SECTION",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "paletteProvider.js",
-      "file_type": "code",
-      "norm_label": "palette_commands_section",
-      "source_file": "lib/launcher/constants.js",
-      "source_location": "L48"
-    },
-    {
-      "id": "lib_launcher_constants_palette_filters_section",
-      "label": "PALETTE_FILTERS_SECTION",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "paletteProvider.js",
-      "file_type": "code",
-      "norm_label": "palette_filters_section",
-      "source_file": "lib/launcher/constants.js",
-      "source_location": "L47"
-    },
-    {
-      "id": "lib_launcher_iconprovider",
-      "label": "iconProvider.js",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "paletteProvider.js",
-      "file_type": "code",
-      "norm_label": "iconprovider.js",
-      "source_file": "lib/launcher/iconProvider.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "lib_launcher_iconprovider_provider_fallback_icon",
-      "label": "PROVIDER_FALLBACK_ICON",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "paletteProvider.js",
-      "file_type": "code",
-      "norm_label": "provider_fallback_icon",
-      "source_file": "lib/launcher/iconProvider.js",
-      "source_location": "L15"
-    },
-    {
-      "id": "lib_launcher_paletteprovider",
-      "label": "paletteProvider.js",
-      "_origin": "ast",
-      "community": 25,
-      "community_name": "paletteProvider.js",
-      "file_type": "code",
-      "norm_label": "paletteprovider.js",
-      "source_file": "lib/launcher/paletteProvider.js",
-      "source_location": "L1"
-    },
-    {
       "id": "agents_skills_graphify_references_exports",
       "label": "exports.md",
       "_origin": "ast",
@@ -10195,6 +10085,61 @@
       "file_type": "code",
       "norm_label": "gi://gio",
       "source_file": "gi://Gio"
+    },
+    {
+      "id": "lib_launcher_actionprovider",
+      "label": "actionProvider.js",
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": "actionprovider.js",
+      "source_file": "lib/launcher/actionProvider.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_launcher_actionprovider_move_words",
+      "label": "MOVE_WORDS",
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": "move_words",
+      "source_file": "lib/launcher/actionProvider.js",
+      "source_location": "L24"
+    },
+    {
+      "id": "lib_launcher_actionprovider_workspace_words",
+      "label": "WORKSPACE_WORDS",
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": "workspace_words",
+      "source_file": "lib/launcher/actionProvider.js",
+      "source_location": "L23"
+    },
+    {
+      "id": "lib_launcher_actionregistry",
+      "label": "actionRegistry.js",
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": "actionregistry.js",
+      "source_file": "lib/launcher/actionRegistry.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_launcher_actionregistry_terminal_app_ids",
+      "label": "TERMINAL_APP_IDS",
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": "terminal_app_ids",
+      "source_file": "lib/launcher/actionRegistry.js",
+      "source_location": "L16"
     },
     {
       "id": "lib_launcher_appprovider",
@@ -12572,6 +12517,61 @@
       "file_type": "code",
       "norm_label": "browser-tab-store-test.js",
       "source_file": "tests/browser-tab-store-test.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_launcher_constants_palette_commands_section",
+      "label": "PALETTE_COMMANDS_SECTION",
+      "_origin": "ast",
+      "community": 79,
+      "community_name": "paletteProvider.js",
+      "file_type": "code",
+      "norm_label": "palette_commands_section",
+      "source_file": "lib/launcher/constants.js",
+      "source_location": "L48"
+    },
+    {
+      "id": "lib_launcher_constants_palette_filters_section",
+      "label": "PALETTE_FILTERS_SECTION",
+      "_origin": "ast",
+      "community": 79,
+      "community_name": "paletteProvider.js",
+      "file_type": "code",
+      "norm_label": "palette_filters_section",
+      "source_file": "lib/launcher/constants.js",
+      "source_location": "L47"
+    },
+    {
+      "id": "lib_launcher_iconprovider",
+      "label": "iconProvider.js",
+      "_origin": "ast",
+      "community": 79,
+      "community_name": "paletteProvider.js",
+      "file_type": "code",
+      "norm_label": "iconprovider.js",
+      "source_file": "lib/launcher/iconProvider.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_launcher_iconprovider_provider_fallback_icon",
+      "label": "PROVIDER_FALLBACK_ICON",
+      "_origin": "ast",
+      "community": 79,
+      "community_name": "paletteProvider.js",
+      "file_type": "code",
+      "norm_label": "provider_fallback_icon",
+      "source_file": "lib/launcher/iconProvider.js",
+      "source_location": "L15"
+    },
+    {
+      "id": "lib_launcher_paletteprovider",
+      "label": "paletteProvider.js",
+      "_origin": "ast",
+      "community": 79,
+      "community_name": "paletteProvider.js",
+      "file_type": "code",
+      "norm_label": "paletteprovider.js",
+      "source_file": "lib/launcher/paletteProvider.js",
       "source_location": "L1"
     },
     {
@@ -26916,18 +26916,6 @@
       "weight": 1.0
     },
     {
-      "source": "lib_launcher_browsertabsprovider_browsertabsprovider",
-      "target": "lib_launcher_searchprovider_searchprovider",
-      "relation": "inherits",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "type",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L46",
-      "weight": 1.0
-    },
-    {
       "source": "lib_launcher_calculatorprovider_calculatorprovider",
       "target": "lib_launcher_searchprovider_searchprovider",
       "relation": "inherits",
@@ -26976,18 +26964,6 @@
       "weight": 1.0
     },
     {
-      "source": "lib_launcher_paletteprovider_paletteprovider",
-      "target": "lib_launcher_searchprovider_searchprovider",
-      "relation": "inherits",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "type",
-      "source_file": "lib/launcher/paletteProvider.js",
-      "source_location": "L55",
-      "weight": 1.0
-    },
-    {
       "source": "lib_launcher_recentprovider_recentprovider",
       "target": "lib_launcher_searchprovider_searchprovider",
       "relation": "inherits",
@@ -27009,18 +26985,6 @@
       "context": "type",
       "source_file": "lib/launcher/settingsProvider.js",
       "source_location": "L36",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_windowprovider_windowprovider",
-      "target": "lib_launcher_searchprovider_searchprovider",
-      "relation": "inherits",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "type",
-      "source_file": "lib/launcher/windowProvider.js",
-      "source_location": "L49",
       "weight": 1.0
     },
     {
@@ -40005,5 +39969,5 @@
       "source_file": "docs/ARCHITECTURE.md"
     }
   ],
-  "built_at_commit": "fd5139d363adfabf2ccfc4cf8efee66b6777c22b"
+  "built_at_commit": "9b79f62c54cc93a45412877215c08b94f7ef705b"
 }
