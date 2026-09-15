@@ -393,3 +393,9 @@
 .tessera-launcher-icon-button {
     transition-duration: 100ms;
 }
+
+/* The in-card toast (lib/launcher/toast.js); colours are inline. */
+.tessera-launcher-toast {
+    spacing: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}

@@ -38,6 +38,7 @@ lib/launcher/
     launcherUI.js          The result list (pooled rows). Draws only.
     scopeBar.js            The filter chips. Presentational only.
     launcherPopup.js       The card, the modal grab, the animations.
+    toast.js               The in-card confirmation ("Added to Favorites").
     theme.js               Settings + GNOME theme -> concrete CSS.
     iconProvider.js        Result -> Gio.Icon, with fallbacks.
     historyManager.js      Frecency store (what you launch).
@@ -797,6 +798,15 @@ Behaviour that belongs to the window itself rather than to searching:
 - **Mutating the list keeps your place.** Pinning, reordering or removing
   an entry re-runs the search and restores the selected index, instead of
   throwing the cursor back to the top.
+- **Actions that keep the launcher open confirm themselves with a
+  toast** — a small pill floating over the list just above the footer,
+  "Added to Favorites" / "Removed from Favorites" for `Ctrl+D`, gone
+  after a second and a half. In-card rather than a system notification
+  because the launcher is modal: a tray banner would land behind the
+  backdrop or after the popup closed. `toast.js` is one reusable actor
+  per popup, offered to every provider as `context.toast(text,
+  {iconName})`; showing while one is up replaces its text and restarts
+  the hold. It honours reduced motion.
 
 ---
 

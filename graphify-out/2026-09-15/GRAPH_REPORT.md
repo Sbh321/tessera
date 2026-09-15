@@ -1,17 +1,17 @@
 # Graph Report - tessera  (2026-09-15)
 
 ## Corpus Check
-- 118 files · ~165,323 words
+- 119 files · ~166,254 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 9 file(s) not represented in the graph (top: (none) 7, .xml 1, .css 1)
 
 ## Summary
-- 1236 nodes · 2216 edges · 78 communities (53 shown, 24 thin omitted)
+- 1239 nodes · 2221 edges · 77 communities (52 shown, 24 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 32 edges (avg confidence: 0.89)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `ac8b4e9b`
+- Built from commit: `149cb2df`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -69,7 +69,7 @@
 - install.sh
 - run-tests.sh
 - schema-validate.sh
-- SearchProvider
+- RecentProvider
 - graphify reference: query, path, explain
 - graphify reference: add a URL and watch a folder
 - graphify reference: commit hook and native CLAUDE.md integration
@@ -85,8 +85,7 @@
 - browserIntegration.js
 - BrowserTabsProvider
 - manifest.json
-- launcher/utils.js
-- WindowProvider
+- SettingsProvider
 - FavoritesManager
 - native-host-test.js
 - AppProvider
@@ -100,7 +99,7 @@
 3. `SearchProvider` - 35 edges
 4. `BrowserTabStore` - 30 edges
 5. `ClipboardProvider` - 23 edges
-6. `LauncherTheme` - 22 edges
+6. `LauncherTheme` - 23 edges
 7. `KeybindingManager` - 20 edges
 8. `BrowserTabService` - 20 edges
 9. `SearchController` - 20 edges
@@ -129,15 +128,15 @@
 - **Project Graphify Guidance** — _claude_claude_graphify_directive, _claude_skills_graphify_skill_graphify_skill, _codex_skills_graphify_skill_graphify_skill, agents_graphify_project_policy [INFERRED 0.85]
 - **Public GNOME Integration Principle** — readme_public_gnome_integration, docs_architecture_public_api_cooperation, docs_gnome_notes_verified_public_tiling_apis, docs_gnome_notes_verified_launcher_apis [INFERRED 0.95]
 
-## Communities (78 total, 24 thin omitted)
+## Communities (77 total, 24 thin omitted)
 
 ### Community 0 - "constants.js"
-Cohesion: 0.13
-Nodes (25): BACKDROP_OPACITY, BLUR_BRIGHTNESS, BLUR_RADIUS, CLOSE_DURATION_MS, COMMAND_PREFIXES, FAVORITE_BOOST, FAVORITES_SECTION, FILTERABLE_SECTIONS (+17 more)
+Cohesion: 0.11
+Nodes (28): BACKDROP_OPACITY, BLUR_BRIGHTNESS, BLUR_RADIUS, CLOSE_DURATION_MS, COMMAND_PREFIXES, CURRENT_WORKSPACE_BOOST, FAVORITE_BOOST, FAVORITES_SECTION (+20 more)
 
 ### Community 1 - "launcher-engine-test.js"
-Cohesion: 0.12
-Nodes (17): FRECENCY_HALF_LIFE_MS, MAX_HISTORY_ENTRIES, decayFactor(), check(), cleared, equal(), favorites, fields (+9 more)
+Cohesion: 0.09
+Nodes (24): FRECENCY_HALF_LIFE_MS, MAX_HISTORY_ENTRIES, MatchTier, ResultRow, decayFactor(), escapeMarkup(), foldChar(), markupWithHighlights() (+16 more)
 
 ### Community 3 - "TilingManager"
 Cohesion: 0.08
@@ -181,11 +180,11 @@ Nodes (15): BrowserTabService, defaultSuffixes(), shellKey(), windowClass(), Bin
 
 ### Community 17 - "._activate"
 Cohesion: 0.08
-Nodes (4): CommandProvider, ExtensionProvider, LauncherManager, SettingsProvider
+Nodes (4): CommandProvider, ExtensionProvider, LauncherManager, WindowProvider
 
 ### Community 18 - "fuzzyMatcher.js"
-Cohesion: 0.20
-Nodes (14): anchoredSubsequence(), boundedEditDistance(), fieldAllowed(), highlightTarget(), isPrimary(), matchAcronym(), matchFields(), matchSubsequence() (+6 more)
+Cohesion: 0.14
+Nodes (17): MOVE_WORDS, parseWorkspaceCommand(), WORKSPACE_WORDS, TERMINAL_APP_IDS, anchoredSubsequence(), boundedEditDistance(), fieldAllowed(), highlightTarget() (+9 more)
 
 ### Community 19 - "Tessera Architecture"
 Cohesion: 0.33
@@ -268,8 +267,8 @@ Cohesion: 0.50
 Nodes (4): Defensive Private API Reach, Absolute Swipe Progress Mapping, Native Workspace Dot Sources, Numbered Workspace Indicator
 
 ### Community 39 - "launcher.js"
-Cohesion: 0.19
-Nodes (9): MOVE_WORDS, WORKSPACE_WORDS, TERMINAL_APP_IDS, SECRET_MIME_TYPES, ProviderId, APPEARANCE_KEYS, LauncherPopup, ActivationMode (+1 more)
+Cohesion: 0.16
+Nodes (7): SECRET_MIME_TYPES, ProviderId, APPEARANCE_KEYS, SearchProvider, ActivationMode, createResult(), collapseWhitespace()
 
 ### Community 40 - "Graphify Integration Instructions"
 Cohesion: 0.67
@@ -327,10 +326,6 @@ Nodes (3): BrowserTabsProvider, hostOf(), urlContainsEveryTerm()
 Cohesion: 0.11
 Nodes (18): background, service_worker, type, description, icons, 128, 16, 32 (+10 more)
 
-### Community 70 - "launcher/utils.js"
-Cohesion: 0.23
-Nodes (8): CURRENT_WORKSPACE_BOOST, ResultRow, collapseWhitespace(), escapeMarkup(), foldChar(), markupWithHighlights(), normalizeText(), WORD_SEPARATORS
-
 ### Community 73 - "native-host-test.js"
 Cohesion: 0.11
 Nodes (26): decodeLength(), decoder, encodeNativeMessage(), encoder, MAX_INCOMING_BYTES, MAX_OUTGOING_BYTES, parseMessage(), ProtocolError (+18 more)
@@ -352,16 +347,16 @@ Nodes (18): boundedString(), ICON_MIME_TYPES, MAX_ICON_BYTES, MAX_ICONS_PER_MESS
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `SettingsManager` connect `SettingsManager` to `extension.js`, `._pushHistory`?**
-  _High betweenness centrality (0.085) - this node is a cross-community bridge._
+  _High betweenness centrality (0.084) - this node is a cross-community bridge._
 - **Why does `SearchController` connect `SearchController` to `constants.js`, `._activate`, `launcher.js`?**
   _High betweenness centrality (0.048) - this node is a cross-community bridge._
 - **Why does `TilingManager` connect `TilingManager` to `extension.js`?**
-  _High betweenness centrality (0.039) - this node is a cross-community bridge._
+  _High betweenness centrality (0.038) - this node is a cross-community bridge._
 - **What connects `IMPLEMENTATIONS`, `manifest_version`, `name` to the rest of the system?**
   _239 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `constants.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.13118279569892474 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.10634920634920635 - nodes in this community are weakly interconnected._
 - **Should `launcher-engine-test.js` be split into smaller, more focused modules?**
-  _Cohesion score 0.11904761904761904 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08817204301075268 - nodes in this community are weakly interconnected._
 - **Should `SettingsManager` be split into smaller, more focused modules?**
   _Cohesion score 0.03076923076923077 - nodes in this community are weakly interconnected._

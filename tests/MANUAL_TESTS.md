@@ -350,6 +350,14 @@ window on its own workspace* ON; it is off by default.
       overlaps.
 - [ ] Dialogs (file choosers), splash screens, and utility windows float
       above the tiling and are never resized into the layout.
+- [ ] **Copying never disturbs the layout.** With two or more tiled
+      windows, run `echo hi | wl-copy` in a tiled terminal, and copy a
+      selection from a terminal AI harness (Claude Code, opencode) that
+      shells out to wl-copy: nothing flickers, no tile halves and
+      returns, no window changes size, the focus border stays on the
+      terminal, and with "open each new window on its own workspace" ON
+      the view does not switch workspace. Repeat with a maximized window
+      on the workspace: it stays maximized. `wl-paste` likewise.
 - [ ] Minimize a tiled window: its neighbors reclaim the space. Restore:
       it returns to the *exact slot* it left, even if other windows were
       focused in between.
@@ -1127,7 +1135,14 @@ section is for everything that needs a live shell.
       normally and never move the selection.
 - [ ] `Ctrl+Backspace` clears the whole query.
 - [ ] `Ctrl+D` pins the selected app; it appears under "Favorites" when
-      the search box is empty. `Ctrl+D` again unpins it.
+      the search box is empty. `Ctrl+D` again unpins it. Each press shows
+      a small dark toast over the list just above the footer — "Added to
+      Favorites" with a star, then "Removed from Favorites" — that fades
+      after about a second and a half; pressing again while it is up
+      just updates its text. The footer hint reads "Ctrl+D Add to
+      Favorites" / "Remove from Favorites" to match. Closing the launcher
+      while the toast is up leaves nothing behind. With GNOME's Reduce
+      Animations on, the toast appears and disappears without fading.
 - [ ] `Ctrl+Shift+Up`/`Down` reorders a pinned result in the Favorites
       section, and the order survives closing and reopening.
 - [ ] Uninstall a pinned app: the pin is silently skipped rather than

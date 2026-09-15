@@ -1094,3 +1094,19 @@ been stable since GNOME 45. To port:
 10. If GNOME ever exposes a public Shell-theme accent-color API, that
     would be a good replacement for the Yaru-only lookup in
     `lib/accentColor.js` — see `docs/ROADMAP.md`.
+
+## wl-clipboard maps a real toplevel on GNOME
+
+Mutter (through 46) implements neither `wlr-data-control` nor
+`ext-data-control`, so `wl-copy` and `wl-paste` fall back to their shell
+path: they map a 1×1 `xdg_toplevel` with WM class and title
+`wl-clipboard`, wait for keyboard focus, set or read the selection, and
+destroy the surface — the whole thing takes a few milliseconds. From the
+shell's side that is a `window-created` for a NORMAL, non-transient,
+taskbar-eligible window, immediately followed by focus, then `unmanaged`.
+Every gate that decides "is this a real app window" (tiling membership,
+opens-maximized undo, new-window-workspace, the focus border) has to
+exclude it explicitly; `lib/tiling/windowFilter.js` `isHelperSurface()`
+is the one place that knows. Anything that shells out to `wl-copy`
+(terminal AI harnesses auto-copying a selection, clipboard managers)
+triggers the same path.

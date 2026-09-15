@@ -558,9 +558,20 @@ and maximized windows ignore `move_resize_frame` anyway — but windows
 that *open* maximized are un-maximized within a short post-tracking grace
 period so they join the layout; on Wayland that state arrives after
 `window-created`, so a creation-time check alone misses nearly every
-real app — see GNOME_NOTES.md), and user-stickied windows. The transient
-cases (minimized, maximized) keep their leaf in the layout tree while
-floating, so they return to their exact slot. On top of all of those
+real app — see GNOME_NOTES.md), user-stickied windows, and **helper
+surfaces**: the momentary invisible toplevel a clipboard tool maps to
+take the selection. Mutter offers no data-control protocol, so on GNOME
+`wl-copy` (and anything that shells out to it — terminal AI harnesses
+copying a selection, for one) maps a 1×1 `wl-clipboard` window, grabs
+focus, sets the clipboard and destroys it, all within milliseconds.
+Treated as a real window that split the focused tile for a frame and
+put it back, un-maximized a maximized neighbour, could be carried off to
+a new workspace by the new-window feature and stole the focus border:
+"the app flickers or halves when I copy". `windowFilter.isHelperSurface`
+(matched by WM class/title, and as a fallback any NORMAL window 8 px or
+smaller once it has a size) is consulted by every one of those gates.
+The transient cases (minimized, maximized) keep their leaf in the layout
+tree while floating, so they return to their exact slot. On top of all of those
 identity/state rules there is one *explicit* user override — a window
 toggled to float with Shift+Super+V (see "Per-window floating" below) —
 which `windowFilter` treats as a non-member exactly like a dialog.

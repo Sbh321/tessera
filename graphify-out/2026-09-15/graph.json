@@ -92,6 +92,19 @@
   },
   "nodes": [
     {
+      "id": "lib_launcher_launcherui_resultrow",
+      "label": "ResultRow",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "launcher-engine-test.js",
+      "file_type": "code",
+      "norm_label": "resultrow",
+      "source_file": "lib/launcher/launcherUI.js",
+      "source_location": "L82"
+    },
+    {
       "id": "lib_launcher_searchcontroller_searchcontroller",
       "label": "SearchController",
       "_callable": true,
@@ -222,17 +235,17 @@
       "source_location": "L66"
     },
     {
-      "id": "lib_launcher_settingsprovider_settingsprovider",
-      "label": "SettingsProvider",
+      "id": "lib_launcher_windowprovider_windowprovider",
+      "label": "WindowProvider",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "community": 17,
       "community_name": "._activate",
       "file_type": "code",
-      "norm_label": "settingsprovider",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L36"
+      "norm_label": "windowprovider",
+      "source_file": "lib/launcher/windowProvider.js",
+      "source_location": "L49"
     },
     {
       "id": "lib_settingsmanager_settingsmanager",
@@ -285,6 +298,19 @@
       "norm_label": "tilingmanager",
       "source_file": "lib/tiling/tilingManager.js",
       "source_location": "L110"
+    },
+    {
+      "id": "lib_launcher_searchprovider_searchprovider",
+      "label": "SearchProvider",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": "searchprovider",
+      "source_file": "lib/launcher/searchProvider.js",
+      "source_location": "L34"
     },
     {
       "id": "extension_tesseraextension",
@@ -384,24 +410,11 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 54,
-      "community_name": "SearchProvider",
+      "community_name": "RecentProvider",
       "file_type": "code",
       "norm_label": "recentprovider",
       "source_file": "lib/launcher/recentProvider.js",
       "source_location": "L30"
-    },
-    {
-      "id": "lib_launcher_searchprovider_searchprovider",
-      "label": "SearchProvider",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 54,
-      "community_name": "SearchProvider",
-      "file_type": "code",
-      "norm_label": "searchprovider",
-      "source_file": "lib/launcher/searchProvider.js",
-      "source_location": "L34"
     },
     {
       "id": "lib_launcher_browsertabstore_browsertabstore",
@@ -534,30 +547,17 @@
       "source_location": "L24"
     },
     {
-      "id": "lib_launcher_launcherui_resultrow",
-      "label": "ResultRow",
+      "id": "lib_launcher_settingsprovider_settingsprovider",
+      "label": "SettingsProvider",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "community": 70,
-      "community_name": "launcher/utils.js",
+      "community_name": "SettingsProvider",
       "file_type": "code",
-      "norm_label": "resultrow",
-      "source_file": "lib/launcher/launcherUI.js",
-      "source_location": "L82"
-    },
-    {
-      "id": "lib_launcher_windowprovider_windowprovider",
-      "label": "WindowProvider",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 71,
-      "community_name": "WindowProvider",
-      "file_type": "code",
-      "norm_label": "windowprovider",
-      "source_file": "lib/launcher/windowProvider.js",
-      "source_location": "L49"
+      "norm_label": "settingsprovider",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L36"
     },
     {
       "id": "lib_launcher_favoritesmanager_favoritesmanager",
@@ -662,6 +662,18 @@
       "source_location": "L72"
     },
     {
+      "id": "lib_launcher_launcher_launchermanager_toggle",
+      "label": ".toggle()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "constants.js",
+      "file_type": "code",
+      "norm_label": ".toggle()",
+      "source_file": "lib/launcher/launcher.js",
+      "source_location": "L140"
+    },
+    {
       "id": "lib_launcher_launcherui_sectiontitle",
       "label": "sectionTitle()",
       "_callable": true,
@@ -674,6 +686,30 @@
       "source_location": "L39"
     },
     {
+      "id": "lib_launcher_launcherui_resultrow_constructor",
+      "label": ".constructor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "launcher-engine-test.js",
+      "file_type": "code",
+      "norm_label": ".constructor()",
+      "source_file": "lib/launcher/launcherUI.js",
+      "source_location": "L83"
+    },
+    {
+      "id": "lib_launcher_launcherui_resultrow_fill",
+      "label": ".fill()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "launcher-engine-test.js",
+      "file_type": "code",
+      "norm_label": ".fill()",
+      "source_file": "lib/launcher/launcherUI.js",
+      "source_location": "L176"
+    },
+    {
       "id": "lib_launcher_utils_decayfactor",
       "label": "decayFactor()",
       "_callable": true,
@@ -684,6 +720,54 @@
       "norm_label": "decayfactor()",
       "source_file": "lib/launcher/utils.js",
       "source_location": "L164"
+    },
+    {
+      "id": "lib_launcher_utils_escapemarkup",
+      "label": "escapeMarkup()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "launcher-engine-test.js",
+      "file_type": "code",
+      "norm_label": "escapemarkup()",
+      "source_file": "lib/launcher/utils.js",
+      "source_location": "L78"
+    },
+    {
+      "id": "lib_launcher_utils_foldchar",
+      "label": "foldChar()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "launcher-engine-test.js",
+      "file_type": "code",
+      "norm_label": "foldchar()",
+      "source_file": "lib/launcher/utils.js",
+      "source_location": "L25"
+    },
+    {
+      "id": "lib_launcher_utils_markupwithhighlights",
+      "label": "markupWithHighlights()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "launcher-engine-test.js",
+      "file_type": "code",
+      "norm_label": "markupwithhighlights()",
+      "source_file": "lib/launcher/utils.js",
+      "source_location": "L92"
+    },
+    {
+      "id": "lib_launcher_utils_normalizetext",
+      "label": "normalizeText()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "launcher-engine-test.js",
+      "file_type": "code",
+      "norm_label": "normalizetext()",
+      "source_file": "lib/launcher/utils.js",
+      "source_location": "L34"
     },
     {
       "id": "tests_launcher_engine_test_check",
@@ -2435,7 +2519,7 @@
       "file_type": "code",
       "norm_label": "._cancelwarmup()",
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L262"
+      "source_location": "L265"
     },
     {
       "id": "lib_launcher_launcher_launchermanager_close",
@@ -2459,7 +2543,7 @@
       "file_type": "code",
       "norm_label": "._deactivate()",
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L227"
+      "source_location": "L230"
     },
     {
       "id": "lib_launcher_launcher_launchermanager_disable",
@@ -2507,7 +2591,7 @@
       "file_type": "code",
       "norm_label": "._schedulewarmup()",
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L252"
+      "source_location": "L255"
     },
     {
       "id": "lib_launcher_launcher_launchermanager_syncenabled",
@@ -2522,7 +2606,19 @@
       "source_location": "L165"
     },
     {
-      "id": "lib_launcher_settingsprovider_settingsprovider_browsecount",
+      "id": "lib_launcher_windowprovider_windowprovider_activate",
+      "label": "._activate()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": "._activate()",
+      "source_file": "lib/launcher/windowProvider.js",
+      "source_location": "L229"
+    },
+    {
+      "id": "lib_launcher_windowprovider_windowprovider_browsecount",
       "label": ".browseCount()",
       "_callable": true,
       "_origin": "ast",
@@ -2530,11 +2626,11 @@
       "community_name": "._activate",
       "file_type": "code",
       "norm_label": ".browsecount()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L83"
+      "source_file": "lib/launcher/windowProvider.js",
+      "source_location": "L99"
     },
     {
-      "id": "lib_launcher_settingsprovider_settingsprovider_browseresults",
+      "id": "lib_launcher_windowprovider_windowprovider_browseresults",
       "label": ".browseResults()",
       "_callable": true,
       "_origin": "ast",
@@ -2542,11 +2638,11 @@
       "community_name": "._activate",
       "file_type": "code",
       "norm_label": ".browseresults()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L76"
+      "source_file": "lib/launcher/windowProvider.js",
+      "source_location": "L107"
     },
     {
-      "id": "lib_launcher_settingsprovider_settingsprovider_constructor",
+      "id": "lib_launcher_windowprovider_windowprovider_constructor",
       "label": ".constructor()",
       "_callable": true,
       "_origin": "ast",
@@ -2554,59 +2650,83 @@
       "community_name": "._activate",
       "file_type": "code",
       "norm_label": ".constructor()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L37"
+      "source_file": "lib/launcher/windowProvider.js",
+      "source_location": "L55"
     },
     {
-      "id": "lib_launcher_settingsprovider_settingsprovider_disable",
-      "label": ".disable()",
+      "id": "lib_launcher_windowprovider_windowprovider_defaultresults",
+      "label": ".defaultResults()",
       "_callable": true,
       "_origin": "ast",
       "community": 17,
       "community_name": "._activate",
       "file_type": "code",
-      "norm_label": ".disable()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L51"
+      "norm_label": ".defaultresults()",
+      "source_file": "lib/launcher/windowProvider.js",
+      "source_location": "L95"
     },
     {
-      "id": "lib_launcher_settingsprovider_settingsprovider_enable",
-      "label": ".enable()",
+      "id": "lib_launcher_windowprovider_windowprovider_describe",
+      "label": "._describe()",
       "_callable": true,
       "_origin": "ast",
       "community": 17,
       "community_name": "._activate",
       "file_type": "code",
-      "norm_label": ".enable()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L44"
+      "norm_label": "._describe()",
+      "source_file": "lib/launcher/windowProvider.js",
+      "source_location": "L208"
     },
     {
-      "id": "lib_launcher_settingsprovider_settingsprovider_ensureentries",
-      "label": "._ensureEntries()",
+      "id": "lib_launcher_windowprovider_windowprovider_describetabs",
+      "label": "._describeTabs()",
       "_callable": true,
       "_origin": "ast",
       "community": 17,
       "community_name": "._activate",
       "file_type": "code",
-      "norm_label": "._ensureentries()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L110"
+      "norm_label": "._describetabs()",
+      "source_file": "lib/launcher/windowProvider.js",
+      "source_location": "L128"
     },
     {
-      "id": "lib_launcher_settingsprovider_settingsprovider_entryresult",
-      "label": "._entryResult()",
+      "id": "lib_launcher_windowprovider_windowprovider_displaytitle",
+      "label": "._displayTitle()",
       "_callable": true,
       "_origin": "ast",
       "community": 17,
       "community_name": "._activate",
       "file_type": "code",
-      "norm_label": "._entryresult()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L92"
+      "norm_label": "._displaytitle()",
+      "source_file": "lib/launcher/windowProvider.js",
+      "source_location": "L147"
     },
     {
-      "id": "lib_launcher_settingsprovider_settingsprovider_query",
+      "id": "lib_launcher_windowprovider_windowprovider_enabled",
+      "label": ".enabled()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".enabled()",
+      "source_file": "lib/launcher/windowProvider.js",
+      "source_location": "L61"
+    },
+    {
+      "id": "lib_launcher_windowprovider_windowprovider_listresults",
+      "label": "._listResults()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": "._listresults()",
+      "source_file": "lib/launcher/windowProvider.js",
+      "source_location": "L113"
+    },
+    {
+      "id": "lib_launcher_windowprovider_windowprovider_query",
       "label": ".query()",
       "_callable": true,
       "_origin": "ast",
@@ -2614,32 +2734,44 @@
       "community_name": "._activate",
       "file_type": "code",
       "norm_label": ".query()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L63"
+      "source_file": "lib/launcher/windowProvider.js",
+      "source_location": "L65"
     },
     {
-      "id": "lib_launcher_settingsprovider_settingsprovider_resultforkey",
-      "label": ".resultForKey()",
+      "id": "lib_launcher_windowprovider_windowprovider_windowresult",
+      "label": "._windowResult()",
       "_callable": true,
       "_origin": "ast",
       "community": 17,
       "community_name": "._activate",
       "file_type": "code",
-      "norm_label": ".resultforkey()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L87"
+      "norm_label": "._windowresult()",
+      "source_file": "lib/launcher/windowProvider.js",
+      "source_location": "L160"
     },
     {
-      "id": "lib_launcher_settingsprovider_settingsprovider_warmup",
-      "label": ".warmUp()",
+      "id": "lib_launcher_windowprovider_windowprovider_windows",
+      "label": "._windows()",
       "_callable": true,
       "_origin": "ast",
       "community": 17,
       "community_name": "._activate",
       "file_type": "code",
-      "norm_label": ".warmup()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L59"
+      "norm_label": "._windows()",
+      "source_file": "lib/launcher/windowProvider.js",
+      "source_location": "L140"
+    },
+    {
+      "id": "lib_launcher_actionprovider_parseworkspacecommand",
+      "label": "parseWorkspaceCommand()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "fuzzyMatcher.js",
+      "file_type": "code",
+      "norm_label": "parseworkspacecommand()",
+      "source_file": "lib/launcher/actionProvider.js",
+      "source_location": "L40"
     },
     {
       "id": "lib_launcher_fuzzymatcher_anchoredsubsequence",
@@ -4826,16 +4958,136 @@
       "source_location": "L35"
     },
     {
-      "id": "lib_launcher_launcher_launchermanager_toggle",
-      "label": ".toggle()",
+      "id": "lib_launcher_searchprovider_searchprovider_browsecount",
+      "label": ".browseCount()",
       "_callable": true,
       "_origin": "ast",
       "community": 39,
       "community_name": "launcher.js",
       "file_type": "code",
-      "norm_label": ".toggle()",
-      "source_file": "lib/launcher/launcher.js",
-      "source_location": "L140"
+      "norm_label": ".browsecount()",
+      "source_file": "lib/launcher/searchProvider.js",
+      "source_location": "L117"
+    },
+    {
+      "id": "lib_launcher_searchprovider_searchprovider_browseresults",
+      "label": ".browseResults()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": ".browseresults()",
+      "source_file": "lib/launcher/searchProvider.js",
+      "source_location": "L102"
+    },
+    {
+      "id": "lib_launcher_searchprovider_searchprovider_constructor",
+      "label": ".constructor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": ".constructor()",
+      "source_file": "lib/launcher/searchProvider.js",
+      "source_location": "L41"
+    },
+    {
+      "id": "lib_launcher_searchprovider_searchprovider_createresult",
+      "label": ".createResult()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": ".createresult()",
+      "source_file": "lib/launcher/searchProvider.js",
+      "source_location": "L155"
+    },
+    {
+      "id": "lib_launcher_searchprovider_searchprovider_defaultresults",
+      "label": ".defaultResults()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": ".defaultresults()",
+      "source_file": "lib/launcher/searchProvider.js",
+      "source_location": "L78"
+    },
+    {
+      "id": "lib_launcher_searchprovider_searchprovider_disable",
+      "label": ".disable()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": ".disable()",
+      "source_file": "lib/launcher/searchProvider.js",
+      "source_location": "L60"
+    },
+    {
+      "id": "lib_launcher_searchprovider_searchprovider_enable",
+      "label": ".enable()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": ".enable()",
+      "source_file": "lib/launcher/searchProvider.js",
+      "source_location": "L56"
+    },
+    {
+      "id": "lib_launcher_searchprovider_searchprovider_enabled",
+      "label": ".enabled()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": ".enabled()",
+      "source_file": "lib/launcher/searchProvider.js",
+      "source_location": "L47"
+    },
+    {
+      "id": "lib_launcher_searchprovider_searchprovider_query",
+      "label": ".query()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": ".query()",
+      "source_file": "lib/launcher/searchProvider.js",
+      "source_location": "L67"
+    },
+    {
+      "id": "lib_launcher_searchprovider_searchprovider_resultforkey",
+      "label": ".resultForKey()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": ".resultforkey()",
+      "source_file": "lib/launcher/searchProvider.js",
+      "source_location": "L130"
+    },
+    {
+      "id": "lib_launcher_searchprovider_searchprovider_warmup",
+      "label": ".warmUp()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": ".warmup()",
+      "source_file": "lib/launcher/searchProvider.js",
+      "source_location": "L52"
     },
     {
       "id": "lib_launcher_searchresult_createresult",
@@ -4848,6 +5100,18 @@
       "norm_label": "createresult()",
       "source_file": "lib/launcher/searchResult.js",
       "source_location": "L95"
+    },
+    {
+      "id": "lib_launcher_utils_collapsewhitespace",
+      "label": "collapseWhitespace()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": "collapsewhitespace()",
+      "source_file": "lib/launcher/utils.js",
+      "source_location": "L120"
     },
     {
       "id": "extension_tesseraextension_createindicator",
@@ -5519,7 +5783,7 @@
       "file_type": "code",
       "norm_label": ".badgestyle()",
       "source_file": "lib/launcher/theme.js",
-      "source_location": "L279"
+      "source_location": "L295"
     },
     {
       "id": "lib_launcher_theme_launchertheme_cardstyle",
@@ -5543,7 +5807,7 @@
       "file_type": "code",
       "norm_label": ".chevronstyle()",
       "source_file": "lib/launcher/theme.js",
-      "source_location": "L309"
+      "source_location": "L325"
     },
     {
       "id": "lib_launcher_theme_launchertheme_chipcountstyle",
@@ -5603,7 +5867,7 @@
       "file_type": "code",
       "norm_label": ".footerstyle()",
       "source_file": "lib/launcher/theme.js",
-      "source_location": "L331"
+      "source_location": "L347"
     },
     {
       "id": "lib_launcher_theme_launchertheme_hintstyle",
@@ -5615,7 +5879,7 @@
       "file_type": "code",
       "norm_label": ".hintstyle()",
       "source_file": "lib/launcher/theme.js",
-      "source_location": "L323"
+      "source_location": "L339"
     },
     {
       "id": "lib_launcher_theme_launchertheme_iconbadgestyle",
@@ -5627,7 +5891,7 @@
       "file_type": "code",
       "norm_label": ".iconbadgestyle()",
       "source_file": "lib/launcher/theme.js",
-      "source_location": "L293"
+      "source_location": "L309"
     },
     {
       "id": "lib_launcher_theme_launchertheme_iconbuttonstyle",
@@ -5639,7 +5903,7 @@
       "file_type": "code",
       "norm_label": ".iconbuttonstyle()",
       "source_file": "lib/launcher/theme.js",
-      "source_location": "L350"
+      "source_location": "L366"
     },
     {
       "id": "lib_launcher_theme_launchertheme_isdark",
@@ -5712,6 +5976,18 @@
       "norm_label": ".subtitlestyle()",
       "source_file": "lib/launcher/theme.js",
       "source_location": "L268"
+    },
+    {
+      "id": "lib_launcher_theme_launchertheme_toaststyle",
+      "label": ".toastStyle()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "LauncherTheme",
+      "file_type": "code",
+      "norm_label": ".toaststyle()",
+      "source_file": "lib/launcher/theme.js",
+      "source_location": "L280"
     },
     {
       "id": "lib_launcher_theme_launchertheme_valuestyle",
@@ -5791,7 +6067,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 54,
-      "community_name": "SearchProvider",
+      "community_name": "RecentProvider",
       "file_type": "code",
       "norm_label": ".constructor()",
       "source_file": "lib/launcher/recentProvider.js",
@@ -5803,7 +6079,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 54,
-      "community_name": "SearchProvider",
+      "community_name": "RecentProvider",
       "file_type": "code",
       "norm_label": ".defaultresults()",
       "source_file": "lib/launcher/recentProvider.js",
@@ -5815,7 +6091,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 54,
-      "community_name": "SearchProvider",
+      "community_name": "RecentProvider",
       "file_type": "code",
       "norm_label": ".enabled()",
       "source_file": "lib/launcher/recentProvider.js",
@@ -5827,143 +6103,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 54,
-      "community_name": "SearchProvider",
+      "community_name": "RecentProvider",
       "file_type": "code",
       "norm_label": "._recentapps()",
       "source_file": "lib/launcher/recentProvider.js",
       "source_location": "L81"
-    },
-    {
-      "id": "lib_launcher_searchprovider_searchprovider_browsecount",
-      "label": ".browseCount()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 54,
-      "community_name": "SearchProvider",
-      "file_type": "code",
-      "norm_label": ".browsecount()",
-      "source_file": "lib/launcher/searchProvider.js",
-      "source_location": "L117"
-    },
-    {
-      "id": "lib_launcher_searchprovider_searchprovider_browseresults",
-      "label": ".browseResults()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 54,
-      "community_name": "SearchProvider",
-      "file_type": "code",
-      "norm_label": ".browseresults()",
-      "source_file": "lib/launcher/searchProvider.js",
-      "source_location": "L102"
-    },
-    {
-      "id": "lib_launcher_searchprovider_searchprovider_constructor",
-      "label": ".constructor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 54,
-      "community_name": "SearchProvider",
-      "file_type": "code",
-      "norm_label": ".constructor()",
-      "source_file": "lib/launcher/searchProvider.js",
-      "source_location": "L41"
-    },
-    {
-      "id": "lib_launcher_searchprovider_searchprovider_createresult",
-      "label": ".createResult()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 54,
-      "community_name": "SearchProvider",
-      "file_type": "code",
-      "norm_label": ".createresult()",
-      "source_file": "lib/launcher/searchProvider.js",
-      "source_location": "L155"
-    },
-    {
-      "id": "lib_launcher_searchprovider_searchprovider_defaultresults",
-      "label": ".defaultResults()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 54,
-      "community_name": "SearchProvider",
-      "file_type": "code",
-      "norm_label": ".defaultresults()",
-      "source_file": "lib/launcher/searchProvider.js",
-      "source_location": "L78"
-    },
-    {
-      "id": "lib_launcher_searchprovider_searchprovider_disable",
-      "label": ".disable()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 54,
-      "community_name": "SearchProvider",
-      "file_type": "code",
-      "norm_label": ".disable()",
-      "source_file": "lib/launcher/searchProvider.js",
-      "source_location": "L60"
-    },
-    {
-      "id": "lib_launcher_searchprovider_searchprovider_enable",
-      "label": ".enable()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 54,
-      "community_name": "SearchProvider",
-      "file_type": "code",
-      "norm_label": ".enable()",
-      "source_file": "lib/launcher/searchProvider.js",
-      "source_location": "L56"
-    },
-    {
-      "id": "lib_launcher_searchprovider_searchprovider_enabled",
-      "label": ".enabled()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 54,
-      "community_name": "SearchProvider",
-      "file_type": "code",
-      "norm_label": ".enabled()",
-      "source_file": "lib/launcher/searchProvider.js",
-      "source_location": "L47"
-    },
-    {
-      "id": "lib_launcher_searchprovider_searchprovider_query",
-      "label": ".query()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 54,
-      "community_name": "SearchProvider",
-      "file_type": "code",
-      "norm_label": ".query()",
-      "source_file": "lib/launcher/searchProvider.js",
-      "source_location": "L67"
-    },
-    {
-      "id": "lib_launcher_searchprovider_searchprovider_resultforkey",
-      "label": ".resultForKey()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 54,
-      "community_name": "SearchProvider",
-      "file_type": "code",
-      "norm_label": ".resultforkey()",
-      "source_file": "lib/launcher/searchProvider.js",
-      "source_location": "L130"
-    },
-    {
-      "id": "lib_launcher_searchprovider_searchprovider_warmup",
-      "label": ".warmUp()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 54,
-      "community_name": "SearchProvider",
-      "file_type": "code",
-      "norm_label": ".warmup()",
-      "source_file": "lib/launcher/searchProvider.js",
-      "source_location": "L52"
     },
     {
       "id": "lib_launcher_browserbridge_browserbridge_constructor",
@@ -6710,18 +6854,6 @@
       "source_location": "L142"
     },
     {
-      "id": "lib_launcher_actionprovider_parseworkspacecommand",
-      "label": "parseWorkspaceCommand()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 66,
-      "community_name": "ActionProvider",
-      "file_type": "code",
-      "norm_label": "parseworkspacecommand()",
-      "source_file": "lib/launcher/actionProvider.js",
-      "source_location": "L40"
-    },
-    {
       "id": "lib_browserintegration_install",
       "label": "install()",
       "_callable": true,
@@ -7238,244 +7370,124 @@
       "source_location": "L38"
     },
     {
-      "id": "lib_launcher_launcherui_resultrow_constructor",
-      "label": ".constructor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 70,
-      "community_name": "launcher/utils.js",
-      "file_type": "code",
-      "norm_label": ".constructor()",
-      "source_file": "lib/launcher/launcherUI.js",
-      "source_location": "L83"
-    },
-    {
-      "id": "lib_launcher_launcherui_resultrow_fill",
-      "label": ".fill()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 70,
-      "community_name": "launcher/utils.js",
-      "file_type": "code",
-      "norm_label": ".fill()",
-      "source_file": "lib/launcher/launcherUI.js",
-      "source_location": "L176"
-    },
-    {
-      "id": "lib_launcher_utils_collapsewhitespace",
-      "label": "collapseWhitespace()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 70,
-      "community_name": "launcher/utils.js",
-      "file_type": "code",
-      "norm_label": "collapsewhitespace()",
-      "source_file": "lib/launcher/utils.js",
-      "source_location": "L120"
-    },
-    {
-      "id": "lib_launcher_utils_escapemarkup",
-      "label": "escapeMarkup()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 70,
-      "community_name": "launcher/utils.js",
-      "file_type": "code",
-      "norm_label": "escapemarkup()",
-      "source_file": "lib/launcher/utils.js",
-      "source_location": "L78"
-    },
-    {
-      "id": "lib_launcher_utils_foldchar",
-      "label": "foldChar()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 70,
-      "community_name": "launcher/utils.js",
-      "file_type": "code",
-      "norm_label": "foldchar()",
-      "source_file": "lib/launcher/utils.js",
-      "source_location": "L25"
-    },
-    {
-      "id": "lib_launcher_utils_markupwithhighlights",
-      "label": "markupWithHighlights()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 70,
-      "community_name": "launcher/utils.js",
-      "file_type": "code",
-      "norm_label": "markupwithhighlights()",
-      "source_file": "lib/launcher/utils.js",
-      "source_location": "L92"
-    },
-    {
-      "id": "lib_launcher_utils_normalizetext",
-      "label": "normalizeText()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 70,
-      "community_name": "launcher/utils.js",
-      "file_type": "code",
-      "norm_label": "normalizetext()",
-      "source_file": "lib/launcher/utils.js",
-      "source_location": "L34"
-    },
-    {
-      "id": "lib_launcher_windowprovider_windowprovider_activate",
-      "label": "._activate()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 71,
-      "community_name": "WindowProvider",
-      "file_type": "code",
-      "norm_label": "._activate()",
-      "source_file": "lib/launcher/windowProvider.js",
-      "source_location": "L229"
-    },
-    {
-      "id": "lib_launcher_windowprovider_windowprovider_browsecount",
+      "id": "lib_launcher_settingsprovider_settingsprovider_browsecount",
       "label": ".browseCount()",
       "_callable": true,
       "_origin": "ast",
-      "community": 71,
-      "community_name": "WindowProvider",
+      "community": 70,
+      "community_name": "SettingsProvider",
       "file_type": "code",
       "norm_label": ".browsecount()",
-      "source_file": "lib/launcher/windowProvider.js",
-      "source_location": "L99"
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L83"
     },
     {
-      "id": "lib_launcher_windowprovider_windowprovider_browseresults",
+      "id": "lib_launcher_settingsprovider_settingsprovider_browseresults",
       "label": ".browseResults()",
       "_callable": true,
       "_origin": "ast",
-      "community": 71,
-      "community_name": "WindowProvider",
+      "community": 70,
+      "community_name": "SettingsProvider",
       "file_type": "code",
       "norm_label": ".browseresults()",
-      "source_file": "lib/launcher/windowProvider.js",
-      "source_location": "L107"
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L76"
     },
     {
-      "id": "lib_launcher_windowprovider_windowprovider_constructor",
+      "id": "lib_launcher_settingsprovider_settingsprovider_constructor",
       "label": ".constructor()",
       "_callable": true,
       "_origin": "ast",
-      "community": 71,
-      "community_name": "WindowProvider",
+      "community": 70,
+      "community_name": "SettingsProvider",
       "file_type": "code",
       "norm_label": ".constructor()",
-      "source_file": "lib/launcher/windowProvider.js",
-      "source_location": "L55"
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L37"
     },
     {
-      "id": "lib_launcher_windowprovider_windowprovider_defaultresults",
-      "label": ".defaultResults()",
+      "id": "lib_launcher_settingsprovider_settingsprovider_disable",
+      "label": ".disable()",
       "_callable": true,
       "_origin": "ast",
-      "community": 71,
-      "community_name": "WindowProvider",
+      "community": 70,
+      "community_name": "SettingsProvider",
       "file_type": "code",
-      "norm_label": ".defaultresults()",
-      "source_file": "lib/launcher/windowProvider.js",
-      "source_location": "L95"
+      "norm_label": ".disable()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L51"
     },
     {
-      "id": "lib_launcher_windowprovider_windowprovider_describe",
-      "label": "._describe()",
+      "id": "lib_launcher_settingsprovider_settingsprovider_enable",
+      "label": ".enable()",
       "_callable": true,
       "_origin": "ast",
-      "community": 71,
-      "community_name": "WindowProvider",
+      "community": 70,
+      "community_name": "SettingsProvider",
       "file_type": "code",
-      "norm_label": "._describe()",
-      "source_file": "lib/launcher/windowProvider.js",
-      "source_location": "L208"
+      "norm_label": ".enable()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L44"
     },
     {
-      "id": "lib_launcher_windowprovider_windowprovider_describetabs",
-      "label": "._describeTabs()",
+      "id": "lib_launcher_settingsprovider_settingsprovider_ensureentries",
+      "label": "._ensureEntries()",
       "_callable": true,
       "_origin": "ast",
-      "community": 71,
-      "community_name": "WindowProvider",
+      "community": 70,
+      "community_name": "SettingsProvider",
       "file_type": "code",
-      "norm_label": "._describetabs()",
-      "source_file": "lib/launcher/windowProvider.js",
-      "source_location": "L128"
+      "norm_label": "._ensureentries()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L110"
     },
     {
-      "id": "lib_launcher_windowprovider_windowprovider_displaytitle",
-      "label": "._displayTitle()",
+      "id": "lib_launcher_settingsprovider_settingsprovider_entryresult",
+      "label": "._entryResult()",
       "_callable": true,
       "_origin": "ast",
-      "community": 71,
-      "community_name": "WindowProvider",
+      "community": 70,
+      "community_name": "SettingsProvider",
       "file_type": "code",
-      "norm_label": "._displaytitle()",
-      "source_file": "lib/launcher/windowProvider.js",
-      "source_location": "L147"
+      "norm_label": "._entryresult()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L92"
     },
     {
-      "id": "lib_launcher_windowprovider_windowprovider_enabled",
-      "label": ".enabled()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 71,
-      "community_name": "WindowProvider",
-      "file_type": "code",
-      "norm_label": ".enabled()",
-      "source_file": "lib/launcher/windowProvider.js",
-      "source_location": "L61"
-    },
-    {
-      "id": "lib_launcher_windowprovider_windowprovider_listresults",
-      "label": "._listResults()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 71,
-      "community_name": "WindowProvider",
-      "file_type": "code",
-      "norm_label": "._listresults()",
-      "source_file": "lib/launcher/windowProvider.js",
-      "source_location": "L113"
-    },
-    {
-      "id": "lib_launcher_windowprovider_windowprovider_query",
+      "id": "lib_launcher_settingsprovider_settingsprovider_query",
       "label": ".query()",
       "_callable": true,
       "_origin": "ast",
-      "community": 71,
-      "community_name": "WindowProvider",
+      "community": 70,
+      "community_name": "SettingsProvider",
       "file_type": "code",
       "norm_label": ".query()",
-      "source_file": "lib/launcher/windowProvider.js",
-      "source_location": "L65"
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L63"
     },
     {
-      "id": "lib_launcher_windowprovider_windowprovider_windowresult",
-      "label": "._windowResult()",
+      "id": "lib_launcher_settingsprovider_settingsprovider_resultforkey",
+      "label": ".resultForKey()",
       "_callable": true,
       "_origin": "ast",
-      "community": 71,
-      "community_name": "WindowProvider",
+      "community": 70,
+      "community_name": "SettingsProvider",
       "file_type": "code",
-      "norm_label": "._windowresult()",
-      "source_file": "lib/launcher/windowProvider.js",
-      "source_location": "L160"
+      "norm_label": ".resultforkey()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L87"
     },
     {
-      "id": "lib_launcher_windowprovider_windowprovider_windows",
-      "label": "._windows()",
+      "id": "lib_launcher_settingsprovider_settingsprovider_warmup",
+      "label": ".warmUp()",
       "_callable": true,
       "_origin": "ast",
-      "community": 71,
-      "community_name": "WindowProvider",
+      "community": 70,
+      "community_name": "SettingsProvider",
       "file_type": "code",
-      "norm_label": "._windows()",
-      "source_file": "lib/launcher/windowProvider.js",
-      "source_location": "L140"
+      "norm_label": ".warmup()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L59"
     },
     {
       "id": "lib_launcher_favoritesmanager_favoritesmanager_clear",
@@ -8840,6 +8852,17 @@
       "source_location": "L165"
     },
     {
+      "id": "lib_launcher_constants_current_workspace_boost",
+      "label": "CURRENT_WORKSPACE_BOOST",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "constants.js",
+      "file_type": "code",
+      "norm_label": "current_workspace_boost",
+      "source_file": "lib/launcher/constants.js",
+      "source_location": "L148"
+    },
+    {
       "id": "lib_launcher_constants_favorite_boost",
       "label": "FAVORITE_BOOST",
       "_origin": "ast",
@@ -9016,6 +9039,17 @@
       "source_location": "L1"
     },
     {
+      "id": "lib_launcher_launcherpopup_launcherpopup",
+      "label": "LauncherPopup",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "constants.js",
+      "file_type": "code",
+      "norm_label": "launcherpopup",
+      "source_file": "lib/launcher/launcherPopup.js",
+      "source_location": "L56"
+    },
+    {
       "id": "lib_launcher_launcherui",
       "label": "launcherUI.js",
       "_origin": "ast",
@@ -9082,6 +9116,28 @@
       "source_location": "L1"
     },
     {
+      "id": "lib_launcher_toast",
+      "label": "toast.js",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "constants.js",
+      "file_type": "code",
+      "norm_label": "toast.js",
+      "source_file": "lib/launcher/toast.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_launcher_toast_launchertoast",
+      "label": "LauncherToast",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "constants.js",
+      "file_type": "code",
+      "norm_label": "launchertoast",
+      "source_file": "lib/launcher/toast.js",
+      "source_location": "L32"
+    },
+    {
       "id": "lib_launcher_constants_frecency_half_life_ms",
       "label": "FRECENCY_HALF_LIFE_MS",
       "_origin": "ast",
@@ -9104,6 +9160,17 @@
       "source_location": "L155"
     },
     {
+      "id": "lib_launcher_fuzzymatcher_matchtier",
+      "label": "MatchTier",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "launcher-engine-test.js",
+      "file_type": "code",
+      "norm_label": "matchtier",
+      "source_file": "lib/launcher/fuzzyMatcher.js",
+      "source_location": "L21"
+    },
+    {
       "id": "lib_launcher_historymanager",
       "label": "historyManager.js",
       "_origin": "ast",
@@ -9113,6 +9180,28 @@
       "norm_label": "historymanager.js",
       "source_file": "lib/launcher/historyManager.js",
       "source_location": "L1"
+    },
+    {
+      "id": "lib_launcher_utils",
+      "label": "launcher/utils.js",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "launcher-engine-test.js",
+      "file_type": "code",
+      "norm_label": "launcher/utils.js",
+      "source_file": "lib/launcher/utils.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_launcher_utils_word_separators",
+      "label": "WORD_SEPARATORS",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "launcher-engine-test.js",
+      "file_type": "code",
+      "norm_label": "word_separators",
+      "source_file": "lib/launcher/utils.js",
+      "source_location": "L47"
     },
     {
       "id": "tests_launcher_engine_test",
@@ -9478,6 +9567,61 @@
       "source_location": "L34"
     },
     {
+      "id": "lib_launcher_actionprovider",
+      "label": "actionProvider.js",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "fuzzyMatcher.js",
+      "file_type": "code",
+      "norm_label": "actionprovider.js",
+      "source_file": "lib/launcher/actionProvider.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_launcher_actionprovider_move_words",
+      "label": "MOVE_WORDS",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "fuzzyMatcher.js",
+      "file_type": "code",
+      "norm_label": "move_words",
+      "source_file": "lib/launcher/actionProvider.js",
+      "source_location": "L24"
+    },
+    {
+      "id": "lib_launcher_actionprovider_workspace_words",
+      "label": "WORKSPACE_WORDS",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "fuzzyMatcher.js",
+      "file_type": "code",
+      "norm_label": "workspace_words",
+      "source_file": "lib/launcher/actionProvider.js",
+      "source_location": "L23"
+    },
+    {
+      "id": "lib_launcher_actionregistry",
+      "label": "actionRegistry.js",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "fuzzyMatcher.js",
+      "file_type": "code",
+      "norm_label": "actionregistry.js",
+      "source_file": "lib/launcher/actionRegistry.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_launcher_actionregistry_terminal_app_ids",
+      "label": "TERMINAL_APP_IDS",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "fuzzyMatcher.js",
+      "file_type": "code",
+      "norm_label": "terminal_app_ids",
+      "source_file": "lib/launcher/actionRegistry.js",
+      "source_location": "L16"
+    },
+    {
       "id": "lib_launcher_fuzzymatcher",
       "label": "fuzzyMatcher.js",
       "_origin": "ast",
@@ -9487,17 +9631,6 @@
       "norm_label": "fuzzymatcher.js",
       "source_file": "lib/launcher/fuzzyMatcher.js",
       "source_location": "L1"
-    },
-    {
-      "id": "lib_launcher_fuzzymatcher_matchtier",
-      "label": "MatchTier",
-      "_origin": "ast",
-      "community": 18,
-      "community_name": "fuzzyMatcher.js",
-      "file_type": "code",
-      "norm_label": "matchtier",
-      "source_file": "lib/launcher/fuzzyMatcher.js",
-      "source_location": "L21"
     },
     {
       "id": "lib_launcher_fuzzymatcher_score",
@@ -10419,61 +10552,6 @@
       "source_file": "gi://Gio"
     },
     {
-      "id": "lib_launcher_actionprovider",
-      "label": "actionProvider.js",
-      "_origin": "ast",
-      "community": 39,
-      "community_name": "launcher.js",
-      "file_type": "code",
-      "norm_label": "actionprovider.js",
-      "source_file": "lib/launcher/actionProvider.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "lib_launcher_actionprovider_move_words",
-      "label": "MOVE_WORDS",
-      "_origin": "ast",
-      "community": 39,
-      "community_name": "launcher.js",
-      "file_type": "code",
-      "norm_label": "move_words",
-      "source_file": "lib/launcher/actionProvider.js",
-      "source_location": "L24"
-    },
-    {
-      "id": "lib_launcher_actionprovider_workspace_words",
-      "label": "WORKSPACE_WORDS",
-      "_origin": "ast",
-      "community": 39,
-      "community_name": "launcher.js",
-      "file_type": "code",
-      "norm_label": "workspace_words",
-      "source_file": "lib/launcher/actionProvider.js",
-      "source_location": "L23"
-    },
-    {
-      "id": "lib_launcher_actionregistry",
-      "label": "actionRegistry.js",
-      "_origin": "ast",
-      "community": 39,
-      "community_name": "launcher.js",
-      "file_type": "code",
-      "norm_label": "actionregistry.js",
-      "source_file": "lib/launcher/actionRegistry.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "lib_launcher_actionregistry_terminal_app_ids",
-      "label": "TERMINAL_APP_IDS",
-      "_origin": "ast",
-      "community": 39,
-      "community_name": "launcher.js",
-      "file_type": "code",
-      "norm_label": "terminal_app_ids",
-      "source_file": "lib/launcher/actionRegistry.js",
-      "source_location": "L16"
-    },
-    {
       "id": "lib_launcher_appprovider",
       "label": "appProvider.js",
       "_origin": "ast",
@@ -10482,6 +10560,17 @@
       "file_type": "code",
       "norm_label": "appprovider.js",
       "source_file": "lib/launcher/appProvider.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider",
+      "label": "browserTabsProvider.js",
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": "browsertabsprovider.js",
+      "source_file": "lib/launcher/browserTabsProvider.js",
       "source_location": "L1"
     },
     {
@@ -10573,17 +10662,6 @@
       "source_location": "L29"
     },
     {
-      "id": "lib_launcher_launcherpopup_launcherpopup",
-      "label": "LauncherPopup",
-      "_origin": "ast",
-      "community": 39,
-      "community_name": "launcher.js",
-      "file_type": "code",
-      "norm_label": "launcherpopup",
-      "source_file": "lib/launcher/launcherPopup.js",
-      "source_location": "L55"
-    },
-    {
       "id": "lib_launcher_recentprovider",
       "label": "recentProvider.js",
       "_origin": "ast",
@@ -10636,6 +10714,17 @@
       "file_type": "code",
       "norm_label": "settingsprovider.js",
       "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_launcher_windowprovider",
+      "label": "windowProvider.js",
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": "windowprovider.js",
+      "source_file": "lib/launcher/windowProvider.js",
       "source_location": "L1"
     },
     {
@@ -12487,61 +12576,6 @@
       "norm_label": "variadic_functions",
       "source_file": "lib/launcher/calculatorEngine.js",
       "source_location": "L74"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider",
-      "label": "browserTabsProvider.js",
-      "_origin": "ast",
-      "community": 70,
-      "community_name": "launcher/utils.js",
-      "file_type": "code",
-      "norm_label": "browsertabsprovider.js",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "lib_launcher_constants_current_workspace_boost",
-      "label": "CURRENT_WORKSPACE_BOOST",
-      "_origin": "ast",
-      "community": 70,
-      "community_name": "launcher/utils.js",
-      "file_type": "code",
-      "norm_label": "current_workspace_boost",
-      "source_file": "lib/launcher/constants.js",
-      "source_location": "L148"
-    },
-    {
-      "id": "lib_launcher_utils",
-      "label": "launcher/utils.js",
-      "_origin": "ast",
-      "community": 70,
-      "community_name": "launcher/utils.js",
-      "file_type": "code",
-      "norm_label": "launcher/utils.js",
-      "source_file": "lib/launcher/utils.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "lib_launcher_utils_word_separators",
-      "label": "WORD_SEPARATORS",
-      "_origin": "ast",
-      "community": 70,
-      "community_name": "launcher/utils.js",
-      "file_type": "code",
-      "norm_label": "word_separators",
-      "source_file": "lib/launcher/utils.js",
-      "source_location": "L47"
-    },
-    {
-      "id": "lib_launcher_windowprovider",
-      "label": "windowProvider.js",
-      "_origin": "ast",
-      "community": 70,
-      "community_name": "launcher/utils.js",
-      "file_type": "code",
-      "norm_label": "windowprovider.js",
-      "source_file": "lib/launcher/windowProvider.js",
-      "source_location": "L1"
     },
     {
       "id": "lib_launcher_favoritesmanager",
@@ -19520,7 +19554,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L194",
+      "source_location": "L197",
       "weight": 1.0
     },
     {
@@ -19532,7 +19566,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L202",
+      "source_location": "L205",
       "weight": 1.0
     },
     {
@@ -19544,7 +19578,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L205",
+      "source_location": "L208",
       "weight": 1.0
     },
     {
@@ -19556,7 +19590,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L207",
+      "source_location": "L210",
       "weight": 1.0
     },
     {
@@ -19568,7 +19602,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L209",
+      "source_location": "L212",
       "weight": 1.0
     },
     {
@@ -19580,7 +19614,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L210",
+      "source_location": "L213",
       "weight": 1.0
     },
     {
@@ -19592,7 +19626,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L212",
+      "source_location": "L215",
       "weight": 1.0
     },
     {
@@ -19604,7 +19638,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L213",
+      "source_location": "L216",
       "weight": 1.0
     },
     {
@@ -19616,7 +19650,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L214",
+      "source_location": "L217",
       "weight": 1.0
     },
     {
@@ -19628,7 +19662,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L215",
+      "source_location": "L218",
       "weight": 1.0
     },
     {
@@ -19640,7 +19674,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L216",
+      "source_location": "L219",
       "weight": 1.0
     },
     {
@@ -19652,7 +19686,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L217",
+      "source_location": "L220",
       "weight": 1.0
     },
     {
@@ -19664,7 +19698,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L218",
+      "source_location": "L221",
       "weight": 1.0
     },
     {
@@ -19676,7 +19710,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L219",
+      "source_location": "L222",
       "weight": 1.0
     },
     {
@@ -19688,7 +19722,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L224",
+      "source_location": "L227",
       "weight": 1.0
     },
     {
@@ -19748,7 +19782,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L228",
+      "source_location": "L231",
       "weight": 1.0
     },
     {
@@ -19784,7 +19818,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L253",
+      "source_location": "L256",
       "weight": 1.0
     },
     {
@@ -20360,7 +20394,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/theme.js",
-      "source_location": "L280",
+      "source_location": "L296",
       "weight": 1.0
     },
     {
@@ -20384,7 +20418,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/theme.js",
-      "source_location": "L311",
+      "source_location": "L327",
       "weight": 1.0
     },
     {
@@ -20444,7 +20478,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/theme.js",
-      "source_location": "L332",
+      "source_location": "L348",
       "weight": 1.0
     },
     {
@@ -20456,7 +20490,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/theme.js",
-      "source_location": "L324",
+      "source_location": "L340",
       "weight": 1.0
     },
     {
@@ -20468,7 +20502,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/theme.js",
-      "source_location": "L294",
+      "source_location": "L310",
       "weight": 1.0
     },
     {
@@ -20480,7 +20514,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/launcher/theme.js",
-      "source_location": "L352",
+      "source_location": "L368",
       "weight": 1.0
     },
     {
@@ -20529,6 +20563,18 @@
       "context": "call",
       "source_file": "lib/launcher/theme.js",
       "source_location": "L269",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_launcher_theme_launchertheme_toaststyle",
+      "target": "lib_utils_buildcssdeclarations",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "lib/launcher/theme.js",
+      "source_location": "L281",
       "weight": 1.0
     },
     {
@@ -24505,7 +24551,7 @@
     },
     {
       "source": "lib_launcher_launcherpopup",
-      "target": "lib_launcher_utils_clamp",
+      "target": "lib_launcher_toast_launchertoast",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -24513,6 +24559,18 @@
       "context": "import",
       "source_file": "lib/launcher/launcherPopup.js",
       "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_launcher_launcherpopup",
+      "target": "lib_launcher_utils_clamp",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "lib/launcher/launcherPopup.js",
+      "source_location": "L21",
       "weight": 1.0
     },
     {
@@ -26737,7 +26795,7 @@
     },
     {
       "source": "lib_launcher_launcherpopup",
-      "target": "lib_launcher_utils",
+      "target": "lib_launcher_toast",
       "relation": "imports_from",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -26745,6 +26803,18 @@
       "context": "import",
       "source_file": "lib/launcher/launcherPopup.js",
       "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_launcher_launcherpopup",
+      "target": "lib_launcher_utils",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "lib/launcher/launcherPopup.js",
+      "source_location": "L21",
       "weight": 1.0
     },
     {
@@ -30675,7 +30745,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/launcher/launcherPopup.js",
-      "source_location": "L55",
+      "source_location": "L56",
       "weight": 1.0
     },
     {
@@ -30874,6 +30944,17 @@
       "confidence_score": 1.0,
       "source_file": "lib/launcher/theme.js",
       "source_location": "L68",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_launcher_toast",
+      "target": "lib_launcher_toast_launchertoast",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/launcher/toast.js",
+      "source_location": "L32",
       "weight": 1.0
     },
     {
@@ -35716,7 +35797,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L227",
+      "source_location": "L230",
       "weight": 1.0
     },
     {
@@ -35727,7 +35808,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L252",
+      "source_location": "L255",
       "weight": 1.0
     },
     {
@@ -35738,7 +35819,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/launcher/launcher.js",
-      "source_location": "L262",
+      "source_location": "L265",
       "weight": 1.0
     },
     {
@@ -36480,13 +36561,24 @@
     },
     {
       "source": "lib_launcher_theme_launchertheme",
+      "target": "lib_launcher_theme_launchertheme_toaststyle",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/launcher/theme.js",
+      "source_location": "L280",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_launcher_theme_launchertheme",
       "target": "lib_launcher_theme_launchertheme_badgestyle",
       "relation": "method",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/launcher/theme.js",
-      "source_location": "L279",
+      "source_location": "L295",
       "weight": 1.0
     },
     {
@@ -36497,7 +36589,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/launcher/theme.js",
-      "source_location": "L293",
+      "source_location": "L309",
       "weight": 1.0
     },
     {
@@ -36508,7 +36600,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/launcher/theme.js",
-      "source_location": "L309",
+      "source_location": "L325",
       "weight": 1.0
     },
     {
@@ -36519,7 +36611,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/launcher/theme.js",
-      "source_location": "L323",
+      "source_location": "L339",
       "weight": 1.0
     },
     {
@@ -36530,7 +36622,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/launcher/theme.js",
-      "source_location": "L331",
+      "source_location": "L347",
       "weight": 1.0
     },
     {
@@ -36541,7 +36633,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/launcher/theme.js",
-      "source_location": "L350",
+      "source_location": "L366",
       "weight": 1.0
     },
     {
@@ -40701,5 +40793,5 @@
       "source_file": "docs/ARCHITECTURE.md"
     }
   ],
-  "built_at_commit": "ac8b4e9b96372510934160bb8ba9243724bf2d16"
+  "built_at_commit": "149cb2dfadfb8dab579eea032cd3dde37e68cf30"
 }

@@ -126,15 +126,15 @@
     "semantic_hash": ""
   },
   "lib/launcher/launcher.js": {
-    "mtime": 1789323943.7707415,
-    "seen": 1789324554.2441866,
-    "ast_hash": "d49d3a0e12ab06f16f90a6b5a3222ebc",
+    "mtime": 1789448188.319432,
+    "seen": 1789448194.8865123,
+    "ast_hash": "22f315184f8164dcdb9d3cfd4a48bc2b",
     "semantic_hash": ""
   },
   "lib/launcher/launcherPopup.js": {
-    "mtime": 1789323943.7705684,
-    "seen": 1789324554.244187,
-    "ast_hash": "d67dc161590bde43a21ab01e3cc14faf",
+    "mtime": 1789448188.319376,
+    "seen": 1789448194.8865135,
+    "ast_hash": "aeccabdf139796e422121fb35d423400",
     "semantic_hash": ""
   },
   "lib/launcher/launcherUI.js": {
@@ -186,9 +186,9 @@
     "semantic_hash": "daf7a3826505799819e443c9818a5a20"
   },
   "lib/launcher/theme.js": {
-    "mtime": 1789326342.884561,
-    "seen": 1789326344.1039677,
-    "ast_hash": "fd30f1b865517b6c09bb8db1b3d7d0b2",
+    "mtime": 1789448188.3194861,
+    "seen": 1789448194.8865192,
+    "ast_hash": "76bdfa58687235c1def6ce09d7c015a0",
     "semantic_hash": ""
   },
   "lib/launcher/utils.js": {
@@ -378,9 +378,9 @@
     "semantic_hash": "11e8883e3469bb0af72a016d36f29691"
   },
   "docs/LAUNCHER.md": {
-    "mtime": 1789378650.11008,
-    "seen": 1789378669.3771307,
-    "ast_hash": "a4014a00e73424bcdaa4cc47148f1e10",
+    "mtime": 1789448188.3201127,
+    "seen": 1789448194.8865664,
+    "ast_hash": "de60b822507059daea6c2429d98dec53",
     "semantic_hash": ""
   },
   "docs/ROADMAP.md": {
@@ -390,9 +390,9 @@
     "semantic_hash": ""
   },
   "tests/MANUAL_TESTS.md": {
-    "mtime": 1789403467.163537,
-    "seen": 1789403491.1715221,
-    "ast_hash": "14224dfa5530ebb766a3397ed24ae19b",
+    "mtime": 1789448188.3203015,
+    "seen": 1789448194.8865676,
+    "ast_hash": "2f014eee20e0cfac8667f9e1701cb20e",
     "semantic_hash": ""
   },
   ".claude/settings.json": {
@@ -735,6 +735,12 @@
     "mtime": 1789447661.6780355,
     "seen": 1789447668.2586703,
     "ast_hash": "b8a579a50ca6b4065511861200a82b20",
+    "semantic_hash": ""
+  },
+  "lib/launcher/toast.js": {
+    "mtime": 1789448188.3047948,
+    "seen": 1789448194.8865206,
+    "ast_hash": "9f2e0a463424d1baf3141c586ab8a89f",
     "semantic_hash": ""
   }
 }
