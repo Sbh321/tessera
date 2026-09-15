@@ -590,7 +590,10 @@ needs no shortcut to be reachable:
 | Type | Action | Notes |
 |---|---|---|
 | `tile` | Toggle Automatic Tiling | subtitle reports the current state |
-| `stack` | Toggle Stacked Layout | current workspace |
+| `tile workspace` | Tile This Workspace | current workspace; subtitle reports its mode, activating the mode it is already in returns it to the default |
+| `stack` | Stack This Workspace | current workspace, same toggle rule |
+| `float workspace` | Float This Workspace | current workspace, same toggle rule |
+| `default layout` | Default Layout | cycles the global default tiled → stacked → floating; every workspace follows |
 | `float` | Toggle Floating Window | focused window |
 | `max` | Toggle Maximize | focused window |
 | `full` | Toggle Fullscreen | focused window |

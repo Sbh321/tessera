@@ -87,18 +87,49 @@ windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
   newcomer opens inside the left half; the right side never moves.
   Closing a window likewise hands its space back to its neighbor alone,
   and a minimized or maximized window returns to the exact slot it left.
-- **Stacked (tabbed) layout mode** per workspace (`Shift+Super+S`): all
-  tiled windows share the full content area under a row of browser-style
-  tabs with live titles and icons — Hyprland's stacked layout. Needs at
-  least two windows: the toggle no-ops on a single-window workspace, and
-  a stacked workspace that drops to one window (closed or moved away)
-  reverts to tiled on its own.
-- **Per-window floating** (`Shift+Super+V`): pop the focused window out
+- **Three layout modes, one default plus per-workspace choice.** Every
+  workspace is *tiled*, *stacked* or *floating*. The **default layout**
+  (Preferences → Tiling, the panel menu's Tile | Stack | Float row, or
+  the launcher) is what every workspace follows and what new workspaces
+  start in; changing it switches every workspace and every open window
+  at once. Any single workspace can be switched on its own:
+  `Shift+Super+T` tiles it, `Shift+Super+S` stacks it, `Shift+Super+V`
+  floats it — and pressing the key of the mode it is already in returns
+  it to the default (so with the tiled default, `Shift+Super+S` toggles
+  stacking on and off, as it always has).
+- **Stacked (tabbed) layout**: all tiled windows share the full content
+  area under a row of browser-style tabs — Hyprland's stacked layout.
+  Tabs are uniform (equal widths, capped, titles ellipsized like a
+  browser's, so a long title never crowds its neighbours), each has a
+  close button, a middle click or a three-finger touchpad tap closes a
+  tab, a window asking for attention tints its tab, and the row scrolls
+  once tabs no longer fit. Stacking is a group posture: a stacked
+  workspace with a single window lays out as tiled (full area, no
+  one-tab bar) and the tab bar appears the moment a second window opens.
+- **Floating layout**: the mode where Tessera steps aside. On a floating
+  workspace windows behave exactly as on stock GNOME — they open where
+  GNOME puts them, stay maximized if the app says so, and are never
+  moved, resized or snapped back — while every other workspace keeps
+  its layout. Switch back and the layout the workspace had comes back.
+  Not to be confused with per-window floating, below.
+- **Directional focus and movement**, Hyprland's `movefocus` and
+  `movewindow`: `Ctrl+Super+Arrows` focus the window in that direction
+  on screen (tiles, floating windows and other monitors alike; on a
+  stacked workspace, left and right step through the tabs), and
+  `Ctrl+Shift+Super+Arrows` move the focused window that way — swapping
+  it with the neighbouring tile, or moving its tab along the row.
+- **Drag to swap, drag to resize**: drop a tiled window onto another
+  tile with the mouse and the two swap places; drag a tiled window's
+  edge and the split it sits on keeps the new size (the neighbour takes
+  the rest). Drops over nothing and edges on the screen border snap
+  back as before.
+- **Per-window floating** (`Shift+Super+D`): pop the focused window out
   of the layout so it floats — centered and stacked above the tiled
   windows, freely movable and resizable — and press again to re-tile it.
   Hyprland's `togglefloating`, the pop-out-and-float feel of Omarchy.
-  It's a per-window choice, not a separate layout mode, and the centered
-  size (default 65% of the work area) is configurable in Preferences.
+  It's a per-window choice, orthogonal to the workspace's layout mode,
+  and the centered size (default 65% of the work area) is configurable
+  in Preferences.
 - Windows GNOME wants floating stay floating: dialogs, utility and
   splash windows, minimized and user-maximized windows. Fullscreen
   suspends tiling until it ends. Apps that *open* maximized (browsers,
@@ -239,8 +270,12 @@ For local development instead of a one-shot install, see
 | `Shift+Super+0` | Move focused window to the trailing workspace (and follow) |
 | `Shift+Super+Left` | Move focused window to a new workspace inserted on the left |
 | `Shift+Super+Right` | Move focused window to a new workspace inserted on the right |
-| `Shift+Super+S` | Toggle stacked (tabbed) layout on the current workspace |
-| `Shift+Super+V` | Toggle floating for the focused window |
+| `Shift+Super+T` | Tile the current workspace (again: back to the default layout) |
+| `Shift+Super+S` | Stack the current workspace (again: back to the default layout) |
+| `Shift+Super+V` | Float the current workspace — stock GNOME behaviour there (again: back to the default layout) |
+| `Shift+Super+D` | Toggle floating for the focused window |
+| `Ctrl+Super+Left/Right/Up/Down` | Focus the window in that direction (on a stacked workspace, left/right step through tabs) |
+| `Ctrl+Shift+Super+Left/Right/Up/Down` | Move the focused window that way: swap with the neighbouring tile, or move its tab along the row |
 | `Shift+Super+F` | Toggle maximize for the focused window (keeps the panel) |
 | `Super+F` | Toggle true fullscreen for the focused window (covers the panel) |
 | `Super+Z` | Reveal / hide the auto-hidden top panel (only while auto-hide is on) |
@@ -264,6 +299,11 @@ The launcher's `Super+Space` is a fifth collision — GNOME's
 keys are cleared only while the launcher is enabled **and** its
 accelerator really is `Super+Space`, so leaving the launcher off, or
 rebinding it, leaves keyboard-layout switching completely untouched.
+The layout and directional shortcuts (`Shift+Super+S/T/V/D`,
+`Ctrl+Super+Arrows`, `Ctrl+Shift+Super+Arrows`) collide with nothing on
+a stock install and clear nothing. The vim-style `Super+H/J/K/L` set was
+deliberately not used for the directional keys: `Super+H` is GNOME's
+minimize and `Super+L` locks the screen.
 
 See [`docs/GNOME_NOTES.md`](docs/GNOME_NOTES.md) for how each
 conflict was found and verified, and

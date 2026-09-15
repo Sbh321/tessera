@@ -651,11 +651,22 @@ export default class TesseraPreferences extends ExtensionPreferences {
 
         const tilingGroup = new Adw.PreferencesGroup({
             description: _(
-                'Shift+Super+S toggles a stacked (tabbed) layout per workspace.'),
+                'Every workspace follows the default layout until it is switched ' +
+                'on its own: Shift+Super+T tiles it, Shift+Super+S stacks it ' +
+                '(tabs), Shift+Super+V floats it (stock GNOME window behaviour on ' +
+                'that workspace only); pressing the key of the mode a workspace ' +
+                'is already in returns it to the default. Changing the default ' +
+                'here switches every workspace at once. Ctrl+Super+Arrows focus ' +
+                'the window in a direction; Ctrl+Shift+Super+Arrows move it ' +
+                'there. Tiled windows can also be dragged onto another tile to ' +
+                'swap, and resized by dragging an edge.'),
         });
         page.add(tilingGroup);
         addSwitchRow(tilingGroup, settings, 'enable-tiling',
-            _('Enable automatic tiling'), '');
+            _('Enable window management'), '');
+        addComboRow(tilingGroup, settings, 'layout-mode', _('Default layout'),
+            _('tiled: dwindle tiling · stacked: tabs · floating: leave windows to GNOME'),
+            ['tiled', 'stacked', 'floating']);
 
         const gapsGroup = new Adw.PreferencesGroup({title: _('Gaps')});
         page.add(gapsGroup);
@@ -665,9 +676,11 @@ export default class TesseraPreferences extends ExtensionPreferences {
             _('Space between tiled windows and the screen edge, in pixels'), {lower: 0, upper: 64});
 
         const floatingGroup = new Adw.PreferencesGroup({
-            title: _('Floating'),
+            title: _('Floating window'),
             description: _(
-                'Shift+Super+V toggles floating for the focused window.'),
+                'Shift+Super+D pops the focused window out of its workspace’s ' +
+                'layout (and back). Distinct from the floating layout, which ' +
+                'floats a whole workspace.'),
         });
         page.add(floatingGroup);
         addSpinRow(floatingGroup, settings, 'floating-window-size',
@@ -854,12 +867,37 @@ export default class TesseraPreferences extends ExtensionPreferences {
         for (let i = 1; i <= 9; i++)
             addShortcut(swapGroup, `workspace-swap-${i}`, `${_('Workspace')} ${i}`);
 
-        const layoutGroup = new Adw.PreferencesGroup({title: _('Layout')});
+        const layoutGroup = new Adw.PreferencesGroup({
+            title: _('Layout'),
+            description: _('Each mode key switches the current workspace to that mode, or back to the default layout (Tiling page) if it is already in it.'),
+        });
         page.add(layoutGroup);
-        addShortcut(layoutGroup, 'layout-toggle-stacked', _('Toggle stacked layout'));
+        addShortcut(layoutGroup, 'layout-set-tiled', _('Tile this workspace'));
+        addShortcut(layoutGroup, 'layout-set-stacked', _('Stack this workspace'));
+        addShortcut(layoutGroup, 'layout-set-floating', _('Float this workspace'));
         addShortcut(layoutGroup, 'window-toggle-floating', _('Toggle floating (focused window)'));
         addShortcut(layoutGroup, 'window-toggle-maximize', _('Toggle maximize (focused window)'));
         addShortcut(layoutGroup, 'window-toggle-fullscreen', _('Toggle fullscreen (focused window)'));
+
+        const focusGroup = new Adw.PreferencesGroup({
+            title: _('Focus Window'),
+            description: _('Moves keyboard focus to the window in that direction on screen; on a stacked workspace, left and right step through the tabs.'),
+        });
+        page.add(focusGroup);
+        addShortcut(focusGroup, 'window-focus-left', _('Left'));
+        addShortcut(focusGroup, 'window-focus-right', _('Right'));
+        addShortcut(focusGroup, 'window-focus-up', _('Up'));
+        addShortcut(focusGroup, 'window-focus-down', _('Down'));
+
+        const swapGroup2 = new Adw.PreferencesGroup({
+            title: _('Move Window in Layout'),
+            description: _('Swaps the focused window with the tile in that direction; on a stacked workspace, moves its tab along the row.'),
+        });
+        page.add(swapGroup2);
+        addShortcut(swapGroup2, 'window-swap-left', _('Left'));
+        addShortcut(swapGroup2, 'window-swap-right', _('Right'));
+        addShortcut(swapGroup2, 'window-swap-up', _('Up'));
+        addShortcut(swapGroup2, 'window-swap-down', _('Down'));
 
         const panelGroup = new Adw.PreferencesGroup({
             title: _('Panel'),

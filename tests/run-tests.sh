@@ -24,7 +24,7 @@ if ! cmp -s lib/launcher/browserProtocol.js companion/modules/tabs/protocol.js; 
     exit 1
 fi
 
-PURE_TESTS=(launcher-engine-test browser-tab-store-test browser-window-mapper-test)
+PURE_TESTS=(launcher-engine-test layout-engine-test browser-tab-store-test browser-window-mapper-test)
 
 if command -v gjs >/dev/null 2>&1; then
     for test in "${PURE_TESTS[@]}"; do

@@ -147,6 +147,12 @@
       <description>Hyprland-style dynamic tiling: normal application windows are automatically arranged in a dwindle (binary split) layout per workspace and monitor. Dialogs, utility windows, minimized and user-maximized windows float. When disabled, windows keep whatever geometry they last had and are never repositioned.</description>
     </key>
 
+    <key name="layout-mode" type="s">
+      <default>'tiled'</default>
+      <summary>Default layout mode</summary>
+      <description>The layout every workspace uses unless it has been switched individually with the layout keybindings, and the layout new workspaces start in. One of: tiled (Hyprland-style dwindle tiling), stacked (all windows share the content area under a row of tabs; a workspace with a single window lays out as tiled until a second one opens), floating (Tessera leaves the workspace to GNOME: stock placement, free move/resize, maximize stays). Changing it puts EVERY workspace into the new mode, dropping any per-workspace choice, and re-lays out every open window accordingly.</description>
+    </key>
+
     <key name="tiling-gap-inner" type="i">
       <default>6</default>
       <range min="0" max="64"/>
@@ -580,14 +586,64 @@
       <summary>Move focused window to a new workspace inserted to the right</summary>
     </key>
 
-    <key name="layout-toggle-stacked" type="as">
+    <key name="layout-set-tiled" type="as">
+      <default>['&lt;Shift&gt;&lt;Super&gt;t']</default>
+      <summary>Tile the current workspace</summary>
+      <description>Put the current workspace into the tiled layout. If it is already tiled, return it to the default layout mode (layout-mode) -- so with a stacked or floating default this key toggles tiling on and off for just this workspace.</description>
+    </key>
+
+    <key name="layout-set-stacked" type="as">
       <default>['&lt;Shift&gt;&lt;Super&gt;s']</default>
-      <summary>Toggle stacked layout on the current workspace</summary>
+      <summary>Stack the current workspace</summary>
+      <description>Put the current workspace into the stacked (tabbed) layout. If it is already stacked, return it to the default layout mode -- with the tiled default this toggles stacking on and off. A stacked workspace with a single window lays out as tiled until a second window opens.</description>
+    </key>
+
+    <key name="layout-set-floating" type="as">
+      <default>['&lt;Shift&gt;&lt;Super&gt;v']</default>
+      <summary>Float the current workspace</summary>
+      <description>Put the current workspace into the floating layout, in which Tessera leaves it entirely to GNOME: windows are never moved, resized or un-maximized, new windows open wherever GNOME places them, and the per-window floating toggle does nothing there. If it is already floating, return it to the default layout mode. Other workspaces are unaffected.</description>
     </key>
 
     <key name="window-toggle-floating" type="as">
-      <default>['&lt;Shift&gt;&lt;Super&gt;v']</default>
+      <default>['&lt;Shift&gt;&lt;Super&gt;d']</default>
       <summary>Toggle floating for the focused window</summary>
+      <description>Pop the focused window out of its workspace's layout so it floats above the tiles (centered at floating-window-size), or return it to the layout. A per-window choice, independent of the workspace's layout mode; does nothing on a floating-layout workspace, where every window already floats.</description>
+    </key>
+
+    <key name="window-focus-left" type="as">
+      <default>['&lt;Control&gt;&lt;Super&gt;Left']</default>
+      <summary>Focus the window to the left</summary>
+      <description>Move keyboard focus to the window in that direction from the focused one, judged by where the windows actually are on screen, so it works for tiled and floating windows and across monitors. On a stacked workspace, left and right step through the tabs.</description>
+    </key>
+    <key name="window-focus-right" type="as">
+      <default>['&lt;Control&gt;&lt;Super&gt;Right']</default>
+      <summary>Focus the window to the right</summary>
+    </key>
+    <key name="window-focus-up" type="as">
+      <default>['&lt;Control&gt;&lt;Super&gt;Up']</default>
+      <summary>Focus the window above</summary>
+    </key>
+    <key name="window-focus-down" type="as">
+      <default>['&lt;Control&gt;&lt;Super&gt;Down']</default>
+      <summary>Focus the window below</summary>
+    </key>
+
+    <key name="window-swap-left" type="as">
+      <default>['&lt;Shift&gt;&lt;Control&gt;&lt;Super&gt;Left']</default>
+      <summary>Move the focused window left</summary>
+      <description>Swap the focused window with the tile in that direction; on a stacked workspace, move its tab one place along the tab row. Does nothing on a floating-layout workspace, for a floating window, or when nothing lies in that direction.</description>
+    </key>
+    <key name="window-swap-right" type="as">
+      <default>['&lt;Shift&gt;&lt;Control&gt;&lt;Super&gt;Right']</default>
+      <summary>Move the focused window right</summary>
+    </key>
+    <key name="window-swap-up" type="as">
+      <default>['&lt;Shift&gt;&lt;Control&gt;&lt;Super&gt;Up']</default>
+      <summary>Move the focused window up</summary>
+    </key>
+    <key name="window-swap-down" type="as">
+      <default>['&lt;Shift&gt;&lt;Control&gt;&lt;Super&gt;Down']</default>
+      <summary>Move the focused window down</summary>
     </key>
 
     <key name="window-toggle-maximize" type="as">

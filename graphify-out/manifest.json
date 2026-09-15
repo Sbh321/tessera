@@ -18,9 +18,9 @@
     "semantic_hash": "831ccd2fb154924ccbb0f2ff3d860d3b"
   },
   "lib/focusBorder.js": {
-    "mtime": 1789448771.985772,
-    "seen": 1789448778.520275,
-    "ast_hash": "3967897d3e5c12e7553f3db7e292bd01",
+    "mtime": 1789455760.3300374,
+    "seen": 1789455761.6587815,
+    "ast_hash": "5e51b9e13c2d5e10bd148116f8ea06ac",
     "semantic_hash": ""
   },
   "lib/fullscreenManager.js": {
@@ -36,10 +36,10 @@
     "semantic_hash": "8e5f7d91267a878acba7872693fb2536"
   },
   "lib/keybindingManager.js": {
-    "mtime": 1785256622.8686743,
-    "seen": 1789293346.1624756,
-    "ast_hash": "a0c42f3d2c4e6db79d02747c6707073c",
-    "semantic_hash": "a0c42f3d2c4e6db79d02747c6707073c"
+    "mtime": 1789454583.4869776,
+    "seen": 1789454751.2901068,
+    "ast_hash": "ef06fd06c1959392b7b917742e0cf4b2",
+    "semantic_hash": ""
   },
   "lib/launcher/actionProvider.js": {
     "mtime": 1785276572.4084122,
@@ -48,10 +48,10 @@
     "semantic_hash": "f140eb0c0832b28a612b4f6f92a96680"
   },
   "lib/launcher/actionRegistry.js": {
-    "mtime": 1785255759.4979587,
-    "seen": 1789293346.1624775,
-    "ast_hash": "4e482a59f377fab206f4f1ec283fbda7",
-    "semantic_hash": "4e482a59f377fab206f4f1ec283fbda7"
+    "mtime": 1789454583.4874897,
+    "seen": 1789454751.2901096,
+    "ast_hash": "2dd7fdc83d794d4e8601b0d714d73c12",
+    "semantic_hash": ""
   },
   "lib/launcher/appProvider.js": {
     "mtime": 1785276572.4082365,
@@ -228,33 +228,33 @@
     "semantic_hash": "5a8b27277a7a5f817e35bf388de023f4"
   },
   "lib/quickMenu.js": {
-    "mtime": 1789283153.8430476,
-    "seen": 1789293346.1624944,
-    "ast_hash": "09efcb9a407c05ea91b8f2ae7f44e268",
-    "semantic_hash": "09efcb9a407c05ea91b8f2ae7f44e268"
+    "mtime": 1789454593.789164,
+    "seen": 1789454751.2901354,
+    "ast_hash": "67aad97c2ec4bd718de72d95e49d79f6",
+    "semantic_hash": ""
   },
   "lib/settingsManager.js": {
-    "mtime": 1789323777.6182883,
-    "seen": 1789324554.2441978,
-    "ast_hash": "41d184ab8a13f0e8cde3c428ced4c159",
+    "mtime": 1789454583.4869106,
+    "seen": 1789454751.290136,
+    "ast_hash": "c2d832d4ccfe02b573f8cfe42d0b3e03",
     "semantic_hash": ""
   },
   "lib/tiling/layoutEngine.js": {
-    "mtime": 1784724648.3173916,
-    "seen": 1789293346.1624959,
-    "ast_hash": "7e5a6deb5ea296cea23a35279d91afe3",
-    "semantic_hash": "7e5a6deb5ea296cea23a35279d91afe3"
+    "mtime": 1789453259.0198975,
+    "seen": 1789453538.581547,
+    "ast_hash": "8f87fc5ee0cd6b4e739f7bdedbbec7ab",
+    "semantic_hash": ""
   },
   "lib/tiling/stackTabBar.js": {
-    "mtime": 1789365413.580411,
-    "seen": 1789365420.2650497,
-    "ast_hash": "8ce20a1292007dd84cbc0ac7e9d92510",
+    "mtime": 1789452880.9539404,
+    "seen": 1789453538.5815482,
+    "ast_hash": "22103dd3d73e3274d7b84bdc748d6724",
     "semantic_hash": ""
   },
   "lib/tiling/tilingManager.js": {
-    "mtime": 1789448771.9855576,
-    "seen": 1789448778.5203102,
-    "ast_hash": "eb0dcfdcddef938df45ce72f471ccd9a",
+    "mtime": 1789455760.330372,
+    "seen": 1789455761.658816,
+    "ast_hash": "29072854bbc7706f46784d35065d105b",
     "semantic_hash": ""
   },
   "lib/tiling/windowFilter.js": {
@@ -288,9 +288,9 @@
     "semantic_hash": "194bb41ec2eb545f9967c9c75d96ca9f"
   },
   "prefs.js": {
-    "mtime": 1789378584.611171,
-    "seen": 1789378669.3770967,
-    "ast_hash": "329473518eb055cea0fdbfacd19371b2",
+    "mtime": 1789454583.4871569,
+    "seen": 1789454751.2901437,
+    "ast_hash": "2bacc2250b3013087872efe0c5ec890e",
     "semantic_hash": ""
   },
   "scripts/build.sh": {
@@ -330,9 +330,9 @@
     "semantic_hash": ""
   },
   "tests/run-tests.sh": {
-    "mtime": 1789447661.678473,
-    "seen": 1789447668.2587311,
-    "ast_hash": "7ac3ee5c3fce807c67cf6aea873489fe",
+    "mtime": 1789453160.2037203,
+    "seen": 1789453538.5815823,
+    "ast_hash": "9361538c29543daec4275a8b032b9e8b",
     "semantic_hash": ""
   },
   "tests/schema-validate.sh": {
@@ -354,15 +354,15 @@
     "semantic_hash": "82efb97a359f5c7290bf2513d14686be"
   },
   "README.md": {
-    "mtime": 1789378650.1088247,
-    "seen": 1789378669.3771272,
-    "ast_hash": "92d36d021a40c5231ee60f88441f247f",
+    "mtime": 1789454732.787834,
+    "seen": 1789454751.2901752,
+    "ast_hash": "947bdbc26f32f24ee14ff2deb36f6272",
     "semantic_hash": ""
   },
   "docs/ARCHITECTURE.md": {
-    "mtime": 1789448771.986024,
-    "seen": 1789448778.52035,
-    "ast_hash": "eb9ae8d2762beabd68501ef6a86757ca",
+    "mtime": 1789454732.7893224,
+    "seen": 1789454751.2901762,
+    "ast_hash": "da29bd536856825e49397a38da9f5199",
     "semantic_hash": ""
   },
   "docs/DEVELOPMENT.md": {
@@ -372,27 +372,27 @@
     "semantic_hash": ""
   },
   "docs/GNOME_NOTES.md": {
-    "mtime": 1789448771.986358,
-    "seen": 1789448778.5203516,
-    "ast_hash": "f2723e2081668678ea201c063d8ff8c3",
+    "mtime": 1789454732.7885475,
+    "seen": 1789454751.290178,
+    "ast_hash": "c19c690115d52a4343a6077ea486f6a1",
     "semantic_hash": ""
   },
   "docs/LAUNCHER.md": {
-    "mtime": 1789448188.3201127,
-    "seen": 1789448194.8865664,
-    "ast_hash": "de60b822507059daea6c2429d98dec53",
+    "mtime": 1789454732.788295,
+    "seen": 1789454751.2901788,
+    "ast_hash": "c8e7b4a14d81731f07df463f0d7ecf54",
     "semantic_hash": ""
   },
   "docs/ROADMAP.md": {
-    "mtime": 1789378650.1112447,
-    "seen": 1789378669.3771312,
-    "ast_hash": "eae0a17ce967d48b48a6ad6a362b4e9c",
+    "mtime": 1789454732.788394,
+    "seen": 1789454751.2901793,
+    "ast_hash": "4933149d82de4bdbb573f2ac96942fa7",
     "semantic_hash": ""
   },
   "tests/MANUAL_TESTS.md": {
-    "mtime": 1789448771.9862435,
-    "seen": 1789448778.5203538,
-    "ast_hash": "e8fdaf00dea0fd24cdbf55659210df44",
+    "mtime": 1789455760.3310595,
+    "seen": 1789455761.6588566,
+    "ast_hash": "0cb9134fade25677f83d21d456491698",
     "semantic_hash": ""
   },
   ".claude/settings.json": {
@@ -741,6 +741,12 @@
     "mtime": 1789448188.3047948,
     "seen": 1789448194.8865206,
     "ast_hash": "9f2e0a463424d1baf3141c586ab8a89f",
+    "semantic_hash": ""
+  },
+  "tests/layout-engine-test.js": {
+    "mtime": 1789453232.3972557,
+    "seen": 1789453538.5815787,
+    "ast_hash": "033c5de5a402e6b44e88c12f21d5ea86",
     "semantic_hash": ""
   }
 }

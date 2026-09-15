@@ -318,13 +318,16 @@ window on its own workspace* ON; it is off by default.
       terminal that honours the resize escape (GNOME Terminal with
       "allow window resize" on, or xterm), run
       `printf '\e[8;20;60t'`: the window snaps back to its tile at once.
-      Then resize the same window by dragging its edge: nothing fights
-      the drag, and it snaps back on release as before. Float a window
-      (Shift+Super+V) and resize it: it is left alone.
+      Then resize the same window by dragging the edge it shares with a
+      neighbour: nothing fights the drag, and on release the new size
+      STICKS (the neighbour takes the rest — see "Drag to swap and drag
+      to resize" below); dragging an edge on the screen border snaps
+      back. Float a window (Shift+Super+D) and resize it: it is left
+      alone.
 - [ ] While a brand-new window is still settling (first ~2s), grab its
       edge and resize it: the drag is smooth (not fighting you), and on
-      release it snaps back to its tile — same as resizing any tiled
-      window.
+      release it behaves like resizing any settled tiled window (a
+      shared edge sticks, a border edge snaps back).
 - [ ] Open 1 window: it fills the work area minus outer gaps. Open a
       2nd: 50/50 side-by-side. A 3rd (with the 2nd still focused):
       splits the second half vertically (dwindle spiral). Continue to
@@ -355,8 +358,17 @@ window on its own workspace* ON; it is off by default.
       selection from a terminal AI harness (Claude Code, opencode) that
       shells out to wl-copy: nothing flickers, no tile halves and
       returns, no window changes size, the focus border stays on the
-      terminal, and with "open each new window on its own workspace" ON
-      the view does not switch workspace. Repeat with a maximized window
+      terminal WITHOUT blinking off and on (watch the border itself,
+      not the window: a few-millisecond blink was the last residual
+      flicker), on a stacked workspace the active tab highlight does not
+      blink either, and with "open each new window on its own
+      workspace" ON the view does not switch workspace. What remains
+      and is not Tessera's: the app itself repainting its unfocused
+      state for the instant wl-copy holds keyboard focus (VS Code dims
+      its title bar and stops the cursor blink; GNOME Terminal's cursor
+      goes hollow) -- the compositor really does move focus to the
+      helper surface, and only the app can decide how loudly to show
+      that. Repeat with a maximized window
       on the workspace: it stays maximized. `wl-paste` likewise.
 - [ ] Minimize a tiled window: its neighbors reclaim the space. Restore:
       it returns to the *exact slot* it left, even if other windows were
@@ -377,8 +389,10 @@ window on its own workspace* ON; it is off by default.
       maximize on a *different* workspace is untouched. A **true
       fullscreen** window is deliberately left alone — opening an app does
       not kick it out of fullscreen (a fullscreen video keeps playing).
-- [ ] Drag-move a tiled window and release: it snaps back into its slot
-      (grab-op-end).
+- [ ] Drag-move a tiled window and release it over empty space, over
+      the panel, or back over its own tile: it snaps back into its slot
+      (grab-op-end). Released over ANOTHER tile it swaps with that
+      window — see "Drag to swap and drag to resize" below.
 - [ ] Panel/dock avoidance: tiles never underlap the top panel or Ubuntu
       Dock (work area, not raw monitor geometry).
 - [ ] Gap settings in Preferences apply live; 0/0 gaps produce perfectly
@@ -387,6 +401,49 @@ window on its own workspace* ON; it is off by default.
 - [ ] Disable tiling in Preferences: windows stay where they are and are
       never repositioned again; re-enable: layout reasserts.
 
+## Layout modes: default and per workspace
+
+- [ ] **Default layout in Preferences.** Tiling page → "Default layout"
+      combo offers tiled / stacked / floating. With several workspaces
+      open, each holding 2+ windows, switch it to *stacked*: EVERY
+      workspace shows a tab bar (visit each one); switch to *floating*:
+      every tab bar goes and windows stay where they are, freely
+      movable everywhere; switch back to *tiled*: every workspace
+      retiles (any maximize released). A brand-new workspace (Super+0,
+      open two apps) starts in whatever the default is.
+- [ ] **Default layout in the panel menu.** Enable the quick menu; its
+      Overview tab has a "Layout" row with a Tile | Stack | Float
+      segmented control. The selected segment matches the Preferences
+      combo, changes live when the combo (or the launcher) changes it,
+      and clicking a segment applies to every workspace exactly as
+      above. With "Window management" off the row is greyed out.
+- [ ] **Changing the default drops per-workspace choices.** Default
+      tiled; stack workspace 2 with Shift+Super+S and float workspace 3
+      with Shift+Super+V. Set the default to stacked: workspaces 2 AND 3
+      are now stacked like everyone else (3 is no longer floating). Set
+      it back to tiled: all tiled — the earlier per-workspace choices
+      do not come back.
+- [ ] **Per-workspace keys set a mode, and return to the default.**
+      Default tiled, workspace with 2+ windows: Shift+Super+S stacks it
+      (tab bar), Shift+Super+S again returns it to tiled (the default);
+      Shift+Super+V floats it, Shift+Super+V again → tiled;
+      Shift+Super+S then Shift+Super+V → floating (direct switch, no
+      intermediate tiling), then Shift+Super+T → tiled; Shift+Super+T
+      on an already-tiled workspace: no-op (it IS the default). Now set
+      the default to stacked: Shift+Super+T tiles just this workspace,
+      Shift+Super+T again re-stacks it (back to the default).
+- [ ] Launcher: "tile workspace", "stack", "float workspace" find the
+      three per-workspace actions; each subtitle names the workspace's
+      current mode and, for the mode it is already in, says it will
+      return to the default. "default layout" cycles the global mode
+      tiled → stacked → floating → tiled, and the subtitle shows the
+      current one.
+- [ ] The Keys tab of the quick menu and Preferences → Keybindings →
+      Layout list Shift+Super+T / S / V as Tile / Stack / Float this
+      workspace, and Shift+Super+D as the per-window float toggle; the
+      Focus Window and Move Window in Layout groups list the Ctrl+Super
+      and Ctrl+Shift+Super arrow bindings.
+
 ## Stacked layout (Shift+Super+S)
 
 - [ ] Shift+Super+S on a tiled workspace with 2+ windows: all tiled
@@ -394,12 +451,15 @@ window on its own workspace* ON; it is off by default.
       per window, icons + titles); the focused window is visible.
       Pressing again restores the tiled arrangement the workspace had
       before stacking.
-- [ ] **Shift+Super+S needs at least two windows.** On an empty
-      workspace and on a workspace with a single window, pressing it is
-      a clean no-op: no tab bar, no mode change (open a second window
-      afterwards to confirm the workspace is still tiled), no errors in
-      the journal. One normal window plus a floating dialog is still a
-      no-op — dialogs are not layout members and don't count.
+- [ ] **A stacked workspace with fewer than two windows lays out as
+      tiled but stays stacked.** On an empty workspace and on a
+      workspace with a single window, press Shift+Super+S: no tab bar
+      appears and nothing moves (a lone window keeps the full area),
+      no errors in the journal — but the mode IS set: open a second
+      window and the tab bar appears at once with both tabs. One
+      normal window plus a floating dialog behaves the same (dialogs
+      are not layout members and don't count). Shift+Super+S again on
+      that single-window workspace returns it to the default silently.
 - [ ] Open a window *while stacked* (a tab appears), then toggle stacked
       off: the new window sits next to the window that was focused when
       it opened, everything else in its prior slot.
@@ -410,17 +470,16 @@ window on its own workspace* ON; it is off by default.
 - [ ] Opening a window on a stacked workspace adds a tab immediately;
       closing one (active or inactive) removes its tab and leaves a
       valid state while 2+ windows remain.
-- [ ] **Dropping to one window auto-exits stacked mode.** On a stacked
-      workspace with exactly two windows: close one — the tab bar
-      disappears and the survivor immediately retiles to the full work
-      area (minus gaps), no one-tab bar left behind. Repeat by moving a
-      window away instead (Shift+Super+N and Shift+Super+Left/Right):
-      same result. Re-stacking afterwards requires pressing
-      Shift+Super+S again once 2+ windows are present — the mode does
-      not come back on its own.
-- [ ] **Minimize does NOT auto-exit stacked mode.** On a stacked
-      workspace with two windows, minimize one: the workspace stays
-      stacked (one tab remains). Restore it: both tabs return.
+- [ ] **Dropping to one window hides the stack, but keeps the mode.**
+      On a stacked workspace with exactly two windows: close one — the
+      tab bar disappears and the survivor immediately retiles to the
+      full work area (minus gaps), no one-tab bar left behind. Repeat by
+      moving a window away instead (Shift+Super+N and
+      Shift+Super+Left/Right): same result. Open another window on it:
+      the tab bar comes straight back (the workspace was still stacked).
+- [ ] **Minimize does not hide the stack.** On a stacked workspace with
+      two windows, minimize one: the workspace stays stacked (one tab
+      remains). Restore it: both tabs return.
 - [ ] **Maximize/fullscreen a stacked window hides the whole tab bar**
       (not just that window's tab), like fullscreen does — the tab bar
       must not float over the maximized/fullscreen window. The workspace
@@ -439,14 +498,53 @@ window on its own workspace* ON; it is off by default.
       released first, then the workspace toggles stacked/tiled on the real
       window set. A true-fullscreen window is left alone (the mode flag
       still toggles; the visible effect resumes when fullscreen ends).
-- [ ] Many windows (15+) on a stacked workspace: tabs KEEP their full
-      titles (never "…") and the bar scrolls horizontally with NO
+- [ ] **Tabs are uniform, browser-style.** With two windows, one with
+      a very long title (a browser on a long page) and one short
+      (a terminal): both tabs are the SAME width, the long title is
+      ellipsized with "…", and neither tab stretches to half the
+      screen — they sit left-packed at a capped width with empty bar to
+      the right. Add windows: every tab shrinks equally until a minimum
+      width, then the bar starts scrolling.
+- [ ] Many windows (15+) on a stacked workspace: tabs stop shrinking at
+      their minimum width and the bar scrolls horizontally with NO
       scrollbar; instead the right edge fades while more tabs lie beyond
       it, and the left edge fades once scrolled. The windows below never
       move. The mouse wheel over the bar scrolls it (vertical wheel
       included); Alt+Tab or clicking to a window whose tab is off the
-      edge scrolls that tab into view. With few windows the tabs still
-      share the bar equally, as before.
+      edge scrolls that tab into view.
+- [ ] **Close button.** Every tab has a small ✕ at its right end: faint
+      on inactive tabs, clear on the active tab and on any hovered tab,
+      highlighted when the pointer is on the ✕ itself. Clicking it
+      closes that window (and ONLY closes — the tab is not activated
+      first, so closing an inactive tab does not change focus). Close an
+      app that prompts before closing (a terminal with a running job, an
+      editor with unsaved changes): the prompt appears and the tab stays
+      until the window really goes.
+- [ ] **Middle click closes a tab.** Middle-click an inactive tab: its
+      window closes, focus does not move first. On a touchpad with
+      tap-to-click on, a three-finger TAP on a tab does the same (it is
+      a middle click); a three-finger physical click on a clickpad also
+      closes under the "clickfinger" click method (Settings → Mouse &
+      Touchpad has no switch for this; it is libinput's default on
+      Apple-style pads — on a pad using button areas, a three-finger
+      click may read as a left or right click instead, which must then
+      behave as that button: activate, or nothing).
+- [ ] **Attention tint.** On a stacked workspace, focus one window and
+      have another request attention (e.g. from the focused terminal run
+      `sleep 3; notify-send x` and in that time switch focus to the
+      other window — or simpler, a chat app receiving a message): the
+      inactive window's tab turns a warm orange. Activating it clears
+      the tint.
+- [ ] **Keyboard tab cycling and reordering.** On a stacked workspace,
+      Ctrl+Super+Right / Ctrl+Super+Left move focus to the next /
+      previous tab and raise that window; Ctrl+Shift+Super+Right /
+      Ctrl+Shift+Super+Left move the FOCUSED tab one place along the
+      row (the bar reorders live; the window keeps focus). At the ends
+      of the row: focus falls back to the spatial search (with a floating
+      window off to the side it goes there; with nothing, no-op), and
+      a move does nothing. Leave stacked mode: the reordered tab order
+      is also the new tree order (the window that was moved left now
+      tiles in the earlier position).
 - [ ] **Notifications draw above the tab bar, not behind it.** On a
       stacked workspace, trigger a notification banner (a chat app
       message, a low-battery warning, `notify-send "test"` from a
@@ -498,12 +596,12 @@ window on its own workspace* ON; it is off by default.
       (Nothing to do here on this version; noted so the private-API reach
       is on the checklist.)
 
-## Per-window floating (Shift+Super+V)
+## Per-window floating (Shift+Super+D)
 
-- [ ] With two or more tiled windows, focus one and press Shift+Super+V:
+- [ ] With two or more tiled windows, focus one and press Shift+Super+D:
       it pops out, resizes to a centered rectangle (~65% of the work area
       by default), and floats above the others, which reflow to fill its
-      old slot. Press Shift+Super+V again: it re-joins the tiled layout.
+      old slot. Press Shift+Super+D again: it re-joins the tiled layout.
 - [ ] The floated window is freely movable and resizable with the mouse,
       and the tiler never snaps it back (unlike a tiled window, which
       snaps back on grab-op-end).
@@ -523,7 +621,7 @@ window on its own workspace* ON; it is off by default.
       counts as an exclusive occupant; only a stray maximized dialog/popup
       does not.)
 - [ ] **Dialogs/utilities are unaffected.** Focus a dialog or other
-      already-floating window and press Shift+Super+V: nothing happens
+      already-floating window and press Shift+Super+D: nothing happens
       (there is no layout membership to toggle).
 - [ ] **Floating survives locking the screen.** Float a window, lock and
       unlock: it must still be floating (not silently re-tiled) — same
@@ -534,7 +632,155 @@ window on its own workspace* ON; it is off by default.
 - [ ] Float toggle interacts cleanly with stacked mode: floating a window
       on a stacked workspace removes it from the tab bar; unfloating adds
       it back. Dropping a stacked workspace to one non-floated member via
-      float still auto-exits stacked (float ends membership like a move).
+      float hides the tab bar (float ends membership like a move) and
+      unfloating brings it back.
+- [ ] **Inert on a floating-layout workspace.** Switch a workspace to the
+      floating layout (Shift+Super+V) and press Shift+Super+D on a
+      window there: nothing happens (no resize, no recentre, no journal
+      error). Switch the workspace back: a window that was user-floated
+      BEFORE entering the floating layout is still user-floated (stays
+      out of the tiles); one that was not, tiles.
+
+## Floating layout (Shift+Super+V)
+
+- [ ] On a tiled workspace with 2+ windows press Shift+Super+V: nothing
+      moves at that instant (windows keep their tiled geometry) but the
+      workspace is now GNOME's: drag a window anywhere and release — it
+      STAYS there; resize it — it stays; maximize it (Shift+Super+F or
+      the title bar) — it stays maximized and nothing else reflows.
+      Press Shift+Super+V again (or Shift+Super+T): any maximize is
+      released and the tiled arrangement comes back exactly (same
+      slots, same ratios).
+- [ ] **Apps open as GNOME opens them.** On a floating workspace launch
+      a browser or Files (apps that open maximized): it opens and STAYS
+      maximized, and an already-maximized window on the workspace is
+      NOT un-maximized by the new app. Open a second normal app: it
+      opens at GNOME's default placement, not tiled. Switch the
+      workspace back to tiled: both new windows join the layout — the
+      one opened while a window was focused sits next to that window
+      (the tree kept reconciling underneath).
+- [ ] **Other workspaces keep tiling.** With workspace 2 floating, open
+      and close windows on workspace 1 and 3: they tile as usual, and
+      a window moved from the floating workspace to a tiled one
+      (Shift+Super+N) tiles on arrival; one moved INTO the floating
+      workspace is left where GNOME puts it.
+- [ ] **One mode at a time.** On a stacked workspace press
+      Shift+Super+V: the tab bar disappears and the windows stay where
+      they are (sharing the content area) — the workspace is floating,
+      not stacked. Press Shift+Super+S on that floating workspace (2+
+      windows): it goes straight to stacked (tab bar back). On a
+      floating workspace with a single window, Shift+Super+S makes it
+      stacked (no visible change until a second window opens; it must
+      not become tiled).
+- [ ] **No tile guard.** On a floating workspace, run
+      `printf '\e[8;20;60t'` in a terminal that honours it: the window
+      resizes itself and is NOT put back. Move a tiled window from
+      another workspace into the floating one and resize it: also left
+      alone (no stale tile is enforced).
+- [ ] **Directional keys still work.** On a floating workspace with
+      windows scattered, Ctrl+Super+Arrows move focus to the window in
+      that direction on screen (overlapping windows included);
+      Ctrl+Shift+Super+Arrows do nothing (no layout to move in).
+- [ ] **Fullscreen composition.** With a Super+F keybind-fullscreen
+      window on the workspace, Shift+Super+V leaves that fullscreen
+      first (same as Shift+Super+S and Shift+Super+T); an app's OWN
+      fullscreen (a video) is left alone.
+- [ ] **Survives lock, dies with its workspace.** Floating survives
+      Super+L lock/unlock (same module-scoped guarantee as stacked).
+      Empty the floating workspace so GNOME removes it: no journal
+      errors; a new workspace later in that position is tiled.
+- [ ] Disable window management in Preferences: Shift+Super+T/S/V are
+      no-ops (nothing to lay out). Re-enable: a workspace that was
+      floating is still floating.
+
+## Directional focus and movement (Ctrl+Super+Arrows, Ctrl+Shift+Super+Arrows)
+
+- [ ] With three tiled windows (A left half, B top-right, C
+      bottom-right): from A, Ctrl+Super+Right focuses B (the first in
+      tree order on an exact tie); from B, Down focuses C, Left focuses
+      A; from C, Up focuses B, Left focuses A. From A, Up and Down do
+      NOTHING (no tile reaches past A's top/bottom edge — it must not
+      jump to B or C); from C, Right does nothing. The focus border
+      follows each move; no window is raised out of order.
+- [ ] Focus reaches floating windows: float one window (Shift+Super+D)
+      and drag it to the far right over the tiles: from the rightmost
+      tile, Ctrl+Super+Right focuses the floater (it extends further
+      right); from the floater, Left focuses the tile it overlaps.
+- [ ] Dialogs: with a file chooser open over its parent, Ctrl+Super+Left
+      from the parent behaves as from the parent's tile; focusing a
+      window brings its own dialog with it (GNOME's attached-dialog
+      behaviour, unchanged).
+- [ ] **Multi-monitor** (if available): from the rightmost tile on the
+      left monitor, Ctrl+Super+Right focuses the nearest window on the
+      right monitor; Ctrl+Shift+Super+Right does nothing (moves stay
+      within a bucket).
+- [ ] **Move (swap).** From A (left half), Ctrl+Shift+Super+Right: A and
+      B swap tiles — A is now top-right, B is the left half, C unchanged,
+      A keeps focus. Press Right again: nothing (no tile right of A).
+      Press Down: A and C swap. Repeated presses walk the focused window
+      around the layout; every intermediate layout is gap-consistent
+      with no flicker.
+- [ ] Swapping preserves ratios: resize a split by dragging (below),
+      then swap the two windows across it — the split keeps its ratio,
+      only the occupants change.
+- [ ] A user-floated window, a maximized window, and a window on a
+      floating-layout workspace: Ctrl+Shift+Super+Arrows do nothing, no
+      journal errors.
+- [ ] With tiling disabled in Preferences, Ctrl+Super+Arrows still move
+      focus spatially between windows; Ctrl+Shift+Super+Arrows do
+      nothing.
+- [ ] No GNOME shortcut fires alongside: Ctrl+Super+Up must not maximize
+      (that is Super+Up), Ctrl+Shift+Super+Up must not move the window
+      to another monitor (Shift+Super+Up), and Ctrl+Super+Left/Right
+      must not switch workspaces (Super+Alt+Left/Right does).
+
+## Drag to swap and drag to resize
+
+- [ ] **Swap.** With three tiled windows, drag A by its title bar and
+      drop it with the POINTER over B's tile: A and B exchange tiles
+      (the rest unchanged); A keeps focus. Drop it over C: A and C swap.
+      Drop it over its own tile, over the top panel, over the dock or
+      over a gap: it snaps back. Works from any tile to any other,
+      including into the big tile.
+- [ ] Drag-swap on a stacked workspace: drag a stacked window and release
+      it anywhere — it snaps back into the content area (no swap; tabs
+      unchanged). On a floating-layout workspace it simply stays where
+      dropped.
+- [ ] Drag a tiled window onto ANOTHER monitor (if available) and drop
+      it over a tile there: it joins that monitor's layout at the
+      spiral tail as before (no cross-monitor swap); the tile it was
+      dropped on does not move.
+- [ ] Keyboard move (Alt+F7, arrows, Enter) of a tiled window so that its
+      centre lands on another tile: they swap; landed over nothing: it
+      snaps back.
+- [ ] **Resize.** With A (left) and B (right), drag A's right edge to
+      about 70% of the width: on release A stays 70% wide and B takes
+      the remaining 30% (gap intact). Drag B's LEFT edge back to 50%:
+      both follow. Drag A's LEFT edge (the screen border): it snaps
+      back. Open a third window (splits the focused tile): the 70/30
+      root split is preserved.
+- [ ] Nested: with B over C on the right, drag B's bottom edge down: B
+      grows, C shrinks; drag B's left edge: both B and C widen together
+      (the root split moved). Drag a corner (two edges at once): both
+      splits update.
+- [ ] Limits: drag A's right edge almost to the screen edge: B stays at
+      least ~10% wide (the ratio is clamped, so B never disappears);
+      the same from the other side.
+- [ ] Axis flip by design: on a 1000×500-ish area with B over C on the
+      right, widen the right column past square (drag B's left edge far
+      left): B and C reflow side by side — the split's axis follows the
+      area's aspect, as it always has across monitor changes. Drag back:
+      they stack again.
+- [ ] Ratios and a resized window survive minimize/restore of a sibling
+      (the hidden leaf keeps its slot; ratios untouched), a workspace
+      switch and back, and the overview. Closing the resized window's
+      sibling gives the survivor everything (the split is gone with it).
+- [ ] A window whose minimum size is larger than the tile you drag it
+      to: the drag stops at the app's minimum, release keeps that size
+      (Mutter's constraint wins, as before), no fight, no journal
+      errors.
+- [ ] A user-floated window (Shift+Super+D): drag-move and resize do
+      what GNOME does, never a swap, never a ratio change.
 
 ## Toggle maximize (Shift+Super+F)
 
@@ -566,11 +812,12 @@ window on its own workspace* ON; it is off by default.
 - [ ] **A new app window leaves our fullscreen.** Super+F a window, then
       launch another app onto the same workspace: the fullscreen window
       drops back out so the new one is visible.
-- [ ] **Toggling stacked leaves our fullscreen.** With a window in Super+F
-      fullscreen on a workspace that has 2+ windows, press Shift+Super+S:
-      the window leaves fullscreen and the stacked layout takes effect
-      (rather than the toggle doing nothing behind the fullscreen). With
-      tiling disabled, Shift+Super+S does NOT disturb the fullscreen.
+- [ ] **Changing the layout mode leaves our fullscreen.** With a window
+      in Super+F fullscreen on a workspace that has 2+ windows, press
+      Shift+Super+S: the window leaves fullscreen and the stacked layout
+      takes effect (rather than the change doing nothing behind the
+      fullscreen); Shift+Super+T and Shift+Super+V likewise. With window
+      management disabled, none of them disturbs the fullscreen.
 - [ ] **An app's OWN fullscreen is never force-exited.** Play a video and
       let the PLAYER go fullscreen (its own button, not Super+F): opening a
       new app or pressing Escape must NOT be intercepted by the extension —

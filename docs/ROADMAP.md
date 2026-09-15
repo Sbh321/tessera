@@ -41,6 +41,33 @@ not planned.
 - **Stacked (tabbed) layout mode** per workspace (`Shift+Super+S`):
   Hyprland's stacked layout, with a per-monitor tab bar (live titles,
   icons, click-to-raise), implemented as a pluggable layout strategy.
+  The bar later gained browser-style uniform tabs (equal, capped widths
+  with ellipsized titles), a per-tab close button, middle-click /
+  three-finger-tap close, an attention tint, and keyboard tab cycling
+  and reordering through the directional bindings below.
+- **Floating layout mode** per workspace (`Shift+Super+V`): the third
+  mode, in which the tiler leaves the workspace entirely to GNOME
+  (stock placement, maximize, free move/resize) while other workspaces
+  keep their layout. The bucket tree is kept reconciled so leaving it
+  restores the layout. Per-window floating moved to `Shift+Super+D`.
+- **A global default layout** (`layout-mode`: tiled / stacked /
+  floating) in Preferences, the panel menu (a Tile | Stack | Float row)
+  and the launcher: every workspace follows it and new workspaces start
+  in it; changing it re-lays out every workspace at once. The three mode
+  keys (`Shift+Super+T/S/V`) set a single workspace's mode, or return it
+  to the default when pressed for the mode it is already in. A stacked
+  workspace with one window now lays out as tiled while keeping its
+  mode (it used to auto-exit stacked, which a stacked default made
+  wrong).
+- **Directional focus and movement** (`Ctrl+Super+Arrows`,
+  `Ctrl+Shift+Super+Arrows`): Hyprland's `movefocus`/`movewindow` on a
+  pure spatial neighbour search (`layoutEngine.findNeighbor`), across
+  tiles, floating windows and monitors; tab cycling/reordering on
+  stacked workspaces.
+- **Drag-to-swap and drag-to-resize** for tiled windows: a window
+  dropped on another tile swaps with it; a dragged edge becomes the
+  split's ratio (`LayoutTree.swap` / `resizeLeaf`, per-split ratios on
+  the tree). Drops over nothing and border edges still snap back.
 - **Top panel auto-hide** (`lib/panelAutoHide.js`, off by default):
   dock-style slide-away for the GNOME top panel with the strut released
   so windows reclaim the space; revealed on top-edge hover, held Super,
@@ -85,16 +112,21 @@ not planned.
 - **Tiling follow-ups** (each anticipated by the current architecture,
   none requiring restructuring — see the tiling section of
   [`ARCHITECTURE.md`](ARCHITECTURE.md)):
-  - Directional focus keybindings (`Super+H/J/K/L`-style).
-  - Drag-to-swap tiled windows (currently a drag snaps back on
-    `grab-op-end`; swapping is a leaf swap on the now-existing
-    `LayoutTree`, plus target-slot hit testing).
-  - Adjustable split ratios and node swaps — per-node state on the
-    `LayoutTree` (the tree itself shipped with focus-aware insertion;
-    what remains is exposing interactive operations on it).
+  - Keyboard resize (`resizeactive`-style grow/shrink bindings) and a
+    split-axis override (`togglesplit`) — the per-split ratio and the
+    recorded axis already exist; both need only a keybinding each and a
+    small `LayoutTree` entry point. Deferred to keep the new directional
+    bindings to two modifier sets.
   - More layouts (master, grid, spiral variants) — pure additions to
     `lib/tiling/layoutEngine.js`.
-  - Per-workspace layout choice and smart gaps as settings.
+  - Smart gaps (no gaps with a single window) as a setting.
+  - Stacked tab bar extras: drag-to-reorder tabs with the mouse, a
+    right-click tab menu (close, float, move to workspace), and a
+    hover tooltip for ellipsized titles. Keyboard reordering already
+    exists via `Ctrl+Shift+Super+Left/Right`.
+  - Cross-monitor `movewindow`: today a directional move stays within
+    its bucket; moving a window onto the neighbouring monitor's tile in
+    that direction is a workspace/monitor move plus an anchored insert.
 - **Launcher follow-ups** (each a new provider or one new field — see the
   "Future work" section of [`LAUNCHER.md`](LAUNCHER.md), which explains
   why none of them need architectural changes):

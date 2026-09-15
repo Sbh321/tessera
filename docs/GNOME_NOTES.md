@@ -311,6 +311,23 @@ but Ubuntu Dock's `app-shift-hotkey-1..10` grabs exactly those combos
 `hot-keys = false` master switch already described below, so the shift
 variants needed no additional handling.
 
+The layout and directional bindings added later were checked against
+the same five schemas (`org.gnome.desktop.wm.keybindings`,
+`org.gnome.mutter.keybindings`, `org.gnome.mutter.wayland.keybindings`,
+`org.gnome.shell.keybindings`, `org.gnome.settings-daemon.plugins.media-keys`)
+plus Ubuntu Dock and the preinstalled-but-disabled Tiling Assistant, and
+collide with nothing, so they clear nothing:
+
+| Combo | Tessera binding | Why not the obvious alternative |
+|---|---|---|
+| `Shift+Super+T` / `S` / `V` | tile / stack / float this workspace | `Super+T` is Ubuntu's terminal media-key, `Super+S` quick settings, `Super+V` the message tray; every Shift variant is free |
+| `Shift+Super+D` | toggle floating for the focused window | `Super+D` is `show-desktop`; the Shift variant is free. Chosen over `Shift+Super+W` because a dropped Shift would then hit `Super+W` = close window, whereas a dropped Shift here only shows the desktop |
+| `Ctrl+Super+Left/Right/Up/Down` | focus window in direction | `Super+H/J/K/L` (Hyprland/i3 habit): `Super+H` is `minimize`, `Super+L` is `screensaver` (lock) — taking the lock key is not acceptable. `Super+Up/Down` are `maximize`/`unmaximize`; `Super+Alt+Left/Right` is the third `switch-to-workspace-left/right` binding and `Super+Alt+Up/Down` is `shift-overview-up/down` |
+| `Ctrl+Shift+Super+Left/Right/Up/Down` | move window in direction | `Shift+Super+Up/Down` are `move-to-monitor-up/down` (the Left/Right pair is already Tessera's insert-new-workspace); `Ctrl+Alt+Left/Right` is another `switch-to-workspace` binding |
+
+Note `Super+Ctrl+1..9` *is* taken (`open-new-window-application-N`),
+which is why the directional set uses arrows rather than numbers.
+
 The Ubuntu Dock row is the important lesson: Ubuntu's always-on dock is
 the preinstalled `ubuntu-dock@ubuntu.com` extension, a fork of Dash to
 Dock that shares its `org.gnome.shell.extensions.dash-to-dock` schema.
@@ -454,7 +471,12 @@ before use. All of it is public API — the tiling subsystem contains
   struts — never raw monitor geometry).
 - Ordering: `Meta.Window.get_stable_sequence()` — monotonically
   increasing creation id, the stateless substitute for a tiling tree.
-- Signals: `Meta.Display` `window-created`, `grab-op-end`,
+- Signals: `Meta.Display` `window-created`, `grab-op-begin`,
+  `grab-op-end` (both `(display, window, op)` on Mutter 14 — the
+  older four-argument form with a screen is long gone; `op` is a
+  `Meta.GrabOp`, whose members `Object.keys(Meta.GrabOp)` enumerates
+  under GJS, which is how the tiler classifies move vs resize ops by
+  name without hard-coding the flag arithmetic),
   `workareas-changed`, `window-entered-monitor`, `notify::focus-window`;
   `Meta.Window` `unmanaged`, `shown`, `workspace-changed`,
   `notify::minimized`, `notify::fullscreen`,
@@ -509,8 +531,21 @@ ARCHITECTURE.md):
 - `move_resize_frame` is not animated by GNOME; layout changes are
   instantaneous. Animating would require per-window actor tweens
   (future work, listed in the settings outlook).
-- User drag-moves of tiled windows snap back on `grab-op-end` (v1
-  behavior; drag-to-swap needs a mutable tree).
+- User drag-moves of tiled windows snap back on `grab-op-end` unless
+  dropped over another tile (then the two swap); drag-resizes keep the
+  new size where the edge is a split boundary (the split's ratio
+  changes) and snap back on a work-area border. Both read the drop
+  point / new frame on `grab-op-end` and only touch the layout tree;
+  the ordinary relayout applies the result.
+- Middle click on a stacked tab closes its window. On a touchpad,
+  libinput reports a three-finger *tap* as a middle button (with
+  tap-to-click on) and a three-finger *click* as middle under the
+  `clickfinger` click method (the default for Apple-style clickpads;
+  under `button-areas` a three-finger click is whatever area the
+  fingers are in), so "three-finger tap to close a tab" is that same
+  middle click — nothing gesture-specific is implemented.
+  `St.Button` needs `button_mask: ONE | TWO` to report it; the
+  `clicked` signal then carries the button number.
 
 ## Focus border: APIs and the workspace-switch-animation problem
 

@@ -91,8 +91,10 @@ lib/tiling/windowFilter.js Pure classification: layout membership
                            override) vs current tileability (adds
                            transient states like minimized).
 lib/tiling/layoutEngine.js Pure layout structure and geometry: the
-                           LayoutTree dwindle split tree and the stacked
-                           geometry split. No GNOME imports.
+                           LayoutTree dwindle split tree (per-split
+                           ratios, leaf swaps, edge-driven resize), the
+                           directional neighbour search, and the stacked
+                           geometry split. No GNOME imports; unit-tested.
 lib/tiling/stackTabBar.js  St tab-bar actor for stacked workspaces.
                            Presentational only.
 lib/tiling/tilingManager.js Orchestrator: signals, per-workspace mode,
@@ -172,16 +174,23 @@ Super+1..9 / Super+Left/Right --(Main.wm keybinding dispatch)--> KeybindingManag
 
 Shift+Super+1..9 / Shift+Super+Left/Right --(Main.wm keybinding dispatch)--> KeybindingManager handler --> WindowMover --> Main.wm.actionMoveWindow() / Main.wm.insertWorkspace()
 
-Shift+Super+S --(Main.wm keybinding dispatch)--> KeybindingManager handler --> TilingManager.toggleStacked()
+Shift+Super+T / S / V --(Main.wm keybinding dispatch)--> KeybindingManager handler --> FullscreenManager.exitWorkspace(active) + TilingManager.toggleWorkspaceMode(tiled|stacked|floating)
 
-Shift+Super+V --(Main.wm keybinding dispatch)--> KeybindingManager handler --> TilingManager.toggleFloating()
+this-extension's GSettings --(changed::layout-mode; Preferences combo / quick-menu Tile|Stack|Float row / launcher)--> TilingManager._onGlobalModeChanged() --> every workspace follows, relayout all
+
+Shift+Super+D --(Main.wm keybinding dispatch)--> KeybindingManager handler --> TilingManager.toggleFloating()
+
+Ctrl+Super+Arrows --(Main.wm keybinding dispatch)--> KeybindingManager handler --> TilingManager.focusDirection() --> layoutEngine.findNeighbor() --> Main.activateWindow()
+
+Ctrl+Shift+Super+Arrows --(Main.wm keybinding dispatch)--> KeybindingManager handler --> TilingManager.swapDirection() --> LayoutTree.swap() --> relayout
+
+global.display --(grab-op-end)--> TilingManager --> LayoutTree.swap() (dropped on a tile) / LayoutTree.resizeLeaf() (edge dragged) --> relayout
 
 Shift+Super+F --(Main.wm keybinding dispatch)--> KeybindingManager handler --> WindowMover.toggleFocusedMaximize()
 
 Super+F --(Main.wm keybinding dispatch)--> KeybindingManager handler --> FullscreenManager.toggleFocused()
 Escape (grabbed only while a keybind-fullscreened window is focused) --> FullscreenManager --> Meta.Window.unmake_fullscreen()
 global.display --(window-created)--> FullscreenManager (a new app leaves our fullscreens on its workspace)
-Shift+Super+S --(same dispatch)--> KeybindingManager handler --> FullscreenManager.exitWorkspace(active) + TilingManager.toggleStacked()
 
 window/workspace/monitor events --> TilingManager (debounced) --> layoutEngine (pure) --> Meta.Window.move_resize_frame()
                                                               --> StackTabBar (stacked workspaces only)
@@ -375,13 +384,14 @@ that require state and signals, so it is its own module:
 - **Opening a new application window** leaves it, so the new window isn't
   hidden behind a fullscreen one — the same intent as the tiler's
   `_exitMaximized` for maximize, driven off `window-created`.
-- **Toggling stacked mode** (`Shift+Super+S`) on the fullscreen window's
-  workspace leaves it, so the layout toggle actually takes effect instead
-  of staying hidden behind the fullscreen — the `exitWorkspace()` entry
-  point, composed with `TilingManager.toggleStacked()` in
-  `KeybindingManager` (the two modules stay mutually unaware; the
-  dispatcher, which already holds both, clears fullscreen exactly as
-  `toggleStacked` clears maximize, and only when tiling is enabled).
+- **Changing the workspace's layout mode** (`Shift+Super+T/S/V`) on the
+  fullscreen window's workspace leaves it, so the mode change actually
+  takes effect instead of staying hidden behind the fullscreen — the
+  `exitWorkspace()` entry point, composed with
+  `TilingManager.toggleWorkspaceMode()` in `KeybindingManager` (the two
+  modules stay mutually unaware; the dispatcher, which already holds
+  both, clears fullscreen exactly as the tiler clears maximize, and only
+  when tiling is enabled).
 - **Escape**, while such a window is focused, leaves it.
 
 **The one decision that makes this safe: the module only ever touches
@@ -427,9 +437,12 @@ strict internal separation:
 ```
 windowFilter.js   isLayoutMember() / isTileable() — pure classification,
                   no state
-layoutEngine.js   LayoutTree (the dwindle split tree over opaque keys)
-                  and the stacked geometry split. Pure, zero GNOME
-                  imports, integer arithmetic.
+layoutEngine.js   LayoutTree (the dwindle split tree over opaque keys,
+                  with per-split ratios, leaf swaps and edge-driven
+                  resize), findNeighbor() (directional lookup) and the
+                  stacked geometry split. Pure, zero GNOME imports,
+                  integer arithmetic, unit-tested
+                  (tests/layout-engine-test.js).
 stackTabBar.js    presentational St actor; told what to display, never
                   computes or tracks anything itself
 tilingManager.js  the only stateful piece: signal lifecycles, per-
@@ -483,20 +496,32 @@ indexes reshuffle, so reconciliation rebuilds each bucket in creation
 order — same posture as the tab bars), and on `disable()`; an unmanaged
 window is purged eagerly from every tree and anchor record rather than
 waiting for the next pass, so no layout state ever outlives its
-`Meta.Window`. Remaining future work on this structure: interactive
-per-node operations (manual split ratios, node swaps) — the tree is now
-the natural place for them.
+`Meta.Window`. The interactive per-node operations the first tree
+version deferred now live on it too: `swap()` exchanges two leaves in
+place (directional movement, drag-to-swap, tab reordering), every split
+carries a `ratio` (0.5 until the user resizes) that `computeRects`
+honours, and `resizeLeaf()` maps a rectangle the user dragged a leaf to
+back onto the ratios of the splits its moved edges sit on — see
+"Directional focus and movement" and "Drag-to-swap and drag-to-resize"
+below.
 
 **Layout math is pure and integer.** `LayoutTree.computeRects()` chooses
 each split's axis at *compute* time from the aspect ratio of the area
 being split (wider than tall → side by side, else stacked vertically),
-so the same tree reflows correctly across monitor and work-area changes.
-All arithmetic is integer — the first child of a split is rounded, the
-second is defined as exactly the remainder — so there is no drift,
-overlap, or rounding gap at any depth or fractional scale,
-deterministically (verified by a standalone `gjs`/Node test over the
-pure engine, including bit-for-bit equivalence of anchorless insertion
-with the previous count-based strategy). The stacked layout needs no
+so the same tree reflows correctly across monitor and work-area changes
+— and, by the same rule, a split whose area the user resizes past
+square flips axis, exactly as Hyprland's dwindle does without
+`preserve_split`. All arithmetic is integer — the first child of a
+split gets `round(available × ratio)`, the second is defined as exactly
+the remainder — so there is no drift, overlap, or rounding gap at any
+depth or fractional scale, deterministically (verified by
+`tests/layout-engine-test.js`, a standalone `gjs`/Node test over the
+pure engine, including bit-for-bit equivalence of the 0.5-ratio default
+with the original 50/50 arithmetic). Each pass also records on every
+split the axis it chose and the area it split — `null` for a split it
+walked straight through because one side had no visible leaf — which is
+the only state `resizeLeaf()` needs to turn a dragged edge into a
+ratio. The stacked layout needs no
 structure — every window shares one content rectangle — so it stays a
 pure geometry function (`computeStackGeometry`).
 
@@ -573,7 +598,7 @@ smaller once it has a size) is consulted by every one of those gates.
 The transient cases (minimized, maximized) keep their leaf in the layout
 tree while floating, so they return to their exact slot. On top of all of those
 identity/state rules there is one *explicit* user override — a window
-toggled to float with Shift+Super+V (see "Per-window floating" below) —
+toggled to float with Shift+Super+D (see "Per-window floating" below) —
 which `windowFilter` treats as a non-member exactly like a dialog.
 
 **Exclusive occupants** (`isExclusiveOccupant`): a fullscreen window, or a
@@ -587,7 +612,7 @@ pointlessly, since it covers them anyway — most visible with the panel
 auto-hidden) and stops the tab bar from floating over a maximized window.
 Two explicit user actions override a *maximize* rather than hiding behind
 it — opening a new tiling app (`_onWindowCreated`) and toggling stacked
-mode (`toggleStacked`) both call `_exitMaximized` first, so the action
+mode (`toggleWorkspaceMode`) both call `_exitMaximized` first, so the action
 lands on the real window set. The **tiler** deliberately never
 force-exits *fullscreen* on either (a fullscreen video must not be
 interrupted by an unrelated app) — a fullscreen window still suspends the
@@ -606,45 +631,77 @@ tab-bar visibility" below). The bar is told its window list and the
 focused window; clicking a tab just calls `window.activate()` and the
 manager observes the resulting `notify::focus-window` like any other
 focus change — there is deliberately no local selected-tab state to
-drift. Tab order is the layout tree's in-order traversal — the same
-tree-order tabs Hyprland shows, which for sequentially opened windows is
-simply creation order; titles update per-tab via `connectObject` bound
-to the tab button so destruction disconnects automatically; on overflow
-the strip scrolls horizontally (the bar is an `St.ScrollView` with no
-scrollbar; edges with more tabs beyond them are faded, its height stays
-fixed so nothing below reflows), keeping the active tab in view and
-letting the wheel scroll it, rather than squeezing every title to an
-ellipsis as Hyprland's own bar does.
+drift. Closing follows the same rule: the tab's close button and a
+middle click on the tab (which is what libinput delivers for a
+three-finger touchpad tap or click) only call `Meta.Window.delete()`;
+the tab disappears when the manager sees the window go, never before,
+so an app that asks "save changes?" keeps its tab. Tab order is the
+layout tree's in-order traversal — the same tree-order tabs Hyprland
+shows, which for sequentially opened windows is simply creation order,
+and which `swapDirection` reorders in stacked mode; titles and the
+attention state (`demands-attention` / `urgent`, a warm tint on the
+tab) update per-tab via `connectObject` bound to the tab button so
+destruction disconnects automatically. Tabs are uniform, browser-style:
+the bar's width shared equally, clamped to a min/max, titles ellipsized
+to fit — the first version gave each tab its natural width, which let
+one long-titled window claim most of the bar. Once tabs no longer fit
+at their minimum the strip scrolls horizontally (the bar is an
+`St.ScrollView` with no scrollbar; edges with more tabs beyond them are
+faded, its height stays fixed so nothing below reflows), keeping the
+active tab in view and letting the wheel scroll it.
 The bucket tree persists through stacked mode — reconciliation
 runs in both modes, so windows opened while stacked still take their
 focus-anchored place in the tree — and toggling stacked off restores
 that tiled arrangement.
 
-**Stacked mode is a group posture: it requires at least two windows.**
-`Shift+Super+S` on a workspace with fewer than two layout members is a
-clean no-op (there is nothing to stack — a lone window under a one-tab
-bar is strictly worse than the same window tiled full-area), and a
-stacked workspace that *drops* below two members — the last-but-one
-window closed, or moved to another workspace/monitor — automatically
-reverts to tiled, giving the survivor the full work area back. The
-auto-exit lives in `_flush()`, checked against the same ground truth the
-buckets are reconciled with, so every membership-changing event heals
-the mode on its own relayout pass. The count is of *members*, not
-currently-tileable windows, deliberately: minimizing or maximizing one
-of two windows is a transient state that keeps its tree slot, so it
-keeps stacked mode alive too — only close/move genuinely end
-membership, matching the user actions that should end the mode. Turning
-stacked OFF is always allowed regardless of count, as a defensive
-escape hatch. The workspace-movement shortcuts compose naturally with
-all of this because a moved window fires `workspace-changed`, which
-retiles both source and destination buckets whatever their modes.
+**One global default, per-workspace overrides.** The mode a workspace
+is *set* to (`_modeOf`) is its entry in the module-scoped
+`workspaceModes` Map, else the global `layout-mode` setting — so new
+workspaces start in the default and a workspace that was never touched
+follows it. `toggleWorkspaceMode(mode)`, behind `Shift+Super+T/S/V`,
+sets the active workspace's mode, or returns it to the default when it
+is already in that mode (an override equal to the default is simply
+dropped): with a tiled default `Shift+Super+S` toggles stacking on and
+off exactly as before, with a stacked default `Shift+Super+T` is the
+"tile just this one" escape. A change of the global setting
+(`_onGlobalModeChanged`, from Preferences, the quick menu's
+Tile | Stack | Float row, or the launcher) clears every override — that
+is what "changing the global mode changes every workspace" means — and
+runs each workspace's mode-entry side effects before one relayout of
+everything. Those side effects (`_enterMode`) are the same for every
+path: entering tiled or stacked releases maximized windows on the
+workspace (`_exitMaximized`) so the layout lands on the real window
+set; entering floating forgets the workspace's tile targets instead.
+
+**Stacked mode is a group posture: it needs two windows to show.** The
+mode a workspace *lays out in* (`_effectiveModeOf`) is its set mode,
+except that a stacked workspace with fewer than two layout members lays
+out as tiled — there is nothing to stack, and a lone window under a
+one-tab bar is strictly worse than the same window tiled full-area. The
+setting itself is kept: the tab bar appears the moment a second window
+opens, and disappears again when the workspace drops back to one
+(closed, or moved away). The first version instead *auto-exited*
+stacked mode on that drop and made the toggle a no-op below two
+windows; a stacked global default made both wrong (every new workspace
+would silently lose the mode after its first window). The count is of
+*members*, not currently-tileable windows, deliberately: minimizing or
+maximizing one of two windows is a transient state that keeps its tree
+slot, so it keeps the stack alive too — only close/move genuinely end
+membership. Every consumer of "is this bucket stacked right now" — the
+layout pass, the tab-bar sync, the swipe bars, the focus-raise, the
+directional operations, the drag handlers — asks `_isStacked`, which is
+the effective answer; nothing consults the raw setting except the mode
+toggles and the launcher's subtitles. The workspace-movement shortcuts
+compose naturally with all of this because a moved window fires
+`workspace-changed`, which retiles both source and destination buckets
+whatever their modes.
 
 **Focus** is never stolen: the manager never calls `focus()`; it only
 `raise()`s the already-focused window in stacked buckets so the focused
 window is the visible one.
 
-**Which workspaces are stacked survives screen lock, deliberately not by
-instance state.** The `disable()` around a screen lock is not optional or
+**Which mode each workspace is in survives screen lock, deliberately
+not by instance state.** The `disable()` around a screen lock is not optional or
 extension-controlled: locking pushes GNOME's session mode to
 `unlock-dialog`, and `js/ui/extensionSystem.js`'s
 `_extensionSupportsSessionMode()` checks `metadata.json`'s `session-modes`
@@ -660,15 +717,16 @@ silently reset just because the user stepped away. The fix is not
 declaring `session-modes: ['user', 'unlock-dialog']` (that would keep the
 *entire* extension — keybindings, tiling, focus border — live and
 manipulating windows while the screen is locked, a real security/privacy
-regression the user never asked for); instead, only the stacked-workspace
-`Set` lives at module scope in `tilingManager.js` rather than on the
-instance. ES modules stay cached for the life of the shell process (the
-same fact `DEVELOPMENT.md` cites as the reason a code change needs a full
-shell restart), so that one `Set` — and only that one — survives the
-lock/unlock disable-then-enable cycle intact, while the layout trees,
-insertion anchors, and every signal correctly rebuild fresh. It resets
-only on a genuine new session (a fresh module load), which is the
-expected "clean slate" moment.
+regression the user never asked for); instead, only the per-workspace
+mode `Map` (and the per-window floating `Set`) lives at module scope in
+`tilingManager.js` rather than on the instance. ES modules stay cached
+for the life of the shell process (the same fact `DEVELOPMENT.md` cites
+as the reason a code change needs a full shell restart), so those
+survive the lock/unlock disable-then-enable cycle intact, while the
+layout trees, insertion anchors, and every signal correctly rebuild
+fresh. They reset only on a genuine new session (a fresh module load),
+which is the expected "clean slate" moment. The global default needs no
+such care: it is a GSetting.
 
 **The manager is the sole owner of tab-bar visibility — the bars are
 deliberately NOT `trackFullscreen` chrome.** The first version passed
@@ -768,11 +826,13 @@ they are ordinary movable windows and there is no meaningful "pre-tiling"
 geometry to restore for windows that were tiled from the moment they
 mapped (the same posture as every tiling WM).
 
-**Per-window floating is a membership override, not a third mode.** Tiled
-and stacked are the two *layout* modes; floating is orthogonal — a
-per-window user choice (Shift+Super+V → `toggleFloating`) to pop one
-window out of whichever layout its bucket is in, mirroring Hyprland's
-`togglefloating` (and the pop-out-and-float feel of Omarchy). It is
+**Per-window floating is a membership override, not a layout mode.**
+Tiled, stacked and floating are the three per-workspace *layout* modes
+(the floating layout has its own section below); per-window floating is
+orthogonal to all three — a per-window user choice (Shift+Super+D →
+`toggleFloating`) to pop one window out of whichever layout its bucket
+is in, mirroring Hyprland's `togglefloating` (and the pop-out-and-float
+feel of Omarchy). It is
 deliberately built as the counterpart to stacked mode's per-*workspace*
 choice: a module-scoped `Set` of `Meta.Window` (`floatingWindows`), at
 module scope for the identical reason `stackedWorkspaces` is — to survive
@@ -816,13 +876,96 @@ Hyprland-style always-above-tiling floating layer; `raise()` restacks
 without stealing focus). The existing focus border needs no change —
 `lib/focusBorder.js` already draws around floating windows.
 
+**The floating layout mode** (`Shift+Super+V`, or the global default
+set to floating) is the third mode, and the one in which the tiler does
+nothing: "stock GNOME on this workspace". It exists because the
+alternative — flipping `enable-tiling` off — is global and total, and a
+user who wants one workspace of freely arranged, GNOME-managed windows
+(a design tool, a game, a video call) should not have to give up tiling
+everywhere else; conversely a user who wants stock GNOME everywhere but
+the odd tiled workspace sets the default to floating and tiles one
+with `Shift+Super+T`. Every place the tiler would act is gated on
+`_isFloating`: `_applyBucket` still *reconciles* the bucket's tree —
+so a window opened while floating takes its focus-anchored place and
+the return to tiling restores a layout that knows about it, exactly as
+through stacked mode — but applies nothing; the tile guard ignores
+windows on a floating workspace (their remembered targets are also
+dropped on entry, `_forgetTargets`, so nothing lingers); the
+opens-maximized undo and the "a new app releases an existing maximize"
+rule both stand down, so an app that opens maximized stays that way as
+it would on stock GNOME; and the per-window float toggle is inert there
+(every window already floats; the per-window flag is left as it is for
+when the workspace returns to a layout). Leaving floating is an
+explicit "re-tile now" gesture like every other mode change:
+`_exitMaximized` runs first so the layout lands on the real window set,
+and the keybinding dispatcher composes `FullscreenManager.exitWorkspace`
+in front of all three mode keys. The launcher exposes the same per-
+workspace actions ("Tile / Stack / Float This Workspace", subtitles
+reporting the workspace's mode via `layoutModeOf`) and a "Default
+Layout" action that cycles the global setting.
+
+**Directional focus and movement** (`Ctrl+Super+Arrows` →
+`focusDirection`, `Ctrl+Shift+Super+Arrows` → `swapDirection`) are
+Hyprland's `movefocus` and `movewindow`. Both rest on one pure function,
+`layoutEngine.findNeighbor(rects, key, direction)`: given rectangles, it
+picks the one in that direction. Its first tier is the tiled case — a
+candidate wholly beyond the origin's edge that overlaps it on the other
+axis, nearest first, ties broken by the larger overlap — which is the
+tile you would point at; only when nothing qualifies does a second tier
+consider floating-style candidates (off to one side, or overlapping but
+extending further that way), nearest by a center distance that weights
+sideways offset double. A tile that does not reach past the origin's
+edge is never "in that direction", so Up beside a full-height tile does
+nothing rather than jumping to the next column (a real mistake in the
+first draft, caught by the unit test). *Focus* runs the search over the
+workspace's real frame rectangles — every non-minimized app window,
+tiled or user-floated, on every monitor (rectangles are absolute, so
+monitors compose for free) — so it works in every mode and with tiling
+off; the one non-spatial case is a stacked workspace, where Left/Right
+step through the tab row (every stacked window shares one rectangle)
+and fall back to the spatial search past either end. *Move* runs it
+over the bucket tree's own computed rectangles, so only tiles of the
+same bucket qualify, and swaps the two leaves (`LayoutTree.swap`); in
+stacked mode it swaps with the adjacent tab instead. The moved window
+keeps focus, so repeated presses walk it across the layout. Neither
+steals focus otherwise: focus goes through `Main.activateWindow`, the
+same path a tab click takes.
+
+**Drag-to-swap and drag-to-resize** read the user's intent off an
+interactive grab, on `grab-op-end` — the signal that has always queued
+the relayout that snapped a dragged tiled window back. The op arrives
+with the signal on this Mutter (`(display, window, op)`; the value seen
+at `grab-op-begin` is kept as a fallback), and is classified by name
+against `Meta.GrabOp` — resolved and filtered at load, so a member
+missing on some build costs that case, never a crash. A *move* op
+(`_swapAfterDrag`): the tile under the drop point — the pointer for a
+mouse drag, the window's centre for a keyboard move — takes the dragged
+window's leaf and vice versa, only within the bucket the window was
+already laid out in (a window dragged onto another monitor joins that
+bucket at the tail through ordinary reconciliation, as before) and only
+in the tiled layout. A *resize* op (`_resizeAfterDrag`): the window's
+new frame is compared edge by edge with the tile last applied to it
+(`_targets`), and `LayoutTree.resizeLeaf` traces each moved edge up to
+the nearest split of the matching axis whose boundary it is — for a
+right edge, the nearest horizontal ancestor the leaf sits on the
+*first* side of; for a left edge, one it sits on the *second* side of;
+top/bottom likewise for vertical splits — and sets that split's ratio so
+its boundary lands on the new edge, clamped so neither side can vanish.
+An edge on the work-area border owns no split and simply cannot move.
+In both cases only the tree changes; the relayout that follows is what
+applies the result, and a drag that meant neither (dropped over nothing,
+a border edge) snaps the window back exactly as it always did. The tile
+guard needed no change: it is already silent under a grab.
+
 **Anticipated future settings** the architecture already accommodates
-without restructuring: layout type per workspace (mode key), split
-ratios and node swaps (per-node state on the LayoutTree), smart gaps
-(engine input), follow-focus behaviors (manager policy), animation
-(application step), and per-window floating refinements (remembered
-floating geometry per window; app-match rules that auto-float on open —
-both just richer population of the `floatingWindows` Set).
+without restructuring: smart gaps (engine input), keyboard resize and
+split-axis override (the ratio and recorded axis already exist per
+split; `resizeLeaf` is the entry point), further layouts such as master
+(a strategy alongside dwindle), follow-focus behaviors (manager policy),
+animation (application step), and per-window floating refinements
+(remembered floating geometry per window; app-match rules that
+auto-float on open — both just richer population of the
+`floatingWindows` Set).
 
 ## Focus border (`lib/focusBorder.js`)
 
