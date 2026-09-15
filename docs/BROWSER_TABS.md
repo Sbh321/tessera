@@ -79,8 +79,11 @@ Preferences switch that registers it.
   (badge + children)           (direct tab search, browse)
 ```
 
-`companion/modules/tabs/protocol.js` is shared by both ends and defines
-the messages; it has no browser or GNOME dependencies so it runs under node
+`lib/launcher/browserProtocol.js` defines the messages and is owned by
+the shell; `companion/modules/tabs/protocol.js` is a byte-for-byte copy
+(a browser extension can only import from its own directory, and the
+packaged extension does not ship the companion), and the test runner
+fails if the two drift; it has no browser or GNOME dependencies so it runs under node
 and gjs alike.
 
 **One state, never persisted.** `BrowserTabStore` is the single copy of
@@ -328,7 +331,7 @@ companion/
         registry.js        module metadata (shared by host and options page)
         tabs/
             module.js      the Launcher tabs module (owns the native port)
-            protocol.js    the wire protocol, shared with the shell
+            protocol.js    verbatim copy of lib/launcher/browserProtocol.js
 ```
 
 A module exports `id`, `setEnabled(bool)` and `status()`, registers its

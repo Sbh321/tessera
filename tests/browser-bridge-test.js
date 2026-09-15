@@ -10,7 +10,7 @@
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 
-import {BrowserEventType, MessageType} from '../companion/modules/tabs/protocol.js';
+import {BrowserEventType, MessageType} from '../lib/launcher/browserProtocol.js';
 import {BrowserBridge} from '../lib/launcher/browserBridge.js';
 
 let changes = 0;

@@ -183,6 +183,19 @@
       "source_location": "L109"
     },
     {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider",
+      "label": "BrowserTabsProvider",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": "browsertabsprovider",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L46"
+    },
+    {
       "id": "lib_launcher_commandprovider_commandprovider",
       "label": "CommandProvider",
       "_callable": true,
@@ -220,19 +233,6 @@
       "norm_label": "launchermanager",
       "source_file": "lib/launcher/launcher.js",
       "source_location": "L66"
-    },
-    {
-      "id": "lib_launcher_settingsprovider_settingsprovider",
-      "label": "SettingsProvider",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": "settingsprovider",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L36"
     },
     {
       "id": "lib_settingsmanager_settingsmanager",
@@ -417,32 +417,6 @@
       "source_location": "L45"
     },
     {
-      "id": "tests_browser_companion_test_fakeevent",
-      "label": "FakeEvent",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 64,
-      "community_name": "browser-companion-test.js",
-      "file_type": "code",
-      "norm_label": "fakeevent",
-      "source_file": "tests/browser-companion-test.js",
-      "source_location": "L12"
-    },
-    {
-      "id": "tests_browser_companion_test_fakeport",
-      "label": "FakePort",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 64,
-      "community_name": "browser-companion-test.js",
-      "file_type": "code",
-      "norm_label": "fakeport",
-      "source_file": "tests/browser-companion-test.js",
-      "source_location": "L27"
-    },
-    {
       "id": "lib_launcher_historymanager_historymanager",
       "label": "HistoryManager",
       "_callable": true,
@@ -482,17 +456,30 @@
       "source_location": "L86"
     },
     {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider",
-      "label": "BrowserTabsProvider",
+      "id": "tests_browser_companion_test_fakeevent",
+      "label": "FakeEvent",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "community": 68,
-      "community_name": "BrowserTabsProvider",
+      "community_name": "FakeEvent",
       "file_type": "code",
-      "norm_label": "browsertabsprovider",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L46"
+      "norm_label": "fakeevent",
+      "source_file": "tests/browser-companion-test.js",
+      "source_location": "L12"
+    },
+    {
+      "id": "tests_browser_companion_test_fakeport",
+      "label": "FakePort",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 68,
+      "community_name": "FakeEvent",
+      "file_type": "code",
+      "norm_label": "fakeport",
+      "source_file": "tests/browser-companion-test.js",
+      "source_location": "L27"
     },
     {
       "id": "lib_launcher_calculatorengine_parseerror",
@@ -534,6 +521,19 @@
       "source_location": "L24"
     },
     {
+      "id": "lib_launcher_favoritesmanager_favoritesmanager",
+      "label": "FavoritesManager",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 70,
+      "community_name": "launcher/utils.js",
+      "file_type": "code",
+      "norm_label": "favoritesmanager",
+      "source_file": "lib/launcher/favoritesManager.js",
+      "source_location": "L23"
+    },
+    {
       "id": "lib_launcher_launcherui_resultrow",
       "label": "ResultRow",
       "_callable": true,
@@ -558,19 +558,6 @@
       "norm_label": "windowprovider",
       "source_file": "lib/launcher/windowProvider.js",
       "source_location": "L49"
-    },
-    {
-      "id": "lib_launcher_favoritesmanager_favoritesmanager",
-      "label": "FavoritesManager",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 72,
-      "community_name": "FavoritesManager",
-      "file_type": "code",
-      "norm_label": "favoritesmanager",
-      "source_file": "lib/launcher/favoritesManager.js",
-      "source_location": "L23"
     },
     {
       "id": "native_host_relay_protocolerror",
@@ -610,6 +597,19 @@
       "norm_label": "browserbridge",
       "source_file": "lib/launcher/browserBridge.js",
       "source_location": "L41"
+    },
+    {
+      "id": "lib_launcher_settingsprovider_settingsprovider",
+      "label": "SettingsProvider",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "SettingsProvider",
+      "file_type": "code",
+      "norm_label": "settingsprovider",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L36"
     },
     {
       "id": "lib_keybindingmanager_keybindingmanager",
@@ -672,6 +672,18 @@
       "norm_label": "sectiontitle()",
       "source_file": "lib/launcher/launcherUI.js",
       "source_location": "L39"
+    },
+    {
+      "id": "lib_launcher_searchresult_resultkey",
+      "label": "resultKey()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "constants.js",
+      "file_type": "code",
+      "norm_label": "resultkey()",
+      "source_file": "lib/launcher/searchResult.js",
+      "source_location": "L38"
     },
     {
       "id": "lib_launcher_utils_decayfactor",
@@ -744,18 +756,6 @@
       "norm_label": "section()",
       "source_file": "tests/launcher-engine-test.js",
       "source_location": "L49"
-    },
-    {
-      "id": "lib_launcher_searchcontroller_parsequery",
-      "label": "parseQuery()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 10,
-      "community_name": "SearchController",
-      "file_type": "code",
-      "norm_label": "parsequery()",
-      "source_file": "lib/launcher/searchController.js",
-      "source_location": "L22"
     },
     {
       "id": "lib_launcher_searchcontroller_searchcontroller_activate",
@@ -960,18 +960,6 @@
       "norm_label": ".warmup()",
       "source_file": "lib/launcher/searchController.js",
       "source_location": "L132"
-    },
-    {
-      "id": "lib_launcher_searchresult_resultkey",
-      "label": "resultKey()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 10,
-      "community_name": "SearchController",
-      "file_type": "code",
-      "norm_label": "resultkey()",
-      "source_file": "lib/launcher/searchResult.js",
-      "source_location": "L38"
     },
     {
       "id": "lib_panelautohide_opacitydecl",
@@ -1586,16 +1574,112 @@
       "source_location": "L374"
     },
     {
-      "id": "lib_launcher_browserprotocol_validopaqueid",
+      "id": "companion_modules_tabs_protocol_normalizeicon",
+      "label": "normalizeIcon()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "protocol.js",
+      "file_type": "code",
+      "norm_label": "normalizeicon()",
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L144"
+    },
+    {
+      "id": "companion_modules_tabs_protocol_sessionkey",
+      "label": "sessionKey()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "protocol.js",
+      "file_type": "code",
+      "norm_label": "sessionkey()",
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L226"
+    },
+    {
+      "id": "companion_modules_tabs_protocol_tabidentityid",
+      "label": "tabIdentityId()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "protocol.js",
+      "file_type": "code",
+      "norm_label": "tabidentityid()",
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L234"
+    },
+    {
+      "id": "companion_modules_tabs_protocol_validiconkey",
+      "label": "validIconKey()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "protocol.js",
+      "file_type": "code",
+      "norm_label": "validiconkey()",
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L113"
+    },
+    {
+      "id": "companion_modules_tabs_protocol_validopaqueid",
       "label": "validOpaqueId()",
       "_callable": true,
       "_origin": "ast",
       "community": 14,
-      "community_name": "browserTabService.js",
+      "community_name": "protocol.js",
       "file_type": "code",
       "norm_label": "validopaqueid()",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L105"
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L101"
+    },
+    {
+      "id": "companion_modules_tabs_protocol_validsessionidentity",
+      "label": "validSessionIdentity()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "protocol.js",
+      "file_type": "code",
+      "norm_label": "validsessionidentity()",
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L208"
+    },
+    {
+      "id": "companion_modules_tabs_protocol_validtabidentity",
+      "label": "validTabIdentity()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "protocol.js",
+      "file_type": "code",
+      "norm_label": "validtabidentity()",
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L213"
+    },
+    {
+      "id": "lib_launcher_browsertabstore_browsertabstore_beginsession",
+      "label": ".beginSession()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "protocol.js",
+      "file_type": "code",
+      "norm_label": ".beginsession()",
+      "source_file": "lib/launcher/browserTabStore.js",
+      "source_location": "L62"
+    },
+    {
+      "id": "lib_launcher_browsertabstore_safename",
+      "label": "safeName()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "protocol.js",
+      "file_type": "code",
+      "norm_label": "safename()",
+      "source_file": "lib/launcher/browserTabStore.js",
+      "source_location": "L505"
     },
     {
       "id": "lib_windowmover_windowmover_insertworkspaceafter",
@@ -2234,6 +2318,138 @@
       "source_location": "L36"
     },
     {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_browsecount",
+      "label": ".browseCount()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".browsecount()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L89"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_browseresults",
+      "label": ".browseResults()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".browseresults()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L84"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_childresults",
+      "label": ".childResults()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".childresults()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L102"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_childsubtitle",
+      "label": "._childSubtitle()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": "._childsubtitle()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L159"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_constructor",
+      "label": ".constructor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".constructor()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L51"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_enabled",
+      "label": ".enabled()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".enabled()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L56"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_query",
+      "label": ".query()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".query()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L60"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_subtitle",
+      "label": "._subtitle()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": "._subtitle()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L152"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_tabresult",
+      "label": ".tabResult()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".tabresult()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L113"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_title",
+      "label": "._title()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": "._title()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L148"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_hostof",
+      "label": "hostOf()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": "hostof()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L170"
+    },
+    {
       "id": "lib_launcher_commandprovider_commandprovider_constructor",
       "label": ".constructor()",
       "_callable": true,
@@ -2522,124 +2738,16 @@
       "source_location": "L165"
     },
     {
-      "id": "lib_launcher_settingsprovider_settingsprovider_browsecount",
-      "label": ".browseCount()",
+      "id": "lib_launcher_launcher_launchermanager_toggle",
+      "label": ".toggle()",
       "_callable": true,
       "_origin": "ast",
       "community": 17,
       "community_name": "._activate",
       "file_type": "code",
-      "norm_label": ".browsecount()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L83"
-    },
-    {
-      "id": "lib_launcher_settingsprovider_settingsprovider_browseresults",
-      "label": ".browseResults()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": ".browseresults()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L76"
-    },
-    {
-      "id": "lib_launcher_settingsprovider_settingsprovider_constructor",
-      "label": ".constructor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": ".constructor()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L37"
-    },
-    {
-      "id": "lib_launcher_settingsprovider_settingsprovider_disable",
-      "label": ".disable()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": ".disable()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L51"
-    },
-    {
-      "id": "lib_launcher_settingsprovider_settingsprovider_enable",
-      "label": ".enable()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": ".enable()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L44"
-    },
-    {
-      "id": "lib_launcher_settingsprovider_settingsprovider_ensureentries",
-      "label": "._ensureEntries()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": "._ensureentries()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L110"
-    },
-    {
-      "id": "lib_launcher_settingsprovider_settingsprovider_entryresult",
-      "label": "._entryResult()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": "._entryresult()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L92"
-    },
-    {
-      "id": "lib_launcher_settingsprovider_settingsprovider_query",
-      "label": ".query()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": ".query()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L63"
-    },
-    {
-      "id": "lib_launcher_settingsprovider_settingsprovider_resultforkey",
-      "label": ".resultForKey()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": ".resultforkey()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L87"
-    },
-    {
-      "id": "lib_launcher_settingsprovider_settingsprovider_warmup",
-      "label": ".warmUp()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 17,
-      "community_name": "._activate",
-      "file_type": "code",
-      "norm_label": ".warmup()",
-      "source_file": "lib/launcher/settingsProvider.js",
-      "source_location": "L59"
+      "norm_label": ".toggle()",
+      "source_file": "lib/launcher/launcher.js",
+      "source_location": "L140"
     },
     {
       "id": "lib_launcher_fuzzymatcher_anchoredsubsequence",
@@ -4334,30 +4442,6 @@
       "source_location": "L95"
     },
     {
-      "id": "companion_background_applysettings",
-      "label": "applySettings()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "applysettings()",
-      "source_file": "companion/background.js",
-      "source_location": "L48"
-    },
-    {
-      "id": "companion_modules_registry_resolvesettings",
-      "label": "resolveSettings()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "resolvesettings()",
-      "source_file": "companion/modules/registry.js",
-      "source_location": "L27"
-    },
-    {
       "id": "companion_modules_tabs_module_activatetab",
       "label": "activateTab()",
       "_callable": true,
@@ -4634,18 +4718,6 @@
       "source_location": "L613"
     },
     {
-      "id": "companion_modules_tabs_protocol_boundedstring",
-      "label": "boundedString()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "boundedstring()",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L158"
-    },
-    {
       "id": "companion_modules_tabs_protocol_iconkeyfor",
       "label": "iconKeyFor()",
       "_callable": true,
@@ -4655,187 +4727,7 @@
       "file_type": "code",
       "norm_label": "iconkeyfor()",
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L130"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_normalizeicon",
-      "label": "normalizeIcon()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "normalizeicon()",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L148"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_normalizetab",
-      "label": "normalizeTab()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "normalizetab()",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L170"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_normalizewindow",
-      "label": "normalizeWindow()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "normalizewindow()",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L199"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_sessionkey",
-      "label": "sessionKey()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "sessionkey()",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L230"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_tabidentityid",
-      "label": "tabIdentityId()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "tabidentityid()",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L238"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_validiconkey",
-      "label": "validIconKey()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "validiconkey()",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L117"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_validintegerid",
-      "label": "validIntegerId()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "validintegerid()",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L109"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_validopaqueid",
-      "label": "validOpaqueId()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "validopaqueid()",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L105"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_validsequence",
-      "label": "validSequence()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "validsequence()",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L113"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_validsessionidentity",
-      "label": "validSessionIdentity()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "validsessionidentity()",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L212"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_validtabidentity",
-      "label": "validTabIdentity()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "validtabidentity()",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L217"
-    },
-    {
-      "id": "companion_options_load",
-      "label": "load()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "load()",
-      "source_file": "companion/options.js",
-      "source_location": "L27"
-    },
-    {
-      "id": "companion_options_refreshstatus",
-      "label": "refreshStatus()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "refreshstatus()",
-      "source_file": "companion/options.js",
-      "source_location": "L43"
-    },
-    {
-      "id": "companion_options_save",
-      "label": "save()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "save()",
-      "source_file": "companion/options.js",
-      "source_location": "L35"
-    },
-    {
-      "id": "lib_launcher_launcher_launchermanager_toggle",
-      "label": ".toggle()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 39,
-      "community_name": "launcher.js",
-      "file_type": "code",
-      "norm_label": ".toggle()",
-      "source_file": "lib/launcher/launcher.js",
-      "source_location": "L140"
+      "source_location": "L126"
     },
     {
       "id": "lib_launcher_searchresult_createresult",
@@ -4848,6 +4740,18 @@
       "norm_label": "createresult()",
       "source_file": "lib/launcher/searchResult.js",
       "source_location": "L95"
+    },
+    {
+      "id": "lib_launcher_utils_collapsewhitespace",
+      "label": "collapseWhitespace()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": "collapsewhitespace()",
+      "source_file": "lib/launcher/utils.js",
+      "source_location": "L120"
     },
     {
       "id": "extension_tesseraextension_createindicator",
@@ -5978,18 +5882,6 @@
       "source_location": "L50"
     },
     {
-      "id": "lib_launcher_browsertabstore_browsertabstore_applyevent",
-      "label": ".applyEvent()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "BrowserTabStore",
-      "file_type": "code",
-      "norm_label": ".applyevent()",
-      "source_file": "lib/launcher/browserTabStore.js",
-      "source_location": "L148"
-    },
-    {
       "id": "lib_launcher_browsertabstore_browsertabstore_applyicons",
       "label": ".applyIcons()",
       "_callable": true,
@@ -6218,18 +6110,6 @@
       "source_location": "L467"
     },
     {
-      "id": "tests_browser_tab_store_test_event",
-      "label": "event()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "BrowserTabStore",
-      "file_type": "code",
-      "norm_label": "event()",
-      "source_file": "tests/browser-tab-store-test.js",
-      "source_location": "L71"
-    },
-    {
       "id": "tests_browser_bridge_test_connect",
       "label": "connect()",
       "_callable": true,
@@ -6300,78 +6180,6 @@
       "norm_label": "create()",
       "source_file": "tests/browser-companion-test.js",
       "source_location": "L137"
-    },
-    {
-      "id": "tests_browser_companion_test_fakeevent_addlistener",
-      "label": ".addListener()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 64,
-      "community_name": "browser-companion-test.js",
-      "file_type": "code",
-      "norm_label": ".addlistener()",
-      "source_file": "tests/browser-companion-test.js",
-      "source_location": "L17"
-    },
-    {
-      "id": "tests_browser_companion_test_fakeevent_constructor",
-      "label": ".constructor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 64,
-      "community_name": "browser-companion-test.js",
-      "file_type": "code",
-      "norm_label": ".constructor()",
-      "source_file": "tests/browser-companion-test.js",
-      "source_location": "L13"
-    },
-    {
-      "id": "tests_browser_companion_test_fakeevent_emit",
-      "label": ".emit()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 64,
-      "community_name": "browser-companion-test.js",
-      "file_type": "code",
-      "norm_label": ".emit()",
-      "source_file": "tests/browser-companion-test.js",
-      "source_location": "L21"
-    },
-    {
-      "id": "tests_browser_companion_test_fakeport_constructor",
-      "label": ".constructor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 64,
-      "community_name": "browser-companion-test.js",
-      "file_type": "code",
-      "norm_label": ".constructor()",
-      "source_file": "tests/browser-companion-test.js",
-      "source_location": "L28"
-    },
-    {
-      "id": "tests_browser_companion_test_fakeport_disconnect",
-      "label": ".disconnect()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 64,
-      "community_name": "browser-companion-test.js",
-      "file_type": "code",
-      "norm_label": ".disconnect()",
-      "source_file": "tests/browser-companion-test.js",
-      "source_location": "L39"
-    },
-    {
-      "id": "tests_browser_companion_test_fakeport_postmessage",
-      "label": ".postMessage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 64,
-      "community_name": "browser-companion-test.js",
-      "file_type": "code",
-      "norm_label": ".postmessage()",
-      "source_file": "tests/browser-companion-test.js",
-      "source_location": "L35"
     },
     {
       "id": "tests_browser_companion_test_get",
@@ -6830,148 +6638,76 @@
       "source_location": "L18"
     },
     {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_browsecount",
-      "label": ".browseCount()",
+      "id": "tests_browser_companion_test_fakeevent_addlistener",
+      "label": ".addListener()",
       "_callable": true,
       "_origin": "ast",
       "community": 68,
-      "community_name": "BrowserTabsProvider",
+      "community_name": "FakeEvent",
       "file_type": "code",
-      "norm_label": ".browsecount()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L89"
+      "norm_label": ".addlistener()",
+      "source_file": "tests/browser-companion-test.js",
+      "source_location": "L17"
     },
     {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_browseresults",
-      "label": ".browseResults()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 68,
-      "community_name": "BrowserTabsProvider",
-      "file_type": "code",
-      "norm_label": ".browseresults()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L84"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_childresults",
-      "label": ".childResults()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 68,
-      "community_name": "BrowserTabsProvider",
-      "file_type": "code",
-      "norm_label": ".childresults()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L102"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_childsubtitle",
-      "label": "._childSubtitle()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 68,
-      "community_name": "BrowserTabsProvider",
-      "file_type": "code",
-      "norm_label": "._childsubtitle()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L159"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_constructor",
+      "id": "tests_browser_companion_test_fakeevent_constructor",
       "label": ".constructor()",
       "_callable": true,
       "_origin": "ast",
       "community": 68,
-      "community_name": "BrowserTabsProvider",
+      "community_name": "FakeEvent",
       "file_type": "code",
       "norm_label": ".constructor()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L51"
+      "source_file": "tests/browser-companion-test.js",
+      "source_location": "L13"
     },
     {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_enabled",
-      "label": ".enabled()",
+      "id": "tests_browser_companion_test_fakeevent_emit",
+      "label": ".emit()",
       "_callable": true,
       "_origin": "ast",
       "community": 68,
-      "community_name": "BrowserTabsProvider",
+      "community_name": "FakeEvent",
       "file_type": "code",
-      "norm_label": ".enabled()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L56"
+      "norm_label": ".emit()",
+      "source_file": "tests/browser-companion-test.js",
+      "source_location": "L21"
     },
     {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_query",
-      "label": ".query()",
+      "id": "tests_browser_companion_test_fakeport_constructor",
+      "label": ".constructor()",
       "_callable": true,
       "_origin": "ast",
       "community": 68,
-      "community_name": "BrowserTabsProvider",
+      "community_name": "FakeEvent",
       "file_type": "code",
-      "norm_label": ".query()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L60"
+      "norm_label": ".constructor()",
+      "source_file": "tests/browser-companion-test.js",
+      "source_location": "L28"
     },
     {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_subtitle",
-      "label": "._subtitle()",
+      "id": "tests_browser_companion_test_fakeport_disconnect",
+      "label": ".disconnect()",
       "_callable": true,
       "_origin": "ast",
       "community": 68,
-      "community_name": "BrowserTabsProvider",
+      "community_name": "FakeEvent",
       "file_type": "code",
-      "norm_label": "._subtitle()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L152"
+      "norm_label": ".disconnect()",
+      "source_file": "tests/browser-companion-test.js",
+      "source_location": "L39"
     },
     {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_tabresult",
-      "label": ".tabResult()",
+      "id": "tests_browser_companion_test_fakeport_postmessage",
+      "label": ".postMessage()",
       "_callable": true,
       "_origin": "ast",
       "community": 68,
-      "community_name": "BrowserTabsProvider",
+      "community_name": "FakeEvent",
       "file_type": "code",
-      "norm_label": ".tabresult()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L113"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_title",
-      "label": "._title()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 68,
-      "community_name": "BrowserTabsProvider",
-      "file_type": "code",
-      "norm_label": "._title()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L148"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_hostof",
-      "label": "hostOf()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 68,
-      "community_name": "BrowserTabsProvider",
-      "file_type": "code",
-      "norm_label": "hostof()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L170"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_urlcontainseveryterm",
-      "label": "urlContainsEveryTerm()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 68,
-      "community_name": "BrowserTabsProvider",
-      "file_type": "code",
-      "norm_label": "urlcontainseveryterm()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L186"
+      "norm_label": ".postmessage()",
+      "source_file": "tests/browser-companion-test.js",
+      "source_location": "L35"
     },
     {
       "id": "lib_launcher_calculatorengine_alternateforms",
@@ -7238,6 +6974,90 @@
       "source_location": "L38"
     },
     {
+      "id": "lib_launcher_browsertabsprovider_urlcontainseveryterm",
+      "label": "urlContainsEveryTerm()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 70,
+      "community_name": "launcher/utils.js",
+      "file_type": "code",
+      "norm_label": "urlcontainseveryterm()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L186"
+    },
+    {
+      "id": "lib_launcher_favoritesmanager_favoritesmanager_clear",
+      "label": ".clear()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 70,
+      "community_name": "launcher/utils.js",
+      "file_type": "code",
+      "norm_label": ".clear()",
+      "source_file": "lib/launcher/favoritesManager.js",
+      "source_location": "L86"
+    },
+    {
+      "id": "lib_launcher_favoritesmanager_favoritesmanager_constructor",
+      "label": ".constructor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 70,
+      "community_name": "launcher/utils.js",
+      "file_type": "code",
+      "norm_label": ".constructor()",
+      "source_file": "lib/launcher/favoritesManager.js",
+      "source_location": "L24"
+    },
+    {
+      "id": "lib_launcher_favoritesmanager_favoritesmanager_ispinned",
+      "label": ".isPinned()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 70,
+      "community_name": "launcher/utils.js",
+      "file_type": "code",
+      "norm_label": ".ispinned()",
+      "source_file": "lib/launcher/favoritesManager.js",
+      "source_location": "L37"
+    },
+    {
+      "id": "lib_launcher_favoritesmanager_favoritesmanager_keys",
+      "label": ".keys()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 70,
+      "community_name": "launcher/utils.js",
+      "file_type": "code",
+      "norm_label": ".keys()",
+      "source_file": "lib/launcher/favoritesManager.js",
+      "source_location": "L29"
+    },
+    {
+      "id": "lib_launcher_favoritesmanager_favoritesmanager_move",
+      "label": ".move()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 70,
+      "community_name": "launcher/utils.js",
+      "file_type": "code",
+      "norm_label": ".move()",
+      "source_file": "lib/launcher/favoritesManager.js",
+      "source_location": "L69"
+    },
+    {
+      "id": "lib_launcher_favoritesmanager_favoritesmanager_toggle",
+      "label": ".toggle()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 70,
+      "community_name": "launcher/utils.js",
+      "file_type": "code",
+      "norm_label": ".toggle()",
+      "source_file": "lib/launcher/favoritesManager.js",
+      "source_location": "L47"
+    },
+    {
       "id": "lib_launcher_launcherui_resultrow_constructor",
       "label": ".constructor()",
       "_callable": true,
@@ -7262,16 +7082,40 @@
       "source_location": "L176"
     },
     {
-      "id": "lib_launcher_utils_collapsewhitespace",
-      "label": "collapseWhitespace()",
+      "id": "lib_launcher_searchcontroller_parsequery",
+      "label": "parseQuery()",
       "_callable": true,
       "_origin": "ast",
       "community": 70,
       "community_name": "launcher/utils.js",
       "file_type": "code",
-      "norm_label": "collapsewhitespace()",
+      "norm_label": "parsequery()",
+      "source_file": "lib/launcher/searchController.js",
+      "source_location": "L22"
+    },
+    {
+      "id": "lib_launcher_utils_clamp",
+      "label": "clamp()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 70,
+      "community_name": "launcher/utils.js",
+      "file_type": "code",
+      "norm_label": "clamp()",
       "source_file": "lib/launcher/utils.js",
-      "source_location": "L120"
+      "source_location": "L10"
+    },
+    {
+      "id": "lib_launcher_utils_ellipsize",
+      "label": "ellipsize()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 70,
+      "community_name": "launcher/utils.js",
+      "file_type": "code",
+      "norm_label": "ellipsize()",
+      "source_file": "lib/launcher/utils.js",
+      "source_location": "L125"
     },
     {
       "id": "lib_launcher_utils_escapemarkup",
@@ -7478,88 +7322,64 @@
       "source_location": "L140"
     },
     {
-      "id": "lib_launcher_favoritesmanager_favoritesmanager_clear",
-      "label": ".clear()",
+      "id": "companion_background_applysettings",
+      "label": "applySettings()",
       "_callable": true,
       "_origin": "ast",
       "community": 72,
-      "community_name": "FavoritesManager",
+      "community_name": "options.js",
       "file_type": "code",
-      "norm_label": ".clear()",
-      "source_file": "lib/launcher/favoritesManager.js",
-      "source_location": "L86"
+      "norm_label": "applysettings()",
+      "source_file": "companion/background.js",
+      "source_location": "L48"
     },
     {
-      "id": "lib_launcher_favoritesmanager_favoritesmanager_constructor",
-      "label": ".constructor()",
+      "id": "companion_modules_registry_resolvesettings",
+      "label": "resolveSettings()",
       "_callable": true,
       "_origin": "ast",
       "community": 72,
-      "community_name": "FavoritesManager",
+      "community_name": "options.js",
       "file_type": "code",
-      "norm_label": ".constructor()",
-      "source_file": "lib/launcher/favoritesManager.js",
-      "source_location": "L24"
+      "norm_label": "resolvesettings()",
+      "source_file": "companion/modules/registry.js",
+      "source_location": "L27"
     },
     {
-      "id": "lib_launcher_favoritesmanager_favoritesmanager_ispinned",
-      "label": ".isPinned()",
+      "id": "companion_options_load",
+      "label": "load()",
       "_callable": true,
       "_origin": "ast",
       "community": 72,
-      "community_name": "FavoritesManager",
+      "community_name": "options.js",
       "file_type": "code",
-      "norm_label": ".ispinned()",
-      "source_file": "lib/launcher/favoritesManager.js",
-      "source_location": "L37"
+      "norm_label": "load()",
+      "source_file": "companion/options.js",
+      "source_location": "L27"
     },
     {
-      "id": "lib_launcher_favoritesmanager_favoritesmanager_keys",
-      "label": ".keys()",
+      "id": "companion_options_refreshstatus",
+      "label": "refreshStatus()",
       "_callable": true,
       "_origin": "ast",
       "community": 72,
-      "community_name": "FavoritesManager",
+      "community_name": "options.js",
       "file_type": "code",
-      "norm_label": ".keys()",
-      "source_file": "lib/launcher/favoritesManager.js",
-      "source_location": "L29"
+      "norm_label": "refreshstatus()",
+      "source_file": "companion/options.js",
+      "source_location": "L43"
     },
     {
-      "id": "lib_launcher_favoritesmanager_favoritesmanager_move",
-      "label": ".move()",
+      "id": "companion_options_save",
+      "label": "save()",
       "_callable": true,
       "_origin": "ast",
       "community": 72,
-      "community_name": "FavoritesManager",
+      "community_name": "options.js",
       "file_type": "code",
-      "norm_label": ".move()",
-      "source_file": "lib/launcher/favoritesManager.js",
-      "source_location": "L69"
-    },
-    {
-      "id": "lib_launcher_favoritesmanager_favoritesmanager_toggle",
-      "label": ".toggle()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 72,
-      "community_name": "FavoritesManager",
-      "file_type": "code",
-      "norm_label": ".toggle()",
-      "source_file": "lib/launcher/favoritesManager.js",
-      "source_location": "L47"
-    },
-    {
-      "id": "lib_launcher_utils_clamp",
-      "label": "clamp()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 72,
-      "community_name": "FavoritesManager",
-      "file_type": "code",
-      "norm_label": "clamp()",
-      "source_file": "lib/launcher/utils.js",
-      "source_location": "L10"
+      "norm_label": "save()",
+      "source_file": "companion/options.js",
+      "source_location": "L35"
     },
     {
       "id": "native_host_relay_decodelength",
@@ -8006,18 +7826,6 @@
       "source_location": "L109"
     },
     {
-      "id": "lib_launcher_browserprotocol_iconkeyfor",
-      "label": "iconKeyFor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 76,
-      "community_name": "browser-tab-store-test.js",
-      "file_type": "code",
-      "norm_label": "iconkeyfor()",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L130"
-    },
-    {
       "id": "tests_browser_tab_store_test_check",
       "label": "check()",
       "_callable": true,
@@ -8114,136 +7922,196 @@
       "source_location": "L54"
     },
     {
-      "id": "lib_launcher_browserprotocol_boundedstring",
+      "id": "lib_launcher_settingsprovider_settingsprovider_browsecount",
+      "label": ".browseCount()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "SettingsProvider",
+      "file_type": "code",
+      "norm_label": ".browsecount()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L83"
+    },
+    {
+      "id": "lib_launcher_settingsprovider_settingsprovider_browseresults",
+      "label": ".browseResults()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "SettingsProvider",
+      "file_type": "code",
+      "norm_label": ".browseresults()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L76"
+    },
+    {
+      "id": "lib_launcher_settingsprovider_settingsprovider_constructor",
+      "label": ".constructor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "SettingsProvider",
+      "file_type": "code",
+      "norm_label": ".constructor()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L37"
+    },
+    {
+      "id": "lib_launcher_settingsprovider_settingsprovider_disable",
+      "label": ".disable()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "SettingsProvider",
+      "file_type": "code",
+      "norm_label": ".disable()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L51"
+    },
+    {
+      "id": "lib_launcher_settingsprovider_settingsprovider_enable",
+      "label": ".enable()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "SettingsProvider",
+      "file_type": "code",
+      "norm_label": ".enable()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L44"
+    },
+    {
+      "id": "lib_launcher_settingsprovider_settingsprovider_ensureentries",
+      "label": "._ensureEntries()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "SettingsProvider",
+      "file_type": "code",
+      "norm_label": "._ensureentries()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L110"
+    },
+    {
+      "id": "lib_launcher_settingsprovider_settingsprovider_entryresult",
+      "label": "._entryResult()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "SettingsProvider",
+      "file_type": "code",
+      "norm_label": "._entryresult()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L92"
+    },
+    {
+      "id": "lib_launcher_settingsprovider_settingsprovider_query",
+      "label": ".query()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "SettingsProvider",
+      "file_type": "code",
+      "norm_label": ".query()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L63"
+    },
+    {
+      "id": "lib_launcher_settingsprovider_settingsprovider_resultforkey",
+      "label": ".resultForKey()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "SettingsProvider",
+      "file_type": "code",
+      "norm_label": ".resultforkey()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L87"
+    },
+    {
+      "id": "lib_launcher_settingsprovider_settingsprovider_warmup",
+      "label": ".warmUp()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 77,
+      "community_name": "SettingsProvider",
+      "file_type": "code",
+      "norm_label": ".warmup()",
+      "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L59"
+    },
+    {
+      "id": "companion_modules_tabs_protocol_boundedstring",
       "label": "boundedString()",
       "_callable": true,
       "_origin": "ast",
       "community": 78,
-      "community_name": "browserProtocol.js",
+      "community_name": "normalizeTab",
       "file_type": "code",
       "norm_label": "boundedstring()",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L158"
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L154"
     },
     {
-      "id": "lib_launcher_browserprotocol_normalizeicon",
-      "label": "normalizeIcon()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 78,
-      "community_name": "browserProtocol.js",
-      "file_type": "code",
-      "norm_label": "normalizeicon()",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L148"
-    },
-    {
-      "id": "lib_launcher_browserprotocol_normalizetab",
+      "id": "companion_modules_tabs_protocol_normalizetab",
       "label": "normalizeTab()",
       "_callable": true,
       "_origin": "ast",
       "community": 78,
-      "community_name": "browserProtocol.js",
+      "community_name": "normalizeTab",
       "file_type": "code",
       "norm_label": "normalizetab()",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L170"
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L166"
     },
     {
-      "id": "lib_launcher_browserprotocol_normalizewindow",
+      "id": "companion_modules_tabs_protocol_normalizewindow",
       "label": "normalizeWindow()",
       "_callable": true,
       "_origin": "ast",
       "community": 78,
-      "community_name": "browserProtocol.js",
+      "community_name": "normalizeTab",
       "file_type": "code",
       "norm_label": "normalizewindow()",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L199"
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L195"
     },
     {
-      "id": "lib_launcher_browserprotocol_sessionkey",
-      "label": "sessionKey()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 78,
-      "community_name": "browserProtocol.js",
-      "file_type": "code",
-      "norm_label": "sessionkey()",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L230"
-    },
-    {
-      "id": "lib_launcher_browserprotocol_tabidentityid",
-      "label": "tabIdentityId()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 78,
-      "community_name": "browserProtocol.js",
-      "file_type": "code",
-      "norm_label": "tabidentityid()",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L238"
-    },
-    {
-      "id": "lib_launcher_browserprotocol_validiconkey",
-      "label": "validIconKey()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 78,
-      "community_name": "browserProtocol.js",
-      "file_type": "code",
-      "norm_label": "validiconkey()",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L117"
-    },
-    {
-      "id": "lib_launcher_browserprotocol_validintegerid",
+      "id": "companion_modules_tabs_protocol_validintegerid",
       "label": "validIntegerId()",
       "_callable": true,
       "_origin": "ast",
       "community": 78,
-      "community_name": "browserProtocol.js",
+      "community_name": "normalizeTab",
       "file_type": "code",
       "norm_label": "validintegerid()",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L109"
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L105"
     },
     {
-      "id": "lib_launcher_browserprotocol_validsequence",
+      "id": "companion_modules_tabs_protocol_validsequence",
       "label": "validSequence()",
       "_callable": true,
       "_origin": "ast",
       "community": 78,
-      "community_name": "browserProtocol.js",
+      "community_name": "normalizeTab",
       "file_type": "code",
       "norm_label": "validsequence()",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L113"
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L109"
     },
     {
-      "id": "lib_launcher_browserprotocol_validsessionidentity",
-      "label": "validSessionIdentity()",
+      "id": "lib_launcher_browsertabstore_browsertabstore_applyevent",
+      "label": ".applyEvent()",
       "_callable": true,
       "_origin": "ast",
       "community": 78,
-      "community_name": "browserProtocol.js",
+      "community_name": "normalizeTab",
       "file_type": "code",
-      "norm_label": "validsessionidentity()",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L212"
-    },
-    {
-      "id": "lib_launcher_browserprotocol_validtabidentity",
-      "label": "validTabIdentity()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 78,
-      "community_name": "browserProtocol.js",
-      "file_type": "code",
-      "norm_label": "validtabidentity()",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L217"
+      "norm_label": ".applyevent()",
+      "source_file": "lib/launcher/browserTabStore.js",
+      "source_location": "L148"
     },
     {
       "id": "lib_launcher_browsertabstore_browsertabstore_applysnapshot",
@@ -8251,23 +8119,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 78,
-      "community_name": "browserProtocol.js",
+      "community_name": "normalizeTab",
       "file_type": "code",
       "norm_label": ".applysnapshot()",
       "source_file": "lib/launcher/browserTabStore.js",
       "source_location": "L105"
-    },
-    {
-      "id": "lib_launcher_browsertabstore_browsertabstore_beginsession",
-      "label": ".beginSession()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 78,
-      "community_name": "browserProtocol.js",
-      "file_type": "code",
-      "norm_label": ".beginsession()",
-      "source_file": "lib/launcher/browserTabStore.js",
-      "source_location": "L62"
     },
     {
       "id": "lib_launcher_browsertabstore_browsertabstore_ensurewindow",
@@ -8275,7 +8131,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 78,
-      "community_name": "browserProtocol.js",
+      "community_name": "normalizeTab",
       "file_type": "code",
       "norm_label": "._ensurewindow()",
       "source_file": "lib/launcher/browserTabStore.js",
@@ -8287,7 +8143,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 78,
-      "community_name": "browserProtocol.js",
+      "community_name": "normalizeTab",
       "file_type": "code",
       "norm_label": "._reduce()",
       "source_file": "lib/launcher/browserTabStore.js",
@@ -8299,23 +8155,23 @@
       "_callable": true,
       "_origin": "ast",
       "community": 78,
-      "community_name": "browserProtocol.js",
+      "community_name": "normalizeTab",
       "file_type": "code",
       "norm_label": "._setfocusedwindow()",
       "source_file": "lib/launcher/browserTabStore.js",
       "source_location": "L449"
     },
     {
-      "id": "lib_launcher_browsertabstore_safename",
-      "label": "safeName()",
+      "id": "tests_browser_tab_store_test_event",
+      "label": "event()",
       "_callable": true,
       "_origin": "ast",
       "community": 78,
-      "community_name": "browserProtocol.js",
+      "community_name": "normalizeTab",
       "file_type": "code",
-      "norm_label": "safename()",
-      "source_file": "lib/launcher/browserTabStore.js",
-      "source_location": "L505"
+      "norm_label": "event()",
+      "source_file": "tests/browser-tab-store-test.js",
+      "source_location": "L71"
     },
     {
       "id": "lib_keybindingmanager_keybindingmanager_addkeybinding",
@@ -8762,18 +8618,6 @@
       "source_location": "L238"
     },
     {
-      "id": "lib_launcher_utils_ellipsize",
-      "label": "ellipsize()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 9,
-      "community_name": "ClipboardProvider",
-      "file_type": "code",
-      "norm_label": "ellipsize()",
-      "source_file": "lib/launcher/utils.js",
-      "source_location": "L125"
-    },
-    {
       "id": "lib_launcher_constants",
       "label": "constants.js",
       "_origin": "ast",
@@ -8838,6 +8682,17 @@
       "norm_label": "command_prefixes",
       "source_file": "lib/launcher/constants.js",
       "source_location": "L165"
+    },
+    {
+      "id": "lib_launcher_constants_current_workspace_boost",
+      "label": "CURRENT_WORKSPACE_BOOST",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "constants.js",
+      "file_type": "code",
+      "norm_label": "current_workspace_boost",
+      "source_file": "lib/launcher/constants.js",
+      "source_location": "L148"
     },
     {
       "id": "lib_launcher_constants_favorite_boost",
@@ -9014,6 +8869,17 @@
       "norm_label": "launcherpopup.js",
       "source_file": "lib/launcher/launcherPopup.js",
       "source_location": "L1"
+    },
+    {
+      "id": "lib_launcher_launcherpopup_launcherpopup",
+      "label": "LauncherPopup",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "constants.js",
+      "file_type": "code",
+      "norm_label": "launcherpopup",
+      "source_file": "lib/launcher/launcherPopup.js",
+      "source_location": "L55"
     },
     {
       "id": "lib_launcher_launcherui",
@@ -9291,77 +9157,143 @@
       "source_location": "L176"
     },
     {
+      "id": "companion_modules_tabs_protocol",
+      "label": "protocol.js",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "protocol.js",
+      "file_type": "code",
+      "norm_label": "protocol.js",
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "companion_modules_tabs_protocol_browsereventtype",
+      "label": "BrowserEventType",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "protocol.js",
+      "file_type": "code",
+      "norm_label": "browsereventtype",
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L47"
+    },
+    {
+      "id": "companion_modules_tabs_protocol_browsertype",
+      "label": "BrowserType",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "protocol.js",
+      "file_type": "code",
+      "norm_label": "browsertype",
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L21"
+    },
+    {
+      "id": "companion_modules_tabs_protocol_icon_mime_types",
+      "label": "ICON_MIME_TYPES",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "protocol.js",
+      "file_type": "code",
+      "norm_label": "icon_mime_types",
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L96"
+    },
+    {
+      "id": "companion_modules_tabs_protocol_max_icon_bytes",
+      "label": "MAX_ICON_BYTES",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "protocol.js",
+      "file_type": "code",
+      "norm_label": "max_icon_bytes",
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L86"
+    },
+    {
+      "id": "companion_modules_tabs_protocol_max_icons_per_message",
+      "label": "MAX_ICONS_PER_MESSAGE",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "protocol.js",
+      "file_type": "code",
+      "norm_label": "max_icons_per_message",
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L89"
+    },
+    {
+      "id": "companion_modules_tabs_protocol_messagetype",
+      "label": "MessageType",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "protocol.js",
+      "file_type": "code",
+      "norm_label": "messagetype",
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L27"
+    },
+    {
+      "id": "companion_modules_tabs_protocol_native_host_name",
+      "label": "NATIVE_HOST_NAME",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "protocol.js",
+      "file_type": "code",
+      "norm_label": "native_host_name",
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L18"
+    },
+    {
+      "id": "companion_modules_tabs_protocol_protocol_version",
+      "label": "PROTOCOL_VERSION",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "protocol.js",
+      "file_type": "code",
+      "norm_label": "protocol_version",
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L17"
+    },
+    {
+      "id": "companion_modules_tabs_protocol_window_id_none",
+      "label": "WINDOW_ID_NONE",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "protocol.js",
+      "file_type": "code",
+      "norm_label": "window_id_none",
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L74"
+    },
+    {
+      "id": "companion_modules_tabs_protocol_windowtype",
+      "label": "WindowType",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "protocol.js",
+      "file_type": "code",
+      "norm_label": "windowtype",
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L76"
+    },
+    {
       "id": "lib_launcher_browserbridge",
       "label": "browserBridge.js",
       "_origin": "ast",
       "community": 14,
-      "community_name": "browserTabService.js",
+      "community_name": "protocol.js",
       "file_type": "code",
       "norm_label": "browserbridge.js",
       "source_file": "lib/launcher/browserBridge.js",
       "source_location": "L1"
     },
     {
-      "id": "lib_launcher_browserprotocol_browsereventtype",
-      "label": "BrowserEventType",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "browserTabService.js",
-      "file_type": "code",
-      "norm_label": "browsereventtype",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L51"
-    },
-    {
-      "id": "lib_launcher_browserprotocol_browsertype",
-      "label": "BrowserType",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "browserTabService.js",
-      "file_type": "code",
-      "norm_label": "browsertype",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L25"
-    },
-    {
-      "id": "lib_launcher_browserprotocol_messagetype",
-      "label": "MessageType",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "browserTabService.js",
-      "file_type": "code",
-      "norm_label": "messagetype",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L31"
-    },
-    {
-      "id": "lib_launcher_browserprotocol_protocol_version",
-      "label": "PROTOCOL_VERSION",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "browserTabService.js",
-      "file_type": "code",
-      "norm_label": "protocol_version",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L21"
-    },
-    {
-      "id": "lib_launcher_browserprotocol_window_id_none",
-      "label": "WINDOW_ID_NONE",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "browserTabService.js",
-      "file_type": "code",
-      "norm_label": "window_id_none",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L78"
-    },
-    {
       "id": "lib_launcher_browsertabservice",
       "label": "browserTabService.js",
       "_origin": "ast",
       "community": 14,
-      "community_name": "browserTabService.js",
+      "community_name": "protocol.js",
       "file_type": "code",
       "norm_label": "browsertabservice.js",
       "source_file": "lib/launcher/browserTabService.js",
@@ -9372,7 +9304,7 @@
       "label": "BROWSER_DESKTOP_IDS",
       "_origin": "ast",
       "community": 14,
-      "community_name": "browserTabService.js",
+      "community_name": "protocol.js",
       "file_type": "code",
       "norm_label": "browser_desktop_ids",
       "source_file": "lib/launcher/browserTabService.js",
@@ -9383,18 +9315,29 @@
       "label": "FAMILY_PATTERNS",
       "_origin": "ast",
       "community": 14,
-      "community_name": "browserTabService.js",
+      "community_name": "protocol.js",
       "file_type": "code",
       "norm_label": "family_patterns",
       "source_file": "lib/launcher/browserTabService.js",
       "source_location": "L22"
     },
     {
+      "id": "lib_launcher_browsertabstore",
+      "label": "browserTabStore.js",
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "protocol.js",
+      "file_type": "code",
+      "norm_label": "browsertabstore.js",
+      "source_file": "lib/launcher/browserTabStore.js",
+      "source_location": "L1"
+    },
+    {
       "id": "lib_launcher_browsertabstore_storeresult",
       "label": "StoreResult",
       "_origin": "ast",
       "community": 14,
-      "community_name": "browserTabService.js",
+      "community_name": "protocol.js",
       "file_type": "code",
       "norm_label": "storeresult",
       "source_file": "lib/launcher/browserTabStore.js",
@@ -9476,6 +9419,61 @@
       "norm_label": "firefox",
       "source_file": "tests/browser-window-mapper-test.js",
       "source_location": "L34"
+    },
+    {
+      "id": "lib_launcher_actionprovider",
+      "label": "actionProvider.js",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "fuzzyMatcher.js",
+      "file_type": "code",
+      "norm_label": "actionprovider.js",
+      "source_file": "lib/launcher/actionProvider.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_launcher_actionprovider_move_words",
+      "label": "MOVE_WORDS",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "fuzzyMatcher.js",
+      "file_type": "code",
+      "norm_label": "move_words",
+      "source_file": "lib/launcher/actionProvider.js",
+      "source_location": "L24"
+    },
+    {
+      "id": "lib_launcher_actionprovider_workspace_words",
+      "label": "WORKSPACE_WORDS",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "fuzzyMatcher.js",
+      "file_type": "code",
+      "norm_label": "workspace_words",
+      "source_file": "lib/launcher/actionProvider.js",
+      "source_location": "L23"
+    },
+    {
+      "id": "lib_launcher_actionregistry",
+      "label": "actionRegistry.js",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "fuzzyMatcher.js",
+      "file_type": "code",
+      "norm_label": "actionregistry.js",
+      "source_file": "lib/launcher/actionRegistry.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_launcher_actionregistry_terminal_app_ids",
+      "label": "TERMINAL_APP_IDS",
+      "_origin": "ast",
+      "community": 18,
+      "community_name": "fuzzyMatcher.js",
+      "file_type": "code",
+      "norm_label": "terminal_app_ids",
+      "source_file": "lib/launcher/actionRegistry.js",
+      "source_location": "L16"
     },
     {
       "id": "lib_launcher_fuzzymatcher",
@@ -10089,61 +10087,6 @@
       "source_location": "L1"
     },
     {
-      "id": "companion_background",
-      "label": "background.js",
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "background.js",
-      "source_file": "companion/background.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "companion_background_implementations",
-      "label": "IMPLEMENTATIONS",
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "implementations",
-      "source_file": "companion/background.js",
-      "source_location": "L18"
-    },
-    {
-      "id": "companion_modules_registry",
-      "label": "registry.js",
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "registry.js",
-      "source_file": "companion/modules/registry.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "companion_modules_registry_modules",
-      "label": "MODULES",
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "modules",
-      "source_file": "companion/modules/registry.js",
-      "source_location": "L13"
-    },
-    {
-      "id": "companion_modules_registry_settings_key",
-      "label": "SETTINGS_KEY",
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "settings_key",
-      "source_file": "companion/modules/registry.js",
-      "source_location": "L24"
-    },
-    {
       "id": "companion_modules_tabs_module",
       "label": "module.js",
       "_origin": "ast",
@@ -10243,171 +10186,6 @@
       "source_location": "L46"
     },
     {
-      "id": "companion_modules_tabs_protocol",
-      "label": "protocol.js",
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "protocol.js",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_browsereventtype",
-      "label": "BrowserEventType",
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "browsereventtype",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L51"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_browsertype",
-      "label": "BrowserType",
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "browsertype",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L25"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_icon_mime_types",
-      "label": "ICON_MIME_TYPES",
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "icon_mime_types",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L100"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_max_icon_bytes",
-      "label": "MAX_ICON_BYTES",
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "max_icon_bytes",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L90"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_max_icons_per_message",
-      "label": "MAX_ICONS_PER_MESSAGE",
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "max_icons_per_message",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L93"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_messagetype",
-      "label": "MessageType",
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "messagetype",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L31"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_native_host_name",
-      "label": "NATIVE_HOST_NAME",
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "native_host_name",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L22"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_protocol_version",
-      "label": "PROTOCOL_VERSION",
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "protocol_version",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L21"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_sessionstate",
-      "label": "SessionState",
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "sessionstate",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L68"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_window_id_none",
-      "label": "WINDOW_ID_NONE",
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "window_id_none",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L78"
-    },
-    {
-      "id": "companion_modules_tabs_protocol_windowtype",
-      "label": "WindowType",
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "windowtype",
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L80"
-    },
-    {
-      "id": "companion_options",
-      "label": "options.js",
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "options.js",
-      "source_file": "companion/options.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "companion_options_container",
-      "label": "container",
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "container",
-      "source_file": "companion/options.js",
-      "source_location": "L5"
-    },
-    {
-      "id": "companion_options_rows",
-      "label": "rows",
-      "_origin": "ast",
-      "community": 37,
-      "community_name": "module.js",
-      "file_type": "code",
-      "norm_label": "rows",
-      "source_file": "companion/options.js",
-      "source_location": "L6"
-    },
-    {
       "id": "gio",
       "label": "gi://Gio",
       "_origin": "ast",
@@ -10419,61 +10197,6 @@
       "source_file": "gi://Gio"
     },
     {
-      "id": "lib_launcher_actionprovider",
-      "label": "actionProvider.js",
-      "_origin": "ast",
-      "community": 39,
-      "community_name": "launcher.js",
-      "file_type": "code",
-      "norm_label": "actionprovider.js",
-      "source_file": "lib/launcher/actionProvider.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "lib_launcher_actionprovider_move_words",
-      "label": "MOVE_WORDS",
-      "_origin": "ast",
-      "community": 39,
-      "community_name": "launcher.js",
-      "file_type": "code",
-      "norm_label": "move_words",
-      "source_file": "lib/launcher/actionProvider.js",
-      "source_location": "L24"
-    },
-    {
-      "id": "lib_launcher_actionprovider_workspace_words",
-      "label": "WORKSPACE_WORDS",
-      "_origin": "ast",
-      "community": 39,
-      "community_name": "launcher.js",
-      "file_type": "code",
-      "norm_label": "workspace_words",
-      "source_file": "lib/launcher/actionProvider.js",
-      "source_location": "L23"
-    },
-    {
-      "id": "lib_launcher_actionregistry",
-      "label": "actionRegistry.js",
-      "_origin": "ast",
-      "community": 39,
-      "community_name": "launcher.js",
-      "file_type": "code",
-      "norm_label": "actionregistry.js",
-      "source_file": "lib/launcher/actionRegistry.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "lib_launcher_actionregistry_terminal_app_ids",
-      "label": "TERMINAL_APP_IDS",
-      "_origin": "ast",
-      "community": 39,
-      "community_name": "launcher.js",
-      "file_type": "code",
-      "norm_label": "terminal_app_ids",
-      "source_file": "lib/launcher/actionRegistry.js",
-      "source_location": "L16"
-    },
-    {
       "id": "lib_launcher_appprovider",
       "label": "appProvider.js",
       "_origin": "ast",
@@ -10482,6 +10205,17 @@
       "file_type": "code",
       "norm_label": "appprovider.js",
       "source_file": "lib/launcher/appProvider.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider",
+      "label": "browserTabsProvider.js",
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": "browsertabsprovider.js",
+      "source_file": "lib/launcher/browserTabsProvider.js",
       "source_location": "L1"
     },
     {
@@ -10573,17 +10307,6 @@
       "source_location": "L29"
     },
     {
-      "id": "lib_launcher_launcherpopup_launcherpopup",
-      "label": "LauncherPopup",
-      "_origin": "ast",
-      "community": 39,
-      "community_name": "launcher.js",
-      "file_type": "code",
-      "norm_label": "launcherpopup",
-      "source_file": "lib/launcher/launcherPopup.js",
-      "source_location": "L55"
-    },
-    {
       "id": "lib_launcher_recentprovider",
       "label": "recentProvider.js",
       "_origin": "ast",
@@ -10636,6 +10359,17 @@
       "file_type": "code",
       "norm_label": "settingsprovider.js",
       "source_file": "lib/launcher/settingsProvider.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_launcher_windowprovider",
+      "label": "windowProvider.js",
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "launcher.js",
+      "file_type": "code",
+      "norm_label": "windowprovider.js",
+      "source_file": "lib/launcher/windowProvider.js",
       "source_location": "L1"
     },
     {
@@ -10692,6 +10426,39 @@
       "norm_label": "colorpickeroverlay",
       "source_file": "lib/colorPicker.js",
       "source_location": "L41"
+    },
+    {
+      "id": "lib_focusborder",
+      "label": "focusBorder.js",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "extension.js",
+      "file_type": "code",
+      "norm_label": "focusborder.js",
+      "source_file": "lib/focusBorder.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_focusborder_focusbordermanager",
+      "label": "FocusBorderManager",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "extension.js",
+      "file_type": "code",
+      "norm_label": "focusbordermanager",
+      "source_file": "lib/focusBorder.js",
+      "source_location": "L47"
+    },
+    {
+      "id": "lib_focusborder_highlightable_types",
+      "label": "HIGHLIGHTABLE_TYPES",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "extension.js",
+      "file_type": "code",
+      "norm_label": "highlightable_types",
+      "source_file": "lib/focusBorder.js",
+      "source_location": "L22"
     },
     {
       "id": "lib_fullscreenmanager",
@@ -10885,39 +10652,6 @@
       "norm_label": "dev-session.sh script",
       "source_file": "scripts/dev-session.sh",
       "source_location": "L1"
-    },
-    {
-      "id": "lib_focusborder",
-      "label": "focusBorder.js",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "LauncherTheme",
-      "file_type": "code",
-      "norm_label": "focusborder.js",
-      "source_file": "lib/focusBorder.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "lib_focusborder_focusbordermanager",
-      "label": "FocusBorderManager",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "LauncherTheme",
-      "file_type": "code",
-      "norm_label": "focusbordermanager",
-      "source_file": "lib/focusBorder.js",
-      "source_location": "L47"
-    },
-    {
-      "id": "lib_focusborder_highlightable_types",
-      "label": "HIGHLIGHTABLE_TYPES",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "LauncherTheme",
-      "file_type": "code",
-      "norm_label": "highlightable_types",
-      "source_file": "lib/focusBorder.js",
-      "source_location": "L22"
     },
     {
       "id": "lib_gestureprogresstracker",
@@ -11658,7 +11392,7 @@
       "node_kind": "heading",
       "norm_label": "activation: exactly that tab or nothing",
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L117"
+      "source_location": "L114"
     },
     {
       "id": "docs_browser_tabs_architecture",
@@ -11706,7 +11440,7 @@
       "node_kind": "heading",
       "norm_label": "identity",
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L94"
+      "source_location": "L91"
     },
     {
       "id": "docs_browser_tabs_install",
@@ -11718,7 +11452,7 @@
       "node_kind": "heading",
       "norm_label": "install",
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L290"
+      "source_location": "L287"
     },
     {
       "id": "docs_browser_tabs_limitations",
@@ -11730,7 +11464,7 @@
       "node_kind": "heading",
       "norm_label": "limitations",
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L400"
+      "source_location": "L397"
     },
     {
       "id": "docs_browser_tabs_mapping_browser_windows_to_gnome_windows",
@@ -11742,7 +11476,7 @@
       "node_kind": "heading",
       "norm_label": "mapping browser windows to gnome windows",
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L141"
+      "source_location": "L138"
     },
     {
       "id": "docs_browser_tabs_performance",
@@ -11754,7 +11488,7 @@
       "node_kind": "heading",
       "norm_label": "performance",
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L366"
+      "source_location": "L363"
     },
     {
       "id": "docs_browser_tabs_privacy_and_security",
@@ -11766,7 +11500,7 @@
       "node_kind": "heading",
       "norm_label": "privacy and security",
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L343"
+      "source_location": "L340"
     },
     {
       "id": "docs_browser_tabs_search",
@@ -11778,7 +11512,7 @@
       "node_kind": "heading",
       "norm_label": "search",
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L234"
+      "source_location": "L231"
     },
     {
       "id": "docs_browser_tabs_synchronisation",
@@ -11790,7 +11524,7 @@
       "node_kind": "heading",
       "norm_label": "synchronisation",
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L259"
+      "source_location": "L256"
     },
     {
       "id": "docs_browser_tabs_testing",
@@ -11802,7 +11536,7 @@
       "node_kind": "heading",
       "norm_label": "testing",
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L383"
+      "source_location": "L380"
     },
     {
       "id": "docs_browser_tabs_the_companion_s_layout",
@@ -11814,7 +11548,7 @@
       "node_kind": "heading",
       "norm_label": "the companion's layout",
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L323"
+      "source_location": "L320"
     },
     {
       "id": "docs_browser_tabs_what_you_see",
@@ -11826,7 +11560,7 @@
       "node_kind": "heading",
       "norm_label": "what you see",
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L179"
+      "source_location": "L176"
     },
     {
       "id": "tests_browser_companion_test",
@@ -12489,26 +12223,15 @@
       "source_location": "L74"
     },
     {
-      "id": "lib_launcher_browsertabsprovider",
-      "label": "browserTabsProvider.js",
+      "id": "lib_launcher_favoritesmanager",
+      "label": "favoritesManager.js",
       "_origin": "ast",
       "community": 70,
       "community_name": "launcher/utils.js",
       "file_type": "code",
-      "norm_label": "browsertabsprovider.js",
-      "source_file": "lib/launcher/browserTabsProvider.js",
+      "norm_label": "favoritesmanager.js",
+      "source_file": "lib/launcher/favoritesManager.js",
       "source_location": "L1"
-    },
-    {
-      "id": "lib_launcher_constants_current_workspace_boost",
-      "label": "CURRENT_WORKSPACE_BOOST",
-      "_origin": "ast",
-      "community": 70,
-      "community_name": "launcher/utils.js",
-      "file_type": "code",
-      "norm_label": "current_workspace_boost",
-      "source_file": "lib/launcher/constants.js",
-      "source_location": "L148"
     },
     {
       "id": "lib_launcher_utils",
@@ -12533,26 +12256,92 @@
       "source_location": "L47"
     },
     {
-      "id": "lib_launcher_windowprovider",
-      "label": "windowProvider.js",
+      "id": "companion_background",
+      "label": "background.js",
       "_origin": "ast",
-      "community": 70,
-      "community_name": "launcher/utils.js",
+      "community": 72,
+      "community_name": "options.js",
       "file_type": "code",
-      "norm_label": "windowprovider.js",
-      "source_file": "lib/launcher/windowProvider.js",
+      "norm_label": "background.js",
+      "source_file": "companion/background.js",
       "source_location": "L1"
     },
     {
-      "id": "lib_launcher_favoritesmanager",
-      "label": "favoritesManager.js",
+      "id": "companion_background_implementations",
+      "label": "IMPLEMENTATIONS",
       "_origin": "ast",
       "community": 72,
-      "community_name": "FavoritesManager",
+      "community_name": "options.js",
       "file_type": "code",
-      "norm_label": "favoritesmanager.js",
-      "source_file": "lib/launcher/favoritesManager.js",
+      "norm_label": "implementations",
+      "source_file": "companion/background.js",
+      "source_location": "L18"
+    },
+    {
+      "id": "companion_modules_registry",
+      "label": "registry.js",
+      "_origin": "ast",
+      "community": 72,
+      "community_name": "options.js",
+      "file_type": "code",
+      "norm_label": "registry.js",
+      "source_file": "companion/modules/registry.js",
       "source_location": "L1"
+    },
+    {
+      "id": "companion_modules_registry_modules",
+      "label": "MODULES",
+      "_origin": "ast",
+      "community": 72,
+      "community_name": "options.js",
+      "file_type": "code",
+      "norm_label": "modules",
+      "source_file": "companion/modules/registry.js",
+      "source_location": "L13"
+    },
+    {
+      "id": "companion_modules_registry_settings_key",
+      "label": "SETTINGS_KEY",
+      "_origin": "ast",
+      "community": 72,
+      "community_name": "options.js",
+      "file_type": "code",
+      "norm_label": "settings_key",
+      "source_file": "companion/modules/registry.js",
+      "source_location": "L24"
+    },
+    {
+      "id": "companion_options",
+      "label": "options.js",
+      "_origin": "ast",
+      "community": 72,
+      "community_name": "options.js",
+      "file_type": "code",
+      "norm_label": "options.js",
+      "source_file": "companion/options.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "companion_options_container",
+      "label": "container",
+      "_origin": "ast",
+      "community": 72,
+      "community_name": "options.js",
+      "file_type": "code",
+      "norm_label": "container",
+      "source_file": "companion/options.js",
+      "source_location": "L5"
+    },
+    {
+      "id": "companion_options_rows",
+      "label": "rows",
+      "_origin": "ast",
+      "community": 72,
+      "community_name": "options.js",
+      "file_type": "code",
+      "norm_label": "rows",
+      "source_file": "companion/options.js",
+      "source_location": "L6"
     },
     {
       "id": "native_host_relay",
@@ -12764,6 +12553,17 @@
       "source_location": "L94"
     },
     {
+      "id": "companion_modules_tabs_protocol_sessionstate",
+      "label": "SessionState",
+      "_origin": "ast",
+      "community": 76,
+      "community_name": "browser-tab-store-test.js",
+      "file_type": "code",
+      "norm_label": "sessionstate",
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L64"
+    },
+    {
       "id": "tests_browser_tab_store_test",
       "label": "browser-tab-store-test.js",
       "_origin": "ast",
@@ -12772,94 +12572,6 @@
       "file_type": "code",
       "norm_label": "browser-tab-store-test.js",
       "source_file": "tests/browser-tab-store-test.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "lib_launcher_browserprotocol",
-      "label": "browserProtocol.js",
-      "_origin": "ast",
-      "community": 78,
-      "community_name": "browserProtocol.js",
-      "file_type": "code",
-      "norm_label": "browserprotocol.js",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "lib_launcher_browserprotocol_icon_mime_types",
-      "label": "ICON_MIME_TYPES",
-      "_origin": "ast",
-      "community": 78,
-      "community_name": "browserProtocol.js",
-      "file_type": "code",
-      "norm_label": "icon_mime_types",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L100"
-    },
-    {
-      "id": "lib_launcher_browserprotocol_max_icon_bytes",
-      "label": "MAX_ICON_BYTES",
-      "_origin": "ast",
-      "community": 78,
-      "community_name": "browserProtocol.js",
-      "file_type": "code",
-      "norm_label": "max_icon_bytes",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L90"
-    },
-    {
-      "id": "lib_launcher_browserprotocol_max_icons_per_message",
-      "label": "MAX_ICONS_PER_MESSAGE",
-      "_origin": "ast",
-      "community": 78,
-      "community_name": "browserProtocol.js",
-      "file_type": "code",
-      "norm_label": "max_icons_per_message",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L93"
-    },
-    {
-      "id": "lib_launcher_browserprotocol_native_host_name",
-      "label": "NATIVE_HOST_NAME",
-      "_origin": "ast",
-      "community": 78,
-      "community_name": "browserProtocol.js",
-      "file_type": "code",
-      "norm_label": "native_host_name",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L22"
-    },
-    {
-      "id": "lib_launcher_browserprotocol_sessionstate",
-      "label": "SessionState",
-      "_origin": "ast",
-      "community": 78,
-      "community_name": "browserProtocol.js",
-      "file_type": "code",
-      "norm_label": "sessionstate",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L68"
-    },
-    {
-      "id": "lib_launcher_browserprotocol_windowtype",
-      "label": "WindowType",
-      "_origin": "ast",
-      "community": 78,
-      "community_name": "browserProtocol.js",
-      "file_type": "code",
-      "norm_label": "windowtype",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L80"
-    },
-    {
-      "id": "lib_launcher_browsertabstore",
-      "label": "browserTabStore.js",
-      "_origin": "ast",
-      "community": 78,
-      "community_name": "browserProtocol.js",
-      "file_type": "code",
-      "norm_label": "browsertabstore.js",
-      "source_file": "lib/launcher/browserTabStore.js",
       "source_location": "L1"
     },
     {
@@ -15668,7 +15380,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L149",
+      "source_location": "L145",
       "weight": 1.0
     },
     {
@@ -15680,7 +15392,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L171",
+      "source_location": "L167",
       "weight": 1.0
     },
     {
@@ -15692,7 +15404,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L179",
+      "source_location": "L175",
       "weight": 1.0
     },
     {
@@ -15704,7 +15416,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L188",
+      "source_location": "L184",
       "weight": 1.0
     },
     {
@@ -15716,7 +15428,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L200",
+      "source_location": "L196",
       "weight": 1.0
     },
     {
@@ -15728,7 +15440,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L208",
+      "source_location": "L204",
       "weight": 1.0
     },
     {
@@ -15740,7 +15452,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L231",
+      "source_location": "L227",
       "weight": 1.0
     },
     {
@@ -15752,7 +15464,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L239",
+      "source_location": "L235",
       "weight": 1.0
     },
     {
@@ -15764,7 +15476,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L241",
+      "source_location": "L237",
       "weight": 1.0
     },
     {
@@ -15776,7 +15488,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L214",
+      "source_location": "L210",
       "weight": 1.0
     },
     {
@@ -15788,7 +15500,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L218",
+      "source_location": "L214",
       "weight": 1.0
     },
     {
@@ -15800,7 +15512,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L218",
+      "source_location": "L214",
       "weight": 1.0
     },
     {
@@ -17113,7 +16825,7 @@
     },
     {
       "source": "lib_launcher_browserbridge_browserbridge_activate",
-      "target": "lib_launcher_browserprotocol_sessionkey",
+      "target": "companion_modules_tabs_protocol_sessionkey",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -17185,7 +16897,7 @@
     },
     {
       "source": "lib_launcher_browserbridge_browserbridge_finishactivation",
-      "target": "lib_launcher_browserprotocol_validopaqueid",
+      "target": "companion_modules_tabs_protocol_validopaqueid",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -17209,7 +16921,7 @@
     },
     {
       "source": "lib_launcher_browserbridge_browserbridge_handlemessage",
-      "target": "lib_launcher_browserprotocol_sessionkey",
+      "target": "companion_modules_tabs_protocol_sessionkey",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -17385,150 +17097,6 @@
       "context": "call",
       "source_file": "lib/launcher/browserBridge.js",
       "source_location": "L119",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol_normalizeicon",
-      "target": "lib_launcher_browserprotocol_validiconkey",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L149",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol_normalizetab",
-      "target": "lib_launcher_browserprotocol_validintegerid",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L171",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol_normalizetab",
-      "target": "lib_launcher_browserprotocol_boundedstring",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L179",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol_normalizetab",
-      "target": "lib_launcher_browserprotocol_validiconkey",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L188",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol_normalizewindow",
-      "target": "lib_launcher_browserprotocol_validintegerid",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L200",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol_normalizewindow",
-      "target": "lib_launcher_browserprotocol_boundedstring",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L208",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol_sessionkey",
-      "target": "lib_launcher_browserprotocol_validsessionidentity",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L231",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol_tabidentityid",
-      "target": "lib_launcher_browserprotocol_validtabidentity",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L239",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol_tabidentityid",
-      "target": "lib_launcher_browserprotocol_sessionkey",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L241",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol_validsessionidentity",
-      "target": "lib_launcher_browserprotocol_validopaqueid",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L214",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol_validtabidentity",
-      "target": "lib_launcher_browserprotocol_validintegerid",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L218",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol_validtabidentity",
-      "target": "lib_launcher_browserprotocol_validsessionidentity",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L218",
       "weight": 1.0
     },
     {
@@ -17929,7 +17497,7 @@
     },
     {
       "source": "lib_launcher_browsertabsprovider_browsertabsprovider_tabresult",
-      "target": "lib_launcher_browserprotocol_tabidentityid",
+      "target": "companion_modules_tabs_protocol_tabidentityid",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -18001,7 +17569,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore_browsertabstore_applyevent",
-      "target": "lib_launcher_browserprotocol_validsequence",
+      "target": "companion_modules_tabs_protocol_validsequence",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -18037,7 +17605,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore_browsertabstore_applyicons",
-      "target": "lib_launcher_browserprotocol_normalizeicon",
+      "target": "companion_modules_tabs_protocol_normalizeicon",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -18049,7 +17617,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore_browsertabstore_applysnapshot",
-      "target": "lib_launcher_browserprotocol_validsequence",
+      "target": "companion_modules_tabs_protocol_validsequence",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -18061,7 +17629,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore_browsertabstore_applysnapshot",
-      "target": "lib_launcher_browserprotocol_normalizewindow",
+      "target": "companion_modules_tabs_protocol_normalizewindow",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -18073,7 +17641,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore_browsertabstore_applysnapshot",
-      "target": "lib_launcher_browserprotocol_normalizetab",
+      "target": "companion_modules_tabs_protocol_normalizetab",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -18109,7 +17677,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore_browsertabstore_applysnapshot",
-      "target": "lib_launcher_browserprotocol_validintegerid",
+      "target": "companion_modules_tabs_protocol_validintegerid",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -18121,7 +17689,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore_browsertabstore_beginsession",
-      "target": "lib_launcher_browserprotocol_validsessionidentity",
+      "target": "companion_modules_tabs_protocol_validsessionidentity",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -18133,7 +17701,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore_browsertabstore_beginsession",
-      "target": "lib_launcher_browserprotocol_sessionkey",
+      "target": "companion_modules_tabs_protocol_sessionkey",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -18157,7 +17725,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore_browsertabstore_ensurewindow",
-      "target": "lib_launcher_browserprotocol_normalizewindow",
+      "target": "companion_modules_tabs_protocol_normalizewindow",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -18193,7 +17761,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore_browsertabstore_reduce",
-      "target": "lib_launcher_browserprotocol_normalizetab",
+      "target": "companion_modules_tabs_protocol_normalizetab",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -18229,7 +17797,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore_browsertabstore_reduce",
-      "target": "lib_launcher_browserprotocol_validintegerid",
+      "target": "companion_modules_tabs_protocol_validintegerid",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -18241,7 +17809,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore_browsertabstore_reduce",
-      "target": "lib_launcher_browserprotocol_normalizewindow",
+      "target": "companion_modules_tabs_protocol_normalizewindow",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -18277,7 +17845,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore_browsertabstore_resolve",
-      "target": "lib_launcher_browserprotocol_validtabidentity",
+      "target": "companion_modules_tabs_protocol_validtabidentity",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -18289,7 +17857,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore_browsertabstore_resolve",
-      "target": "lib_launcher_browserprotocol_sessionkey",
+      "target": "companion_modules_tabs_protocol_sessionkey",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23401,7 +22969,7 @@
     },
     {
       "source": "lib_launcher_browserbridge",
-      "target": "lib_launcher_browserprotocol_messagetype",
+      "target": "companion_modules_tabs_protocol_messagetype",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23413,7 +22981,7 @@
     },
     {
       "source": "lib_launcher_browserbridge",
-      "target": "lib_launcher_browserprotocol_protocol_version",
+      "target": "companion_modules_tabs_protocol_protocol_version",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23425,7 +22993,7 @@
     },
     {
       "source": "lib_launcher_browserbridge",
-      "target": "lib_launcher_browserprotocol_sessionkey",
+      "target": "companion_modules_tabs_protocol_sessionkey",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23437,7 +23005,7 @@
     },
     {
       "source": "lib_launcher_browserbridge",
-      "target": "lib_launcher_browserprotocol_validopaqueid",
+      "target": "companion_modules_tabs_protocol_validopaqueid",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23473,7 +23041,7 @@
     },
     {
       "source": "lib_launcher_browsertabservice",
-      "target": "lib_launcher_browserprotocol_browsereventtype",
+      "target": "companion_modules_tabs_protocol_browsereventtype",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23485,7 +23053,7 @@
     },
     {
       "source": "lib_launcher_browsertabservice",
-      "target": "lib_launcher_browserprotocol_browsertype",
+      "target": "companion_modules_tabs_protocol_browsertype",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23497,7 +23065,7 @@
     },
     {
       "source": "lib_launcher_browsertabservice",
-      "target": "lib_launcher_browserprotocol_messagetype",
+      "target": "companion_modules_tabs_protocol_messagetype",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23509,7 +23077,7 @@
     },
     {
       "source": "lib_launcher_browsertabservice",
-      "target": "lib_launcher_browserprotocol_window_id_none",
+      "target": "companion_modules_tabs_protocol_window_id_none",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23605,7 +23173,7 @@
     },
     {
       "source": "lib_launcher_browsertabsprovider",
-      "target": "lib_launcher_browserprotocol_tabidentityid",
+      "target": "companion_modules_tabs_protocol_tabidentityid",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23641,7 +23209,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore",
-      "target": "lib_launcher_browserprotocol_browsereventtype",
+      "target": "companion_modules_tabs_protocol_browsereventtype",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23653,7 +23221,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore",
-      "target": "lib_launcher_browserprotocol_messagetype",
+      "target": "companion_modules_tabs_protocol_messagetype",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23665,7 +23233,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore",
-      "target": "lib_launcher_browserprotocol_normalizeicon",
+      "target": "companion_modules_tabs_protocol_normalizeicon",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23677,7 +23245,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore",
-      "target": "lib_launcher_browserprotocol_normalizetab",
+      "target": "companion_modules_tabs_protocol_normalizetab",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23689,7 +23257,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore",
-      "target": "lib_launcher_browserprotocol_normalizewindow",
+      "target": "companion_modules_tabs_protocol_normalizewindow",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23701,7 +23269,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore",
-      "target": "lib_launcher_browserprotocol_sessionkey",
+      "target": "companion_modules_tabs_protocol_sessionkey",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23713,7 +23281,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore",
-      "target": "lib_launcher_browserprotocol_sessionstate",
+      "target": "companion_modules_tabs_protocol_sessionstate",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23725,7 +23293,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore",
-      "target": "lib_launcher_browserprotocol_validintegerid",
+      "target": "companion_modules_tabs_protocol_validintegerid",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23737,7 +23305,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore",
-      "target": "lib_launcher_browserprotocol_validsequence",
+      "target": "companion_modules_tabs_protocol_validsequence",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23749,7 +23317,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore",
-      "target": "lib_launcher_browserprotocol_validsessionidentity",
+      "target": "companion_modules_tabs_protocol_validsessionidentity",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23761,7 +23329,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore",
-      "target": "lib_launcher_browserprotocol_validtabidentity",
+      "target": "companion_modules_tabs_protocol_validtabidentity",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23773,7 +23341,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore",
-      "target": "lib_launcher_browserprotocol_window_id_none",
+      "target": "companion_modules_tabs_protocol_window_id_none",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -23785,7 +23353,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore",
-      "target": "lib_launcher_browserprotocol_windowtype",
+      "target": "companion_modules_tabs_protocol_windowtype",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -25249,7 +24817,7 @@
     },
     {
       "source": "tests_browser_bridge_test",
-      "target": "lib_launcher_browserprotocol_browsereventtype",
+      "target": "companion_modules_tabs_protocol_browsereventtype",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -25261,7 +24829,7 @@
     },
     {
       "source": "tests_browser_bridge_test",
-      "target": "lib_launcher_browserprotocol_messagetype",
+      "target": "companion_modules_tabs_protocol_messagetype",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -25309,7 +24877,7 @@
     },
     {
       "source": "tests_browser_tab_store_test",
-      "target": "lib_launcher_browserprotocol_browsereventtype",
+      "target": "companion_modules_tabs_protocol_browsereventtype",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -25321,7 +24889,7 @@
     },
     {
       "source": "tests_browser_tab_store_test",
-      "target": "lib_launcher_browserprotocol_iconkeyfor",
+      "target": "companion_modules_tabs_protocol_iconkeyfor",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -25333,7 +24901,7 @@
     },
     {
       "source": "tests_browser_tab_store_test",
-      "target": "lib_launcher_browserprotocol_messagetype",
+      "target": "companion_modules_tabs_protocol_messagetype",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -25345,7 +24913,7 @@
     },
     {
       "source": "tests_browser_tab_store_test",
-      "target": "lib_launcher_browserprotocol_normalizeicon",
+      "target": "companion_modules_tabs_protocol_normalizeicon",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -25357,7 +24925,7 @@
     },
     {
       "source": "tests_browser_tab_store_test",
-      "target": "lib_launcher_browserprotocol_normalizetab",
+      "target": "companion_modules_tabs_protocol_normalizetab",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -25369,7 +24937,7 @@
     },
     {
       "source": "tests_browser_tab_store_test",
-      "target": "lib_launcher_browserprotocol_sessionstate",
+      "target": "companion_modules_tabs_protocol_sessionstate",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -25381,7 +24949,7 @@
     },
     {
       "source": "tests_browser_tab_store_test",
-      "target": "lib_launcher_browserprotocol_tabidentityid",
+      "target": "companion_modules_tabs_protocol_tabidentityid",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -25393,7 +24961,7 @@
     },
     {
       "source": "tests_browser_tab_store_test",
-      "target": "lib_launcher_browserprotocol_window_id_none",
+      "target": "companion_modules_tabs_protocol_window_id_none",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -26089,7 +25657,7 @@
     },
     {
       "source": "lib_launcher_browserbridge",
-      "target": "lib_launcher_browserprotocol",
+      "target": "companion_modules_tabs_protocol",
       "relation": "imports_from",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -26113,7 +25681,7 @@
     },
     {
       "source": "lib_launcher_browsertabservice",
-      "target": "lib_launcher_browserprotocol",
+      "target": "companion_modules_tabs_protocol",
       "relation": "imports_from",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -26161,7 +25729,7 @@
     },
     {
       "source": "lib_launcher_browsertabsprovider",
-      "target": "lib_launcher_browserprotocol",
+      "target": "companion_modules_tabs_protocol",
       "relation": "imports_from",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -26197,7 +25765,7 @@
     },
     {
       "source": "lib_launcher_browsertabstore",
-      "target": "lib_launcher_browserprotocol",
+      "target": "companion_modules_tabs_protocol",
       "relation": "imports_from",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -27157,7 +26725,7 @@
     },
     {
       "source": "tests_browser_bridge_test",
-      "target": "lib_launcher_browserprotocol",
+      "target": "companion_modules_tabs_protocol",
       "relation": "imports_from",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -27205,7 +26773,7 @@
     },
     {
       "source": "tests_browser_tab_store_test",
-      "target": "lib_launcher_browserprotocol",
+      "target": "companion_modules_tabs_protocol",
       "relation": "imports_from",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -28612,24 +28180,13 @@
     },
     {
       "source": "companion_modules_tabs_protocol",
-      "target": "companion_modules_tabs_protocol_icon_mime_types",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L100",
-      "weight": 1.0
-    },
-    {
-      "source": "companion_modules_tabs_protocol",
       "target": "companion_modules_tabs_protocol_validopaqueid",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L105",
+      "source_location": "L101",
       "weight": 1.0
     },
     {
@@ -28640,7 +28197,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L109",
+      "source_location": "L105",
       "weight": 1.0
     },
     {
@@ -28651,7 +28208,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L113",
+      "source_location": "L109",
       "weight": 1.0
     },
     {
@@ -28662,7 +28219,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L117",
+      "source_location": "L113",
       "weight": 1.0
     },
     {
@@ -28673,7 +28230,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L130",
+      "source_location": "L126",
       "weight": 1.0
     },
     {
@@ -28684,7 +28241,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L148",
+      "source_location": "L144",
       "weight": 1.0
     },
     {
@@ -28695,7 +28252,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L158",
+      "source_location": "L154",
       "weight": 1.0
     },
     {
@@ -28706,18 +28263,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L170",
-      "weight": 1.0
-    },
-    {
-      "source": "companion_modules_tabs_protocol",
-      "target": "companion_modules_tabs_protocol_normalizewindow",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L199",
+      "source_location": "L166",
       "weight": 1.0
     },
     {
@@ -28728,29 +28274,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L21",
-      "weight": 1.0
-    },
-    {
-      "source": "companion_modules_tabs_protocol",
-      "target": "companion_modules_tabs_protocol_validsessionidentity",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L212",
-      "weight": 1.0
-    },
-    {
-      "source": "companion_modules_tabs_protocol",
-      "target": "companion_modules_tabs_protocol_validtabidentity",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L217",
+      "source_location": "L17",
       "weight": 1.0
     },
     {
@@ -28761,29 +28285,29 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L22",
+      "source_location": "L18",
       "weight": 1.0
     },
     {
       "source": "companion_modules_tabs_protocol",
-      "target": "companion_modules_tabs_protocol_sessionkey",
+      "target": "companion_modules_tabs_protocol_normalizewindow",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L230",
+      "source_location": "L195",
       "weight": 1.0
     },
     {
       "source": "companion_modules_tabs_protocol",
-      "target": "companion_modules_tabs_protocol_tabidentityid",
+      "target": "companion_modules_tabs_protocol_validsessionidentity",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L238",
+      "source_location": "L208",
       "weight": 1.0
     },
     {
@@ -28794,7 +28318,40 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L25",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "companion_modules_tabs_protocol",
+      "target": "companion_modules_tabs_protocol_validtabidentity",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L213",
+      "weight": 1.0
+    },
+    {
+      "source": "companion_modules_tabs_protocol",
+      "target": "companion_modules_tabs_protocol_sessionkey",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L226",
+      "weight": 1.0
+    },
+    {
+      "source": "companion_modules_tabs_protocol",
+      "target": "companion_modules_tabs_protocol_tabidentityid",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L234",
       "weight": 1.0
     },
     {
@@ -28805,7 +28362,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L31",
+      "source_location": "L27",
       "weight": 1.0
     },
     {
@@ -28816,7 +28373,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L51",
+      "source_location": "L47",
       "weight": 1.0
     },
     {
@@ -28827,7 +28384,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L68",
+      "source_location": "L64",
       "weight": 1.0
     },
     {
@@ -28838,7 +28395,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L78",
+      "source_location": "L74",
       "weight": 1.0
     },
     {
@@ -28849,7 +28406,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L80",
+      "source_location": "L76",
       "weight": 1.0
     },
     {
@@ -28860,7 +28417,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L90",
+      "source_location": "L86",
       "weight": 1.0
     },
     {
@@ -28871,7 +28428,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "companion/modules/tabs/protocol.js",
-      "source_location": "L93",
+      "source_location": "L89",
+      "weight": 1.0
+    },
+    {
+      "source": "companion_modules_tabs_protocol",
+      "target": "companion_modules_tabs_protocol_icon_mime_types",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "companion/modules/tabs/protocol.js",
+      "source_location": "L96",
       "weight": 1.0
     },
     {
@@ -28937,7 +28505,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L117",
+      "source_location": "L114",
       "weight": 1.0
     },
     {
@@ -28948,7 +28516,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L141",
+      "source_location": "L138",
       "weight": 1.0
     },
     {
@@ -28959,7 +28527,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L179",
+      "source_location": "L176",
       "weight": 1.0
     },
     {
@@ -28970,7 +28538,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L234",
+      "source_location": "L231",
       "weight": 1.0
     },
     {
@@ -28981,7 +28549,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L259",
+      "source_location": "L256",
       "weight": 1.0
     },
     {
@@ -28992,7 +28560,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L290",
+      "source_location": "L287",
       "weight": 1.0
     },
     {
@@ -29014,7 +28582,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L343",
+      "source_location": "L340",
       "weight": 1.0
     },
     {
@@ -29025,7 +28593,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L366",
+      "source_location": "L363",
       "weight": 1.0
     },
     {
@@ -29036,7 +28604,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L383",
+      "source_location": "L380",
       "weight": 1.0
     },
     {
@@ -29047,7 +28615,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L400",
+      "source_location": "L397",
       "weight": 1.0
     },
     {
@@ -29069,7 +28637,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L94",
+      "source_location": "L91",
       "weight": 1.0
     },
     {
@@ -29080,7 +28648,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L323",
+      "source_location": "L320",
       "weight": 1.0
     },
     {
@@ -29488,270 +29056,6 @@
       "confidence_score": 1.0,
       "source_file": "lib/launcher/browserBridge.js",
       "source_location": "L41",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_icon_mime_types",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L100",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_validopaqueid",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L105",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_validintegerid",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L109",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_validsequence",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L113",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_validiconkey",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L117",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_iconkeyfor",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L130",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_normalizeicon",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L148",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_boundedstring",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L158",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_normalizetab",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L170",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_normalizewindow",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L199",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_protocol_version",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L21",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_validsessionidentity",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L212",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_validtabidentity",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L217",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_native_host_name",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L22",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_sessionkey",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L230",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_tabidentityid",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L238",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_browsertype",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L25",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_messagetype",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L31",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_browsereventtype",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L51",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_sessionstate",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L68",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_window_id_none",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L78",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_windowtype",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L80",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_max_icon_bytes",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L90",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_launcher_browserprotocol",
-      "target": "lib_launcher_browserprotocol_max_icons_per_message",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L93",
       "weight": 1.0
     },
     {
@@ -38565,7 +37869,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/BROWSER_TABS.md",
-      "source_location": "L398",
+      "source_location": "L395",
       "weight": 1.0
     },
     {
@@ -40701,5 +40005,5 @@
       "source_file": "docs/ARCHITECTURE.md"
     }
   ],
-  "built_at_commit": "ac8b4e9b96372510934160bb8ba9243724bf2d16"
+  "built_at_commit": "44ad6e38a57acf683810139ac78f42eef38b4e17"
 }

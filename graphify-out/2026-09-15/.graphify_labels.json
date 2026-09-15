@@ -13,7 +13,7 @@
   "11": "PanelAutoHideManager",
   "12": "prefs.js",
   "13": "ActionRegistry",
-  "14": "browserTabService.js",
+  "14": "protocol.js",
   "15": "WindowMover",
   "16": "BrowserTabService",
   "17": "._activate",
@@ -67,14 +67,15 @@
   "65": "HistoryManager",
   "66": "ActionProvider",
   "67": "browserIntegration.js",
-  "68": "BrowserTabsProvider",
+  "68": "FakeEvent",
   "69": "manifest.json",
   "70": "launcher/utils.js",
   "71": "WindowProvider",
-  "72": "FavoritesManager",
+  "72": "options.js",
   "73": "native-host-test.js",
   "74": "AppProvider",
   "75": "BrowserBridge",
   "76": "browser-tab-store-test.js",
-  "78": "browserProtocol.js"
+  "77": "SettingsProvider",
+  "78": "normalizeTab"
 }

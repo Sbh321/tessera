@@ -13,7 +13,7 @@ import {BrowserTabStore, StoreResult} from '../lib/launcher/browserTabStore.js';
 import {
     BrowserEventType, MessageType, SessionState, WINDOW_ID_NONE, iconKeyFor,
     normalizeIcon, normalizeTab, tabIdentityId,
-} from '../companion/modules/tabs/protocol.js';
+} from '../lib/launcher/browserProtocol.js';
 
 let failures = 0;
 let checks = 0;

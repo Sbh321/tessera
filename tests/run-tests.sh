@@ -16,6 +16,14 @@ cd "$(dirname "$0")/.."
 
 ./tests/schema-validate.sh
 
+# The shell owns the wire protocol; the companion carries a verbatim copy
+# (a browser extension cannot import outside its own directory, and the
+# packaged extension does not include the companion). Catch any drift.
+if ! cmp -s lib/launcher/browserProtocol.js companion/modules/tabs/protocol.js; then
+    echo "companion/modules/tabs/protocol.js differs from lib/launcher/browserProtocol.js; copy it over." >&2
+    exit 1
+fi
+
 PURE_TESTS=(launcher-engine-test browser-tab-store-test browser-window-mapper-test)
 
 if command -v gjs >/dev/null 2>&1; then
