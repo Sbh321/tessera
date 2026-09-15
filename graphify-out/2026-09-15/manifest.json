@@ -330,9 +330,9 @@
     "semantic_hash": ""
   },
   "tests/run-tests.sh": {
-    "mtime": 1789378584.6369889,
-    "seen": 1789378669.3771055,
-    "ast_hash": "08a4291f1b5757c9110c49cd0ae8cbb2",
+    "mtime": 1789447661.678473,
+    "seen": 1789447668.2587311,
+    "ast_hash": "7ac3ee5c3fce807c67cf6aea873489fe",
     "semantic_hash": ""
   },
   "tests/schema-validate.sh": {
@@ -582,27 +582,27 @@
     "semantic_hash": ""
   },
   "lib/launcher/browserBridge.js": {
-    "mtime": 1789378445.1710598,
-    "seen": 1789378669.3770623,
-    "ast_hash": "9e5636c62b3cc3c74279e0df06c7fe11",
+    "mtime": 1789447661.6782417,
+    "seen": 1789447668.258669,
+    "ast_hash": "f82a5f97e53ecfd56111b599be822002",
     "semantic_hash": ""
   },
   "lib/launcher/browserTabService.js": {
-    "mtime": 1789378445.1716602,
-    "seen": 1789378669.3770633,
-    "ast_hash": "7f6dbbd80c810c40efe889e0c40dba80",
+    "mtime": 1789447661.678298,
+    "seen": 1789447668.2586718,
+    "ast_hash": "7908e9d0ac2a8a3245e93a06e337c291",
     "semantic_hash": ""
   },
   "lib/launcher/browserTabStore.js": {
-    "mtime": 1789378445.1707969,
-    "seen": 1789378669.377064,
-    "ast_hash": "ed62e9920ebe9ce08b518c7ebeaccfc2",
+    "mtime": 1789447661.6781921,
+    "seen": 1789447668.258673,
+    "ast_hash": "701aee9675ed63ab9ecbb0632d388401",
     "semantic_hash": ""
   },
   "lib/launcher/browserTabsProvider.js": {
-    "mtime": 1789378445.172121,
-    "seen": 1789378669.3770645,
-    "ast_hash": "6ec1e5408e880b92dbbf24e5003e05e0",
+    "mtime": 1789447661.6783385,
+    "seen": 1789447668.258674,
+    "ast_hash": "06738a6f77764060f9a368804e3deb7d",
     "semantic_hash": ""
   },
   "lib/launcher/browserWindowMapper.js": {
@@ -612,9 +612,9 @@
     "semantic_hash": ""
   },
   "tests/browser-bridge-test.js": {
-    "mtime": 1789378445.1741254,
-    "seen": 1789378669.3771007,
-    "ast_hash": "7ae6992cb7bbc6a134b50cd2c15658af",
+    "mtime": 1789447661.6784399,
+    "seen": 1789447668.2587237,
+    "ast_hash": "baaa001807ea20bcd33350f43f04e65b",
     "semantic_hash": ""
   },
   "tests/browser-companion-test.js": {
@@ -624,9 +624,9 @@
     "semantic_hash": ""
   },
   "tests/browser-tab-store-test.js": {
-    "mtime": 1789378445.173525,
-    "seen": 1789378669.3771029,
-    "ast_hash": "5a1f1eb7d973f32031293e7c382c3c1e",
+    "mtime": 1789447661.6784003,
+    "seen": 1789447668.2587268,
+    "ast_hash": "53f42d6291033d0a856935d4fa925192",
     "semantic_hash": ""
   },
   "tests/browser-window-mapper-test.js": {
@@ -636,9 +636,9 @@
     "semantic_hash": ""
   },
   "docs/BROWSER_TABS.md": {
-    "mtime": 1789378662.721373,
-    "seen": 1789378669.377129,
-    "ast_hash": "d9830a7105b882c9f083b768749fedcd",
+    "mtime": 1789447661.6786017,
+    "seen": 1789447668.2587695,
+    "ast_hash": "e20e0c2f7cf2c3be2958c74aef5087ba",
     "semantic_hash": ""
   },
   "companion/background.js": {
@@ -666,9 +666,9 @@
     "semantic_hash": ""
   },
   "companion/modules/tabs/protocol.js": {
-    "mtime": 1789325527.1473274,
-    "seen": 1789378669.3770523,
-    "ast_hash": "85e80674d7ef6657c366a730565cf633",
+    "mtime": 1789447661.6781363,
+    "seen": 1789447668.2586515,
+    "ast_hash": "b8a579a50ca6b4065511861200a82b20",
     "semantic_hash": ""
   },
   "companion/options.js": {
@@ -729,6 +729,12 @@
     "mtime": 1789378348.4981923,
     "seen": 1789378669.377134,
     "ast_hash": "995a2c8c29716311518bd04ea6ab64c4",
+    "semantic_hash": ""
+  },
+  "lib/launcher/browserProtocol.js": {
+    "mtime": 1789447661.6780355,
+    "seen": 1789447668.2586703,
+    "ast_hash": "b8a579a50ca6b4065511861200a82b20",
     "semantic_hash": ""
   }
 }
