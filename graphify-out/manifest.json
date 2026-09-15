@@ -132,9 +132,9 @@
     "semantic_hash": ""
   },
   "lib/launcher/launcherPopup.js": {
-    "mtime": 1789323943.7705684,
-    "seen": 1789324554.244187,
-    "ast_hash": "d67dc161590bde43a21ab01e3cc14faf",
+    "mtime": 1789447958.536154,
+    "seen": 1789448001.20135,
+    "ast_hash": "1f1362b68ec303a4a5f565a5c34c37b6",
     "semantic_hash": ""
   },
   "lib/launcher/launcherUI.js": {
@@ -378,9 +378,9 @@
     "semantic_hash": "11e8883e3469bb0af72a016d36f29691"
   },
   "docs/LAUNCHER.md": {
-    "mtime": 1789378650.11008,
-    "seen": 1789378669.3771307,
-    "ast_hash": "a4014a00e73424bcdaa4cc47148f1e10",
+    "mtime": 1789447958.536582,
+    "seen": 1789448001.2014306,
+    "ast_hash": "10c35fc6c4e677dd2510586d7714a721",
     "semantic_hash": ""
   },
   "docs/ROADMAP.md": {
