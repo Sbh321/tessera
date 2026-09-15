@@ -781,8 +781,9 @@ Behaviour that belongs to the window itself rather than to searching:
   only re-presents the existing window.
 - **A footer shows the selected result's key hints** — `↵ Open`, plus
   `Ctrl+↵` / `Shift+↵` labelled with what *that* provider does with them,
-  `Ctrl+D Pin` when the result is pinnable and `Ctrl+Del Remove` when it
-  can be removed, then `Esc Close`. Compact mode hides it.
+  `Ctrl+D Add to Favorites` (or `Remove from Favorites`, following the
+  result's current state) when the result is pinnable and `Ctrl+Del
+  Remove` when it can be removed, then `Esc Close`. Compact mode hides it.
 - **Empty states are distinguished**: an empty query with nothing to show
   reads "Type to search" (a fresh profile), a query with no matches reads
   "No results".
