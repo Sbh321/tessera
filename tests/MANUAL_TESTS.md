@@ -395,6 +395,39 @@ window on its own workspace* ON; it is off by default.
       window — see "Drag to swap and drag to resize" below.
 - [ ] Panel/dock avoidance: tiles never underlap the top panel or Ubuntu
       Dock (work area, not raw monitor geometry).
+- [ ] **New windows open on the monitor you are working on** (external
+      monitor connected). Park the mouse on the external monitor, focus a
+      window on workspace 2 of the primary display, and launch an app
+      from Ubuntu Dock, from the overview search (Super, type, Enter) and
+      from the Tessera launcher: each time the new window opens on the
+      PRIMARY display, on workspace 2, tiled next to the focused window
+      — not on the external monitor under the pointer. Focus a window on
+      the external monitor and launch again: the app opens there. With
+      nothing focused (empty workspace, or straight from the overview),
+      it opens on the primary. A dialog opened by an app on the external
+      monitor stays with its app. Without a second monitor nothing
+      changes.
+- [ ] **Empty and trailing workspaces, no tap needed.** With windows on
+      the external monitor, press Super+0 (or Super+N for an empty
+      workspace) so the primary shows an empty workspace -- GNOME leaves
+      focus on an external-monitor window here -- and WITHOUT clicking
+      anything launch an app from the dock, the overview search and the
+      launcher: it opens on the PRIMARY, on that empty workspace. Now
+      click a window on the external monitor and launch again: it opens
+      on the external monitor (you chose that window). Switch workspace
+      again: back to the primary.
+- [ ] **The launcher is display-aware.** Focus a window on the PRIMARY,
+      move the pointer to the external monitor and press Super+Space:
+      the launcher opens on the external monitor. Launch an app that is
+      not running: its window opens on the EXTERNAL monitor (where the
+      launcher was), not beside the focused window on the primary. Do
+      the reverse (focus on the external, launcher on the primary): it
+      opens on the primary. The hint covers ONE window: a second app
+      started from the dock right afterwards follows the normal rule
+      (focused window's monitor). Launching an app that is already
+      running just focuses it and moves nothing; a launcher ACTION
+      (toggle, calculator copy) followed more than ~10 s later by a dock
+      launch is unaffected by the stale hint.
 - [ ] Gap settings in Preferences apply live; 0/0 gaps produce perfectly
       abutting windows with no 1px holes (also check with fractional
       scaling enabled).
@@ -1033,7 +1066,11 @@ section is for everything that needs a live shell.
       is on, near the upper third, over a dimmed desktop (the defaults:
       position `center`, offset 0).
 - [ ] With two monitors, moving the pointer to the second monitor and
-      opening the launcher centers it there.
+      opening the launcher centers it there, and ONLY that monitor dims:
+      the other monitor keeps its normal brightness, its windows fully
+      visible. Clicking on the undimmed monitor still closes the launcher
+      (the click catcher spans every screen); so does clicking on the
+      dimmed area. Open it on the primary next: the dim moves with it.
 - [ ] Preferences → Launcher → Placement → "Horizontal position": `left`
       and `right` anchor the popup to that side with a small gap;
       `center` restores the default. Changing it while the launcher is

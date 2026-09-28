@@ -36,6 +36,20 @@ gnome-shell process. In order of preference:
    Wayland session — needed for a brand-new uuid, and for final
    verification of gesture/multi-monitor behavior before release.
 
+**Headless smoke tests.** `scripts/dev-headless.sh [MONITORS] [-- CMD]`
+runs an *isolated* headless GNOME Shell (scratch `XDG_DATA_HOME`,
+`XDG_CONFIG_HOME` and dconf profile, exported before `dbus-run-session`
+so the session bus and dconf-service inherit them — exporting them
+inside the session is too late and would write to the real
+`~/.config/dconf/user`) with the packed extension enabled and
+`unsafe_mode` on, so `org.gnome.Shell.Eval` works. With a command it
+runs it in the session (`ev '<js>'` evaluates in the shell, `client
+TITLE` opens a Gtk4 Wayland window), reports whether the shell survived
+and greps its log, then tears down. This is the only way to exercise
+window-created / placement / multi-monitor code without logging out,
+and it is how the `move_to_monitor` crash below was reproduced and the
+fix verified (see GNOME_NOTES.md).
+
 (A nested-shell loop — `dbus-run-session -- gnome-shell --nested
 --wayland` — was tried and removed: nested sessions proved buggy and
 unstable on this environment even with isolated dconf state. Notes if

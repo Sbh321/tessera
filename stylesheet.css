@@ -358,8 +358,14 @@
  * rendering"): a color left in a class rule would leak through St's
  * style transitions as a flash of the wrong theme.
  */
+/* Stage-sized click catcher: deliberately no background. */
 .tessera-launcher-backdrop {
-    /* Opacity is animated on the actor; this is only the dim color. */
+    background-color: transparent;
+}
+
+/* The dim, sized by code to the card's monitor only. Opacity is
+ * animated on the backdrop; this is only the dim color. */
+.tessera-launcher-dim {
     background-color: #000000;
 }
 

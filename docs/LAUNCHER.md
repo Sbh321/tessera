@@ -819,8 +819,21 @@ Behaviour that belongs to the window itself rather than to searching:
 The split with `stylesheet.css` follows the discipline documented in
 [`ARCHITECTURE.md`](ARCHITECTURE.md) ("Settings → rendering"):
 
+- **Display awareness.** The popup opens on the monitor the pointer is
+  on (`Main.layoutManager.currentMonitor`) and remembers that index.
+  When a result is activated it hands the index to the tiler as a hint
+  (`TilingManager.hintNextWindowMonitor`) right after closing, so the
+  window the activation opens lands on the launcher's display rather
+  than on whichever monitor focus would imply. The hint is one-shot and
+  expires after ten seconds, so an activation that opens no window (an
+  action, an app that was already running) cannot capture an unrelated
+  window later. The call is optional-chained: the launcher has no hard
+  dependency on the tiler.
 - **`stylesheet.css`** carries structure only — spacing, padding, the
-  transition duration, the backdrop's dim color.
+  transition duration, the dim color. (The dim covers only the monitor
+  the card is on; the stage-sized backdrop beneath it is a transparent
+  click catcher, so click-outside-to-dismiss works on every monitor
+  while the other screens are left undimmed.)
 - **`theme.js`** applies every color, size and radius that must follow a
   setting, the light/dark preference, or the accent color as an inline
   style, always resolved to a literal value.

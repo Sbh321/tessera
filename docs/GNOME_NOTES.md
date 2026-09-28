@@ -537,6 +537,43 @@ ARCHITECTURE.md):
   changes) and snap back on a work-area border. Both read the drop
   point / new frame on `grab-op-end` and only touch the layout tree;
   the ordinary relayout applies the result.
+- **`Meta.Window.move_to_monitor()` on a just-created window aborts
+  the shell.** Calling it from `window-created` (to open a new app on
+  the focused window's monitor rather than the pointer's) SIGSEGVed
+  inside `meta_window_move_to_monitor` on every GNOME Terminal launch —
+  three session logouts in a row. A freshly created Wayland toplevel
+  already reports a monitor index (so a `get_monitor() >= 0` guard is
+  useless) but has no placement or stack position yet
+  (`meta_window_set_stack_position_no_sync: assertion 'stack_position
+  >= 0'` precedes the crash in the journal), and move_to_monitor's
+  move-between-work-areas path asserts on that. `move_resize_frame()`
+  on the same windows from the tiler's idle flush has always been fine.
+  Rule now: never call `move_to_monitor` on a window this extension has
+  not seen `shown`; the placement records the target at creation and
+  applies it with `move_resize_frame` from the flush after the first
+  `shown` (`_settlePendingMonitors`). Verified with
+  `scripts/dev-headless.sh` on two virtual monitors.
+- **Under workspaces-only-on-primary, an empty primary workspace has a
+  focused window -- on the other monitor.** Secondary-monitor windows
+  are on-all-workspaces, so `meta_workspace_focus_default_window` on
+  switching to an empty primary workspace keeps (or picks) one of them
+  as `focus_window`. Any "new windows open on the focused window's
+  monitor" rule therefore sends launches from an empty primary
+  workspace to the external monitor until the user clicks the empty
+  desktop (which clears focus). Tessera resolves it by intent: a
+  workspace switch means "I am on the primary", withdrawn by a focus
+  change after the switch settles (600 ms; Mutter's own default-window
+  focus lands inside that) or by a pointer press on another monitor
+  (`global.stage` captured-event sees presses over app windows, and a
+  press on the already-focused sticky window changes no focus, so focus
+  alone is not enough). Verified with `scripts/dev-headless.sh`.
+- **Order of precedence for where a new app window opens**
+  (`_placeOnFocusedMonitor`): an explicit launcher hint, then the
+  focused window's monitor (minus the sticky-after-switch case above),
+  then the primary. `Clutter.get_default_backend().get_default_seat()
+  .warp_pointer(x, y)` works in a headless shell and moves
+  `Main.layoutManager.currentMonitor`, which is how the launcher path
+  was verified on a second virtual monitor.
 - Middle click on a stacked tab closes its window. On a touchpad,
   libinput reports a three-finger *tap* as a middle button (with
   tap-to-click on) and a three-finger *click* as middle under the
