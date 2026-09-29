@@ -153,6 +153,12 @@
       <description>The layout every workspace uses unless it has been switched individually with the layout keybindings, and the layout new workspaces start in. One of: tiled (Hyprland-style dwindle tiling), stacked (all windows share the content area under a row of tabs; a workspace with a single window lays out as tiled until a second one opens), floating (Tessera leaves the workspace to GNOME: stock placement, free move/resize, maximize stays). Changing it puts EVERY workspace into the new mode, dropping any per-workspace choice, and re-lays out every open window accordingly.</description>
     </key>
 
+    <key name="smooth-window-open" type="b">
+      <default>true</default>
+      <summary>Show new windows only once they are in place</summary>
+      <description>Hold a newly opened application window invisible until it is on its monitor and on its tile, then fade it in. Without this a new window first appears where GNOME and the application put it (the monitor under the pointer, the application's own size) and visibly jumps to its monitor and snaps to its tile a moment later, and applications that adjust their own window after opening (browsers especially) flicker. The wait is normally a frame or two and never longer than about a third of a second. Dialogs, popups and other windows that are not tiled are unaffected. Turn it off if a particular application misbehaves with it; windows then open on the right monitor as before, but visibly.</description>
+    </key>
+
     <key name="tiling-gap-inner" type="i">
       <default>6</default>
       <range min="0" max="64"/>

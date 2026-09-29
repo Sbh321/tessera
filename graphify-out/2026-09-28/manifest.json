@@ -132,9 +132,9 @@
     "semantic_hash": ""
   },
   "lib/launcher/launcherPopup.js": {
-    "mtime": 1789629633.9910133,
-    "seen": 1789629640.7812781,
-    "ast_hash": "cc8050e3e84c17e43301e81072e7705f",
+    "mtime": 1790577776.5165634,
+    "seen": 1790577938.092412,
+    "ast_hash": "b1c32457c3c2ac6f0dc9b7766e13d4e9",
     "semantic_hash": ""
   },
   "lib/launcher/launcherUI.js": {
@@ -252,9 +252,9 @@
     "semantic_hash": ""
   },
   "lib/tiling/tilingManager.js": {
-    "mtime": 1789634983.226455,
-    "seen": 1789635082.649194,
-    "ast_hash": "efa579a457976f6379a588dcc96b35cc",
+    "mtime": 1790580220.0619907,
+    "seen": 1790580277.5047307,
+    "ast_hash": "23501e630bc490b3c9caa5f9ad61c703",
     "semantic_hash": ""
   },
   "lib/tiling/windowFilter.js": {
@@ -372,15 +372,15 @@
     "semantic_hash": ""
   },
   "docs/GNOME_NOTES.md": {
-    "mtime": 1789635066.7916784,
-    "seen": 1789635082.64925,
-    "ast_hash": "1eefb01b6301cd0ac4b3915b7c2748c0",
+    "mtime": 1790580270.7916708,
+    "seen": 1790580277.5047715,
+    "ast_hash": "fb89dc72e652098efc0946d0e2fff83b",
     "semantic_hash": ""
   },
   "docs/LAUNCHER.md": {
-    "mtime": 1789629633.9921377,
-    "seen": 1789629640.7813337,
-    "ast_hash": "577d640fb95691f5546c13b6f7f1c11b",
+    "mtime": 1790577930.3600018,
+    "seen": 1790577938.0925417,
+    "ast_hash": "8dfa4ec8affc8d42237aefee246defc7",
     "semantic_hash": ""
   },
   "docs/ROADMAP.md": {
@@ -390,9 +390,9 @@
     "semantic_hash": ""
   },
   "tests/MANUAL_TESTS.md": {
-    "mtime": 1789634788.3171606,
-    "seen": 1789635082.6492527,
-    "ast_hash": "4365f51b95713265671fe745dacdd0b8",
+    "mtime": 1790580270.7923996,
+    "seen": 1790580277.5047736,
+    "ast_hash": "3fa3a3a4fbbb7bc6c02fa03e2373f46e",
     "semantic_hash": ""
   },
   ".claude/settings.json": {

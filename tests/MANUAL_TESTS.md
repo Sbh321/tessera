@@ -428,11 +428,63 @@ window on its own workspace* ON; it is off by default.
       running just focuses it and moves nothing; a launcher ACTION
       (toggle, calculator copy) followed more than ~10 s later by a dock
       launch is unaffected by the stale hint.
+- [ ] **No flash on the wrong display.** Focus a window on the external
+      monitor, open the launcher on the PRIMARY and launch an app: the
+      window must appear on the primary from its very first frame — it
+      must NOT show up on the external monitor for a split second and
+      then jump. Repeat the other way round, and from the dock with
+      focus on one monitor and the pointer on the other. Watch both
+      screens; the map animation should play once, on one display.
 - [ ] Gap settings in Preferences apply live; 0/0 gaps produce perfectly
       abutting windows with no 1px holes (also check with fractional
       scaling enabled).
 - [ ] Disable tiling in Preferences: windows stay where they are and are
       never repositioned again; re-enable: layout reasserts.
+
+## New windows appear in place
+
+Needs a real session: the headless harness cannot show painting, X11
+clients, or the shell's own animations.
+
+- [ ] **No jump, no snap.** On a tiled workspace with one window, open
+      a terminal, Files and a browser in turn: each appears ONCE, already
+      in its tile, with a short fade — it must not show up at its own
+      size first and then snap, and the existing windows must not be
+      seen reflowing around an empty gap before it arrives.
+- [ ] **Browsers do not flicker.** Open Brave / Chrome (cold, with a
+      session to restore) on the primary from the launcher, the dock and
+      the overview search, several times: no flicker on opening, and it
+      never appears on the external monitor first. Same for an Electron
+      app (VS Code, Slack).
+- [ ] **Nothing stays invisible.** Open 5 windows at once (a shell loop
+      launching terminals): every one becomes visible. Open an app with
+      a minimum size larger than its tile (GNOME Settings into a quarter
+      tile): it appears within a third of a second at the size it can
+      manage. Open a window and close it at once (`gnome-terminal -- true`):
+      no ghost, no journal errors.
+- [ ] **The windows beneath stay painted.** Open a window over a video
+      or an animation playing in a tiled window: while the newcomer is
+      still invisible the video keeps playing in full — no black or
+      frozen rectangle where the new window is about to be.
+- [ ] **Dialogs are untouched.** Open a file chooser, a Settings popup,
+      an "About" dialog: they appear with GNOME's normal animation, at
+      once.
+- [ ] **From the overview.** Launch an app from the overview search: as
+      the overview closes the window is already in its tile; it is not
+      seen small, squashed or at the bottom of its tile first.
+- [ ] **Floating workspace.** On a floating-layout workspace a new
+      window appears at GNOME's own placement and size, without delay.
+- [ ] **The pin.** Within three seconds of a window opening, drag it to
+      the other monitor: it STAYS there (a drag ends the pin). Lock and
+      unlock, or disable the extension, right after opening a window:
+      nothing is left invisible.
+- [ ] **Kill switch.** Preferences → Tiling → "Show new windows only
+      once in place" off: windows open with GNOME's scale-and-fade
+      animation and visibly snap to their tile, as before; still on the
+      right monitor. On again: back to appearing in place. Toggling it
+      while a window is opening leaves that window visible.
+- [ ] **Reduced motion.** With GNOME's "Reduce Animation" on, new
+      windows appear in place without the fade.
 
 ## Layout modes: default and per workspace
 

@@ -64,6 +64,13 @@ not planned.
   pure spatial neighbour search (`layoutEngine.findNeighbor`), across
   tiles, floating windows and monitors; tab cycling/reordering on
   stacked workspaces.
+- **New windows appear in place** (`lib/tiling/windowPlacer.js`,
+  setting `smooth-window-open`): a new window is held invisible until
+  it is on its monitor and on its tile, then faded in, instead of
+  appearing where Mutter and the client put it and jumping. Multi-
+  monitor placement (launcher hint, focused window's monitor, primary
+  intent after a workspace switch) lives in the same module, with a
+  short pin against clients that move themselves after opening.
 - **Drag-to-swap and drag-to-resize** for tiled windows: a window
   dropped on another tile swaps with it; a dragged edge becomes the
   split's ratio (`LayoutTree.swap` / `resizeLeaf`, per-split ratios on

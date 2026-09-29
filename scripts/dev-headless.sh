@@ -15,7 +15,9 @@
 # MONITORS (default 2) virtual 1280x720 monitors are created. With a
 # COMMAND, it runs inside the session once the shell is up (the shell's
 # Wayland display is $WAYLAND_DISPLAY_TEST; use `ev '<js>'` for Eval and
-# `client TITLE` to open a Gtk4 window), then everything is torn down.
+# `client TITLE` to open a Gtk4 Wayland window, `x11client SCRIPT ARGS`
+# to run a gjs script as an X11 client of the headless shell), then
+# everything is torn down.
 # Without one, the session stays up until Ctrl+C.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -32,6 +34,10 @@ S=$(mktemp -d -t tessera-headless-XXXXXX)
 trap 'rm -rf "$S"' EXIT
 export XDG_DATA_HOME="$S/data" XDG_CONFIG_HOME="$S/config" XDG_CACHE_HOME="$S/cache"
 export DCONF_PROFILE="$S/dconf-profile"
+# Cut every tie to the login session's displays: with DISPLAY inherited,
+# an X11 test client would open its window on the REAL desktop. Test
+# clients are given the headless shell's displays explicitly.
+unset DISPLAY WAYLAND_DISPLAY XAUTHORITY
 mkdir -p "$XDG_DATA_HOME/gnome-shell/extensions/$UUID" "$XDG_CONFIG_HOME/dconf" "$XDG_CACHE_HOME"
 echo "user-db:user" > "$DCONF_PROFILE"
 unzip -q -o "$ZIP" -d "$XDG_DATA_HOME/gnome-shell/extensions/$UUID"
@@ -63,7 +69,14 @@ SHELL_PID=\$!
 sleep 9
 ev() { gdbus call --session --dest org.gnome.Shell --object-path /org/gnome/Shell --method org.gnome.Shell.Eval "\$1" 2>&1 | tail -1; }
 client() { GDK_BACKEND=wayland WAYLAND_DISPLAY="\$WAYLAND_DISPLAY_TEST" gjs "$S/client.js" "\$1" & }
-export -f ev client
+# X11 test clients need the headless shell's OWN X display and authority
+# file (its Xwayland starts on demand); both are read from the shell's
+# environment, never inherited from the login session.
+X_DISPLAY_TEST=\$(ev "String(imports.gi.GLib.getenv('DISPLAY'))" | grep -oE ':[0-9]+' | head -1)
+X_AUTHORITY_TEST=\$(ev "String(imports.gi.GLib.getenv('XAUTHORITY'))" | grep -oE '/[^\"\\]+' | head -1)
+export X_DISPLAY_TEST X_AUTHORITY_TEST
+x11client() { GDK_BACKEND=x11 DISPLAY="\$X_DISPLAY_TEST" XAUTHORITY="\$X_AUTHORITY_TEST" gjs "\$@" & }
+export -f ev client x11client
 echo "shell pid \$SHELL_PID, wayland display \$WAYLAND_DISPLAY_TEST, extension state \$(ev "Main.extensionManager.lookup('$UUID').state") (1 = active), log $S/shell.log"
 if [ \$# -gt 0 ]; then
     bash -c "\$*"

@@ -550,9 +550,21 @@ ARCHITECTURE.md):
   on the same windows from the tiler's idle flush has always been fine.
   Rule now: never call `move_to_monitor` on a window this extension has
   not seen `shown`; the placement records the target at creation and
-  applies it with `move_resize_frame` from the flush after the first
-  `shown` (`_settlePendingMonitors`). Verified with
+  applies it with `move_resize_frame` at the first `shown`
+  (`WindowPlacer._enforceMonitor`). Verified with
   `scripts/dev-headless.sh` on two virtual monitors.
+- **Correct a new window's monitor inside `shown`, not from an idle.**
+  The first working version applied the move from the tiler's idle
+  flush. That is late enough for the shell to paint the start of the
+  map animation where Mutter had put the window, so a window bound for
+  the other display flashed on the wrong one for a split second. `shown`
+  is emitted inside Mutter's show path, before the main loop paints; a
+  same-size `move_resize_frame` there is a pure move, applied
+  immediately for a Wayland window (no configure round trip), and
+  `get_monitor()` already reports the target before the emission
+  returns. Measured in the headless shell with a probe on `shown` and
+  on the actor's `first-frame`: before, monitor 0 at `shown` and 1 at
+  rest; after, the target at `shown`, at `first-frame` and at rest.
 - **Under workspaces-only-on-primary, an empty primary workspace has a
   focused window -- on the other monitor.** Secondary-monitor windows
   are on-all-workspaces, so `meta_workspace_focus_default_window` on
@@ -567,8 +579,31 @@ ARCHITECTURE.md):
   (`global.stage` captured-event sees presses over app windows, and a
   press on the already-focused sticky window changes no focus, so focus
   alone is not enough). Verified with `scripts/dev-headless.sh`.
+- **The shell's map animation starts after the `map` signal, not in
+  it.** `WindowManager._mapWindow` (js/ui/windowManager.js) is `async`:
+  it sets the actor to opacity 0 and scale 0.01 × 0.05, then `await`s
+  `_waitForOverviewToHide()` and only then calls `actor.ease()`. Even
+  with the overview closed an `await` defers, so every other `map`
+  handler has already run when the animation begins; with the overview
+  open (an app launched from the overview search) it can be a quarter
+  of a second later. Anything that wants to own a new window's opacity
+  must therefore not try to "take over" the animation from a `map`
+  handler. `Main.wm.skipNextEffect(actor)` — consulted by
+  `_shouldAnimateActor` — switches the effect off for one actor, and
+  the actor already exists at `window-created`
+  (`window.get_compositor_private()` returns the `MetaWindowActor`
+  there), which is where the placer calls it. `_mapWindowDone` is the
+  only caller of `completed_map` for an animated window; with the
+  effect skipped `_mapWindow` calls it itself, immediately.
+- **Hide a window with opacity, not with a clip or an effect.** Mutter
+  culls the region under an opaque window actor out of what it paints
+  for the windows below, and it decides "opaque" from the actor's paint
+  opacity. A zero clip or a paint-skipping `ClutterEffect` hides the
+  window but leaves Mutter believing it covers that region, so the
+  windows beneath are not drawn there either: a hole. Opacity 0 hides
+  the window *and* keeps what is under it painted.
 - **Order of precedence for where a new app window opens**
-  (`_placeOnFocusedMonitor`): an explicit launcher hint, then the
+  (`WindowPlacer._chooseMonitor`): an explicit launcher hint, then the
   focused window's monitor (minus the sticky-after-switch case above),
   then the primary. `Clutter.get_default_backend().get_default_seat()
   .warp_pointer(x, y)` works in a headless shell and moves

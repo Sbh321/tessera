@@ -45,7 +45,13 @@ inside the session is too late and would write to the real
 `unsafe_mode` on, so `org.gnome.Shell.Eval` works. With a command it
 runs it in the session (`ev '<js>'` evaluates in the shell, `client
 TITLE` opens a Gtk4 Wayland window), reports whether the shell survived
-and greps its log, then tears down. This is the only way to exercise
+and greps its log, then tears down. `DISPLAY`, `WAYLAND_DISPLAY` and
+`XAUTHORITY` are unset before the session starts, so no test client can
+reach the login session's desktop by accident; clients are handed the
+headless shell's own displays. Two things the harness cannot do: its
+Xwayland does not accept clients, and the shell skips its map animation
+there (no window texture at map), so X11-only behaviour and the shell's
+own animations still need the manual checklist. This is the only way to exercise
 window-created / placement / multi-monitor code without logging out,
 and it is how the `move_to_monitor` crash below was reproduced and the
 fix verified (see GNOME_NOTES.md).

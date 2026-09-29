@@ -667,6 +667,9 @@ export default class TesseraPreferences extends ExtensionPreferences {
         addComboRow(tilingGroup, settings, 'layout-mode', _('Default layout'),
             _('tiled: dwindle tiling · stacked: tabs · floating: leave windows to GNOME'),
             ['tiled', 'stacked', 'floating']);
+        addSwitchRow(tilingGroup, settings, 'smooth-window-open',
+            _('Show new windows only once in place'),
+            _('Keep a new window invisible until it is on its monitor and tile, then fade it in, instead of letting it appear and jump'));
 
         const gapsGroup = new Adw.PreferencesGroup({title: _('Gaps')});
         page.add(gapsGroup);

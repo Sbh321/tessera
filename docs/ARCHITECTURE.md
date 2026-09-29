@@ -97,6 +97,11 @@ lib/tiling/layoutEngine.js Pure layout structure and geometry: the
                            geometry split. No GNOME imports; unit-tested.
 lib/tiling/stackTabBar.js  St tab-bar actor for stacked workspaces.
                            Presentational only.
+lib/tiling/windowPlacer.js Where and when NEW windows appear: picks the
+                           monitor, holds the window invisible until it
+                           is on its monitor and tile, reveals it, and
+                           pins it there briefly. Reaches the manager
+                           only through a three-function interface.
 lib/tiling/tilingManager.js Orchestrator: signals, per-workspace mode,
                            debounced relayout, geometry application.
 lib/focusBorder.js         Hyprland-style hint border around the focused
@@ -445,6 +450,8 @@ layoutEngine.js   LayoutTree (the dwindle split tree over opaque keys,
                   (tests/layout-engine-test.js).
 stackTabBar.js    presentational St actor; told what to display, never
                   computes or tracks anything itself
+windowPlacer.js   new-window placement and settling: monitor choice,
+                  cloak until in place, reveal, short monitor pin
 tilingManager.js  the only stateful piece: signal lifecycles, per-
                   workspace layout mode, per-bucket trees + reconciliation,
                   debounced relayout, and the one place rectangles meet
@@ -956,6 +963,87 @@ In both cases only the tree changes; the relayout that follows is what
 applies the result, and a drag that meant neither (dropped over nothing,
 a border edge) snaps the window back exactly as it always did. The tile
 guard needed no change: it is already silent under a grab.
+
+**New windows are not shown until they are in place**
+(`windowPlacer.js`). A new window becomes visible where Mutter and the
+client first put it — the pointer's monitor, the client's own size —
+and everything the tiler does to it afterwards (the right monitor, its
+tile) is a visible jump; clients that go on adjusting their own window
+after mapping, Chromium above all, add flicker of their own. Three
+successive fixes each corrected one of these *after* the window was on
+screen, and each only moved the flicker somewhere else, which is why
+placement was pulled out of `TilingManager` and rebuilt around one rule
+instead: **hold the window invisible from the moment it maps until it
+is on its monitor and on its tile, then reveal it.**
+
+The sequence, per new window that would tile (dialogs, transients,
+popups and helper surfaces are never touched):
+
+1. `window-created` — choose the target monitor and start tracking.
+   Nothing is moved: a just-created Wayland window has no placement or
+   stack position, and `move_to_monitor` there aborted the whole shell
+   (GNOME_NOTES.md). The shell's own map animation is switched off for
+   this window with `Main.wm.skipNextEffect(actor)`.
+2. `map` — cloak: the actor's opacity is set to 0 and held there.
+3. `shown` — placed, mapped, stacked, and still before any frame is
+   painted: if Mutter chose another monitor the window is moved with
+   `move_resize_frame()` at its own size, a pure move that is applied
+   at once.
+4. The tiler's ordinary relayout gives it its tile; the manager calls
+   `onLayoutApplied()` after every flush and the window's own geometry
+   signals re-check it. It has arrived when it is on its monitor and
+   exactly on its tile, or has been quiet for 60 ms after answering
+   (size increments, a multi-step configure), or is not something the
+   layout places at all (a floating workspace, a window that opened
+   maximized).
+5. Reveal — a 120 ms fade at the final geometry, at the latest 300 ms
+   after `shown` whatever the client did.
+6. For three seconds after `shown` the window is *pinned*: if it moves
+   itself to another monitor it is moved back, at most four times,
+   never while maximized or fullscreen (a presenter view that
+   fullscreens itself on the other display stays there), and never
+   during or after an interactive grab — dragging it away ends the pin.
+
+Two decisions in there were forced by how Mutter and the shell work,
+and both were verified against the extracted shell source rather than
+assumed. *Opacity, not a clip or a paint-skipping effect*: Mutter culls
+whatever lies under an opaque window, and only the actor's opacity
+tells it this one covers nothing, so a clip or effect would leave a
+hole in the windows beneath for the duration of the cloak. *Skip the
+shell's map effect rather than take it over*: `WindowManager._mapWindow`
+is `async` and `await`s the overview hiding before it starts animating,
+so its animation begins *after* every `map` handler has run and would
+animate the very opacity and scale the cloak depends on; worse, a
+window revealed while the overview was still closing would appear at
+the 1 % × 5 % scale the shell parks it at. With the effect skipped
+nothing but the placer touches the actor. An opacity guard remains as
+a safety net for a shell without `skipNextEffect`, and the reveal steps
+aside (no fade) if it finds the actor scaled.
+
+A window can never be left invisible: settle, timeout, `unmanaged`,
+`disable()`, a thrown error and the setting being switched off all go
+through the same uncloak. The behaviour is a setting,
+`smooth-window-open` (on by default, Preferences → Tiling); with it off
+windows appear as they always did, and the monitor choice and the pin
+still apply.
+
+*Which monitor*, in order: an explicit hint (the launcher passes the
+monitor its popup was opened on; one window, valid ten seconds); the
+monitor of the window focused at creation — except that under
+workspaces-only-on-primary a focused window that merely belongs to
+every workspace does not count after a workspace switch, until a focus
+change or a pointer press elsewhere shows the user has moved (an empty
+primary workspace otherwise keeps focus on a secondary-monitor window
+and would send every launch there); else the primary.
+
+The module knows nothing about trees, buckets or layout modes. The
+manager gives it `isEnabled()`, `floatingWindows()` and
+`tileTargetOf(window)`, and calls `onWindowCreated()`,
+`onLayoutApplied()` and `hintNextWindowMonitor()`; everything else it
+observes for itself. All of it was exercised in an isolated headless
+shell on two virtual monitors (`scripts/dev-headless.sh`) with a probe
+recording each window's opacity, monitor and frame at `map`, at `shown`
+and at the moment it first became visible.
 
 **Anticipated future settings** the architecture already accommodates
 without restructuring: smart gaps (engine input), keyboard resize and

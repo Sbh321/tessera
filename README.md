@@ -118,6 +118,15 @@ windows) float. Built for GNOME Shell 46 / Ubuntu 24.04 LTS — see
   stacked workspace, left and right step through the tabs), and
   `Ctrl+Shift+Super+Arrows` move the focused window that way — swapping
   it with the neighbouring tile, or moving its tab along the row.
+- **New windows appear in place.** A newly opened window is kept
+  invisible until it is on the right display and on its tile, then
+  faded in — so it never flashes on the other monitor, never appears at
+  its own size and snaps to its tile, and browsers that adjust their
+  window while opening do not flicker. The wait is normally a frame or
+  two and never more than about a third of a second. With several
+  displays the window opens where you are working: on the display the
+  Tessera launcher was opened on, else the focused window's display,
+  else the primary. Can be switched off in Preferences → Tiling.
 - **Drag to swap, drag to resize**: drop a tiled window onto another
   tile with the mouse and the two swap places; drag a tiled window's
   edge and the split it sits on keeps the new size (the neighbour takes
@@ -345,7 +354,8 @@ lib/                  workspaceIndicator.js, keybindingManager.js,
                       utils.js
 lib/tiling/           The tiling subsystem: windowFilter.js,
                       layoutEngine.js (pure layout strategies),
-                      stackTabBar.js, tilingManager.js
+                      stackTabBar.js, windowPlacer.js (where and when
+                      new windows appear), tilingManager.js
 lib/launcher/         The launcher subsystem: searchController.js,
                       fuzzyMatcher.js + calculatorEngine.js (pure,
                       unit-tested), one file per provider,

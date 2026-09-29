@@ -176,7 +176,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "browsertabservice",
       "source_file": "lib/launcher/browserTabService.js",
@@ -189,11 +189,24 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "browserwindowmapper",
       "source_file": "lib/launcher/browserWindowMapper.js",
       "source_location": "L109"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider",
+      "label": "BrowserTabsProvider",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": "browsertabsprovider",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L46"
     },
     {
       "id": "lib_launcher_commandprovider_commandprovider",
@@ -284,7 +297,7 @@
       "file_type": "code",
       "norm_label": "tilingmanager",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L137"
+      "source_location": "L145"
     },
     {
       "id": "extension_tesseraextension",
@@ -350,19 +363,6 @@
       "norm_label": "newwindowworkspacemanager",
       "source_file": "lib/newWindowWorkspace.js",
       "source_location": "L58"
-    },
-    {
-      "id": "lib_windowmover_windowmover",
-      "label": "WindowMover",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "extension.js",
-      "file_type": "code",
-      "norm_label": "windowmover",
-      "source_file": "lib/windowMover.js",
-      "source_location": "L56"
     },
     {
       "id": "lib_gestureprogresstracker_gestureprogresstracker",
@@ -454,6 +454,19 @@
       "norm_label": "iconprovider",
       "source_file": "lib/launcher/iconProvider.js",
       "source_location": "L58"
+    },
+    {
+      "id": "lib_keybindingmanager_keybindingmanager",
+      "label": "KeybindingManager",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 66,
+      "community_name": "KeybindingManager",
+      "file_type": "code",
+      "norm_label": "keybindingmanager",
+      "source_file": "lib/keybindingManager.js",
+      "source_location": "L115"
     },
     {
       "id": "lib_launcher_calculatorengine_parseerror",
@@ -560,38 +573,12 @@
       "source_location": "L49"
     },
     {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider",
-      "label": "BrowserTabsProvider",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "BrowserTabsProvider",
-      "file_type": "code",
-      "norm_label": "browsertabsprovider",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L46"
-    },
-    {
-      "id": "lib_keybindingmanager_keybindingmanager",
-      "label": "KeybindingManager",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "KeybindingManager",
-      "file_type": "code",
-      "norm_label": "keybindingmanager",
-      "source_file": "lib/keybindingManager.js",
-      "source_location": "L115"
-    },
-    {
       "id": "lib_tiling_layoutengine_layouttree",
       "label": "LayoutTree",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 80,
+      "community": 79,
       "community_name": "LayoutTree",
       "file_type": "code",
       "norm_label": "layouttree",
@@ -599,12 +586,25 @@
       "source_location": "L83"
     },
     {
+      "id": "lib_windowmover_windowmover",
+      "label": "WindowMover",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "WindowMover",
+      "file_type": "code",
+      "norm_label": "windowmover",
+      "source_file": "lib/windowMover.js",
+      "source_location": "L56"
+    },
+    {
       "id": "lib_launcher_calculatorprovider_calculatorprovider",
       "label": "CalculatorProvider",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 81,
+      "community": 80,
       "community_name": "calculatorProvider.js",
       "file_type": "code",
       "norm_label": "calculatorprovider",
@@ -1790,28 +1790,256 @@
       "source_location": "L401"
     },
     {
-      "id": "lib_launcher_browserprotocol_validopaqueid",
-      "label": "validOpaqueId()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "browserTabService.js",
-      "file_type": "code",
-      "norm_label": "validopaqueid()",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L105"
-    },
-    {
       "id": "lib_tiling_layoutengine_computestackgeometry",
       "label": "computeStackGeometry()",
       "_callable": true,
       "_origin": "ast",
-      "community": 15,
-      "community_name": "layout-engine-test.js",
+      "community": 14,
+      "community_name": "isTileable",
       "file_type": "code",
       "norm_label": "computestackgeometry()",
       "source_file": "lib/tiling/layoutEngine.js",
       "source_location": "L491"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_applybucket",
+      "label": "._applyBucket()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "isTileable",
+      "file_type": "code",
+      "norm_label": "._applybucket()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1678"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_attachswipetabbars",
+      "label": "._attachSwipeTabBars()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "isTileable",
+      "file_type": "code",
+      "norm_label": "._attachswipetabbars()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L795"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_buckethasexclusivewindow",
+      "label": "._bucketHasExclusiveWindow()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "isTileable",
+      "file_type": "code",
+      "norm_label": "._buckethasexclusivewindow()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1646"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_bucketmembers",
+      "label": "._bucketMembers()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "isTileable",
+      "file_type": "code",
+      "norm_label": "._bucketmembers()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1592"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_bucketof",
+      "label": "._bucketOf()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "isTileable",
+      "file_type": "code",
+      "norm_label": "._bucketof()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1116"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_effectivemodeof",
+      "label": "._effectiveModeOf()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "isTileable",
+      "file_type": "code",
+      "norm_label": "._effectivemodeof()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L260"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_flush",
+      "label": "._flush()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "isTileable",
+      "file_type": "code",
+      "norm_label": "._flush()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1524"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_focusdirection",
+      "label": ".focusDirection()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "isTileable",
+      "file_type": "code",
+      "norm_label": ".focusdirection()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L636"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_focusedtoplevel",
+      "label": "._focusedToplevel()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "isTileable",
+      "file_type": "code",
+      "norm_label": "._focusedtoplevel()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1492"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_gaps",
+      "label": "._gaps()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "isTileable",
+      "file_type": "code",
+      "norm_label": "._gaps()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1562"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_isstacked",
+      "label": "._isStacked()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "isTileable",
+      "file_type": "code",
+      "norm_label": "._isstacked()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L267"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_onfocuschanged",
+      "label": "._onFocusChanged()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "isTileable",
+      "file_type": "code",
+      "norm_label": "._onfocuschanged()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1458"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_reconciletree",
+      "label": "._reconcileTree()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "isTileable",
+      "file_type": "code",
+      "norm_label": "._reconciletree()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1608"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_resizeafterdrag",
+      "label": "._resizeAfterDrag()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "isTileable",
+      "file_type": "code",
+      "norm_label": "._resizeafterdrag()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1094"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_settlependingmonitors",
+      "label": "._settlePendingMonitors()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "isTileable",
+      "file_type": "code",
+      "norm_label": "._settlependingmonitors()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1308"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_stackablemembercount",
+      "label": "._stackableMemberCount()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "isTileable",
+      "file_type": "code",
+      "norm_label": "._stackablemembercount()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1575"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_swapafterdrag",
+      "label": "._swapAfterDrag()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "isTileable",
+      "file_type": "code",
+      "norm_label": "._swapafterdrag()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1059"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_swapdirection",
+      "label": ".swapDirection()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "isTileable",
+      "file_type": "code",
+      "norm_label": ".swapdirection()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L676"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_synctabbars",
+      "label": "._syncTabBars()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "isTileable",
+      "file_type": "code",
+      "norm_label": "._synctabbars()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1743"
+    },
+    {
+      "id": "lib_tiling_windowfilter_istileable",
+      "label": "isTileable()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 14,
+      "community_name": "isTileable",
+      "file_type": "code",
+      "norm_label": "istileable()",
+      "source_file": "lib/tiling/windowFilter.js",
+      "source_location": "L137"
     },
     {
       "id": "lib_tiling_layoutengine_findneighbor",
@@ -1824,42 +2052,6 @@
       "norm_label": "findneighbor()",
       "source_file": "lib/tiling/layoutEngine.js",
       "source_location": "L414"
-    },
-    {
-      "id": "lib_tiling_layoutengine_insetrect",
-      "label": "insetRect()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "layout-engine-test.js",
-      "file_type": "code",
-      "norm_label": "insetrect()",
-      "source_file": "lib/tiling/layoutEngine.js",
-      "source_location": "L509"
-    },
-    {
-      "id": "lib_tiling_layoutengine_layouttree_computerects",
-      "label": ".computeRects()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "layout-engine-test.js",
-      "file_type": "code",
-      "norm_label": ".computerects()",
-      "source_file": "lib/tiling/layoutEngine.js",
-      "source_location": "L262"
-    },
-    {
-      "id": "lib_tiling_layoutengine_layouttree_has",
-      "label": ".has()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 15,
-      "community_name": "layout-engine-test.js",
-      "file_type": "code",
-      "norm_label": ".has()",
-      "source_file": "lib/tiling/layoutEngine.js",
-      "source_location": "L106"
     },
     {
       "id": "lib_tiling_layoutengine_overlap1d",
@@ -1927,7 +2119,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": ".activate()",
       "source_file": "lib/launcher/browserTabService.js",
@@ -1939,7 +2131,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": ".browsericonfor()",
       "source_file": "lib/launcher/browserTabService.js",
@@ -1951,7 +2143,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": ".constructor()",
       "source_file": "lib/launcher/browserTabService.js",
@@ -1963,7 +2155,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": ".describewindows()",
       "source_file": "lib/launcher/browserTabService.js",
@@ -1975,7 +2167,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": ".disable()",
       "source_file": "lib/launcher/browserTabService.js",
@@ -1987,7 +2179,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": ".enable()",
       "source_file": "lib/launcher/browserTabService.js",
@@ -1999,7 +2191,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "._family()",
       "source_file": "lib/launcher/browserTabService.js",
@@ -2011,7 +2203,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": ".iconfor()",
       "source_file": "lib/launcher/browserTabService.js",
@@ -2023,7 +2215,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "._learn()",
       "source_file": "lib/launcher/browserTabService.js",
@@ -2035,7 +2227,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": ".listtabs()",
       "source_file": "lib/launcher/browserTabService.js",
@@ -2047,7 +2239,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "._notifygone()",
       "source_file": "lib/launcher/browserTabService.js",
@@ -2059,7 +2251,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "._onapplied()",
       "source_file": "lib/launcher/browserTabService.js",
@@ -2071,7 +2263,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "._raisebrowserwindow()",
       "source_file": "lib/launcher/browserTabService.js",
@@ -2083,7 +2275,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "._resolvebindings()",
       "source_file": "lib/launcher/browserTabService.js",
@@ -2095,7 +2287,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": ".running()",
       "source_file": "lib/launcher/browserTabService.js",
@@ -2107,7 +2299,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "._syncenabled()",
       "source_file": "lib/launcher/browserTabService.js",
@@ -2119,7 +2311,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": ".tabcount()",
       "source_file": "lib/launcher/browserTabService.js",
@@ -2131,7 +2323,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "defaultsuffixes()",
       "source_file": "lib/launcher/browserTabService.js",
@@ -2143,7 +2335,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "shellkey()",
       "source_file": "lib/launcher/browserTabService.js",
@@ -2155,7 +2347,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "windowclass()",
       "source_file": "lib/launcher/browserTabService.js",
@@ -2167,7 +2359,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "browserkey()",
       "source_file": "lib/launcher/browserWindowMapper.js",
@@ -2179,7 +2371,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "._bind()",
       "source_file": "lib/launcher/browserWindowMapper.js",
@@ -2191,7 +2383,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": ".binding()",
       "source_file": "lib/launcher/browserWindowMapper.js",
@@ -2203,7 +2395,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": ".bindstrong()",
       "source_file": "lib/launcher/browserWindowMapper.js",
@@ -2215,7 +2407,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": ".constructor()",
       "source_file": "lib/launcher/browserWindowMapper.js",
@@ -2227,7 +2419,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": ".forgetsession()",
       "source_file": "lib/launcher/browserWindowMapper.js",
@@ -2239,7 +2431,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": ".forgetshell()",
       "source_file": "lib/launcher/browserWindowMapper.js",
@@ -2251,7 +2443,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "._pairunique()",
       "source_file": "lib/launcher/browserWindowMapper.js",
@@ -2263,7 +2455,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "._prune()",
       "source_file": "lib/launcher/browserWindowMapper.js",
@@ -2275,7 +2467,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": ".resolve()",
       "source_file": "lib/launcher/browserWindowMapper.js",
@@ -2287,7 +2479,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": ".shellkeyfor()",
       "source_file": "lib/launcher/browserWindowMapper.js",
@@ -2299,7 +2491,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "expectedtitles()",
       "source_file": "lib/launcher/browserWindowMapper.js",
@@ -2311,7 +2503,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "learnsuffix()",
       "source_file": "lib/launcher/browserWindowMapper.js",
@@ -2323,7 +2515,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "normalizetitle()",
       "source_file": "lib/launcher/browserWindowMapper.js",
@@ -2335,7 +2527,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "titlehasprefix()",
       "source_file": "lib/launcher/browserWindowMapper.js",
@@ -2347,7 +2539,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "bw()",
       "source_file": "tests/browser-window-mapper-test.js",
@@ -2359,7 +2551,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "check()",
       "source_file": "tests/browser-window-mapper-test.js",
@@ -2371,7 +2563,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "equal()",
       "source_file": "tests/browser-window-mapper-test.js",
@@ -2383,7 +2575,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "section()",
       "source_file": "tests/browser-window-mapper-test.js",
@@ -2395,7 +2587,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "session()",
       "source_file": "tests/browser-window-mapper-test.js",
@@ -2407,11 +2599,143 @@
       "_callable": true,
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "shell()",
       "source_file": "tests/browser-window-mapper-test.js",
       "source_location": "L36"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_browsecount",
+      "label": ".browseCount()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".browsecount()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L89"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_browseresults",
+      "label": ".browseResults()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".browseresults()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L84"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_childresults",
+      "label": ".childResults()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".childresults()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L102"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_childsubtitle",
+      "label": "._childSubtitle()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": "._childsubtitle()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L159"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_constructor",
+      "label": ".constructor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".constructor()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L51"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_enabled",
+      "label": ".enabled()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".enabled()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L56"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_query",
+      "label": ".query()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".query()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L60"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_subtitle",
+      "label": "._subtitle()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": "._subtitle()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L152"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_tabresult",
+      "label": ".tabResult()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": ".tabresult()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L113"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_title",
+      "label": "._title()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": "._title()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L148"
+    },
+    {
+      "id": "lib_launcher_browsertabsprovider_hostof",
+      "label": "hostOf()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 17,
+      "community_name": "._activate",
+      "file_type": "code",
+      "norm_label": "hostof()",
+      "source_file": "lib/launcher/browserTabsProvider.js",
+      "source_location": "L170"
     },
     {
       "id": "lib_launcher_commandprovider_commandprovider_constructor",
@@ -3911,7 +4235,7 @@
       "file_type": "code",
       "norm_label": "._applymodechange()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L511"
+      "source_location": "L526"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_chargeguardbudget",
@@ -3923,7 +4247,7 @@
       "file_type": "code",
       "norm_label": "._chargeguardbudget()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1143"
+      "source_location": "L1158"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_constructor",
@@ -3935,7 +4259,7 @@
       "file_type": "code",
       "norm_label": ".constructor()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L138"
+      "source_location": "L146"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_destroytabbars",
@@ -3947,7 +4271,7 @@
       "file_type": "code",
       "norm_label": "._destroytabbars()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1762"
+      "source_location": "L1832"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_detachswipetabbars",
@@ -3959,7 +4283,7 @@
       "file_type": "code",
       "norm_label": "._detachswipetabbars()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L849"
+      "source_location": "L864"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_disable",
@@ -3971,7 +4295,7 @@
       "file_type": "code",
       "norm_label": ".disable()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L393"
+      "source_location": "L407"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_enable",
@@ -3983,7 +4307,7 @@
       "file_type": "code",
       "norm_label": ".enable()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L261"
+      "source_location": "L275"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_ensureflushscheduled",
@@ -3995,7 +4319,7 @@
       "file_type": "code",
       "norm_label": "._ensureflushscheduled()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1444"
+      "source_location": "L1514"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_entermode",
@@ -4007,7 +4331,7 @@
       "file_type": "code",
       "norm_label": "._entermode()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L525"
+      "source_location": "L540"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_floatingwindows",
@@ -4019,7 +4343,19 @@
       "file_type": "code",
       "norm_label": "._floatingwindows()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L223"
+      "source_location": "L237"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_floatwindow",
+      "label": "._floatWindow()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "TilingManager",
+      "file_type": "code",
+      "norm_label": "._floatwindow()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L717"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_forgettargets",
@@ -4031,7 +4367,7 @@
       "file_type": "code",
       "norm_label": "._forgettargets()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1134"
+      "source_location": "L1149"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_hidetabbars",
@@ -4043,7 +4379,19 @@
       "file_type": "code",
       "norm_label": "._hidetabbars()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L752"
+      "source_location": "L767"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_hintnextwindowmonitor",
+      "label": ".hintNextWindowMonitor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "TilingManager",
+      "file_type": "code",
+      "norm_label": ".hintnextwindowmonitor()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1278"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_isfloating",
@@ -4055,7 +4403,7 @@
       "file_type": "code",
       "norm_label": "._isfloating()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L257"
+      "source_location": "L271"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_layoutmodeof",
@@ -4067,7 +4415,7 @@
       "file_type": "code",
       "norm_label": ".layoutmodeof()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L604"
+      "source_location": "L619"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_markmonitorready",
@@ -4079,7 +4427,7 @@
       "file_type": "code",
       "norm_label": "._markmonitorready()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1236"
+      "source_location": "L1297"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_maybeundomapmaximize",
@@ -4091,7 +4439,7 @@
       "file_type": "code",
       "norm_label": "._maybeundomapmaximize()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1294"
+      "source_location": "L1356"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_modeof",
@@ -4103,7 +4451,19 @@
       "file_type": "code",
       "norm_label": "._modeof()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L231"
+      "source_location": "L245"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_moveresize",
+      "label": "._moveResize()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "TilingManager",
+      "file_type": "code",
+      "norm_label": "._moveresize()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1727"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_ongeometrychanged",
@@ -4115,7 +4475,7 @@
       "file_type": "code",
       "norm_label": "._ongeometrychanged()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L950"
+      "source_location": "L965"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_onglobalmodechanged",
@@ -4127,7 +4487,7 @@
       "file_type": "code",
       "norm_label": "._onglobalmodechanged()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L536"
+      "source_location": "L551"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_ongrabopbegin",
@@ -4139,7 +4499,19 @@
       "file_type": "code",
       "norm_label": "._ongrabopbegin()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L986"
+      "source_location": "L1001"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_ongrabopend",
+      "label": "._onGrabOpEnd()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "TilingManager",
+      "file_type": "code",
+      "norm_label": "._ongrabopend()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1038"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_onstagepress",
@@ -4151,7 +4523,7 @@
       "file_type": "code",
       "norm_label": "._onstagepress()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L994"
+      "source_location": "L1009"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_onwindowcreated",
@@ -4163,7 +4535,7 @@
       "file_type": "code",
       "norm_label": "._onwindowcreated()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L880"
+      "source_location": "L895"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_onworkspacegestureend",
@@ -4175,19 +4547,7 @@
       "file_type": "code",
       "norm_label": "._onworkspacegestureend()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L867"
-    },
-    {
-      "id": "lib_tiling_tilingmanager_tilingmanager_opensastilingapp",
-      "label": "._opensAsTilingApp()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "TilingManager",
-      "file_type": "code",
-      "norm_label": "._opensastilingapp()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1282"
+      "source_location": "L882"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_placeonfocusedmonitor",
@@ -4199,7 +4559,7 @@
       "file_type": "code",
       "norm_label": "._placeonfocusedmonitor()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1217"
+      "source_location": "L1243"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_queuerelayout",
@@ -4211,7 +4571,7 @@
       "file_type": "code",
       "norm_label": "._queuerelayout()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1431"
+      "source_location": "L1501"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_queuerelayoutall",
@@ -4223,7 +4583,19 @@
       "file_type": "code",
       "norm_label": "._queuerelayoutall()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1439"
+      "source_location": "L1509"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_raisefloating",
+      "label": "._raiseFloating()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "TilingManager",
+      "file_type": "code",
+      "norm_label": "._raisefloating()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L742"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_setworkspacemode",
@@ -4235,7 +4607,7 @@
       "file_type": "code",
       "norm_label": ".setworkspacemode()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L492"
+      "source_location": "L507"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_syncenabled",
@@ -4247,7 +4619,31 @@
       "file_type": "code",
       "norm_label": "._syncenabled()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L740"
+      "source_location": "L755"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_takemonitorhint",
+      "label": "._takeMonitorHint()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "TilingManager",
+      "file_type": "code",
+      "norm_label": "._takemonitorhint()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1289"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_togglefloating",
+      "label": ".toggleFloating()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "TilingManager",
+      "file_type": "code",
+      "norm_label": ".togglefloating()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L580"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_toggleworkspacemode",
@@ -4259,7 +4655,7 @@
       "file_type": "code",
       "norm_label": ".toggleworkspacemode()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L502"
+      "source_location": "L517"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_trackwindow",
@@ -4271,7 +4667,7 @@
       "file_type": "code",
       "norm_label": "._trackwindow()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1302"
+      "source_location": "L1364"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_untrackwindow",
@@ -4283,7 +4679,7 @@
       "file_type": "code",
       "norm_label": "._untrackwindow()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1356"
+      "source_location": "L1426"
     },
     {
       "id": "lib_tiling_tilingmanager_tilingmanager_workspacemodes",
@@ -4295,7 +4691,7 @@
       "file_type": "code",
       "norm_label": "._workspacemodes()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L216"
+      "source_location": "L230"
     },
     {
       "id": "companion_modules_tabs_module_activatetab",
@@ -5246,150 +5642,6 @@
       "source_location": "L117"
     },
     {
-      "id": "lib_windowmover_windowmover_insertworkspaceafter",
-      "label": "._insertWorkspaceAfter()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "extension.js",
-      "file_type": "code",
-      "norm_label": "._insertworkspaceafter()",
-      "source_file": "lib/windowMover.js",
-      "source_location": "L181"
-    },
-    {
-      "id": "lib_windowmover_windowmover_isemptyworkspace",
-      "label": "._isEmptyWorkspace()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "extension.js",
-      "file_type": "code",
-      "norm_label": "._isemptyworkspace()",
-      "source_file": "lib/windowMover.js",
-      "source_location": "L290"
-    },
-    {
-      "id": "lib_windowmover_windowmover_movablefocusedwindow",
-      "label": "._movableFocusedWindow()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "extension.js",
-      "file_type": "code",
-      "norm_label": "._movablefocusedwindow()",
-      "source_file": "lib/windowMover.js",
-      "source_location": "L433"
-    },
-    {
-      "id": "lib_windowmover_windowmover_movablewindowson",
-      "label": "._movableWindowsOn()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "extension.js",
-      "file_type": "code",
-      "norm_label": "._movablewindowson()",
-      "source_file": "lib/windowMover.js",
-      "source_location": "L367"
-    },
-    {
-      "id": "lib_windowmover_windowmover_movefocusedtolastworkspace",
-      "label": ".moveFocusedToLastWorkspace()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "extension.js",
-      "file_type": "code",
-      "norm_label": ".movefocusedtolastworkspace()",
-      "source_file": "lib/windowMover.js",
-      "source_location": "L112"
-    },
-    {
-      "id": "lib_windowmover_windowmover_movefocusedtonewworkspace",
-      "label": ".moveFocusedToNewWorkspace()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "extension.js",
-      "file_type": "code",
-      "norm_label": ".movefocusedtonewworkspace()",
-      "source_file": "lib/windowMover.js",
-      "source_location": "L204"
-    },
-    {
-      "id": "lib_windowmover_windowmover_movefocusedtoworkspace",
-      "label": ".moveFocusedToWorkspace()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "extension.js",
-      "file_type": "code",
-      "norm_label": ".movefocusedtoworkspace()",
-      "source_file": "lib/windowMover.js",
-      "source_location": "L67"
-    },
-    {
-      "id": "lib_windowmover_windowmover_movefollowing",
-      "label": "._moveFollowing()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "extension.js",
-      "file_type": "code",
-      "norm_label": "._movefollowing()",
-      "source_file": "lib/windowMover.js",
-      "source_location": "L257"
-    },
-    {
-      "id": "lib_windowmover_windowmover_movetonewworkspace",
-      "label": ".moveToNewWorkspace()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "extension.js",
-      "file_type": "code",
-      "norm_label": ".movetonewworkspace()",
-      "source_file": "lib/windowMover.js",
-      "source_location": "L140"
-    },
-    {
-      "id": "lib_windowmover_windowmover_movetoworkspace",
-      "label": ".moveToWorkspace()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "extension.js",
-      "file_type": "code",
-      "norm_label": ".movetoworkspace()",
-      "source_file": "lib/windowMover.js",
-      "source_location": "L85"
-    },
-    {
-      "id": "lib_windowmover_windowmover_swapwithworkspace",
-      "label": ".swapWithWorkspace()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "extension.js",
-      "file_type": "code",
-      "norm_label": ".swapwithworkspace()",
-      "source_file": "lib/windowMover.js",
-      "source_location": "L323"
-    },
-    {
-      "id": "lib_windowmover_windowmover_togglefocusedmaximize",
-      "label": ".toggleFocusedMaximize()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "extension.js",
-      "file_type": "code",
-      "norm_label": ".togglefocusedmaximize()",
-      "source_file": "lib/windowMover.js",
-      "source_location": "L396"
-    },
-    {
       "id": "lib_settingsmanager_settingsmanager_pushhistory",
       "label": "._pushHistory()",
       "_callable": true,
@@ -6110,6 +6362,18 @@
       "source_location": "L88"
     },
     {
+      "id": "lib_launcher_browsertabstore_browsertabstore_ensurewindow",
+      "label": "._ensureWindow()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "BrowserTabStore",
+      "file_type": "code",
+      "norm_label": "._ensurewindow()",
+      "source_file": "lib/launcher/browserTabStore.js",
+      "source_location": "L434"
+    },
+    {
       "id": "lib_launcher_browsertabstore_browsertabstore_icon",
       "label": ".icon()",
       "_callable": true,
@@ -6144,6 +6408,18 @@
       "norm_label": ".markresyncing()",
       "source_file": "lib/launcher/browserTabStore.js",
       "source_location": "L213"
+    },
+    {
+      "id": "lib_launcher_browsertabstore_browsertabstore_reduce",
+      "label": "._reduce()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "BrowserTabStore",
+      "file_type": "code",
+      "norm_label": "._reduce()",
+      "source_file": "lib/launcher/browserTabStore.js",
+      "source_location": "L322"
     },
     {
       "id": "lib_launcher_browsertabstore_browsertabstore_requireresync",
@@ -6192,6 +6468,18 @@
       "norm_label": ".sessionstate()",
       "source_file": "lib/launcher/browserTabStore.js",
       "source_location": "L222"
+    },
+    {
+      "id": "lib_launcher_browsertabstore_browsertabstore_setfocusedwindow",
+      "label": "._setFocusedWindow()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "BrowserTabStore",
+      "file_type": "code",
+      "norm_label": "._setfocusedwindow()",
+      "source_file": "lib/launcher/browserTabStore.js",
+      "source_location": "L449"
     },
     {
       "id": "lib_launcher_browsertabstore_browsertabstore_tabcount",
@@ -6566,232 +6854,232 @@
       "source_location": "L74"
     },
     {
-      "id": "lib_tiling_tilingmanager_tilingmanager_applybucket",
-      "label": "._applyBucket()",
+      "id": "lib_keybindingmanager_keybindingmanager_addkeybinding",
+      "label": "._addKeybinding()",
       "_callable": true,
       "_origin": "ast",
       "community": 66,
-      "community_name": "._applyBucket",
+      "community_name": "KeybindingManager",
       "file_type": "code",
-      "norm_label": "._applybucket()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1608"
+      "norm_label": "._addkeybinding()",
+      "source_file": "lib/keybindingManager.js",
+      "source_location": "L459"
     },
     {
-      "id": "lib_tiling_tilingmanager_tilingmanager_attachswipetabbars",
-      "label": "._attachSwipeTabBars()",
+      "id": "lib_keybindingmanager_keybindingmanager_bindall",
+      "label": "._bindAll()",
       "_callable": true,
       "_origin": "ast",
       "community": 66,
-      "community_name": "._applyBucket",
+      "community_name": "KeybindingManager",
       "file_type": "code",
-      "norm_label": "._attachswipetabbars()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L780"
+      "norm_label": "._bindall()",
+      "source_file": "lib/keybindingManager.js",
+      "source_location": "L240"
     },
     {
-      "id": "lib_tiling_tilingmanager_tilingmanager_buckethasexclusivewindow",
-      "label": "._bucketHasExclusiveWindow()",
+      "id": "lib_keybindingmanager_keybindingmanager_clearkeys",
+      "label": "._clearKeys()",
       "_callable": true,
       "_origin": "ast",
       "community": 66,
-      "community_name": "._applyBucket",
+      "community_name": "KeybindingManager",
       "file_type": "code",
-      "norm_label": "._buckethasexclusivewindow()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1576"
+      "norm_label": "._clearkeys()",
+      "source_file": "lib/keybindingManager.js",
+      "source_location": "L476"
     },
     {
-      "id": "lib_tiling_tilingmanager_tilingmanager_bucketmembers",
-      "label": "._bucketMembers()",
+      "id": "lib_keybindingmanager_keybindingmanager_constructor",
+      "label": ".constructor()",
       "_callable": true,
       "_origin": "ast",
       "community": 66,
-      "community_name": "._applyBucket",
+      "community_name": "KeybindingManager",
       "file_type": "code",
-      "norm_label": "._bucketmembers()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1522"
+      "norm_label": ".constructor()",
+      "source_file": "lib/keybindingManager.js",
+      "source_location": "L116"
     },
     {
-      "id": "lib_tiling_tilingmanager_tilingmanager_floatwindow",
-      "label": "._floatWindow()",
+      "id": "lib_keybindingmanager_keybindingmanager_disable",
+      "label": ".disable()",
       "_callable": true,
       "_origin": "ast",
       "community": 66,
-      "community_name": "._applyBucket",
+      "community_name": "KeybindingManager",
       "file_type": "code",
-      "norm_label": "._floatwindow()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L702"
+      "norm_label": ".disable()",
+      "source_file": "lib/keybindingManager.js",
+      "source_location": "L187"
     },
     {
-      "id": "lib_tiling_tilingmanager_tilingmanager_flush",
-      "label": "._flush()",
+      "id": "lib_keybindingmanager_keybindingmanager_disabledashtodockhotkeys",
+      "label": "._disableDashToDockHotKeys()",
       "_callable": true,
       "_origin": "ast",
       "community": 66,
-      "community_name": "._applyBucket",
+      "community_name": "KeybindingManager",
       "file_type": "code",
-      "norm_label": "._flush()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1454"
+      "norm_label": "._disabledashtodockhotkeys()",
+      "source_file": "lib/keybindingManager.js",
+      "source_location": "L270"
     },
     {
-      "id": "lib_tiling_tilingmanager_tilingmanager_focusdirection",
-      "label": ".focusDirection()",
+      "id": "lib_keybindingmanager_keybindingmanager_enable",
+      "label": ".enable()",
       "_callable": true,
       "_origin": "ast",
       "community": 66,
-      "community_name": "._applyBucket",
+      "community_name": "KeybindingManager",
       "file_type": "code",
-      "norm_label": ".focusdirection()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L621"
+      "norm_label": ".enable()",
+      "source_file": "lib/keybindingManager.js",
+      "source_location": "L170"
     },
     {
-      "id": "lib_tiling_tilingmanager_tilingmanager_focusedtoplevel",
-      "label": "._focusedToplevel()",
+      "id": "lib_keybindingmanager_keybindingmanager_graball",
+      "label": "._grabAll()",
       "_callable": true,
       "_origin": "ast",
       "community": 66,
-      "community_name": "._applyBucket",
+      "community_name": "KeybindingManager",
       "file_type": "code",
-      "norm_label": "._focusedtoplevel()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1422"
+      "norm_label": "._graball()",
+      "source_file": "lib/keybindingManager.js",
+      "source_location": "L334"
     },
     {
-      "id": "lib_tiling_tilingmanager_tilingmanager_framerects",
-      "label": "._frameRects()",
+      "id": "lib_keybindingmanager_keybindingmanager_inputsourceconflicts",
+      "label": "._inputSourceConflicts()",
       "_callable": true,
       "_origin": "ast",
       "community": 66,
-      "community_name": "._applyBucket",
+      "community_name": "KeybindingManager",
       "file_type": "code",
-      "norm_label": "._framerects()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1116"
+      "norm_label": "._inputsourceconflicts()",
+      "source_file": "lib/keybindingManager.js",
+      "source_location": "L227"
     },
     {
-      "id": "lib_tiling_tilingmanager_tilingmanager_gaps",
-      "label": "._gaps()",
+      "id": "lib_keybindingmanager_keybindingmanager_jumpto",
+      "label": "._jumpTo()",
       "_callable": true,
       "_origin": "ast",
       "community": 66,
-      "community_name": "._applyBucket",
+      "community_name": "KeybindingManager",
       "file_type": "code",
-      "norm_label": "._gaps()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1492"
+      "norm_label": "._jumpto()",
+      "source_file": "lib/keybindingManager.js",
+      "source_location": "L490"
     },
     {
-      "id": "lib_tiling_tilingmanager_tilingmanager_isstacked",
-      "label": "._isStacked()",
+      "id": "lib_keybindingmanager_keybindingmanager_jumptolast",
+      "label": "._jumpToLast()",
       "_callable": true,
       "_origin": "ast",
       "community": 66,
-      "community_name": "._applyBucket",
+      "community_name": "KeybindingManager",
       "file_type": "code",
-      "norm_label": "._isstacked()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L253"
+      "norm_label": "._jumptolast()",
+      "source_file": "lib/keybindingManager.js",
+      "source_location": "L496"
     },
     {
-      "id": "lib_tiling_tilingmanager_tilingmanager_moveresize",
-      "label": "._moveResize()",
+      "id": "lib_keybindingmanager_keybindingmanager_rebind",
+      "label": "._rebind()",
       "_callable": true,
       "_origin": "ast",
       "community": 66,
-      "community_name": "._applyBucket",
+      "community_name": "KeybindingManager",
       "file_type": "code",
-      "norm_label": "._moveresize()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1657"
+      "norm_label": "._rebind()",
+      "source_file": "lib/keybindingManager.js",
+      "source_location": "L211"
     },
     {
-      "id": "lib_tiling_tilingmanager_tilingmanager_raisefloating",
-      "label": "._raiseFloating()",
+      "id": "lib_keybindingmanager_keybindingmanager_restorekeys",
+      "label": "._restoreKeys()",
       "_callable": true,
       "_origin": "ast",
       "community": 66,
-      "community_name": "._applyBucket",
+      "community_name": "KeybindingManager",
       "file_type": "code",
-      "norm_label": "._raisefloating()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L727"
+      "norm_label": "._restorekeys()",
+      "source_file": "lib/keybindingManager.js",
+      "source_location": "L485"
     },
     {
-      "id": "lib_tiling_tilingmanager_tilingmanager_reconciletree",
-      "label": "._reconcileTree()",
+      "id": "lib_keybindingmanager_keybindingmanager_step",
+      "label": "._step()",
       "_callable": true,
       "_origin": "ast",
       "community": 66,
-      "community_name": "._applyBucket",
+      "community_name": "KeybindingManager",
       "file_type": "code",
-      "norm_label": "._reconciletree()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1538"
+      "norm_label": "._step()",
+      "source_file": "lib/keybindingManager.js",
+      "source_location": "L500"
     },
     {
-      "id": "lib_tiling_tilingmanager_tilingmanager_settlependingmonitors",
-      "label": "._settlePendingMonitors()",
+      "id": "lib_keybindingmanager_keybindingmanager_syncenabled",
+      "label": "._syncEnabled()",
       "_callable": true,
       "_origin": "ast",
       "community": 66,
-      "community_name": "._applyBucket",
+      "community_name": "KeybindingManager",
       "file_type": "code",
-      "norm_label": "._settlependingmonitors()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1246"
+      "norm_label": "._syncenabled()",
+      "source_file": "lib/keybindingManager.js",
+      "source_location": "L201"
     },
     {
-      "id": "lib_tiling_tilingmanager_tilingmanager_stackablemembercount",
-      "label": "._stackableMemberCount()",
+      "id": "lib_keybindingmanager_keybindingmanager_unbindall",
+      "label": "._unbindAll()",
       "_callable": true,
       "_origin": "ast",
       "community": 66,
-      "community_name": "._applyBucket",
+      "community_name": "KeybindingManager",
       "file_type": "code",
-      "norm_label": "._stackablemembercount()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1505"
+      "norm_label": "._unbindall()",
+      "source_file": "lib/keybindingManager.js",
+      "source_location": "L275"
     },
     {
-      "id": "lib_tiling_tilingmanager_tilingmanager_swapdirection",
-      "label": ".swapDirection()",
+      "id": "lib_keybindingmanager_keybindingmanager_watchforconflicts",
+      "label": "._watchForConflicts()",
       "_callable": true,
       "_origin": "ast",
       "community": 66,
-      "community_name": "._applyBucket",
+      "community_name": "KeybindingManager",
       "file_type": "code",
-      "norm_label": ".swapdirection()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L661"
+      "norm_label": "._watchforconflicts()",
+      "source_file": "lib/keybindingManager.js",
+      "source_location": "L306"
     },
     {
-      "id": "lib_tiling_tilingmanager_tilingmanager_synctabbars",
-      "label": "._syncTabBars()",
+      "id": "lib_keybindingmanager_lookupoptionalsettings",
+      "label": "lookupOptionalSettings()",
       "_callable": true,
       "_origin": "ast",
       "community": 66,
-      "community_name": "._applyBucket",
+      "community_name": "KeybindingManager",
       "file_type": "code",
-      "norm_label": "._synctabbars()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1673"
+      "norm_label": "lookupoptionalsettings()",
+      "source_file": "lib/keybindingManager.js",
+      "source_location": "L50"
     },
     {
-      "id": "lib_tiling_tilingmanager_tilingmanager_togglefloating",
-      "label": ".toggleFloating()",
+      "id": "lib_tiling_layoutengine_layouttree_keys",
+      "label": ".keys()",
       "_callable": true,
       "_origin": "ast",
       "community": 66,
-      "community_name": "._applyBucket",
+      "community_name": "KeybindingManager",
       "file_type": "code",
-      "norm_label": ".togglefloating()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L565"
+      "norm_label": ".keys()",
+      "source_file": "lib/tiling/layoutEngine.js",
+      "source_location": "L115"
     },
     {
       "id": "lib_browserintegration_install",
@@ -7223,19 +7511,31 @@
       "file_type": "code",
       "norm_label": "._exitmaximized()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1597"
+      "source_location": "L1667"
     },
     {
-      "id": "lib_tiling_tilingmanager_tilingmanager_onfocuschanged",
-      "label": "._onFocusChanged()",
+      "id": "lib_tiling_tilingmanager_tilingmanager_framerects",
+      "label": "._frameRects()",
       "_callable": true,
       "_origin": "ast",
       "community": 72,
       "community_name": "tilingManager.js",
       "file_type": "code",
-      "norm_label": "._onfocuschanged()",
+      "norm_label": "._framerects()",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1388"
+      "source_location": "L1131"
+    },
+    {
+      "id": "lib_tiling_tilingmanager_tilingmanager_opensastilingapp",
+      "label": "._opensAsTilingApp()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 72,
+      "community_name": "tilingManager.js",
+      "file_type": "code",
+      "norm_label": "._opensastilingapp()",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1344"
     },
     {
       "id": "lib_tiling_windowfilter_isexclusiveoccupant",
@@ -7284,18 +7584,6 @@
       "norm_label": "ismaximized()",
       "source_file": "lib/tiling/windowFilter.js",
       "source_location": "L169"
-    },
-    {
-      "id": "lib_tiling_windowfilter_istileable",
-      "label": "isTileable()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 72,
-      "community_name": "tilingManager.js",
-      "file_type": "code",
-      "norm_label": "istileable()",
-      "source_file": "lib/tiling/windowFilter.js",
-      "source_location": "L137"
     },
     {
       "id": "native_host_relay_decodelength",
@@ -8102,6 +8390,18 @@
       "source_location": "L109"
     },
     {
+      "id": "lib_launcher_browserprotocol_validopaqueid",
+      "label": "validOpaqueId()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 78,
+      "community_name": "browserProtocol.js",
+      "file_type": "code",
+      "norm_label": "validopaqueid()",
+      "source_file": "lib/launcher/browserProtocol.js",
+      "source_location": "L105"
+    },
+    {
       "id": "lib_launcher_browserprotocol_validsequence",
       "label": "validSequence()",
       "_callable": true,
@@ -8162,42 +8462,6 @@
       "source_location": "L62"
     },
     {
-      "id": "lib_launcher_browsertabstore_browsertabstore_ensurewindow",
-      "label": "._ensureWindow()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 78,
-      "community_name": "browserProtocol.js",
-      "file_type": "code",
-      "norm_label": "._ensurewindow()",
-      "source_file": "lib/launcher/browserTabStore.js",
-      "source_location": "L434"
-    },
-    {
-      "id": "lib_launcher_browsertabstore_browsertabstore_reduce",
-      "label": "._reduce()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 78,
-      "community_name": "browserProtocol.js",
-      "file_type": "code",
-      "norm_label": "._reduce()",
-      "source_file": "lib/launcher/browserTabStore.js",
-      "source_location": "L322"
-    },
-    {
-      "id": "lib_launcher_browsertabstore_browsertabstore_setfocusedwindow",
-      "label": "._setFocusedWindow()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 78,
-      "community_name": "browserProtocol.js",
-      "file_type": "code",
-      "norm_label": "._setfocusedwindow()",
-      "source_file": "lib/launcher/browserTabStore.js",
-      "source_location": "L449"
-    },
-    {
       "id": "lib_launcher_browsertabstore_safename",
       "label": "safeName()",
       "_callable": true,
@@ -8210,371 +8474,35 @@
       "source_location": "L505"
     },
     {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_browsecount",
-      "label": ".browseCount()",
+      "id": "lib_tiling_layoutengine_insetrect",
+      "label": "insetRect()",
       "_callable": true,
       "_origin": "ast",
       "community": 79,
-      "community_name": "BrowserTabsProvider",
+      "community_name": "LayoutTree",
       "file_type": "code",
-      "norm_label": ".browsecount()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L89"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_browseresults",
-      "label": ".browseResults()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "BrowserTabsProvider",
-      "file_type": "code",
-      "norm_label": ".browseresults()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L84"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_childresults",
-      "label": ".childResults()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "BrowserTabsProvider",
-      "file_type": "code",
-      "norm_label": ".childresults()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L102"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_childsubtitle",
-      "label": "._childSubtitle()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "BrowserTabsProvider",
-      "file_type": "code",
-      "norm_label": "._childsubtitle()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L159"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_constructor",
-      "label": ".constructor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "BrowserTabsProvider",
-      "file_type": "code",
-      "norm_label": ".constructor()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L51"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_enabled",
-      "label": ".enabled()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "BrowserTabsProvider",
-      "file_type": "code",
-      "norm_label": ".enabled()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L56"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_query",
-      "label": ".query()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "BrowserTabsProvider",
-      "file_type": "code",
-      "norm_label": ".query()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L60"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_subtitle",
-      "label": "._subtitle()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "BrowserTabsProvider",
-      "file_type": "code",
-      "norm_label": "._subtitle()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L152"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_tabresult",
-      "label": ".tabResult()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "BrowserTabsProvider",
-      "file_type": "code",
-      "norm_label": ".tabresult()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L113"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_browsertabsprovider_title",
-      "label": "._title()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "BrowserTabsProvider",
-      "file_type": "code",
-      "norm_label": "._title()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L148"
-    },
-    {
-      "id": "lib_launcher_browsertabsprovider_hostof",
-      "label": "hostOf()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 79,
-      "community_name": "BrowserTabsProvider",
-      "file_type": "code",
-      "norm_label": "hostof()",
-      "source_file": "lib/launcher/browserTabsProvider.js",
-      "source_location": "L170"
-    },
-    {
-      "id": "lib_keybindingmanager_keybindingmanager_addkeybinding",
-      "label": "._addKeybinding()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "KeybindingManager",
-      "file_type": "code",
-      "norm_label": "._addkeybinding()",
-      "source_file": "lib/keybindingManager.js",
-      "source_location": "L459"
-    },
-    {
-      "id": "lib_keybindingmanager_keybindingmanager_bindall",
-      "label": "._bindAll()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "KeybindingManager",
-      "file_type": "code",
-      "norm_label": "._bindall()",
-      "source_file": "lib/keybindingManager.js",
-      "source_location": "L240"
-    },
-    {
-      "id": "lib_keybindingmanager_keybindingmanager_clearkeys",
-      "label": "._clearKeys()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "KeybindingManager",
-      "file_type": "code",
-      "norm_label": "._clearkeys()",
-      "source_file": "lib/keybindingManager.js",
-      "source_location": "L476"
-    },
-    {
-      "id": "lib_keybindingmanager_keybindingmanager_constructor",
-      "label": ".constructor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "KeybindingManager",
-      "file_type": "code",
-      "norm_label": ".constructor()",
-      "source_file": "lib/keybindingManager.js",
-      "source_location": "L116"
-    },
-    {
-      "id": "lib_keybindingmanager_keybindingmanager_disable",
-      "label": ".disable()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "KeybindingManager",
-      "file_type": "code",
-      "norm_label": ".disable()",
-      "source_file": "lib/keybindingManager.js",
-      "source_location": "L187"
-    },
-    {
-      "id": "lib_keybindingmanager_keybindingmanager_disabledashtodockhotkeys",
-      "label": "._disableDashToDockHotKeys()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "KeybindingManager",
-      "file_type": "code",
-      "norm_label": "._disabledashtodockhotkeys()",
-      "source_file": "lib/keybindingManager.js",
-      "source_location": "L270"
-    },
-    {
-      "id": "lib_keybindingmanager_keybindingmanager_enable",
-      "label": ".enable()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "KeybindingManager",
-      "file_type": "code",
-      "norm_label": ".enable()",
-      "source_file": "lib/keybindingManager.js",
-      "source_location": "L170"
-    },
-    {
-      "id": "lib_keybindingmanager_keybindingmanager_graball",
-      "label": "._grabAll()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "KeybindingManager",
-      "file_type": "code",
-      "norm_label": "._graball()",
-      "source_file": "lib/keybindingManager.js",
-      "source_location": "L334"
-    },
-    {
-      "id": "lib_keybindingmanager_keybindingmanager_inputsourceconflicts",
-      "label": "._inputSourceConflicts()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "KeybindingManager",
-      "file_type": "code",
-      "norm_label": "._inputsourceconflicts()",
-      "source_file": "lib/keybindingManager.js",
-      "source_location": "L227"
-    },
-    {
-      "id": "lib_keybindingmanager_keybindingmanager_jumpto",
-      "label": "._jumpTo()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "KeybindingManager",
-      "file_type": "code",
-      "norm_label": "._jumpto()",
-      "source_file": "lib/keybindingManager.js",
-      "source_location": "L490"
-    },
-    {
-      "id": "lib_keybindingmanager_keybindingmanager_jumptolast",
-      "label": "._jumpToLast()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "KeybindingManager",
-      "file_type": "code",
-      "norm_label": "._jumptolast()",
-      "source_file": "lib/keybindingManager.js",
-      "source_location": "L496"
-    },
-    {
-      "id": "lib_keybindingmanager_keybindingmanager_rebind",
-      "label": "._rebind()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "KeybindingManager",
-      "file_type": "code",
-      "norm_label": "._rebind()",
-      "source_file": "lib/keybindingManager.js",
-      "source_location": "L211"
-    },
-    {
-      "id": "lib_keybindingmanager_keybindingmanager_restorekeys",
-      "label": "._restoreKeys()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "KeybindingManager",
-      "file_type": "code",
-      "norm_label": "._restorekeys()",
-      "source_file": "lib/keybindingManager.js",
-      "source_location": "L485"
-    },
-    {
-      "id": "lib_keybindingmanager_keybindingmanager_step",
-      "label": "._step()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "KeybindingManager",
-      "file_type": "code",
-      "norm_label": "._step()",
-      "source_file": "lib/keybindingManager.js",
-      "source_location": "L500"
-    },
-    {
-      "id": "lib_keybindingmanager_keybindingmanager_syncenabled",
-      "label": "._syncEnabled()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "KeybindingManager",
-      "file_type": "code",
-      "norm_label": "._syncenabled()",
-      "source_file": "lib/keybindingManager.js",
-      "source_location": "L201"
-    },
-    {
-      "id": "lib_keybindingmanager_keybindingmanager_unbindall",
-      "label": "._unbindAll()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "KeybindingManager",
-      "file_type": "code",
-      "norm_label": "._unbindall()",
-      "source_file": "lib/keybindingManager.js",
-      "source_location": "L275"
-    },
-    {
-      "id": "lib_keybindingmanager_keybindingmanager_watchforconflicts",
-      "label": "._watchForConflicts()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "KeybindingManager",
-      "file_type": "code",
-      "norm_label": "._watchforconflicts()",
-      "source_file": "lib/keybindingManager.js",
-      "source_location": "L306"
-    },
-    {
-      "id": "lib_keybindingmanager_lookupoptionalsettings",
-      "label": "lookupOptionalSettings()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "KeybindingManager",
-      "file_type": "code",
-      "norm_label": "lookupoptionalsettings()",
-      "source_file": "lib/keybindingManager.js",
-      "source_location": "L50"
-    },
-    {
-      "id": "lib_tiling_layoutengine_layouttree_keys",
-      "label": ".keys()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "KeybindingManager",
-      "file_type": "code",
-      "norm_label": ".keys()",
+      "norm_label": "insetrect()",
       "source_file": "lib/tiling/layoutEngine.js",
-      "source_location": "L115"
+      "source_location": "L509"
+    },
+    {
+      "id": "lib_tiling_layoutengine_layouttree_computerects",
+      "label": ".computeRects()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 79,
+      "community_name": "LayoutTree",
+      "file_type": "code",
+      "norm_label": ".computerects()",
+      "source_file": "lib/tiling/layoutEngine.js",
+      "source_location": "L262"
     },
     {
       "id": "lib_tiling_layoutengine_layouttree_constructor",
       "label": ".constructor()",
       "_callable": true,
       "_origin": "ast",
-      "community": 80,
+      "community": 79,
       "community_name": "LayoutTree",
       "file_type": "code",
       "norm_label": ".constructor()",
@@ -8582,11 +8510,23 @@
       "source_location": "L84"
     },
     {
+      "id": "lib_tiling_layoutengine_layouttree_has",
+      "label": ".has()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 79,
+      "community_name": "LayoutTree",
+      "file_type": "code",
+      "norm_label": ".has()",
+      "source_file": "lib/tiling/layoutEngine.js",
+      "source_location": "L106"
+    },
+    {
       "id": "lib_tiling_layoutengine_layouttree_insert",
       "label": ".insert()",
       "_callable": true,
       "_origin": "ast",
-      "community": 80,
+      "community": 79,
       "community_name": "LayoutTree",
       "file_type": "code",
       "norm_label": ".insert()",
@@ -8598,7 +8538,7 @@
       "label": "._moveEdge()",
       "_callable": true,
       "_origin": "ast",
-      "community": 80,
+      "community": 79,
       "community_name": "LayoutTree",
       "file_type": "code",
       "norm_label": "._moveedge()",
@@ -8610,7 +8550,7 @@
       "label": ".remove()",
       "_callable": true,
       "_origin": "ast",
-      "community": 80,
+      "community": 79,
       "community_name": "LayoutTree",
       "file_type": "code",
       "norm_label": ".remove()",
@@ -8622,7 +8562,7 @@
       "label": "._replaceChild()",
       "_callable": true,
       "_origin": "ast",
-      "community": 80,
+      "community": 79,
       "community_name": "LayoutTree",
       "file_type": "code",
       "norm_label": "._replacechild()",
@@ -8634,7 +8574,7 @@
       "label": ".resizeLeaf()",
       "_callable": true,
       "_origin": "ast",
-      "community": 80,
+      "community": 79,
       "community_name": "LayoutTree",
       "file_type": "code",
       "norm_label": ".resizeleaf()",
@@ -8646,7 +8586,7 @@
       "label": ".size()",
       "_callable": true,
       "_origin": "ast",
-      "community": 80,
+      "community": 79,
       "community_name": "LayoutTree",
       "file_type": "code",
       "norm_label": ".size()",
@@ -8658,7 +8598,7 @@
       "label": ".swap()",
       "_callable": true,
       "_origin": "ast",
-      "community": 80,
+      "community": 79,
       "community_name": "LayoutTree",
       "file_type": "code",
       "norm_label": ".swap()",
@@ -8670,7 +8610,7 @@
       "label": "._tailLeaf()",
       "_callable": true,
       "_origin": "ast",
-      "community": 80,
+      "community": 79,
       "community_name": "LayoutTree",
       "file_type": "code",
       "norm_label": "._tailleaf()",
@@ -8682,7 +8622,7 @@
       "label": "treeOf()",
       "_callable": true,
       "_origin": "ast",
-      "community": 80,
+      "community": 79,
       "community_name": "LayoutTree",
       "file_type": "code",
       "norm_label": "treeof()",
@@ -8690,11 +8630,155 @@
       "source_location": "L49"
     },
     {
+      "id": "lib_windowmover_windowmover_insertworkspaceafter",
+      "label": "._insertWorkspaceAfter()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "WindowMover",
+      "file_type": "code",
+      "norm_label": "._insertworkspaceafter()",
+      "source_file": "lib/windowMover.js",
+      "source_location": "L181"
+    },
+    {
+      "id": "lib_windowmover_windowmover_isemptyworkspace",
+      "label": "._isEmptyWorkspace()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "WindowMover",
+      "file_type": "code",
+      "norm_label": "._isemptyworkspace()",
+      "source_file": "lib/windowMover.js",
+      "source_location": "L290"
+    },
+    {
+      "id": "lib_windowmover_windowmover_movablefocusedwindow",
+      "label": "._movableFocusedWindow()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "WindowMover",
+      "file_type": "code",
+      "norm_label": "._movablefocusedwindow()",
+      "source_file": "lib/windowMover.js",
+      "source_location": "L433"
+    },
+    {
+      "id": "lib_windowmover_windowmover_movablewindowson",
+      "label": "._movableWindowsOn()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "WindowMover",
+      "file_type": "code",
+      "norm_label": "._movablewindowson()",
+      "source_file": "lib/windowMover.js",
+      "source_location": "L367"
+    },
+    {
+      "id": "lib_windowmover_windowmover_movefocusedtolastworkspace",
+      "label": ".moveFocusedToLastWorkspace()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "WindowMover",
+      "file_type": "code",
+      "norm_label": ".movefocusedtolastworkspace()",
+      "source_file": "lib/windowMover.js",
+      "source_location": "L112"
+    },
+    {
+      "id": "lib_windowmover_windowmover_movefocusedtonewworkspace",
+      "label": ".moveFocusedToNewWorkspace()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "WindowMover",
+      "file_type": "code",
+      "norm_label": ".movefocusedtonewworkspace()",
+      "source_file": "lib/windowMover.js",
+      "source_location": "L204"
+    },
+    {
+      "id": "lib_windowmover_windowmover_movefocusedtoworkspace",
+      "label": ".moveFocusedToWorkspace()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "WindowMover",
+      "file_type": "code",
+      "norm_label": ".movefocusedtoworkspace()",
+      "source_file": "lib/windowMover.js",
+      "source_location": "L67"
+    },
+    {
+      "id": "lib_windowmover_windowmover_movefollowing",
+      "label": "._moveFollowing()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "WindowMover",
+      "file_type": "code",
+      "norm_label": "._movefollowing()",
+      "source_file": "lib/windowMover.js",
+      "source_location": "L257"
+    },
+    {
+      "id": "lib_windowmover_windowmover_movetonewworkspace",
+      "label": ".moveToNewWorkspace()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "WindowMover",
+      "file_type": "code",
+      "norm_label": ".movetonewworkspace()",
+      "source_file": "lib/windowMover.js",
+      "source_location": "L140"
+    },
+    {
+      "id": "lib_windowmover_windowmover_movetoworkspace",
+      "label": ".moveToWorkspace()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "WindowMover",
+      "file_type": "code",
+      "norm_label": ".movetoworkspace()",
+      "source_file": "lib/windowMover.js",
+      "source_location": "L85"
+    },
+    {
+      "id": "lib_windowmover_windowmover_swapwithworkspace",
+      "label": ".swapWithWorkspace()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "WindowMover",
+      "file_type": "code",
+      "norm_label": ".swapwithworkspace()",
+      "source_file": "lib/windowMover.js",
+      "source_location": "L323"
+    },
+    {
+      "id": "lib_windowmover_windowmover_togglefocusedmaximize",
+      "label": ".toggleFocusedMaximize()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "WindowMover",
+      "file_type": "code",
+      "norm_label": ".togglefocusedmaximize()",
+      "source_file": "lib/windowMover.js",
+      "source_location": "L396"
+    },
+    {
       "id": "lib_launcher_calculatorengine_alternateforms",
       "label": "alternateForms()",
       "_callable": true,
       "_origin": "ast",
-      "community": 81,
+      "community": 80,
       "community_name": "calculatorProvider.js",
       "file_type": "code",
       "norm_label": "alternateforms()",
@@ -8706,7 +8790,7 @@
       "label": "formatValue()",
       "_callable": true,
       "_origin": "ast",
-      "community": 81,
+      "community": 80,
       "community_name": "calculatorProvider.js",
       "file_type": "code",
       "norm_label": "formatvalue()",
@@ -8718,7 +8802,7 @@
       "label": ".constructor()",
       "_callable": true,
       "_origin": "ast",
-      "community": 81,
+      "community": 80,
       "community_name": "calculatorProvider.js",
       "file_type": "code",
       "norm_label": ".constructor()",
@@ -8730,7 +8814,7 @@
       "label": "._copy()",
       "_callable": true,
       "_origin": "ast",
-      "community": 81,
+      "community": 80,
       "community_name": "calculatorProvider.js",
       "file_type": "code",
       "norm_label": "._copy()",
@@ -8742,7 +8826,7 @@
       "label": ".disable()",
       "_callable": true,
       "_origin": "ast",
-      "community": 81,
+      "community": 80,
       "community_name": "calculatorProvider.js",
       "file_type": "code",
       "norm_label": ".disable()",
@@ -8754,7 +8838,7 @@
       "label": ".enabled()",
       "_callable": true,
       "_origin": "ast",
-      "community": 81,
+      "community": 80,
       "community_name": "calculatorProvider.js",
       "file_type": "code",
       "norm_label": ".enabled()",
@@ -8766,7 +8850,7 @@
       "label": ".query()",
       "_callable": true,
       "_origin": "ast",
-      "community": 81,
+      "community": 80,
       "community_name": "calculatorProvider.js",
       "file_type": "code",
       "norm_label": ".query()",
@@ -8778,7 +8862,7 @@
       "label": "collapseWhitespace()",
       "_callable": true,
       "_origin": "ast",
-      "community": 81,
+      "community": 80,
       "community_name": "calculatorProvider.js",
       "file_type": "code",
       "norm_label": "collapsewhitespace()",
@@ -8928,66 +9012,6 @@
       "norm_label": "parseworkspacecommand()",
       "source_file": "lib/launcher/actionProvider.js",
       "source_location": "L40"
-    },
-    {
-      "id": "lib_tiling_tilingmanager_tilingmanager_bucketof",
-      "label": "._bucketOf()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 83,
-      "community_name": "._effectiveModeOf",
-      "file_type": "code",
-      "norm_label": "._bucketof()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1101"
-    },
-    {
-      "id": "lib_tiling_tilingmanager_tilingmanager_effectivemodeof",
-      "label": "._effectiveModeOf()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 83,
-      "community_name": "._effectiveModeOf",
-      "file_type": "code",
-      "norm_label": "._effectivemodeof()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L246"
-    },
-    {
-      "id": "lib_tiling_tilingmanager_tilingmanager_ongrabopend",
-      "label": "._onGrabOpEnd()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 83,
-      "community_name": "._effectiveModeOf",
-      "file_type": "code",
-      "norm_label": "._ongrabopend()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1023"
-    },
-    {
-      "id": "lib_tiling_tilingmanager_tilingmanager_resizeafterdrag",
-      "label": "._resizeAfterDrag()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 83,
-      "community_name": "._effectiveModeOf",
-      "file_type": "code",
-      "norm_label": "._resizeafterdrag()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1079"
-    },
-    {
-      "id": "lib_tiling_tilingmanager_tilingmanager_swapafterdrag",
-      "label": "._swapAfterDrag()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 83,
-      "community_name": "._effectiveModeOf",
-      "file_type": "code",
-      "norm_label": "._swapafterdrag()",
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1044"
     },
     {
       "id": "lib_launcher_clipboardprovider_clipboardprovider_activate",
@@ -9812,116 +9836,6 @@
       "source_location": "L176"
     },
     {
-      "id": "lib_launcher_browserbridge",
-      "label": "browserBridge.js",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "browserTabService.js",
-      "file_type": "code",
-      "norm_label": "browserbridge.js",
-      "source_file": "lib/launcher/browserBridge.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "lib_launcher_browserprotocol_browsereventtype",
-      "label": "BrowserEventType",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "browserTabService.js",
-      "file_type": "code",
-      "norm_label": "browsereventtype",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L51"
-    },
-    {
-      "id": "lib_launcher_browserprotocol_browsertype",
-      "label": "BrowserType",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "browserTabService.js",
-      "file_type": "code",
-      "norm_label": "browsertype",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L25"
-    },
-    {
-      "id": "lib_launcher_browserprotocol_messagetype",
-      "label": "MessageType",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "browserTabService.js",
-      "file_type": "code",
-      "norm_label": "messagetype",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L31"
-    },
-    {
-      "id": "lib_launcher_browserprotocol_protocol_version",
-      "label": "PROTOCOL_VERSION",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "browserTabService.js",
-      "file_type": "code",
-      "norm_label": "protocol_version",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L21"
-    },
-    {
-      "id": "lib_launcher_browserprotocol_window_id_none",
-      "label": "WINDOW_ID_NONE",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "browserTabService.js",
-      "file_type": "code",
-      "norm_label": "window_id_none",
-      "source_file": "lib/launcher/browserProtocol.js",
-      "source_location": "L78"
-    },
-    {
-      "id": "lib_launcher_browsertabservice",
-      "label": "browserTabService.js",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "browserTabService.js",
-      "file_type": "code",
-      "norm_label": "browsertabservice.js",
-      "source_file": "lib/launcher/browserTabService.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "lib_launcher_browsertabservice_browser_desktop_ids",
-      "label": "BROWSER_DESKTOP_IDS",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "browserTabService.js",
-      "file_type": "code",
-      "norm_label": "browser_desktop_ids",
-      "source_file": "lib/launcher/browserTabService.js",
-      "source_location": "L59"
-    },
-    {
-      "id": "lib_launcher_browsertabservice_family_patterns",
-      "label": "FAMILY_PATTERNS",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "browserTabService.js",
-      "file_type": "code",
-      "norm_label": "family_patterns",
-      "source_file": "lib/launcher/browserTabService.js",
-      "source_location": "L22"
-    },
-    {
-      "id": "lib_launcher_browsertabstore_storeresult",
-      "label": "StoreResult",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "browserTabService.js",
-      "file_type": "code",
-      "norm_label": "storeresult",
-      "source_file": "lib/launcher/browserTabStore.js",
-      "source_location": "L15"
-    },
-    {
       "id": "lib_keybindingmanager",
       "label": "keybindingManager.js",
       "_origin": "ast",
@@ -10076,11 +9990,55 @@
       "source_location": "L47"
     },
     {
+      "id": "lib_launcher_browserprotocol_browsertype",
+      "label": "BrowserType",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "browserTabService.js",
+      "file_type": "code",
+      "norm_label": "browsertype",
+      "source_file": "lib/launcher/browserProtocol.js",
+      "source_location": "L25"
+    },
+    {
+      "id": "lib_launcher_browsertabservice",
+      "label": "browserTabService.js",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "browserTabService.js",
+      "file_type": "code",
+      "norm_label": "browsertabservice.js",
+      "source_file": "lib/launcher/browserTabService.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_launcher_browsertabservice_browser_desktop_ids",
+      "label": "BROWSER_DESKTOP_IDS",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "browserTabService.js",
+      "file_type": "code",
+      "norm_label": "browser_desktop_ids",
+      "source_file": "lib/launcher/browserTabService.js",
+      "source_location": "L59"
+    },
+    {
+      "id": "lib_launcher_browsertabservice_family_patterns",
+      "label": "FAMILY_PATTERNS",
+      "_origin": "ast",
+      "community": 16,
+      "community_name": "browserTabService.js",
+      "file_type": "code",
+      "norm_label": "family_patterns",
+      "source_file": "lib/launcher/browserTabService.js",
+      "source_location": "L22"
+    },
+    {
       "id": "lib_launcher_browserwindowmapper",
       "label": "browserWindowMapper.js",
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "browserwindowmapper.js",
       "source_file": "lib/launcher/browserWindowMapper.js",
@@ -10091,7 +10049,7 @@
       "label": "BindingStrength",
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "bindingstrength",
       "source_file": "lib/launcher/browserWindowMapper.js",
@@ -10102,7 +10060,7 @@
       "label": "browser-window-mapper-test.js",
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "browser-window-mapper-test.js",
       "source_file": "tests/browser-window-mapper-test.js",
@@ -10113,7 +10071,7 @@
       "label": "CHROME",
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "chrome",
       "source_file": "tests/browser-window-mapper-test.js",
@@ -10124,7 +10082,7 @@
       "label": "FIREFOX",
       "_origin": "ast",
       "community": 16,
-      "community_name": "BrowserTabService",
+      "community_name": "browserTabService.js",
       "file_type": "code",
       "norm_label": "firefox",
       "source_file": "tests/browser-window-mapper-test.js",
@@ -11160,6 +11118,39 @@
       "source_location": "L41"
     },
     {
+      "id": "lib_focusborder",
+      "label": "focusBorder.js",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "extension.js",
+      "file_type": "code",
+      "norm_label": "focusborder.js",
+      "source_file": "lib/focusBorder.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_focusborder_focusbordermanager",
+      "label": "FocusBorderManager",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "extension.js",
+      "file_type": "code",
+      "norm_label": "focusbordermanager",
+      "source_file": "lib/focusBorder.js",
+      "source_location": "L48"
+    },
+    {
+      "id": "lib_focusborder_highlightable_types",
+      "label": "HIGHLIGHTABLE_TYPES",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "extension.js",
+      "file_type": "code",
+      "norm_label": "highlightable_types",
+      "source_file": "lib/focusBorder.js",
+      "source_location": "L23"
+    },
+    {
       "id": "lib_fullscreenmanager",
       "label": "fullscreenManager.js",
       "_origin": "ast",
@@ -11235,28 +11226,6 @@
       "norm_label": "settingsmanager.js",
       "source_file": "lib/settingsManager.js",
       "source_location": "L1"
-    },
-    {
-      "id": "lib_windowmover",
-      "label": "windowMover.js",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "extension.js",
-      "file_type": "code",
-      "norm_label": "windowmover.js",
-      "source_file": "lib/windowMover.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "lib_windowmover_non_content_window_types",
-      "label": "NON_CONTENT_WINDOW_TYPES",
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "extension.js",
-      "file_type": "code",
-      "norm_label": "non_content_window_types",
-      "source_file": "lib/windowMover.js",
-      "source_location": "L19"
     },
     {
       "id": "scripts_dev_nested",
@@ -11362,39 +11331,6 @@
       "norm_label": "dev-session.sh script",
       "source_file": "scripts/dev-session.sh",
       "source_location": "L1"
-    },
-    {
-      "id": "lib_focusborder",
-      "label": "focusBorder.js",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "LauncherTheme",
-      "file_type": "code",
-      "norm_label": "focusborder.js",
-      "source_file": "lib/focusBorder.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "lib_focusborder_focusbordermanager",
-      "label": "FocusBorderManager",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "LauncherTheme",
-      "file_type": "code",
-      "norm_label": "focusbordermanager",
-      "source_file": "lib/focusBorder.js",
-      "source_location": "L48"
-    },
-    {
-      "id": "lib_focusborder_highlightable_types",
-      "label": "HIGHLIGHTABLE_TYPES",
-      "_origin": "ast",
-      "community": 5,
-      "community_name": "LauncherTheme",
-      "file_type": "code",
-      "norm_label": "highlightable_types",
-      "source_file": "lib/focusBorder.js",
-      "source_location": "L23"
     },
     {
       "id": "lib_gestureprogresstracker",
@@ -12548,28 +12484,6 @@
       "source_location": "L190"
     },
     {
-      "id": "lib_tiling_stacktabbar",
-      "label": "stackTabBar.js",
-      "_origin": "ast",
-      "community": 66,
-      "community_name": "._applyBucket",
-      "file_type": "code",
-      "norm_label": "stacktabbar.js",
-      "source_file": "lib/tiling/stackTabBar.js",
-      "source_location": "L1"
-    },
-    {
-      "id": "lib_tiling_stacktabbar_stacktabbar",
-      "label": "StackTabBar",
-      "_origin": "ast",
-      "community": 66,
-      "community_name": "._applyBucket",
-      "file_type": "code",
-      "norm_label": "stacktabbar",
-      "source_file": "lib/tiling/stackTabBar.js",
-      "source_location": "L67"
-    },
-    {
       "id": "lib_browserintegration",
       "label": "browserIntegration.js",
       "_origin": "ast",
@@ -13177,6 +13091,28 @@
       "source_location": "L1"
     },
     {
+      "id": "lib_tiling_stacktabbar",
+      "label": "stackTabBar.js",
+      "_origin": "ast",
+      "community": 72,
+      "community_name": "tilingManager.js",
+      "file_type": "code",
+      "norm_label": "stacktabbar.js",
+      "source_file": "lib/tiling/stackTabBar.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_tiling_stacktabbar_stacktabbar",
+      "label": "StackTabBar",
+      "_origin": "ast",
+      "community": 72,
+      "community_name": "tilingManager.js",
+      "file_type": "code",
+      "norm_label": "stacktabbar",
+      "source_file": "lib/tiling/stackTabBar.js",
+      "source_location": "L67"
+    },
+    {
       "id": "lib_tiling_tilingmanager",
       "label": "tilingManager.js",
       "_origin": "ast",
@@ -13196,7 +13132,7 @@
       "file_type": "code",
       "norm_label": "floatingwindows",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L85"
+      "source_location": "L93"
     },
     {
       "id": "lib_tiling_tilingmanager_move_grab_ops",
@@ -13207,7 +13143,7 @@
       "file_type": "code",
       "norm_label": "move_grab_ops",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L92"
+      "source_location": "L100"
     },
     {
       "id": "lib_tiling_tilingmanager_resize_grab_ops",
@@ -13218,7 +13154,7 @@
       "file_type": "code",
       "norm_label": "resize_grab_ops",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L95"
+      "source_location": "L103"
     },
     {
       "id": "lib_tiling_tilingmanager_workspacemodes",
@@ -13229,7 +13165,7 @@
       "file_type": "code",
       "norm_label": "workspacemodes",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L71"
+      "source_location": "L79"
     },
     {
       "id": "lib_tiling_windowfilter",
@@ -13474,6 +13410,17 @@
       "source_location": "L1"
     },
     {
+      "id": "lib_launcher_browserbridge",
+      "label": "browserBridge.js",
+      "_origin": "ast",
+      "community": 78,
+      "community_name": "browserProtocol.js",
+      "file_type": "code",
+      "norm_label": "browserbridge.js",
+      "source_file": "lib/launcher/browserBridge.js",
+      "source_location": "L1"
+    },
+    {
       "id": "lib_launcher_browserprotocol",
       "label": "browserProtocol.js",
       "_origin": "ast",
@@ -13483,6 +13430,17 @@
       "norm_label": "browserprotocol.js",
       "source_file": "lib/launcher/browserProtocol.js",
       "source_location": "L1"
+    },
+    {
+      "id": "lib_launcher_browserprotocol_browsereventtype",
+      "label": "BrowserEventType",
+      "_origin": "ast",
+      "community": 78,
+      "community_name": "browserProtocol.js",
+      "file_type": "code",
+      "norm_label": "browsereventtype",
+      "source_file": "lib/launcher/browserProtocol.js",
+      "source_location": "L51"
     },
     {
       "id": "lib_launcher_browserprotocol_icon_mime_types",
@@ -13518,6 +13476,17 @@
       "source_location": "L93"
     },
     {
+      "id": "lib_launcher_browserprotocol_messagetype",
+      "label": "MessageType",
+      "_origin": "ast",
+      "community": 78,
+      "community_name": "browserProtocol.js",
+      "file_type": "code",
+      "norm_label": "messagetype",
+      "source_file": "lib/launcher/browserProtocol.js",
+      "source_location": "L31"
+    },
+    {
       "id": "lib_launcher_browserprotocol_native_host_name",
       "label": "NATIVE_HOST_NAME",
       "_origin": "ast",
@@ -13529,6 +13498,17 @@
       "source_location": "L22"
     },
     {
+      "id": "lib_launcher_browserprotocol_protocol_version",
+      "label": "PROTOCOL_VERSION",
+      "_origin": "ast",
+      "community": 78,
+      "community_name": "browserProtocol.js",
+      "file_type": "code",
+      "norm_label": "protocol_version",
+      "source_file": "lib/launcher/browserProtocol.js",
+      "source_location": "L21"
+    },
+    {
       "id": "lib_launcher_browserprotocol_sessionstate",
       "label": "SessionState",
       "_origin": "ast",
@@ -13538,6 +13518,17 @@
       "norm_label": "sessionstate",
       "source_file": "lib/launcher/browserProtocol.js",
       "source_location": "L68"
+    },
+    {
+      "id": "lib_launcher_browserprotocol_window_id_none",
+      "label": "WINDOW_ID_NONE",
+      "_origin": "ast",
+      "community": 78,
+      "community_name": "browserProtocol.js",
+      "file_type": "code",
+      "norm_label": "window_id_none",
+      "source_file": "lib/launcher/browserProtocol.js",
+      "source_location": "L78"
     },
     {
       "id": "lib_launcher_browserprotocol_windowtype",
@@ -13562,10 +13553,43 @@
       "source_location": "L1"
     },
     {
+      "id": "lib_launcher_browsertabstore_storeresult",
+      "label": "StoreResult",
+      "_origin": "ast",
+      "community": 78,
+      "community_name": "browserProtocol.js",
+      "file_type": "code",
+      "norm_label": "storeresult",
+      "source_file": "lib/launcher/browserTabStore.js",
+      "source_location": "L15"
+    },
+    {
+      "id": "lib_windowmover",
+      "label": "windowMover.js",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "WindowMover",
+      "file_type": "code",
+      "norm_label": "windowmover.js",
+      "source_file": "lib/windowMover.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_windowmover_non_content_window_types",
+      "label": "NON_CONTENT_WINDOW_TYPES",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "WindowMover",
+      "file_type": "code",
+      "norm_label": "non_content_window_types",
+      "source_file": "lib/windowMover.js",
+      "source_location": "L19"
+    },
+    {
       "id": "lib_launcher_calculatorprovider",
       "label": "calculatorProvider.js",
       "_origin": "ast",
-      "community": 81,
+      "community": 80,
       "community_name": "calculatorProvider.js",
       "file_type": "code",
       "norm_label": "calculatorprovider.js",
@@ -21951,7 +21975,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1609",
+      "source_location": "L1679",
       "weight": 1.0
     },
     {
@@ -21963,7 +21987,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1612",
+      "source_location": "L1682",
       "weight": 1.0
     },
     {
@@ -21975,7 +21999,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1618",
+      "source_location": "L1688",
       "weight": 1.0
     },
     {
@@ -21987,7 +22011,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1624",
+      "source_location": "L1694",
       "weight": 1.0
     },
     {
@@ -21999,7 +22023,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1628",
+      "source_location": "L1698",
       "weight": 1.0
     },
     {
@@ -22011,7 +22035,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1635",
+      "source_location": "L1705",
       "weight": 1.0
     },
     {
@@ -22023,7 +22047,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1637",
+      "source_location": "L1707",
       "weight": 1.0
     },
     {
@@ -22035,7 +22059,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1638",
+      "source_location": "L1708",
       "weight": 1.0
     },
     {
@@ -22047,7 +22071,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1649",
+      "source_location": "L1719",
       "weight": 1.0
     },
     {
@@ -22059,7 +22083,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L512",
+      "source_location": "L527",
       "weight": 1.0
     },
     {
@@ -22071,7 +22095,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L519",
+      "source_location": "L534",
       "weight": 1.0
     },
     {
@@ -22083,7 +22107,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L520",
+      "source_location": "L535",
       "weight": 1.0
     },
     {
@@ -22095,7 +22119,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L781",
+      "source_location": "L796",
       "weight": 1.0
     },
     {
@@ -22107,7 +22131,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L790",
+      "source_location": "L805",
       "weight": 1.0
     },
     {
@@ -22119,7 +22143,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L793",
+      "source_location": "L808",
       "weight": 1.0
     },
     {
@@ -22131,7 +22155,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L809",
+      "source_location": "L824",
       "weight": 1.0
     },
     {
@@ -22143,7 +22167,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L811",
+      "source_location": "L826",
       "weight": 1.0
     },
     {
@@ -22155,7 +22179,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L814",
+      "source_location": "L829",
       "weight": 1.0
     },
     {
@@ -22167,7 +22191,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L815",
+      "source_location": "L830",
       "weight": 1.0
     },
     {
@@ -22179,7 +22203,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L821",
+      "source_location": "L836",
       "weight": 1.0
     },
     {
@@ -22191,7 +22215,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L823",
+      "source_location": "L838",
       "weight": 1.0
     },
     {
@@ -22203,7 +22227,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1582",
+      "source_location": "L1652",
       "weight": 1.0
     },
     {
@@ -22215,7 +22239,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1528",
+      "source_location": "L1598",
       "weight": 1.0
     },
     {
@@ -22227,7 +22251,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L428",
+      "source_location": "L442",
       "weight": 1.0
     },
     {
@@ -22239,7 +22263,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L446",
+      "source_location": "L461",
       "weight": 1.0
     },
     {
@@ -22251,7 +22275,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L247",
+      "source_location": "L261",
       "weight": 1.0
     },
     {
@@ -22263,7 +22287,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L248",
+      "source_location": "L262",
       "weight": 1.0
     },
     {
@@ -22275,7 +22299,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L267",
+      "source_location": "L281",
       "weight": 1.0
     },
     {
@@ -22287,7 +22311,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L269",
+      "source_location": "L283",
       "weight": 1.0
     },
     {
@@ -22299,7 +22323,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L271",
+      "source_location": "L285",
       "weight": 1.0
     },
     {
@@ -22311,7 +22335,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L272",
+      "source_location": "L286",
       "weight": 1.0
     },
     {
@@ -22323,7 +22347,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L274",
+      "source_location": "L288",
       "weight": 1.0
     },
     {
@@ -22335,7 +22359,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L284",
+      "source_location": "L298",
       "weight": 1.0
     },
     {
@@ -22347,7 +22371,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L297",
+      "source_location": "L311",
       "weight": 1.0
     },
     {
@@ -22359,7 +22383,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L335",
+      "source_location": "L349",
       "weight": 1.0
     },
     {
@@ -22371,7 +22395,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L336",
+      "source_location": "L350",
       "weight": 1.0
     },
     {
@@ -22383,7 +22407,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L340",
+      "source_location": "L354",
       "weight": 1.0
     },
     {
@@ -22395,7 +22419,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L357",
+      "source_location": "L371",
       "weight": 1.0
     },
     {
@@ -22407,7 +22431,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L380",
+      "source_location": "L394",
       "weight": 1.0
     },
     {
@@ -22419,7 +22443,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L381",
+      "source_location": "L395",
       "weight": 1.0
     },
     {
@@ -22431,7 +22455,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L389",
+      "source_location": "L403",
       "weight": 1.0
     },
     {
@@ -22443,7 +22467,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1449",
+      "source_location": "L1519",
       "weight": 1.0
     },
     {
@@ -22455,7 +22479,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L527",
+      "source_location": "L542",
       "weight": 1.0
     },
     {
@@ -22467,7 +22491,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L529",
+      "source_location": "L544",
       "weight": 1.0
     },
     {
@@ -22479,7 +22503,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1598",
+      "source_location": "L1668",
       "weight": 1.0
     },
     {
@@ -22491,7 +22515,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1603",
+      "source_location": "L1673",
       "weight": 1.0
     },
     {
@@ -22503,7 +22527,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1603",
+      "source_location": "L1673",
       "weight": 1.0
     },
     {
@@ -22515,7 +22539,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1458",
+      "source_location": "L1528",
       "weight": 1.0
     },
     {
@@ -22527,7 +22551,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1475",
+      "source_location": "L1545",
       "weight": 1.0
     },
     {
@@ -22539,7 +22563,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1482",
+      "source_location": "L1552",
       "weight": 1.0
     },
     {
@@ -22551,7 +22575,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1489",
+      "source_location": "L1559",
       "weight": 1.0
     },
     {
@@ -22563,7 +22587,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L622",
+      "source_location": "L637",
       "weight": 1.0
     },
     {
@@ -22575,7 +22599,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L630",
+      "source_location": "L645",
       "weight": 1.0
     },
     {
@@ -22587,7 +22611,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L632",
+      "source_location": "L647",
       "weight": 1.0
     },
     {
@@ -22599,7 +22623,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L634",
+      "source_location": "L649",
       "weight": 1.0
     },
     {
@@ -22611,7 +22635,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L635",
+      "source_location": "L650",
       "weight": 1.0
     },
     {
@@ -22623,7 +22647,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L643",
+      "source_location": "L658",
       "weight": 1.0
     },
     {
@@ -22635,7 +22659,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L643",
+      "source_location": "L658",
       "weight": 1.0
     },
     {
@@ -22647,7 +22671,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1119",
+      "source_location": "L1134",
       "weight": 1.0
     },
     {
@@ -22659,7 +22683,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L258",
+      "source_location": "L272",
       "weight": 1.0
     },
     {
@@ -22671,7 +22695,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L254",
+      "source_location": "L268",
       "weight": 1.0
     },
     {
@@ -22683,7 +22707,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L605",
+      "source_location": "L620",
       "weight": 1.0
     },
     {
@@ -22695,7 +22719,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1295",
+      "source_location": "L1357",
       "weight": 1.0
     },
     {
@@ -22707,7 +22731,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1297",
+      "source_location": "L1359",
       "weight": 1.0
     },
     {
@@ -22719,7 +22743,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1391",
+      "source_location": "L1461",
       "weight": 1.0
     },
     {
@@ -22731,7 +22755,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1396",
+      "source_location": "L1466",
       "weight": 1.0
     },
     {
@@ -22743,7 +22767,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1411",
+      "source_location": "L1481",
       "weight": 1.0
     },
     {
@@ -22755,7 +22779,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1412",
+      "source_location": "L1482",
       "weight": 1.0
     },
     {
@@ -22767,7 +22791,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L960",
+      "source_location": "L975",
       "weight": 1.0
     },
     {
@@ -22779,7 +22803,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L972",
+      "source_location": "L987",
       "weight": 1.0
     },
     {
@@ -22791,7 +22815,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L973",
+      "source_location": "L988",
       "weight": 1.0
     },
     {
@@ -22803,7 +22827,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L981",
+      "source_location": "L996",
       "weight": 1.0
     },
     {
@@ -22815,7 +22839,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L983",
+      "source_location": "L998",
       "weight": 1.0
     },
     {
@@ -22827,7 +22851,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L542",
+      "source_location": "L557",
       "weight": 1.0
     },
     {
@@ -22839,7 +22863,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L549",
+      "source_location": "L564",
       "weight": 1.0
     },
     {
@@ -22851,7 +22875,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L551",
+      "source_location": "L566",
       "weight": 1.0
     },
     {
@@ -22863,7 +22887,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1029",
+      "source_location": "L1044",
       "weight": 1.0
     },
     {
@@ -22875,7 +22899,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1031",
+      "source_location": "L1046",
       "weight": 1.0
     },
     {
@@ -22887,7 +22911,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1033",
+      "source_location": "L1048",
       "weight": 1.0
     },
     {
@@ -22899,7 +22923,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L881",
+      "source_location": "L896",
       "weight": 1.0
     },
     {
@@ -22911,7 +22935,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L888",
+      "source_location": "L903",
       "weight": 1.0
     },
     {
@@ -22923,7 +22947,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L892",
+      "source_location": "L907",
       "weight": 1.0
     },
     {
@@ -22935,7 +22959,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L900",
+      "source_location": "L915",
       "weight": 1.0
     },
     {
@@ -22947,7 +22971,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L911",
+      "source_location": "L926",
       "weight": 1.0
     },
     {
@@ -22959,7 +22983,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L912",
+      "source_location": "L927",
       "weight": 1.0
     },
     {
@@ -22971,7 +22995,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L914",
+      "source_location": "L929",
       "weight": 1.0
     },
     {
@@ -22983,7 +23007,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L876",
+      "source_location": "L891",
       "weight": 1.0
     },
     {
@@ -22995,7 +23019,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1286",
+      "source_location": "L1348",
       "weight": 1.0
     },
     {
@@ -23007,7 +23031,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1220",
+      "source_location": "L1246",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager_placeonfocusedmonitor",
+      "target": "lib_tiling_tilingmanager_tilingmanager_takemonitorhint",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1253",
       "weight": 1.0
     },
     {
@@ -23019,7 +23055,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1436",
+      "source_location": "L1506",
       "weight": 1.0
     },
     {
@@ -23031,7 +23067,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1441",
+      "source_location": "L1511",
       "weight": 1.0
     },
     {
@@ -23043,7 +23079,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1546",
+      "source_location": "L1616",
       "weight": 1.0
     },
     {
@@ -23055,7 +23091,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1550",
+      "source_location": "L1620",
       "weight": 1.0
     },
     {
@@ -23067,7 +23103,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1080",
+      "source_location": "L1095",
       "weight": 1.0
     },
     {
@@ -23079,7 +23115,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1085",
+      "source_location": "L1100",
       "weight": 1.0
     },
     {
@@ -23091,7 +23127,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1086",
+      "source_location": "L1101",
       "weight": 1.0
     },
     {
@@ -23103,7 +23139,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1095",
+      "source_location": "L1110",
       "weight": 1.0
     },
     {
@@ -23115,7 +23151,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1257",
+      "source_location": "L1319",
       "weight": 1.0
     },
     {
@@ -23127,7 +23163,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L496",
+      "source_location": "L511",
       "weight": 1.0
     },
     {
@@ -23139,7 +23175,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1514",
+      "source_location": "L1584",
       "weight": 1.0
     },
     {
@@ -23151,7 +23187,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1045",
+      "source_location": "L1060",
       "weight": 1.0
     },
     {
@@ -23163,7 +23199,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1047",
+      "source_location": "L1062",
       "weight": 1.0
     },
     {
@@ -23175,7 +23211,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1048",
+      "source_location": "L1063",
       "weight": 1.0
     },
     {
@@ -23187,7 +23223,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L665",
+      "source_location": "L680",
       "weight": 1.0
     },
     {
@@ -23199,7 +23235,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L666",
+      "source_location": "L681",
       "weight": 1.0
     },
     {
@@ -23211,7 +23247,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L669",
+      "source_location": "L684",
       "weight": 1.0
     },
     {
@@ -23223,7 +23259,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L670",
+      "source_location": "L685",
       "weight": 1.0
     },
     {
@@ -23235,7 +23271,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L673",
+      "source_location": "L688",
       "weight": 1.0
     },
     {
@@ -23247,7 +23283,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L679",
+      "source_location": "L694",
       "weight": 1.0
     },
     {
@@ -23259,7 +23295,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L686",
+      "source_location": "L701",
       "weight": 1.0
     },
     {
@@ -23271,7 +23307,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L687",
+      "source_location": "L702",
       "weight": 1.0
     },
     {
@@ -23283,7 +23319,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L692",
+      "source_location": "L707",
       "weight": 1.0
     },
     {
@@ -23295,7 +23331,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L743",
+      "source_location": "L758",
       "weight": 1.0
     },
     {
@@ -23307,7 +23343,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L745",
+      "source_location": "L760",
       "weight": 1.0
     },
     {
@@ -23319,7 +23355,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1678",
+      "source_location": "L1748",
       "weight": 1.0
     },
     {
@@ -23331,7 +23367,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1693",
+      "source_location": "L1763",
       "weight": 1.0
     },
     {
@@ -23343,7 +23379,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1694",
+      "source_location": "L1764",
       "weight": 1.0
     },
     {
@@ -23355,7 +23391,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1700",
+      "source_location": "L1770",
       "weight": 1.0
     },
     {
@@ -23367,7 +23403,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1701",
+      "source_location": "L1771",
       "weight": 1.0
     },
     {
@@ -23379,7 +23415,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1711",
+      "source_location": "L1781",
       "weight": 1.0
     },
     {
@@ -23391,7 +23427,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1753",
+      "source_location": "L1823",
       "weight": 1.0
     },
     {
@@ -23403,7 +23439,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L569",
+      "source_location": "L584",
       "weight": 1.0
     },
     {
@@ -23415,7 +23451,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L573",
+      "source_location": "L588",
       "weight": 1.0
     },
     {
@@ -23427,7 +23463,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L581",
+      "source_location": "L596",
       "weight": 1.0
     },
     {
@@ -23439,7 +23475,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L591",
+      "source_location": "L606",
       "weight": 1.0
     },
     {
@@ -23451,7 +23487,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L597",
+      "source_location": "L612",
       "weight": 1.0
     },
     {
@@ -23463,7 +23499,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L506",
+      "source_location": "L521",
       "weight": 1.0
     },
     {
@@ -23475,7 +23511,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L508",
+      "source_location": "L523",
       "weight": 1.0
     },
     {
@@ -23487,7 +23523,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1309",
+      "source_location": "L1371",
       "weight": 1.0
     },
     {
@@ -23499,7 +23535,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1318",
+      "source_location": "L1380",
       "weight": 1.0
     },
     {
@@ -23511,7 +23547,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1326",
+      "source_location": "L1388",
       "weight": 1.0
     },
     {
@@ -23523,7 +23559,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1327",
+      "source_location": "L1389",
       "weight": 1.0
     },
     {
@@ -23535,7 +23571,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1341",
+      "source_location": "L1410",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager_trackwindow",
+      "target": "lib_tiling_tilingmanager_tilingmanager_settlependingmonitors",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1411",
       "weight": 1.0
     },
     {
@@ -23547,7 +23595,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1351",
+      "source_location": "L1421",
       "weight": 1.0
     },
     {
@@ -33021,46 +33069,13 @@
     },
     {
       "source": "lib_tiling_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L137",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager",
-      "target": "lib_tiling_tilingmanager_workspacemodes",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L71",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager",
-      "target": "lib_tiling_tilingmanager_floatingwindows",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L85",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager",
       "target": "lib_tiling_tilingmanager_move_grab_ops",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L92",
+      "source_location": "L100",
       "weight": 1.0
     },
     {
@@ -33071,7 +33086,40 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L95",
+      "source_location": "L103",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L145",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager",
+      "target": "lib_tiling_tilingmanager_workspacemodes",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L79",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager",
+      "target": "lib_tiling_tilingmanager_floatingwindows",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L93",
       "weight": 1.0
     },
     {
@@ -39932,640 +39980,13 @@
     },
     {
       "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_ongrabopend",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1023",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_swapafterdrag",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1044",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_resizeafterdrag",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1079",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_bucketof",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1101",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_framerects",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1116",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_forgettargets",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1134",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_chargeguardbudget",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1143",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_placeonfocusedmonitor",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1217",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_markmonitorready",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1236",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_settlependingmonitors",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1246",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_opensastilingapp",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1282",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_maybeundomapmaximize",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1294",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_trackwindow",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1302",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_untrackwindow",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1356",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_constructor",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L138",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_onfocuschanged",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1388",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_focusedtoplevel",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1422",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_queuerelayout",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1431",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_queuerelayoutall",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1439",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_ensureflushscheduled",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1444",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_flush",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1454",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_gaps",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1492",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_stackablemembercount",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1505",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_bucketmembers",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1522",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_reconciletree",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1538",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_buckethasexclusivewindow",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1576",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_exitmaximized",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1597",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_applybucket",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1608",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_moveresize",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1657",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_synctabbars",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1673",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_destroytabbars",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L1762",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_workspacemodes",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L216",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_floatingwindows",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L223",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_modeof",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L231",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_effectivemodeof",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L246",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_isstacked",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L253",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_isfloating",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L257",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_enable",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L261",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_disable",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L393",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_setworkspacemode",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L492",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_toggleworkspacemode",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L502",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_applymodechange",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L511",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_entermode",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L525",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_onglobalmodechanged",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L536",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_togglefloating",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L565",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_layoutmodeof",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L604",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_focusdirection",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L621",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_swapdirection",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L661",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_floatwindow",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L702",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_raisefloating",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L727",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_syncenabled",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L740",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_hidetabbars",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L752",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_attachswipetabbars",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L780",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_detachswipetabbars",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L849",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_onworkspacegestureend",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L867",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_onwindowcreated",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L880",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
-      "target": "lib_tiling_tilingmanager_tilingmanager_ongeometrychanged",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L950",
-      "weight": 1.0
-    },
-    {
-      "source": "lib_tiling_tilingmanager_tilingmanager",
       "target": "lib_tiling_tilingmanager_tilingmanager_ongrabopbegin",
       "relation": "method",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L986",
+      "source_location": "L1001",
       "weight": 1.0
     },
     {
@@ -40576,7 +39997,656 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "lib/tiling/tilingManager.js",
-      "source_location": "L994",
+      "source_location": "L1009",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_ongrabopend",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1038",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_swapafterdrag",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1059",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_resizeafterdrag",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1094",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_bucketof",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1116",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_framerects",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1131",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_forgettargets",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1149",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_chargeguardbudget",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1158",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_placeonfocusedmonitor",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1243",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_hintnextwindowmonitor",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1278",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_takemonitorhint",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1289",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_markmonitorready",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1297",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_settlependingmonitors",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1308",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_opensastilingapp",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1344",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_maybeundomapmaximize",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1356",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_trackwindow",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1364",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_untrackwindow",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1426",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_onfocuschanged",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1458",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_constructor",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L146",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_focusedtoplevel",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1492",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_queuerelayout",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1501",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_queuerelayoutall",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1509",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_ensureflushscheduled",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1514",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_flush",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1524",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_gaps",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1562",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_stackablemembercount",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1575",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_bucketmembers",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1592",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_reconciletree",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1608",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_buckethasexclusivewindow",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1646",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_exitmaximized",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1667",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_applybucket",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1678",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_moveresize",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1727",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_synctabbars",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1743",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_destroytabbars",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L1832",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_workspacemodes",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L230",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_floatingwindows",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L237",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_modeof",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L245",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_effectivemodeof",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L260",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_isstacked",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L267",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_isfloating",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L271",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_enable",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L275",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_disable",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L407",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_setworkspacemode",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L507",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_toggleworkspacemode",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L517",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_applymodechange",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L526",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_entermode",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L540",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_onglobalmodechanged",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L551",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_togglefloating",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L580",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_layoutmodeof",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L619",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_focusdirection",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L636",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_swapdirection",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L676",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_floatwindow",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L717",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_raisefloating",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L742",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_syncenabled",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L755",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_hidetabbars",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L767",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_attachswipetabbars",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L795",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_detachswipetabbars",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L864",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_onworkspacegestureend",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L882",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_onwindowcreated",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L895",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_tiling_tilingmanager_tilingmanager",
+      "target": "lib_tiling_tilingmanager_tilingmanager_ongeometrychanged",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib/tiling/tilingManager.js",
+      "source_location": "L965",
       "weight": 1.0
     },
     {
@@ -43021,5 +43091,5 @@
       "source_file": "docs/ARCHITECTURE.md"
     }
   ],
-  "built_at_commit": "8e6775f6e46ef75bef0caf0906af6093ae2a0521"
+  "built_at_commit": "9ee55b680d68a92897bcc41acb5e73e08ba4febd"
 }
